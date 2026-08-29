@@ -27,7 +27,7 @@ const designSystemGuards = [
   },
   {
     selector:
-      "Literal[value=/#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$/]",
+      "Literal[value=/^#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$/]",
     message:
       "Raw hex belongs in the token definitions only. Use a design token.",
   },

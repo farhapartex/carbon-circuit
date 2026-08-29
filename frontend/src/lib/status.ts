@@ -93,3 +93,26 @@ export const provenanceBandForScore = (score: number): ProvenanceBand => {
   if (score >= 40) return "partial";
   return "limited";
 };
+
+export type QueuePriority = "critical" | "high" | "normal";
+
+export const queuePriorityPresentation: Record<
+  QueuePriority,
+  StatusPresentation
+> = {
+  critical: { label: "Critical", variant: "danger" },
+  high: { label: "High", variant: "warning" },
+  normal: { label: "Normal", variant: "neutral" },
+};
+
+export type FraudSeverity = "critical" | "high" | "medium" | "low";
+
+export const fraudSeverityPresentation: Record<
+  FraudSeverity,
+  StatusPresentation
+> = {
+  critical: { label: "Critical", variant: "danger" },
+  high: { label: "High", variant: "warning" },
+  medium: { label: "Medium", variant: "info" },
+  low: { label: "Low", variant: "neutral" },
+};

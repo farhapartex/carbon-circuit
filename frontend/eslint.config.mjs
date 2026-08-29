@@ -19,9 +19,29 @@ const forbidTiers = (tiers, message) => ({
   ],
 });
 
+const designSystemGuards = [
+  {
+    selector: "JSXAttribute[name.name='style']",
+    message:
+      "Style through Tailwind tokens. An inline style bypasses the design system.",
+  },
+  {
+    selector:
+      "Literal[value=/#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$/]",
+    message:
+      "Raw hex belongs in the token definitions only. Use a design token.",
+  },
+];
+
 const eslintConfig = defineConfig([
   ...nextVitals,
   ...nextTs,
+  {
+    files: ["src/**/*.{ts,tsx}"],
+    rules: {
+      "no-restricted-syntax": ["error", ...designSystemGuards],
+    },
+  },
   {
     files: ["src/components/ui/**"],
     rules: {

@@ -1,5 +1,3 @@
-export default function MarketingLayout({
-  children,
-}: LayoutProps<"/">) {
+export default function MarketingLayout({ children }: LayoutProps<"/">) {
   return children;
 }

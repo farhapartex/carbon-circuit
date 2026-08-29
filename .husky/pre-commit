@@ -1,0 +1,10 @@
+#!/bin/sh
+set -e
+
+staged_in() {
+  git diff --cached --name-only --diff-filter=ACMR | grep -q "^$1/"
+}
+
+if staged_in frontend; then
+  cd frontend && npx lint-staged
+fi

@@ -1,3 +1,5 @@
-export default function MarketingLayout({ children }: LayoutProps<"/">) {
-  return children;
+import { MarketingShell } from "@/components/layout/MarketingShell";
+
+export default function MarketingRouteLayout({ children }: LayoutProps<"/">) {
+  return <MarketingShell>{children}</MarketingShell>;
 }

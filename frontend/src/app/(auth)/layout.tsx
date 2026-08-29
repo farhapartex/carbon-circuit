@@ -1,3 +1,5 @@
-export default function AuthLayout({ children }: LayoutProps<"/">) {
-  return children;
+import { AuthLayout } from "@/components/layout/AuthLayout";
+
+export default function AuthRouteLayout({ children }: LayoutProps<"/">) {
+  return <AuthLayout>{children}</AuthLayout>;
 }

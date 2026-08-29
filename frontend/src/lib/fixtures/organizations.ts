@@ -2,9 +2,12 @@ import type {
   ActiveSession,
   ApiKey,
   Facility,
+  MfaSettings,
   Organization,
+  OrganizationInvitation,
   OrganizationUser,
   TreasuryAddressChange,
+  UserProfile,
 } from "@/lib/types";
 
 export const verifiedManufacturer: Organization = {
@@ -203,5 +206,76 @@ export const activeSessions: ActiveSession[] = [
     startedAt: "2026-08-27T19:02:00Z",
     lastSeenAt: "2026-08-28T21:33:00Z",
     current: false,
+  },
+];
+
+export const signedInUserProfile: UserProfile = {
+  id: "usr_owner",
+  name: "Wei-Chen Lin",
+  email: "wc.lin@formosaprecision.example",
+  emailVerified: true,
+  role: "owner",
+  platformRole: null,
+  personalWalletAddress: "0xd4e6f8a0b2c4d6e8f0a2b4c6d8e0f2a4b6c8d0e2",
+  createdAt: "2025-11-04T09:12:00Z",
+};
+
+export const mfaSettings: MfaSettings = {
+  enabled: true,
+  requiredByRole: true,
+  methods: [
+    {
+      kind: "authenticator_app",
+      label: "Authenticator app",
+      detail: "Added from iPhone 17 Pro",
+      enrolledAt: "2025-11-04T09:31:00Z",
+      isDefault: true,
+    },
+    {
+      kind: "sms",
+      label: "SMS backup",
+      detail: "Ending 4417",
+      enrolledAt: "2025-11-04T09:34:00Z",
+      isDefault: false,
+    },
+    {
+      kind: "recovery_codes",
+      label: "Recovery codes",
+      detail: "8 of 10 remaining",
+      enrolledAt: "2025-11-04T09:36:00Z",
+      isDefault: false,
+    },
+  ],
+  recoveryCodesRemaining: 8,
+  lastVerifiedAt: "2026-08-28T10:00:00Z",
+};
+
+export const invitations: OrganizationInvitation[] = [
+  {
+    id: "inv_pending_verifier_liaison",
+    email: "s.okafor@formosaprecision.example",
+    role: "admin",
+    state: "pending",
+    invitedByName: "Wei-Chen Lin",
+    invitedAt: "2026-08-26T11:20:00Z",
+    expiresAt: "2026-09-02T11:20:00Z",
+  },
+  {
+    id: "inv_pending_analyst",
+    email: "m.tanaka@formosaprecision.example",
+    role: "member",
+    state: "pending",
+    invitedByName: "Priya Raghavan",
+    invitedAt: "2026-08-28T09:05:00Z",
+    expiresAt: "2026-09-04T09:05:00Z",
+  },
+  {
+    id: "inv_expired",
+    email: "old.contractor@formosaprecision.example",
+    role: "member",
+    state: "expired",
+    invitedByName: "Wei-Chen Lin",
+    invitedAt: "2026-07-01T08:00:00Z",
+    expiresAt: "2026-07-08T08:00:00Z",
   },
 ];

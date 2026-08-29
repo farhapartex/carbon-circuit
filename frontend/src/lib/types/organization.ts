@@ -112,3 +112,44 @@ export type ActiveSession = {
   lastSeenAt: IsoTimestamp;
   current: boolean;
 };
+
+export type UserProfile = {
+  id: Id;
+  name: string;
+  email: string;
+  emailVerified: boolean;
+  role: OrganizationRole | null;
+  platformRole: PlatformRole | null;
+  personalWalletAddress: EthereumAddress | null;
+  createdAt: IsoTimestamp;
+};
+
+export type MfaMethodKind = "authenticator_app" | "sms" | "recovery_codes";
+
+export type MfaMethod = {
+  kind: MfaMethodKind;
+  label: string;
+  detail: string | null;
+  enrolledAt: IsoTimestamp | null;
+  isDefault: boolean;
+};
+
+export type MfaSettings = {
+  enabled: boolean;
+  requiredByRole: boolean;
+  methods: MfaMethod[];
+  recoveryCodesRemaining: number;
+  lastVerifiedAt: IsoTimestamp | null;
+};
+
+export type InvitationState = "pending" | "accepted" | "revoked" | "expired";
+
+export type OrganizationInvitation = {
+  id: Id;
+  email: string;
+  role: OrganizationRole;
+  state: InvitationState;
+  invitedByName: string;
+  invitedAt: IsoTimestamp;
+  expiresAt: IsoTimestamp;
+};

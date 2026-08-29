@@ -12,9 +12,11 @@ import type {
   CursorPaginated,
   Facility,
   Invoice,
+  MfaSettings,
   MarketplaceListing,
   Notification,
   Organization,
+  OrganizationInvitation,
   OrganizationUser,
   Paginated,
   Plan,
@@ -23,6 +25,7 @@ import type {
   Retirement,
   SustainabilityClaim,
   Subscription,
+  UserProfile,
   VerifierQueueEntry,
 } from "@/lib/types";
 
@@ -69,6 +72,15 @@ export const getFacility = async (
 
 export const listOrganizationUsers = async (): Promise<OrganizationUser[]> =>
   organizationFixtures.organizationUsers;
+
+export const getSignedInUser = async (): Promise<UserProfile> =>
+  organizationFixtures.signedInUserProfile;
+
+export const getMfaSettings = async (): Promise<MfaSettings> =>
+  organizationFixtures.mfaSettings;
+
+export const listInvitations = async (): Promise<OrganizationInvitation[]> =>
+  organizationFixtures.invitations;
 
 export const listApiKeys = async () => organizationFixtures.apiKeys;
 

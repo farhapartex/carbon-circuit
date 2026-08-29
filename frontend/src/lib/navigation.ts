@@ -6,15 +6,12 @@ import {
   Factory,
   FileCheck2,
   History,
-  KeyRound,
   LayoutDashboard,
   Leaf,
   ListChecks,
   Settings,
   ShoppingCart,
   Store,
-  Users,
-  Wallet,
   type LucideIcon,
 } from "lucide-react";
 import type { Route } from "next";
@@ -90,11 +87,8 @@ const producerNavigation: NavSection[] = [
   {
     label: "Organization",
     items: [
-      { label: "Team", href: "/organization/users", icon: Users },
-      { label: "API keys", href: "/organization/api-keys", icon: KeyRound },
-      { label: "Wallet", href: "/organization/wallet", icon: Wallet },
-      { label: "Settings", href: "/organization/settings", icon: Settings },
-      { label: "Billing", href: "/billing", icon: CreditCard },
+      { label: "Settings", href: "/settings", icon: Settings },
+      { label: "Billing", href: "/settings/billing", icon: CreditCard },
     ],
   },
   notifications,
@@ -109,10 +103,8 @@ const logisticsNavigation: NavSection[] = [
   {
     label: "Organization",
     items: [
-      { label: "Team", href: "/organization/users", icon: Users },
-      { label: "API keys", href: "/organization/api-keys", icon: KeyRound },
-      { label: "Settings", href: "/organization/settings", icon: Settings },
-      { label: "Billing", href: "/billing", icon: CreditCard },
+      { label: "Settings", href: "/settings", icon: Settings },
+      { label: "Billing", href: "/settings/billing", icon: CreditCard },
     ],
   },
   notifications,
@@ -137,11 +129,7 @@ const buyerNavigation: NavSection[] = [
   },
   {
     label: "Organization",
-    items: [
-      { label: "Team", href: "/organization/users", icon: Users },
-      { label: "Wallet", href: "/organization/wallet", icon: Wallet },
-      { label: "Settings", href: "/organization/settings", icon: Settings },
-    ],
+    items: [{ label: "Settings", href: "/settings", icon: Settings }],
   },
   notifications,
 ];

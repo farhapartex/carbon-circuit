@@ -56,7 +56,7 @@ export function VerificationStatusBanner({
           organization is read-only. Your credits are untouched and existing
           listings are still honoured.{" "}
           <Link
-            href="/billing"
+            href="/settings/billing"
             className="font-medium underline underline-offset-4"
           >
             Update your payment method
@@ -74,7 +74,7 @@ export function VerificationStatusBanner({
         Your organization did not match the business registry, so you cannot{" "}
         {gatedCapabilities.join(", ")}. Everything else works normally.{" "}
         <Link
-          href="/organization/settings"
+          href="/settings/organization"
           className="font-medium underline underline-offset-4"
         >
           Correct your registration number

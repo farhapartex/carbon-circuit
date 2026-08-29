@@ -37,7 +37,7 @@ export function Topbar({ userName, unreadNotificationCount }: TopbarProps) {
         ) : null}
       </Link>
 
-      <Link href="/account" aria-label="Account settings">
+      <Link href="/settings/profile" aria-label="Account settings">
         <Avatar className="size-8">
           <AvatarFallback className="text-caption">
             {initialsOf(userName)}

@@ -32,11 +32,20 @@ const parsePlainDecimal = (
   return value;
 };
 
+const canonicalise = (value: string, decimals: number) =>
+  dn.toString(dn.from(value, decimals));
+
 export const creditAmount = (value: string): CreditAmount =>
-  parsePlainDecimal(value, CREDIT_DECIMALS, "Credit amount") as CreditAmount;
+  canonicalise(
+    parsePlainDecimal(value, CREDIT_DECIMALS, "Credit amount"),
+    CREDIT_DECIMALS,
+  ) as CreditAmount;
 
 export const usdcAmount = (value: string): UsdcAmount =>
-  parsePlainDecimal(value, USDC_DECIMALS, "USDC amount") as UsdcAmount;
+  canonicalise(
+    parsePlainDecimal(value, USDC_DECIMALS, "USDC amount"),
+    USDC_DECIMALS,
+  ) as UsdcAmount;
 
 const asCredits = (amount: CreditAmount) => dn.from(amount, CREDIT_DECIMALS);
 const asUsdc = (amount: UsdcAmount) => dn.from(amount, USDC_DECIMALS);

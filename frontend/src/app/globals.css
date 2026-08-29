@@ -38,6 +38,22 @@
   --color-info-700: #1d4ed8;
 
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  --text-caption: 0.875rem;
+  --text-caption--line-height: 1.25rem;
+
+  --text-body: 1rem;
+  --text-body--line-height: 1.5rem;
+
+  --text-section-heading: 1.5rem;
+  --text-section-heading--line-height: 2rem;
+  --text-section-heading--letter-spacing: -0.015em;
+  --text-section-heading--font-weight: 600;
+
+  --text-page-title: 2.25rem;
+  --text-page-title--line-height: 2.5rem;
+  --text-page-title--letter-spacing: -0.02em;
+  --text-page-title--font-weight: 600;
 }
 
 @layer base {
@@ -50,5 +66,16 @@
     background-color: var(--color-neutral-50);
     color: var(--color-neutral-900);
     font-family: var(--font-sans);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
   }
 }

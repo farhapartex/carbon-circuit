@@ -56,6 +56,27 @@ func (c *Client) Invalidate(ctx context.Context, key string) {
 	}
 }
 
+func (c *Client) GetString(ctx context.Context, key string) (string, bool, error) {
+	readCtx, cancel := withTimeout(ctx)
+	defer cancel()
+
+	value, err := c.redis.Get(readCtx, key).Result()
+	switch {
+	case err == nil:
+		return value, true, nil
+	case errors.Is(err, redis.Nil):
+		return "", false, nil
+	default:
+		return "", false, err
+	}
+}
+
+func (c *Client) SetString(ctx context.Context, key, value string, ttl time.Duration) error {
+	writeCtx, cancel := withTimeout(ctx)
+	defer cancel()
+	return c.redis.Set(writeCtx, key, value, ttl).Err()
+}
+
 func ReadThrough[T any](
 	ctx context.Context,
 	client *Client,

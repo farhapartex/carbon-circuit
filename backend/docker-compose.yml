@@ -89,6 +89,7 @@ services:
     build:
       context: .
       dockerfile: services/billing-service/Dockerfile
+    entrypoint: ["/billing-migrate"]
     command: ["up"]
     environment:
       DATABASE_MIGRATION_DSN: postgres://billing_service:billing_service@postgres:5432/carboncircuit?sslmode=disable
@@ -97,6 +98,22 @@ services:
       postgres:
         condition: service_healthy
     restart: "no"
+
+  billing-service:
+    build:
+      context: .
+      dockerfile: services/billing-service/Dockerfile
+    env_file:
+      - services/billing-service/.env
+    depends_on:
+      pgbouncer:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      billing-migrate:
+        condition: service_completed_successfully
+    expose:
+      - "9092"
 
   identity-service:
     build:
@@ -120,6 +137,8 @@ services:
       - services/api-gateway/.env
     depends_on:
       - identity-service
+      - billing-service
+      - redis
     ports:
       - "8080:8080"
 

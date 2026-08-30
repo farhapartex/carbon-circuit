@@ -7,19 +7,44 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"github.com/carboncircuit/backend/internal/httpx"
+	"github.com/carboncircuit/backend/internal/ratelimit"
 	"github.com/carboncircuit/backend/services/api-gateway/internal/upstream"
 )
 
+type Handlers struct {
+	Identity *upstream.Identity
+	Billing  *upstream.Billing
+	Logger   *slog.Logger
+	Revision string
+}
+
 type RouterOptions struct {
 	Identity    *upstream.Identity
+	Billing     *upstream.Billing
+	Limiter     *ratelimit.Limiter
 	Logger      *slog.Logger
 	Environment string
 	Revision    string
 }
 
+func errorAttributes(c *gin.Context, err error) []any {
+	return []any{
+		slog.Any("error", err),
+		slog.String("request_id", httpx.CorrelationID(c)),
+		slog.String("path", c.FullPath()),
+	}
+}
+
 func NewRouter(options RouterOptions) *gin.Engine {
 	if options.Environment != "development" {
 		gin.SetMode(gin.ReleaseMode)
+	}
+
+	handlers := &Handlers{
+		Identity: options.Identity,
+		Billing:  options.Billing,
+		Logger:   options.Logger,
+		Revision: options.Revision,
 	}
 
 	router := gin.New()
@@ -53,24 +78,29 @@ func NewRouter(options RouterOptions) *gin.Engine {
 		})
 	})
 
-	v1 := router.Group("/v1")
-	v1.GET("/identity/ping", func(c *gin.Context) {
-		response, err := options.Identity.Ping(c.Request.Context())
-		if err != nil {
-			options.Logger.Error("identity ping failed",
-				slog.Any("error", err),
-				slog.String("request_id", httpx.CorrelationID(c)),
-			)
-			httpx.Fail(c, httpx.CodeDependencyUnavailable)
-			return
-		}
+	public := router.Group("/v1")
+	public.Use(
+		httpx.EndpointClass("public_read"),
+		httpx.RateLimit(options.Limiter, options.Logger),
+	)
 
-		httpx.Data(c, http.StatusOK, gin.H{
-			"service":            response.GetService(),
-			"revision":           response.GetRevision(),
-			"database_reachable": response.GetDatabaseReachable(),
-		})
-	})
+	public.GET("/plans", handlers.ListPlans)
+	public.GET("/identity/ping", handlers.IdentityPing)
 
 	return router
+}
+
+func (h *Handlers) IdentityPing(c *gin.Context) {
+	response, err := h.Identity.Ping(c.Request.Context())
+	if err != nil {
+		h.Logger.Error("identity ping failed", errorAttributes(c, err)...)
+		httpx.Fail(c, httpx.CodeDependencyUnavailable)
+		return
+	}
+
+	httpx.Data(c, http.StatusOK, gin.H{
+		"service":            response.GetService(),
+		"revision":           response.GetRevision(),
+		"database_reachable": response.GetDatabaseReachable(),
+	})
 }

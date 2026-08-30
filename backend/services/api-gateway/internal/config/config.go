@@ -17,6 +17,12 @@ type Config struct {
 	ShutdownTimeout time.Duration
 
 	IdentityAddress     string
+	BillingAddress      string
+	RedisAddress        string
+	RedisPassword       string
+	RedisDatabase       int
+	PublicReadPerMinute int
+	PublicReadBurst     int
 	UpstreamDialTimeout time.Duration
 	UpstreamCallTimeout time.Duration
 }
@@ -33,6 +39,12 @@ func Load() (Config, error) {
 		ShutdownTimeout: loader.Duration("SHUTDOWN_TIMEOUT", 20*time.Second),
 
 		IdentityAddress:     loader.String("IDENTITY_SERVICE_ADDRESS"),
+		BillingAddress:      loader.String("BILLING_SERVICE_ADDRESS"),
+		RedisAddress:        loader.StringDefault("REDIS_ADDRESS", "redis:6379"),
+		RedisPassword:       loader.StringDefault("REDIS_PASSWORD", ""),
+		RedisDatabase:       loader.Int("REDIS_DATABASE", 0),
+		PublicReadPerMinute: loader.Int("PUBLIC_READ_PER_MINUTE", 60),
+		PublicReadBurst:     loader.Int("PUBLIC_READ_BURST", 20),
 		UpstreamDialTimeout: loader.Duration("UPSTREAM_DIAL_TIMEOUT", 5*time.Second),
 		UpstreamCallTimeout: loader.Duration("UPSTREAM_CALL_TIMEOUT", 2*time.Second),
 	}

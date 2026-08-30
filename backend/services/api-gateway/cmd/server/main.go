@@ -5,8 +5,10 @@ import (
 	"log/slog"
 	"os"
 
+	"github.com/carboncircuit/backend/internal/cache"
 	"github.com/carboncircuit/backend/internal/httpx"
 	"github.com/carboncircuit/backend/internal/logging"
+	"github.com/carboncircuit/backend/internal/ratelimit"
 	"github.com/carboncircuit/backend/services/api-gateway/internal/config"
 	"github.com/carboncircuit/backend/services/api-gateway/internal/handler"
 	"github.com/carboncircuit/backend/services/api-gateway/internal/upstream"
@@ -34,19 +36,37 @@ func run() error {
 	if err != nil {
 		return err
 	}
-	defer func() {
-		if closeErr := identity.Close(); closeErr != nil {
-			logger.Error("closing identity client", slog.Any("error", closeErr))
-		}
-	}()
+	defer closeUpstream(logger, "identity", identity.Close)
 
-	logger.Info("identity upstream configured",
-		slog.String("address", settings.IdentityAddress),
-		slog.String("environment", settings.Environment),
+	billing, err := upstream.DialBilling(settings.BillingAddress, settings.UpstreamCallTimeout)
+	if err != nil {
+		return err
+	}
+	defer closeUpstream(logger, "billing", billing.Close)
+
+	cacheClient := cache.New(settings.RedisAddress, settings.RedisPassword, settings.RedisDatabase, logger)
+	defer closeUpstream(logger, "redis", cacheClient.Close)
+
+	if pingErr := cacheClient.Ping(ctx); pingErr != nil {
+		logger.Warn("redis unreachable at startup, rate limiting will fail open",
+			slog.Any("error", pingErr))
+	}
+
+	limiter, err := ratelimit.New(cacheClient.Redis(), "ratelimit", publicRules(settings))
+	if err != nil {
+		return err
+	}
+
+	logger.Info("api-gateway ready",
+		slog.String("identity", settings.IdentityAddress),
+		slog.String("billing", settings.BillingAddress),
+		slog.Int("public_read_per_minute", settings.PublicReadPerMinute),
 	)
 
 	router := handler.NewRouter(handler.RouterOptions{
 		Identity:    identity,
+		Billing:     billing,
+		Limiter:     limiter,
 		Logger:      logger,
 		Environment: settings.Environment,
 		Revision:    revision,
@@ -60,4 +80,22 @@ func run() error {
 		WriteTimeout:    settings.WriteTimeout,
 		ShutdownTimeout: settings.ShutdownTimeout,
 	})
+}
+
+func publicRules(settings config.Config) []ratelimit.Rule {
+	return []ratelimit.Rule{
+		{
+			Name:      "unauthenticated_public",
+			PerMinute: settings.PublicReadPerMinute,
+			Burst:     settings.PublicReadBurst,
+			KeyFunc:   func(request ratelimit.Request) string { return "public:ip:" + request.ClientIP },
+			AppliesTo: func(request ratelimit.Request) bool { return request.CallerClass == "public" },
+		},
+	}
+}
+
+func closeUpstream(logger *slog.Logger, name string, close func() error) {
+	if err := close(); err != nil {
+		logger.Error("closing "+name, slog.Any("error", err))
+	}
 }

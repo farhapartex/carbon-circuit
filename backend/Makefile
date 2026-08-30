@@ -1,4 +1,4 @@
-SERVICES := identity-service api-gateway
+SERVICES := identity-service billing-service api-gateway
 REVISION := $(shell git rev-parse --short HEAD 2>/dev/null || echo dev)
 
 .PHONY: tidy build test lint fmt up down logs ps reset env migrate-up migrate-down migrate-version migrate-force

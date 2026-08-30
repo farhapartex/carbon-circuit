@@ -85,6 +85,19 @@ services:
         condition: service_healthy
     restart: "no"
 
+  billing-migrate:
+    build:
+      context: .
+      dockerfile: services/billing-service/Dockerfile
+    command: ["up"]
+    environment:
+      DATABASE_MIGRATION_DSN: postgres://billing_service:billing_service@postgres:5432/carboncircuit?sslmode=disable
+      DATABASE_SCHEMA: billing
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: "no"
+
   identity-service:
     build:
       context: .

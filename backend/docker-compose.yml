@@ -71,6 +71,20 @@ services:
       timeout: 5s
       retries: 20
 
+  identity-migrate:
+    build:
+      context: .
+      dockerfile: services/identity-service/Dockerfile
+    entrypoint: ["/identity-migrate"]
+    command: ["up"]
+    environment:
+      DATABASE_MIGRATION_DSN: postgres://identity_service:identity_service@postgres:5432/carboncircuit?sslmode=disable
+      DATABASE_SCHEMA: identity
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: "no"
+
   identity-service:
     build:
       context: .
@@ -80,6 +94,8 @@ services:
     depends_on:
       pgbouncer:
         condition: service_healthy
+      identity-migrate:
+        condition: service_completed_successfully
     expose:
       - "9091"
 

@@ -104,8 +104,7 @@ export function OrganizationForm() {
                 />
               </FormControl>
               <FormDescription>
-                Exactly as it appears on your business register. We compare this
-                against the registry, and a poor match blocks verification.
+                Exactly as it appears on your business register.
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -137,9 +136,8 @@ export function OrganizationForm() {
                   ORGANIZATION_TYPES.find(
                     (option) => option.value === field.value,
                   )?.detail
-                }{" "}
-                This cannot be changed later, and it determines which plans you
-                can choose.
+                }
+                . Permanent, and it decides which plans you can choose.
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -186,7 +184,7 @@ export function OrganizationForm() {
                 />
               </FormControl>
               <FormDescription>
-                Checked against the business registry as soon as you continue.
+                Checked against the register when you continue.
               </FormDescription>
               <FormMessage />
             </FormItem>

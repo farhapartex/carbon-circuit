@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package carboncircuit.identity.v1;
+
+option go_package = "github.com/carboncircuit/backend/gen/carboncircuit/identity/v1;identityv1";
+
+service IdentityService {
+  rpc Ping(PingRequest) returns (PingResponse);
+}
+
+message PingRequest {}
+
+message PingResponse {
+  string service = 1;
+  string revision = 2;
+  bool database_reachable = 3;
+}

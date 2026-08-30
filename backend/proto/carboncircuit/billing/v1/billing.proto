@@ -1,0 +1,69 @@
+syntax = "proto3";
+
+package carboncircuit.billing.v1;
+
+option go_package = "github.com/carboncircuit/backend/gen/carboncircuit/billing/v1;billingv1";
+
+service BillingService {
+  rpc ListPlans(ListPlansRequest) returns (ListPlansResponse);
+}
+
+enum PlanTier {
+  PLAN_TIER_UNSPECIFIED = 0;
+  PLAN_TIER_BUYER = 1;
+  PLAN_TIER_STARTER = 2;
+  PLAN_TIER_GROWTH = 3;
+  PLAN_TIER_ENTERPRISE = 4;
+}
+
+enum OrganizationType {
+  ORGANIZATION_TYPE_UNSPECIFIED = 0;
+  ORGANIZATION_TYPE_MANUFACTURER = 1;
+  ORGANIZATION_TYPE_ASSEMBLER = 2;
+  ORGANIZATION_TYPE_LOGISTICS = 3;
+  ORGANIZATION_TYPE_CREDIT_BUYER = 4;
+}
+
+enum UsageDimension {
+  USAGE_DIMENSION_UNSPECIFIED = 0;
+  USAGE_DIMENSION_BATCHES = 1;
+  USAGE_DIMENSION_CHECKPOINTS = 2;
+  USAGE_DIMENSION_FACILITIES = 3;
+  USAGE_DIMENSION_USERS = 4;
+  USAGE_DIMENSION_AI_REVIEWS = 5;
+  USAGE_DIMENSION_STORAGE_GB = 6;
+}
+
+message PlanLimit {
+  UsageDimension dimension = 1;
+  optional int64 included = 2;
+  optional int64 fair_use_ceiling = 3;
+  string overage_rate_usd = 4;
+  bool blocks_on_exhaustion = 5;
+}
+
+message Plan {
+  string id = 1;
+  PlanTier tier = 2;
+  string name = 3;
+  string audience = 4;
+  string monthly_price_usd = 5;
+  string price_note = 6;
+  repeated OrganizationType allowed_organization_types = 7;
+  optional int32 evidence_storage_gb = 8;
+  int32 portal_rate_per_minute = 9;
+  optional int32 api_rate_per_minute = 10;
+  optional int32 api_key_limit = 11;
+  optional int32 marketplace_fee_bps = 12;
+  string review_turnaround = 13;
+  string support_level = 14;
+  repeated PlanLimit limits = 15;
+}
+
+message ListPlansRequest {
+  OrganizationType eligible_for = 1;
+}
+
+message ListPlansResponse {
+  repeated Plan plans = 1;
+}

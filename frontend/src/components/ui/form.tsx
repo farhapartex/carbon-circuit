@@ -110,7 +110,7 @@ function FormDescription({ className, ...props }: ComponentProps<"p">) {
     <p
       data-slot="form-description"
       id={formDescriptionId}
-      className={cn("text-caption text-muted-foreground", className)}
+      className={cn("text-helper text-neutral-600", className)}
       {...props}
     />
   );
@@ -126,7 +126,7 @@ function FormMessage({ className, children, ...props }: ComponentProps<"p">) {
     <p
       data-slot="form-message"
       id={formMessageId}
-      className={cn("text-caption text-danger-700", className)}
+      className={cn("text-helper text-danger-700", className)}
       {...props}
     >
       {body}

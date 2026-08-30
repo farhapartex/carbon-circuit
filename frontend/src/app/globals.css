@@ -43,6 +43,9 @@
 
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
 
+  --text-helper: 0.8125rem;
+  --text-helper--line-height: 1.125rem;
+
   --text-caption: 0.875rem;
   --text-caption--line-height: 1.25rem;
 

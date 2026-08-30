@@ -80,13 +80,19 @@ services:
     depends_on:
       pgbouncer:
         condition: service_healthy
+    expose:
+      - "9091"
+
+  api-gateway:
+    build:
+      context: .
+      dockerfile: services/api-gateway/Dockerfile
+    env_file:
+      - services/api-gateway/.env
+    depends_on:
+      - identity-service
     ports:
-      - "8081:8081"
-    healthcheck:
-      test: ["CMD", "/identity-service", "-health"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+      - "8080:8080"
 
 volumes:
   postgres-data:

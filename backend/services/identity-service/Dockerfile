@@ -5,6 +5,7 @@ WORKDIR /src
 COPY go.mod go.sum ./
 RUN go mod download
 
+COPY gen ./gen
 COPY internal ./internal
 COPY services/identity-service ./services/identity-service
 
@@ -20,6 +21,6 @@ FROM gcr.io/distroless/static-debian12:nonroot
 COPY --from=build /out/identity-service /identity-service
 
 USER nonroot:nonroot
-EXPOSE 8081
+EXPOSE 9091
 
 ENTRYPOINT ["/identity-service"]

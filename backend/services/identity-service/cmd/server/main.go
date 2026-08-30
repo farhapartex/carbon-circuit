@@ -2,52 +2,26 @@ package main
 
 import (
 	"context"
-	"flag"
 	"log/slog"
-	"net/http"
 	"os"
-	"time"
 
+	"google.golang.org/grpc"
+
+	identityv1 "github.com/carboncircuit/backend/gen/carboncircuit/identity/v1"
 	"github.com/carboncircuit/backend/internal/database"
-	"github.com/carboncircuit/backend/internal/httpx"
+	"github.com/carboncircuit/backend/internal/grpcx"
 	"github.com/carboncircuit/backend/internal/logging"
 	"github.com/carboncircuit/backend/services/identity-service/internal/config"
-	"github.com/carboncircuit/backend/services/identity-service/internal/handler"
+	"github.com/carboncircuit/backend/services/identity-service/internal/rpc"
 )
 
 var revision = "dev"
 
 func main() {
-	healthCheck := flag.Bool("health", false, "probe the local health endpoint and exit")
-	flag.Parse()
-
-	if *healthCheck {
-		os.Exit(probeHealth())
-	}
-
 	if err := run(); err != nil {
 		slog.Error("identity-service failed to start", slog.Any("error", err))
 		os.Exit(1)
 	}
-}
-
-func probeHealth() int {
-	client := &http.Client{Timeout: 3 * time.Second}
-	address := os.Getenv("HTTP_ADDRESS")
-	if address == "" {
-		address = ":8081"
-	}
-
-	response, err := client.Get("http://127.0.0.1" + address + "/readyz")
-	if err != nil {
-		return 1
-	}
-	defer func() { _ = response.Body.Close() }()
-
-	if response.StatusCode != http.StatusOK {
-		return 1
-	}
-	return 0
 }
 
 func run() error {
@@ -82,19 +56,17 @@ func run() error {
 		slog.String("environment", settings.Environment),
 	)
 
-	router := handler.NewRouter(handler.RouterOptions{
-		Database:    store,
-		Logger:      logger,
-		Environment: settings.Environment,
-		Revision:    revision,
-	})
+	identityServer := rpc.NewIdentityServer(store, revision)
 
-	return httpx.Serve(ctx, httpx.ServerOptions{
-		Address:         settings.HTTPAddress,
-		Handler:         router,
+	return grpcx.Serve(ctx, grpcx.ServerOptions{
+		Address:         settings.GRPCAddress,
 		Logger:          logger,
-		ReadTimeout:     settings.ReadTimeout,
-		WriteTimeout:    settings.WriteTimeout,
 		ShutdownTimeout: settings.ShutdownTimeout,
+		ServiceName:     "carboncircuit.identity.v1.IdentityService",
+		HealthInterval:  settings.HealthInterval,
+		ReportHealth:    identityServer.DatabaseReachable,
+		Register: func(server *grpc.Server) {
+			identityv1.RegisterIdentityServiceServer(server, identityServer)
+		},
 	})
 }

@@ -11,10 +11,9 @@ const ServiceName = "identity-service"
 type Config struct {
 	Environment     string
 	LogLevel        string
-	HTTPAddress     string
-	ReadTimeout     time.Duration
-	WriteTimeout    time.Duration
+	GRPCAddress     string
 	ShutdownTimeout time.Duration
+	HealthInterval  time.Duration
 
 	DatabaseDSN     string
 	DatabaseSchema  string
@@ -31,10 +30,9 @@ func Load() (Config, error) {
 	config := Config{
 		Environment:     loader.StringDefault("ENVIRONMENT", "development"),
 		LogLevel:        loader.StringDefault("LOG_LEVEL", "info"),
-		HTTPAddress:     loader.StringDefault("HTTP_ADDRESS", ":8081"),
-		ReadTimeout:     loader.Duration("READ_TIMEOUT", 10*time.Second),
-		WriteTimeout:    loader.Duration("WRITE_TIMEOUT", 15*time.Second),
+		GRPCAddress:     loader.StringDefault("GRPC_ADDRESS", ":9091"),
 		ShutdownTimeout: loader.Duration("SHUTDOWN_TIMEOUT", 20*time.Second),
+		HealthInterval:  loader.Duration("HEALTH_INTERVAL", 10*time.Second),
 
 		DatabaseDSN:     loader.String("DATABASE_DSN"),
 		DatabaseSchema:  loader.StringDefault("DATABASE_SCHEMA", "identity"),

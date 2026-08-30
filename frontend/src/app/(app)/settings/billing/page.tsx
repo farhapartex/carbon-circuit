@@ -7,12 +7,12 @@ import { StatusPill } from "@/components/shared/StatusPill";
 import { TimestampDisplay } from "@/components/shared/TimestampDisplay";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { fetchPlans } from "@/lib/api/plans";
 import {
   getPaymentMethod,
   getPlanUsage,
   getSubscription,
   listInvoices,
-  listPlans,
 } from "@/lib/fixtures";
 import type { SubscriptionState } from "@/lib/types";
 
@@ -33,7 +33,7 @@ export default async function SettingsBillingPage() {
   const usage = await getPlanUsage();
   const paymentMethod = await getPaymentMethod();
   const invoices = await listInvoices();
-  const plans = await listPlans();
+  const plans = await fetchPlans();
   const plan = plans.find(
     (candidate) => candidate.tier === subscription.planTier,
   );

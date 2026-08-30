@@ -6,13 +6,14 @@ import { StatusPill } from "@/components/shared/StatusPill";
 import { TimestampDisplay } from "@/components/shared/TimestampDisplay";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { getSubscription, listApiKeys, listPlans } from "@/lib/fixtures";
+import { fetchPlans } from "@/lib/api/plans";
+import { getSubscription, listApiKeys } from "@/lib/fixtures";
 
 export const metadata: Metadata = { title: "API keys" };
 
 export default async function SettingsApiKeysPage() {
   const subscription = await getSubscription();
-  const plans = await listPlans();
+  const plans = await fetchPlans();
   const plan = plans.find(
     (candidate) => candidate.tier === subscription.planTier,
   );

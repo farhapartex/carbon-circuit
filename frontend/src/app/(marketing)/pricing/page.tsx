@@ -3,7 +3,7 @@ import Link from "next/link";
 import { BuyerPlanCallout } from "@/components/features/billing/BuyerPlanCallout";
 import { PlanComparisonTable } from "@/components/features/billing/PlanComparisonTable";
 import { Button } from "@/components/ui/button";
-import { listPlans } from "@/lib/fixtures";
+import { fetchPlans } from "@/lib/api/plans";
 
 export const metadata: Metadata = {
   title: "Pricing",
@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 };
 
 export default async function PricingPage() {
-  const plans = await listPlans();
+  const plans = await fetchPlans();
 
   return (
     <div className="mx-auto max-w-6xl space-y-12 px-6 py-16">

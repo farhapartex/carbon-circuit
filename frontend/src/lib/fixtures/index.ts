@@ -20,7 +20,6 @@ import type {
   OrganizationInvitation,
   OrganizationUser,
   Paginated,
-  Plan,
   PlanUsage,
   PublicBatchView,
   Retirement,
@@ -146,8 +145,6 @@ export const listTrades = async () => marketplaceFixtures.trades;
 
 export const listRetirements = async (): Promise<CursorPaginated<Retirement>> =>
   cursorPaginate(marketplaceFixtures.retirements);
-
-export const listPlans = async (): Promise<Plan[]> => billingFixtures.plans;
 
 export const getSubscription = async (): Promise<Subscription> =>
   billingFixtures.currentSubscription;

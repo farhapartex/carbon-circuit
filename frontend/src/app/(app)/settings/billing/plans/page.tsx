@@ -1,16 +1,13 @@
 import type { Metadata } from "next";
 import { PlanComparisonTable } from "@/components/features/billing/PlanComparisonTable";
 import { Button } from "@/components/ui/button";
-import {
-  getCurrentOrganization,
-  getSubscription,
-  listPlans,
-} from "@/lib/fixtures";
+import { fetchPlans } from "@/lib/api/plans";
+import { getCurrentOrganization, getSubscription } from "@/lib/fixtures";
 
 export const metadata: Metadata = { title: "Plans" };
 
 export default async function SettingsBillingPlansPage() {
-  const plans = await listPlans();
+  const plans = await fetchPlans();
   const subscription = await getSubscription();
   const organization = await getCurrentOrganization();
 

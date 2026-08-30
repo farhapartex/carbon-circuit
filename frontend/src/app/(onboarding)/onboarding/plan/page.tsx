@@ -2,12 +2,12 @@ import type { Metadata } from "next";
 import { OnboardingStepper } from "@/components/features/onboarding/OnboardingStepper";
 import { PlanSelector } from "@/components/features/onboarding/PlanSelector";
 import { PageHeader } from "@/components/shared/PageHeader";
-import { listPlans } from "@/lib/fixtures";
+import { fetchPlans } from "@/lib/api/plans";
 
 export const metadata: Metadata = { title: "Choose a plan" };
 
 export default async function OnboardingPlanPage() {
-  const plans = await listPlans();
+  const plans = await fetchPlans();
 
   return (
     <>

@@ -6,7 +6,7 @@ CarbonCircuit does two connected things for physical supply chains. It records t
 
 Provenance answers *"where did this come from, and is it authentic?"* Carbon credits answer *"how much verified environmental benefit did this facility create, and who now owns it?"*
 
-> **Status — design phase.** This repository currently contains the complete design: product requirements, backend architecture, low-level conventions, smart contract design, and frontend architecture. Implementation has not started. Every document here is written to be built against directly.
+> **Status — in development.** The design is complete and documented: product requirements, backend architecture, low-level conventions, smart contract design, and frontend architecture. Implementation is under way — see [Current stage](#current-stage) for exactly what runs today. Every document here is written to be built against directly, and where code and a document disagree, that is a defect in one of them.
 
 ---
 
@@ -23,6 +23,55 @@ So the system is designed around three properties that are easy to claim and har
 - **A retired credit is gone forever.** No resale, no re-transfer, no second retirement.
 
 The design is also explicit about what it *doesn't* guarantee — it cannot detect that the same real-world reduction was also registered with Verra or Gold Standard. That boundary is documented, disclosed to buyers in the product, and mitigated rather than hidden.
+
+---
+
+## Current stage
+
+What actually runs today, as distinct from what is designed. The design describes fifteen backend services, four smart contracts, and the full customer-facing product; the table below is the subset that is built.
+
+### Frontend — `frontend/`
+
+Next.js 16 (App Router), TypeScript in strict mode, Tailwind v4. **41 routes**, all rendering against typed fixtures — there is no live API yet, and every component is typed against view models that the real API will satisfy without the components changing.
+
+| Area | State |
+|---|---|
+| Design system | **Done.** All 24 palette tokens, semantic type scale, shadcn/ui on Radix. Tailwind's default colour namespace is cleared so a stray `text-emerald-500` cannot bypass the palette. |
+| Component tiers | **Done.** 14 primitives, 24 shared components, 7 layout shells, 6 feature domains. ESLint enforces the one-directional tier graph rather than leaving it to review. |
+| Public surfaces | **Done.** Home, both solution pages, pricing, the QR-scan provenance page, and the public retirement log. |
+| Onboarding | **Done.** Organization creation, registry verification (all three outcomes), plan selection, Treasury Address designation. |
+| Settings | **Done.** Profile and MFA, organization details, members with invite and revoke, billing with usage and cancellation, API keys, Treasury Address. |
+| Navigation | **Done.** Role-driven sidebar with capability gating for unverified and restricted organizations. |
+| Wallet | **Partial.** wagmi, viem, and RainbowKit connect and switch networks. Proving an address by signature lands with the backend. |
+| Remaining product surfaces | **Not started.** Batches, checkpoints, claims, the verifier workflow, credits, marketplace, dashboard, notifications. |
+| Data layer | **Not started.** Auth0 session, the backend-for-frontend proxy, the typed API client, TanStack Query, and route protection all wait on the backend. |
+
+### Backend — `backend/`
+
+Go 1.26, single module. Gin at the edge only; everything behind it speaks gRPC, per the low-level design.
+
+| Component | State |
+|---|---|
+| `api-gateway` | **Running.** The only public entry point. Gin REST surface, translates to gRPC, panic recovery, correlation IDs, standard response envelope. |
+| `identity-service` | **Running.** gRPC only and not published to the host. Serves the gRPC health protocol driven by real database reachability. |
+| Shared module | **Done.** Config loading that fails loudly at startup, structured logging, the full 22-code error taxonomy, gRPC server and interceptors, GORM over PgBouncer. |
+| Local infrastructure | **Running.** Postgres, PgBouncer in transaction pooling mode, Redis, Kafka in KRaft mode. One `make up`. |
+| Database schema | **Not started.** No models or migrations yet — the next piece of work. |
+| Remaining 13 services | **Not started.** Billing, provenance, evidence, sustainability, credits, marketplace, chain writer and observer, AI agent, fraud detection, notification, admin. |
+
+Two properties worth calling out, because both are verified rather than assumed. Each service holds its **own Postgres role and its own PgBouncer pool**, so "no service reaches into another service's tables" is enforced by the database permission system — `identity_service` is denied on the `billing` schema and vice versa. And a **correlation ID set at the gateway reaches the identity service log** across the gRPC hop, which is the mechanism the whole tracing story depends on.
+
+### Smart contracts — `smart-contract/`
+
+**Not started.** The design is complete in [Smart Contract Design](./docs/CarbonCircuit_SmartContract_Design.md). Credit Ledger, Marketplace, Chain Writer, and Chain Observer all depend on the contracts being deployable to a local Anvil node, which puts the Solidity work on the critical path for those services.
+
+### Known gaps in what is built
+
+Stated plainly rather than discovered later:
+
+- **gRPC between services is plaintext, not mTLS.** The design requires mutual TLS. Traffic is currently confined to one Docker network, and the transport credentials are a single call site in each of the client and server.
+- **No authentication yet.** Auth0 is configured but not wired. Every surface renders fixture data.
+- **`identity-service` has no container healthcheck.** Its gRPC health service is registered and reports real database reachability, but the distroless image carries no shell or probe binary, so Compose cannot exercise it directly. The gateway's `/readyz` does.
 
 ---
 

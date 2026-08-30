@@ -5,7 +5,7 @@ import {
   type StateStorage,
 } from "zustand/middleware";
 
-export type DraftKind = "batch" | "claim";
+export type DraftKind = "batch" | "claim" | "organization";
 
 export type FormDraft = {
   step: number;

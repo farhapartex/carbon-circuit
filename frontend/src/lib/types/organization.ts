@@ -153,3 +153,29 @@ export type OrganizationInvitation = {
   invitedAt: IsoTimestamp;
   expiresAt: IsoTimestamp;
 };
+
+export type RegistryEntityStatus = "active" | "dissolved";
+
+export type BusinessRegistryRecord = {
+  countryCode: CountryCode;
+  registrationNumber: string;
+  legalName: string;
+  registeredAddress: string;
+  incorporationDate: IsoTimestamp;
+  entityStatus: RegistryEntityStatus;
+  industryCodes: string[];
+  sanctioned: boolean;
+};
+
+export type RegistryRejectionReason =
+  "entity_dissolved" | "sanctions_flag" | "name_mismatch";
+
+export type RegistryVerificationOutcome = {
+  status: VerificationStatus;
+  matchedRecord: BusinessRegistryRecord | null;
+  nameSimilarity: number | null;
+  rejectionReason: RegistryRejectionReason | null;
+};
+
+export type OnboardingStep =
+  "organization" | "verification" | "plan" | "wallet" | "complete";

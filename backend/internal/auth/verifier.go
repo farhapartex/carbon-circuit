@@ -29,6 +29,10 @@ func NewVerifier(domain, audience string, keyCacheTTL time.Duration) (*Verifier,
 		return nil, fmt.Errorf("parse auth0 issuer: %w", err)
 	}
 
+	return newVerifier(issuer, audience, keyCacheTTL)
+}
+
+func newVerifier(issuer *url.URL, audience string, keyCacheTTL time.Duration) (*Verifier, error) {
 	provider := jwks.NewCachingProvider(issuer, keyCacheTTL)
 
 	tokenValidator, err := validator.New(

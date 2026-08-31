@@ -7,6 +7,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 
+	"github.com/carboncircuit/backend/internal/auth"
 	"github.com/carboncircuit/backend/internal/ratelimit"
 )
 
@@ -29,6 +30,11 @@ func RateLimit(limiter *ratelimit.Limiter, logger *slog.Logger) gin.HandlerFunc 
 			CallerKey:     c.ClientIP(),
 			EndpointClass: class,
 			ClientIP:      c.ClientIP(),
+		}
+
+		if caller, verified := auth.CallerFrom(c.Request.Context()); verified {
+			request.CallerClass = "user"
+			request.CallerKey = caller.Subject
 		}
 
 		decision, err := limiter.Check(c.Request.Context(), request)

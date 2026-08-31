@@ -23,6 +23,8 @@ type Config struct {
 	RedisDatabase       int
 	PublicReadPerMinute int
 	PublicReadBurst     int
+	PortalUserPerMinute int
+	PortalUserBurst     int
 	UpstreamDialTimeout time.Duration
 	UpstreamCallTimeout time.Duration
 
@@ -50,6 +52,8 @@ func Load() (Config, error) {
 		RedisDatabase:       loader.Int("REDIS_DATABASE", 0),
 		PublicReadPerMinute: loader.Int("PUBLIC_READ_PER_MINUTE", 60),
 		PublicReadBurst:     loader.Int("PUBLIC_READ_BURST", 20),
+		PortalUserPerMinute: loader.Int("PORTAL_USER_PER_MINUTE", 300),
+		PortalUserBurst:     loader.Int("PORTAL_USER_BURST", 60),
 		UpstreamDialTimeout: loader.Duration("UPSTREAM_DIAL_TIMEOUT", 5*time.Second),
 		UpstreamCallTimeout: loader.Duration("UPSTREAM_CALL_TIMEOUT", 2*time.Second),
 

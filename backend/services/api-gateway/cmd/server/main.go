@@ -101,6 +101,13 @@ func publicRules(settings config.Config) []ratelimit.Rule {
 			KeyFunc:   func(request ratelimit.Request) string { return "public:ip:" + request.ClientIP },
 			AppliesTo: func(request ratelimit.Request) bool { return request.CallerClass == "public" },
 		},
+		{
+			Name:      "portal_user",
+			PerMinute: settings.PortalUserPerMinute,
+			Burst:     settings.PortalUserBurst,
+			KeyFunc:   func(request ratelimit.Request) string { return "portal:user:" + request.CallerKey },
+			AppliesTo: func(request ratelimit.Request) bool { return request.CallerClass == "user" },
+		},
 	}
 }
 

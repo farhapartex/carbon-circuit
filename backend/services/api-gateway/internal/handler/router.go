@@ -3,9 +3,11 @@ package handler
 import (
 	"log/slog"
 	"net/http"
+	"time"
 
 	"github.com/gin-gonic/gin"
 
+	"github.com/carboncircuit/backend/internal/auth"
 	"github.com/carboncircuit/backend/internal/httpx"
 	"github.com/carboncircuit/backend/internal/ratelimit"
 	"github.com/carboncircuit/backend/services/api-gateway/internal/upstream"
@@ -22,6 +24,8 @@ type RouterOptions struct {
 	Identity    *upstream.Identity
 	Billing     *upstream.Billing
 	Limiter     *ratelimit.Limiter
+	Verifier    httpx.TokenVerifier
+	Denylist    httpx.RevocationChecker
 	Logger      *slog.Logger
 	Environment string
 	Revision    string
@@ -87,7 +91,29 @@ func NewRouter(options RouterOptions) *gin.Engine {
 	public.GET("/plans", handlers.ListPlans)
 	public.GET("/identity/ping", handlers.IdentityPing)
 
+	authenticated := router.Group("/v1")
+	authenticated.Use(
+		httpx.Authenticate(options.Verifier, options.Denylist, options.Logger),
+		httpx.EndpointClass("authenticated_read"),
+		httpx.RateLimit(options.Limiter, options.Logger),
+	)
+
+	authenticated.GET("/session", handlers.Session)
+
 	return router
+}
+
+func (h *Handlers) Session(c *gin.Context) {
+	caller, verified := auth.CallerFrom(c.Request.Context())
+	if !verified {
+		httpx.Fail(c, httpx.CodeUnauthenticated)
+		return
+	}
+
+	httpx.Data(c, http.StatusOK, gin.H{
+		"subject":   caller.Subject,
+		"issued_at": caller.IssuedAt.UTC().Format(time.RFC3339),
+	})
 }
 
 func (h *Handlers) IdentityPing(c *gin.Context) {

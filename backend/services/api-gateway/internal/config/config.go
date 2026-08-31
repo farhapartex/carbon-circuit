@@ -25,6 +25,11 @@ type Config struct {
 	PublicReadBurst     int
 	UpstreamDialTimeout time.Duration
 	UpstreamCallTimeout time.Duration
+
+	Auth0Domain      string
+	Auth0Audience    string
+	KeyCacheTTL      time.Duration
+	RevocationWindow time.Duration
 }
 
 func Load() (Config, error) {
@@ -47,6 +52,11 @@ func Load() (Config, error) {
 		PublicReadBurst:     loader.Int("PUBLIC_READ_BURST", 20),
 		UpstreamDialTimeout: loader.Duration("UPSTREAM_DIAL_TIMEOUT", 5*time.Second),
 		UpstreamCallTimeout: loader.Duration("UPSTREAM_CALL_TIMEOUT", 2*time.Second),
+
+		Auth0Domain:      loader.String("AUTH0_DOMAIN"),
+		Auth0Audience:    loader.String("AUTH0_AUDIENCE"),
+		KeyCacheTTL:      loader.Duration("AUTH0_KEY_CACHE_TTL", 5*time.Minute),
+		RevocationWindow: loader.Duration("REVOCATION_WINDOW", 15*time.Minute),
 	}
 
 	return config, loader.Err()

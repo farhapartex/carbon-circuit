@@ -5,6 +5,7 @@ import (
 	"log/slog"
 	"os"
 
+	"github.com/carboncircuit/backend/internal/auth"
 	"github.com/carboncircuit/backend/internal/cache"
 	"github.com/carboncircuit/backend/internal/httpx"
 	"github.com/carboncircuit/backend/internal/logging"
@@ -57,6 +58,13 @@ func run() error {
 		return err
 	}
 
+	verifier, err := auth.NewVerifier(settings.Auth0Domain, settings.Auth0Audience, settings.KeyCacheTTL)
+	if err != nil {
+		return err
+	}
+
+	denylist := auth.NewDenylist(cacheClient, logger, settings.RevocationWindow)
+
 	logger.Info("api-gateway ready",
 		slog.String("identity", settings.IdentityAddress),
 		slog.String("billing", settings.BillingAddress),
@@ -67,6 +75,8 @@ func run() error {
 		Identity:    identity,
 		Billing:     billing,
 		Limiter:     limiter,
+		Verifier:    verifier,
+		Denylist:    denylist,
 		Logger:      logger,
 		Environment: settings.Environment,
 		Revision:    revision,

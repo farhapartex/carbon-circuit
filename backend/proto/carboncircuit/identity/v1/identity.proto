@@ -6,6 +6,43 @@ option go_package = "github.com/carboncircuit/backend/gen/carboncircuit/identity
 
 service IdentityService {
   rpc Ping(PingRequest) returns (PingResponse);
+  rpc ResolveSession(ResolveSessionRequest) returns (ResolveSessionResponse);
+}
+
+enum OrganizationType {
+  ORGANIZATION_TYPE_UNSPECIFIED = 0;
+  ORGANIZATION_TYPE_MANUFACTURER = 1;
+  ORGANIZATION_TYPE_ASSEMBLER = 2;
+  ORGANIZATION_TYPE_LOGISTICS = 3;
+  ORGANIZATION_TYPE_CREDIT_BUYER = 4;
+}
+
+enum OrganizationRole {
+  ORGANIZATION_ROLE_UNSPECIFIED = 0;
+  ORGANIZATION_ROLE_OWNER = 1;
+  ORGANIZATION_ROLE_ADMIN = 2;
+  ORGANIZATION_ROLE_MEMBER = 3;
+}
+
+enum OrganizationState {
+  ORGANIZATION_STATE_UNSPECIFIED = 0;
+  ORGANIZATION_STATE_ACTIVE = 1;
+  ORGANIZATION_STATE_RESTRICTED = 2;
+  ORGANIZATION_STATE_READ_ONLY = 3;
+  ORGANIZATION_STATE_SUSPENDED = 4;
+}
+
+enum VerificationStatus {
+  VERIFICATION_STATUS_UNSPECIFIED = 0;
+  VERIFICATION_STATUS_VERIFIED = 1;
+  VERIFICATION_STATUS_UNVERIFIED = 2;
+  VERIFICATION_STATUS_REJECTED = 3;
+}
+
+enum PlatformRole {
+  PLATFORM_ROLE_UNSPECIFIED = 0;
+  PLATFORM_ROLE_VERIFIER = 1;
+  PLATFORM_ROLE_PLATFORM_ADMIN = 2;
 }
 
 message PingRequest {}
@@ -14,4 +51,34 @@ message PingResponse {
   string service = 1;
   string revision = 2;
   bool database_reachable = 3;
+}
+
+message ResolveSessionRequest {
+  string auth0_subject = 1;
+  string email = 2;
+  bool email_verified = 3;
+  string name = 4;
+}
+
+message SessionUser {
+  string id = 1;
+  string email = 2;
+  string name = 3;
+  PlatformRole platform_role = 4;
+  bool mfa_enrolled = 5;
+}
+
+message SessionOrganization {
+  string id = 1;
+  string name = 2;
+  OrganizationType type = 3;
+  OrganizationState state = 4;
+  VerificationStatus verification_status = 5;
+}
+
+message ResolveSessionResponse {
+  SessionUser user = 1;
+  bool needs_onboarding = 2;
+  SessionOrganization organization = 3;
+  OrganizationRole role = 4;
 }

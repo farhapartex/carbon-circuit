@@ -19,7 +19,8 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	IdentityService_Ping_FullMethodName = "/carboncircuit.identity.v1.IdentityService/Ping"
+	IdentityService_Ping_FullMethodName           = "/carboncircuit.identity.v1.IdentityService/Ping"
+	IdentityService_ResolveSession_FullMethodName = "/carboncircuit.identity.v1.IdentityService/ResolveSession"
 )
 
 // IdentityServiceClient is the client API for IdentityService service.
@@ -27,6 +28,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type IdentityServiceClient interface {
 	Ping(ctx context.Context, in *PingRequest, opts ...grpc.CallOption) (*PingResponse, error)
+	ResolveSession(ctx context.Context, in *ResolveSessionRequest, opts ...grpc.CallOption) (*ResolveSessionResponse, error)
 }
 
 type identityServiceClient struct {
@@ -47,11 +49,22 @@ func (c *identityServiceClient) Ping(ctx context.Context, in *PingRequest, opts 
 	return out, nil
 }
 
+func (c *identityServiceClient) ResolveSession(ctx context.Context, in *ResolveSessionRequest, opts ...grpc.CallOption) (*ResolveSessionResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ResolveSessionResponse)
+	err := c.cc.Invoke(ctx, IdentityService_ResolveSession_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // IdentityServiceServer is the server API for IdentityService service.
 // All implementations must embed UnimplementedIdentityServiceServer
 // for forward compatibility.
 type IdentityServiceServer interface {
 	Ping(context.Context, *PingRequest) (*PingResponse, error)
+	ResolveSession(context.Context, *ResolveSessionRequest) (*ResolveSessionResponse, error)
 	mustEmbedUnimplementedIdentityServiceServer()
 }
 
@@ -64,6 +77,9 @@ type UnimplementedIdentityServiceServer struct{}
 
 func (UnimplementedIdentityServiceServer) Ping(context.Context, *PingRequest) (*PingResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method Ping not implemented")
+}
+func (UnimplementedIdentityServiceServer) ResolveSession(context.Context, *ResolveSessionRequest) (*ResolveSessionResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ResolveSession not implemented")
 }
 func (UnimplementedIdentityServiceServer) mustEmbedUnimplementedIdentityServiceServer() {}
 func (UnimplementedIdentityServiceServer) testEmbeddedByValue()                         {}
@@ -104,6 +120,24 @@ func _IdentityService_Ping_Handler(srv interface{}, ctx context.Context, dec fun
 	return interceptor(ctx, in, info, handler)
 }
 
+func _IdentityService_ResolveSession_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ResolveSessionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(IdentityServiceServer).ResolveSession(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: IdentityService_ResolveSession_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IdentityServiceServer).ResolveSession(ctx, req.(*ResolveSessionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // IdentityService_ServiceDesc is the grpc.ServiceDesc for IdentityService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -114,6 +148,10 @@ var IdentityService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Ping",
 			Handler:    _IdentityService_Ping_Handler,
+		},
+		{
+			MethodName: "ResolveSession",
+			Handler:    _IdentityService_ResolveSession_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

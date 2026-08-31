@@ -21,6 +21,269 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+type OrganizationType int32
+
+const (
+	OrganizationType_ORGANIZATION_TYPE_UNSPECIFIED  OrganizationType = 0
+	OrganizationType_ORGANIZATION_TYPE_MANUFACTURER OrganizationType = 1
+	OrganizationType_ORGANIZATION_TYPE_ASSEMBLER    OrganizationType = 2
+	OrganizationType_ORGANIZATION_TYPE_LOGISTICS    OrganizationType = 3
+	OrganizationType_ORGANIZATION_TYPE_CREDIT_BUYER OrganizationType = 4
+)
+
+// Enum value maps for OrganizationType.
+var (
+	OrganizationType_name = map[int32]string{
+		0: "ORGANIZATION_TYPE_UNSPECIFIED",
+		1: "ORGANIZATION_TYPE_MANUFACTURER",
+		2: "ORGANIZATION_TYPE_ASSEMBLER",
+		3: "ORGANIZATION_TYPE_LOGISTICS",
+		4: "ORGANIZATION_TYPE_CREDIT_BUYER",
+	}
+	OrganizationType_value = map[string]int32{
+		"ORGANIZATION_TYPE_UNSPECIFIED":  0,
+		"ORGANIZATION_TYPE_MANUFACTURER": 1,
+		"ORGANIZATION_TYPE_ASSEMBLER":    2,
+		"ORGANIZATION_TYPE_LOGISTICS":    3,
+		"ORGANIZATION_TYPE_CREDIT_BUYER": 4,
+	}
+)
+
+func (x OrganizationType) Enum() *OrganizationType {
+	p := new(OrganizationType)
+	*p = x
+	return p
+}
+
+func (x OrganizationType) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (OrganizationType) Descriptor() protoreflect.EnumDescriptor {
+	return file_carboncircuit_identity_v1_identity_proto_enumTypes[0].Descriptor()
+}
+
+func (OrganizationType) Type() protoreflect.EnumType {
+	return &file_carboncircuit_identity_v1_identity_proto_enumTypes[0]
+}
+
+func (x OrganizationType) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use OrganizationType.Descriptor instead.
+func (OrganizationType) EnumDescriptor() ([]byte, []int) {
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{0}
+}
+
+type OrganizationRole int32
+
+const (
+	OrganizationRole_ORGANIZATION_ROLE_UNSPECIFIED OrganizationRole = 0
+	OrganizationRole_ORGANIZATION_ROLE_OWNER       OrganizationRole = 1
+	OrganizationRole_ORGANIZATION_ROLE_ADMIN       OrganizationRole = 2
+	OrganizationRole_ORGANIZATION_ROLE_MEMBER      OrganizationRole = 3
+)
+
+// Enum value maps for OrganizationRole.
+var (
+	OrganizationRole_name = map[int32]string{
+		0: "ORGANIZATION_ROLE_UNSPECIFIED",
+		1: "ORGANIZATION_ROLE_OWNER",
+		2: "ORGANIZATION_ROLE_ADMIN",
+		3: "ORGANIZATION_ROLE_MEMBER",
+	}
+	OrganizationRole_value = map[string]int32{
+		"ORGANIZATION_ROLE_UNSPECIFIED": 0,
+		"ORGANIZATION_ROLE_OWNER":       1,
+		"ORGANIZATION_ROLE_ADMIN":       2,
+		"ORGANIZATION_ROLE_MEMBER":      3,
+	}
+)
+
+func (x OrganizationRole) Enum() *OrganizationRole {
+	p := new(OrganizationRole)
+	*p = x
+	return p
+}
+
+func (x OrganizationRole) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (OrganizationRole) Descriptor() protoreflect.EnumDescriptor {
+	return file_carboncircuit_identity_v1_identity_proto_enumTypes[1].Descriptor()
+}
+
+func (OrganizationRole) Type() protoreflect.EnumType {
+	return &file_carboncircuit_identity_v1_identity_proto_enumTypes[1]
+}
+
+func (x OrganizationRole) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use OrganizationRole.Descriptor instead.
+func (OrganizationRole) EnumDescriptor() ([]byte, []int) {
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{1}
+}
+
+type OrganizationState int32
+
+const (
+	OrganizationState_ORGANIZATION_STATE_UNSPECIFIED OrganizationState = 0
+	OrganizationState_ORGANIZATION_STATE_ACTIVE      OrganizationState = 1
+	OrganizationState_ORGANIZATION_STATE_RESTRICTED  OrganizationState = 2
+	OrganizationState_ORGANIZATION_STATE_READ_ONLY   OrganizationState = 3
+	OrganizationState_ORGANIZATION_STATE_SUSPENDED   OrganizationState = 4
+)
+
+// Enum value maps for OrganizationState.
+var (
+	OrganizationState_name = map[int32]string{
+		0: "ORGANIZATION_STATE_UNSPECIFIED",
+		1: "ORGANIZATION_STATE_ACTIVE",
+		2: "ORGANIZATION_STATE_RESTRICTED",
+		3: "ORGANIZATION_STATE_READ_ONLY",
+		4: "ORGANIZATION_STATE_SUSPENDED",
+	}
+	OrganizationState_value = map[string]int32{
+		"ORGANIZATION_STATE_UNSPECIFIED": 0,
+		"ORGANIZATION_STATE_ACTIVE":      1,
+		"ORGANIZATION_STATE_RESTRICTED":  2,
+		"ORGANIZATION_STATE_READ_ONLY":   3,
+		"ORGANIZATION_STATE_SUSPENDED":   4,
+	}
+)
+
+func (x OrganizationState) Enum() *OrganizationState {
+	p := new(OrganizationState)
+	*p = x
+	return p
+}
+
+func (x OrganizationState) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (OrganizationState) Descriptor() protoreflect.EnumDescriptor {
+	return file_carboncircuit_identity_v1_identity_proto_enumTypes[2].Descriptor()
+}
+
+func (OrganizationState) Type() protoreflect.EnumType {
+	return &file_carboncircuit_identity_v1_identity_proto_enumTypes[2]
+}
+
+func (x OrganizationState) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use OrganizationState.Descriptor instead.
+func (OrganizationState) EnumDescriptor() ([]byte, []int) {
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{2}
+}
+
+type VerificationStatus int32
+
+const (
+	VerificationStatus_VERIFICATION_STATUS_UNSPECIFIED VerificationStatus = 0
+	VerificationStatus_VERIFICATION_STATUS_VERIFIED    VerificationStatus = 1
+	VerificationStatus_VERIFICATION_STATUS_UNVERIFIED  VerificationStatus = 2
+	VerificationStatus_VERIFICATION_STATUS_REJECTED    VerificationStatus = 3
+)
+
+// Enum value maps for VerificationStatus.
+var (
+	VerificationStatus_name = map[int32]string{
+		0: "VERIFICATION_STATUS_UNSPECIFIED",
+		1: "VERIFICATION_STATUS_VERIFIED",
+		2: "VERIFICATION_STATUS_UNVERIFIED",
+		3: "VERIFICATION_STATUS_REJECTED",
+	}
+	VerificationStatus_value = map[string]int32{
+		"VERIFICATION_STATUS_UNSPECIFIED": 0,
+		"VERIFICATION_STATUS_VERIFIED":    1,
+		"VERIFICATION_STATUS_UNVERIFIED":  2,
+		"VERIFICATION_STATUS_REJECTED":    3,
+	}
+)
+
+func (x VerificationStatus) Enum() *VerificationStatus {
+	p := new(VerificationStatus)
+	*p = x
+	return p
+}
+
+func (x VerificationStatus) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (VerificationStatus) Descriptor() protoreflect.EnumDescriptor {
+	return file_carboncircuit_identity_v1_identity_proto_enumTypes[3].Descriptor()
+}
+
+func (VerificationStatus) Type() protoreflect.EnumType {
+	return &file_carboncircuit_identity_v1_identity_proto_enumTypes[3]
+}
+
+func (x VerificationStatus) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use VerificationStatus.Descriptor instead.
+func (VerificationStatus) EnumDescriptor() ([]byte, []int) {
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{3}
+}
+
+type PlatformRole int32
+
+const (
+	PlatformRole_PLATFORM_ROLE_UNSPECIFIED    PlatformRole = 0
+	PlatformRole_PLATFORM_ROLE_VERIFIER       PlatformRole = 1
+	PlatformRole_PLATFORM_ROLE_PLATFORM_ADMIN PlatformRole = 2
+)
+
+// Enum value maps for PlatformRole.
+var (
+	PlatformRole_name = map[int32]string{
+		0: "PLATFORM_ROLE_UNSPECIFIED",
+		1: "PLATFORM_ROLE_VERIFIER",
+		2: "PLATFORM_ROLE_PLATFORM_ADMIN",
+	}
+	PlatformRole_value = map[string]int32{
+		"PLATFORM_ROLE_UNSPECIFIED":    0,
+		"PLATFORM_ROLE_VERIFIER":       1,
+		"PLATFORM_ROLE_PLATFORM_ADMIN": 2,
+	}
+)
+
+func (x PlatformRole) Enum() *PlatformRole {
+	p := new(PlatformRole)
+	*p = x
+	return p
+}
+
+func (x PlatformRole) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (PlatformRole) Descriptor() protoreflect.EnumDescriptor {
+	return file_carboncircuit_identity_v1_identity_proto_enumTypes[4].Descriptor()
+}
+
+func (PlatformRole) Type() protoreflect.EnumType {
+	return &file_carboncircuit_identity_v1_identity_proto_enumTypes[4]
+}
+
+func (x PlatformRole) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use PlatformRole.Descriptor instead.
+func (PlatformRole) EnumDescriptor() ([]byte, []int) {
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{4}
+}
+
 type PingRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
@@ -117,6 +380,294 @@ func (x *PingResponse) GetDatabaseReachable() bool {
 	return false
 }
 
+type ResolveSessionRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Auth0Subject  string                 `protobuf:"bytes,1,opt,name=auth0_subject,json=auth0Subject,proto3" json:"auth0_subject,omitempty"`
+	Email         string                 `protobuf:"bytes,2,opt,name=email,proto3" json:"email,omitempty"`
+	EmailVerified bool                   `protobuf:"varint,3,opt,name=email_verified,json=emailVerified,proto3" json:"email_verified,omitempty"`
+	Name          string                 `protobuf:"bytes,4,opt,name=name,proto3" json:"name,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ResolveSessionRequest) Reset() {
+	*x = ResolveSessionRequest{}
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ResolveSessionRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ResolveSessionRequest) ProtoMessage() {}
+
+func (x *ResolveSessionRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ResolveSessionRequest.ProtoReflect.Descriptor instead.
+func (*ResolveSessionRequest) Descriptor() ([]byte, []int) {
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *ResolveSessionRequest) GetAuth0Subject() string {
+	if x != nil {
+		return x.Auth0Subject
+	}
+	return ""
+}
+
+func (x *ResolveSessionRequest) GetEmail() string {
+	if x != nil {
+		return x.Email
+	}
+	return ""
+}
+
+func (x *ResolveSessionRequest) GetEmailVerified() bool {
+	if x != nil {
+		return x.EmailVerified
+	}
+	return false
+}
+
+func (x *ResolveSessionRequest) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+type SessionUser struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Email         string                 `protobuf:"bytes,2,opt,name=email,proto3" json:"email,omitempty"`
+	Name          string                 `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
+	PlatformRole  PlatformRole           `protobuf:"varint,4,opt,name=platform_role,json=platformRole,proto3,enum=carboncircuit.identity.v1.PlatformRole" json:"platform_role,omitempty"`
+	MfaEnrolled   bool                   `protobuf:"varint,5,opt,name=mfa_enrolled,json=mfaEnrolled,proto3" json:"mfa_enrolled,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SessionUser) Reset() {
+	*x = SessionUser{}
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SessionUser) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SessionUser) ProtoMessage() {}
+
+func (x *SessionUser) ProtoReflect() protoreflect.Message {
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SessionUser.ProtoReflect.Descriptor instead.
+func (*SessionUser) Descriptor() ([]byte, []int) {
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *SessionUser) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *SessionUser) GetEmail() string {
+	if x != nil {
+		return x.Email
+	}
+	return ""
+}
+
+func (x *SessionUser) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *SessionUser) GetPlatformRole() PlatformRole {
+	if x != nil {
+		return x.PlatformRole
+	}
+	return PlatformRole_PLATFORM_ROLE_UNSPECIFIED
+}
+
+func (x *SessionUser) GetMfaEnrolled() bool {
+	if x != nil {
+		return x.MfaEnrolled
+	}
+	return false
+}
+
+type SessionOrganization struct {
+	state              protoimpl.MessageState `protogen:"open.v1"`
+	Id                 string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Name               string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	Type               OrganizationType       `protobuf:"varint,3,opt,name=type,proto3,enum=carboncircuit.identity.v1.OrganizationType" json:"type,omitempty"`
+	State              OrganizationState      `protobuf:"varint,4,opt,name=state,proto3,enum=carboncircuit.identity.v1.OrganizationState" json:"state,omitempty"`
+	VerificationStatus VerificationStatus     `protobuf:"varint,5,opt,name=verification_status,json=verificationStatus,proto3,enum=carboncircuit.identity.v1.VerificationStatus" json:"verification_status,omitempty"`
+	unknownFields      protoimpl.UnknownFields
+	sizeCache          protoimpl.SizeCache
+}
+
+func (x *SessionOrganization) Reset() {
+	*x = SessionOrganization{}
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SessionOrganization) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SessionOrganization) ProtoMessage() {}
+
+func (x *SessionOrganization) ProtoReflect() protoreflect.Message {
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SessionOrganization.ProtoReflect.Descriptor instead.
+func (*SessionOrganization) Descriptor() ([]byte, []int) {
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *SessionOrganization) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *SessionOrganization) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *SessionOrganization) GetType() OrganizationType {
+	if x != nil {
+		return x.Type
+	}
+	return OrganizationType_ORGANIZATION_TYPE_UNSPECIFIED
+}
+
+func (x *SessionOrganization) GetState() OrganizationState {
+	if x != nil {
+		return x.State
+	}
+	return OrganizationState_ORGANIZATION_STATE_UNSPECIFIED
+}
+
+func (x *SessionOrganization) GetVerificationStatus() VerificationStatus {
+	if x != nil {
+		return x.VerificationStatus
+	}
+	return VerificationStatus_VERIFICATION_STATUS_UNSPECIFIED
+}
+
+type ResolveSessionResponse struct {
+	state           protoimpl.MessageState `protogen:"open.v1"`
+	User            *SessionUser           `protobuf:"bytes,1,opt,name=user,proto3" json:"user,omitempty"`
+	NeedsOnboarding bool                   `protobuf:"varint,2,opt,name=needs_onboarding,json=needsOnboarding,proto3" json:"needs_onboarding,omitempty"`
+	Organization    *SessionOrganization   `protobuf:"bytes,3,opt,name=organization,proto3" json:"organization,omitempty"`
+	Role            OrganizationRole       `protobuf:"varint,4,opt,name=role,proto3,enum=carboncircuit.identity.v1.OrganizationRole" json:"role,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
+}
+
+func (x *ResolveSessionResponse) Reset() {
+	*x = ResolveSessionResponse{}
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ResolveSessionResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ResolveSessionResponse) ProtoMessage() {}
+
+func (x *ResolveSessionResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ResolveSessionResponse.ProtoReflect.Descriptor instead.
+func (*ResolveSessionResponse) Descriptor() ([]byte, []int) {
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *ResolveSessionResponse) GetUser() *SessionUser {
+	if x != nil {
+		return x.User
+	}
+	return nil
+}
+
+func (x *ResolveSessionResponse) GetNeedsOnboarding() bool {
+	if x != nil {
+		return x.NeedsOnboarding
+	}
+	return false
+}
+
+func (x *ResolveSessionResponse) GetOrganization() *SessionOrganization {
+	if x != nil {
+		return x.Organization
+	}
+	return nil
+}
+
+func (x *ResolveSessionResponse) GetRole() OrganizationRole {
+	if x != nil {
+		return x.Role
+	}
+	return OrganizationRole_ORGANIZATION_ROLE_UNSPECIFIED
+}
+
 var File_carboncircuit_identity_v1_identity_proto protoreflect.FileDescriptor
 
 const file_carboncircuit_identity_v1_identity_proto_rawDesc = "" +
@@ -126,9 +677,58 @@ const file_carboncircuit_identity_v1_identity_proto_rawDesc = "" +
 	"\fPingResponse\x12\x18\n" +
 	"\aservice\x18\x01 \x01(\tR\aservice\x12\x1a\n" +
 	"\brevision\x18\x02 \x01(\tR\brevision\x12-\n" +
-	"\x12database_reachable\x18\x03 \x01(\bR\x11databaseReachable2j\n" +
+	"\x12database_reachable\x18\x03 \x01(\bR\x11databaseReachable\"\x8d\x01\n" +
+	"\x15ResolveSessionRequest\x12#\n" +
+	"\rauth0_subject\x18\x01 \x01(\tR\fauth0Subject\x12\x14\n" +
+	"\x05email\x18\x02 \x01(\tR\x05email\x12%\n" +
+	"\x0eemail_verified\x18\x03 \x01(\bR\remailVerified\x12\x12\n" +
+	"\x04name\x18\x04 \x01(\tR\x04name\"\xb8\x01\n" +
+	"\vSessionUser\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\x12\x14\n" +
+	"\x05email\x18\x02 \x01(\tR\x05email\x12\x12\n" +
+	"\x04name\x18\x03 \x01(\tR\x04name\x12L\n" +
+	"\rplatform_role\x18\x04 \x01(\x0e2'.carboncircuit.identity.v1.PlatformRoleR\fplatformRole\x12!\n" +
+	"\fmfa_enrolled\x18\x05 \x01(\bR\vmfaEnrolled\"\x9e\x02\n" +
+	"\x13SessionOrganization\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
+	"\x04name\x18\x02 \x01(\tR\x04name\x12?\n" +
+	"\x04type\x18\x03 \x01(\x0e2+.carboncircuit.identity.v1.OrganizationTypeR\x04type\x12B\n" +
+	"\x05state\x18\x04 \x01(\x0e2,.carboncircuit.identity.v1.OrganizationStateR\x05state\x12^\n" +
+	"\x13verification_status\x18\x05 \x01(\x0e2-.carboncircuit.identity.v1.VerificationStatusR\x12verificationStatus\"\x94\x02\n" +
+	"\x16ResolveSessionResponse\x12:\n" +
+	"\x04user\x18\x01 \x01(\v2&.carboncircuit.identity.v1.SessionUserR\x04user\x12)\n" +
+	"\x10needs_onboarding\x18\x02 \x01(\bR\x0fneedsOnboarding\x12R\n" +
+	"\forganization\x18\x03 \x01(\v2..carboncircuit.identity.v1.SessionOrganizationR\forganization\x12?\n" +
+	"\x04role\x18\x04 \x01(\x0e2+.carboncircuit.identity.v1.OrganizationRoleR\x04role*\xbf\x01\n" +
+	"\x10OrganizationType\x12!\n" +
+	"\x1dORGANIZATION_TYPE_UNSPECIFIED\x10\x00\x12\"\n" +
+	"\x1eORGANIZATION_TYPE_MANUFACTURER\x10\x01\x12\x1f\n" +
+	"\x1bORGANIZATION_TYPE_ASSEMBLER\x10\x02\x12\x1f\n" +
+	"\x1bORGANIZATION_TYPE_LOGISTICS\x10\x03\x12\"\n" +
+	"\x1eORGANIZATION_TYPE_CREDIT_BUYER\x10\x04*\x8d\x01\n" +
+	"\x10OrganizationRole\x12!\n" +
+	"\x1dORGANIZATION_ROLE_UNSPECIFIED\x10\x00\x12\x1b\n" +
+	"\x17ORGANIZATION_ROLE_OWNER\x10\x01\x12\x1b\n" +
+	"\x17ORGANIZATION_ROLE_ADMIN\x10\x02\x12\x1c\n" +
+	"\x18ORGANIZATION_ROLE_MEMBER\x10\x03*\xbd\x01\n" +
+	"\x11OrganizationState\x12\"\n" +
+	"\x1eORGANIZATION_STATE_UNSPECIFIED\x10\x00\x12\x1d\n" +
+	"\x19ORGANIZATION_STATE_ACTIVE\x10\x01\x12!\n" +
+	"\x1dORGANIZATION_STATE_RESTRICTED\x10\x02\x12 \n" +
+	"\x1cORGANIZATION_STATE_READ_ONLY\x10\x03\x12 \n" +
+	"\x1cORGANIZATION_STATE_SUSPENDED\x10\x04*\xa1\x01\n" +
+	"\x12VerificationStatus\x12#\n" +
+	"\x1fVERIFICATION_STATUS_UNSPECIFIED\x10\x00\x12 \n" +
+	"\x1cVERIFICATION_STATUS_VERIFIED\x10\x01\x12\"\n" +
+	"\x1eVERIFICATION_STATUS_UNVERIFIED\x10\x02\x12 \n" +
+	"\x1cVERIFICATION_STATUS_REJECTED\x10\x03*k\n" +
+	"\fPlatformRole\x12\x1d\n" +
+	"\x19PLATFORM_ROLE_UNSPECIFIED\x10\x00\x12\x1a\n" +
+	"\x16PLATFORM_ROLE_VERIFIER\x10\x01\x12 \n" +
+	"\x1cPLATFORM_ROLE_PLATFORM_ADMIN\x10\x022\xe1\x01\n" +
 	"\x0fIdentityService\x12W\n" +
-	"\x04Ping\x12&.carboncircuit.identity.v1.PingRequest\x1a'.carboncircuit.identity.v1.PingResponseB\xff\x01\n" +
+	"\x04Ping\x12&.carboncircuit.identity.v1.PingRequest\x1a'.carboncircuit.identity.v1.PingResponse\x12u\n" +
+	"\x0eResolveSession\x120.carboncircuit.identity.v1.ResolveSessionRequest\x1a1.carboncircuit.identity.v1.ResolveSessionResponseB\xff\x01\n" +
 	"\x1dcom.carboncircuit.identity.v1B\rIdentityProtoP\x01ZIgithub.com/carboncircuit/backend/gen/carboncircuit/identity/v1;identityv1\xa2\x02\x03CIX\xaa\x02\x19Carboncircuit.Identity.V1\xca\x02\x19Carboncircuit\\Identity\\V1\xe2\x02%Carboncircuit\\Identity\\V1\\GPBMetadata\xea\x02\x1bCarboncircuit::Identity::V1b\x06proto3"
 
 var (
@@ -143,19 +743,38 @@ func file_carboncircuit_identity_v1_identity_proto_rawDescGZIP() []byte {
 	return file_carboncircuit_identity_v1_identity_proto_rawDescData
 }
 
-var file_carboncircuit_identity_v1_identity_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_carboncircuit_identity_v1_identity_proto_enumTypes = make([]protoimpl.EnumInfo, 5)
+var file_carboncircuit_identity_v1_identity_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
 var file_carboncircuit_identity_v1_identity_proto_goTypes = []any{
-	(*PingRequest)(nil),  // 0: carboncircuit.identity.v1.PingRequest
-	(*PingResponse)(nil), // 1: carboncircuit.identity.v1.PingResponse
+	(OrganizationType)(0),          // 0: carboncircuit.identity.v1.OrganizationType
+	(OrganizationRole)(0),          // 1: carboncircuit.identity.v1.OrganizationRole
+	(OrganizationState)(0),         // 2: carboncircuit.identity.v1.OrganizationState
+	(VerificationStatus)(0),        // 3: carboncircuit.identity.v1.VerificationStatus
+	(PlatformRole)(0),              // 4: carboncircuit.identity.v1.PlatformRole
+	(*PingRequest)(nil),            // 5: carboncircuit.identity.v1.PingRequest
+	(*PingResponse)(nil),           // 6: carboncircuit.identity.v1.PingResponse
+	(*ResolveSessionRequest)(nil),  // 7: carboncircuit.identity.v1.ResolveSessionRequest
+	(*SessionUser)(nil),            // 8: carboncircuit.identity.v1.SessionUser
+	(*SessionOrganization)(nil),    // 9: carboncircuit.identity.v1.SessionOrganization
+	(*ResolveSessionResponse)(nil), // 10: carboncircuit.identity.v1.ResolveSessionResponse
 }
 var file_carboncircuit_identity_v1_identity_proto_depIdxs = []int32{
-	0, // 0: carboncircuit.identity.v1.IdentityService.Ping:input_type -> carboncircuit.identity.v1.PingRequest
-	1, // 1: carboncircuit.identity.v1.IdentityService.Ping:output_type -> carboncircuit.identity.v1.PingResponse
-	1, // [1:2] is the sub-list for method output_type
-	0, // [0:1] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	4,  // 0: carboncircuit.identity.v1.SessionUser.platform_role:type_name -> carboncircuit.identity.v1.PlatformRole
+	0,  // 1: carboncircuit.identity.v1.SessionOrganization.type:type_name -> carboncircuit.identity.v1.OrganizationType
+	2,  // 2: carboncircuit.identity.v1.SessionOrganization.state:type_name -> carboncircuit.identity.v1.OrganizationState
+	3,  // 3: carboncircuit.identity.v1.SessionOrganization.verification_status:type_name -> carboncircuit.identity.v1.VerificationStatus
+	8,  // 4: carboncircuit.identity.v1.ResolveSessionResponse.user:type_name -> carboncircuit.identity.v1.SessionUser
+	9,  // 5: carboncircuit.identity.v1.ResolveSessionResponse.organization:type_name -> carboncircuit.identity.v1.SessionOrganization
+	1,  // 6: carboncircuit.identity.v1.ResolveSessionResponse.role:type_name -> carboncircuit.identity.v1.OrganizationRole
+	5,  // 7: carboncircuit.identity.v1.IdentityService.Ping:input_type -> carboncircuit.identity.v1.PingRequest
+	7,  // 8: carboncircuit.identity.v1.IdentityService.ResolveSession:input_type -> carboncircuit.identity.v1.ResolveSessionRequest
+	6,  // 9: carboncircuit.identity.v1.IdentityService.Ping:output_type -> carboncircuit.identity.v1.PingResponse
+	10, // 10: carboncircuit.identity.v1.IdentityService.ResolveSession:output_type -> carboncircuit.identity.v1.ResolveSessionResponse
+	9,  // [9:11] is the sub-list for method output_type
+	7,  // [7:9] is the sub-list for method input_type
+	7,  // [7:7] is the sub-list for extension type_name
+	7,  // [7:7] is the sub-list for extension extendee
+	0,  // [0:7] is the sub-list for field type_name
 }
 
 func init() { file_carboncircuit_identity_v1_identity_proto_init() }
@@ -168,13 +787,14 @@ func file_carboncircuit_identity_v1_identity_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_carboncircuit_identity_v1_identity_proto_rawDesc), len(file_carboncircuit_identity_v1_identity_proto_rawDesc)),
-			NumEnums:      0,
-			NumMessages:   2,
+			NumEnums:      5,
+			NumMessages:   6,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
 		GoTypes:           file_carboncircuit_identity_v1_identity_proto_goTypes,
 		DependencyIndexes: file_carboncircuit_identity_v1_identity_proto_depIdxs,
+		EnumInfos:         file_carboncircuit_identity_v1_identity_proto_enumTypes,
 		MessageInfos:      file_carboncircuit_identity_v1_identity_proto_msgTypes,
 	}.Build()
 	File_carboncircuit_identity_v1_identity_proto = out.File

@@ -1,10 +1,6 @@
-import { PageHeader } from "@/components/shared/PageHeader";
+import type { Route } from "next";
+import { redirect } from "next/navigation";
 
 export default function SignupPage() {
-  return (
-    <PageHeader
-      title="Create an organization"
-      description="Register your company and choose a plan."
-    />
-  );
+  redirect("/auth/login?screen_hint=signup" as Route);
 }

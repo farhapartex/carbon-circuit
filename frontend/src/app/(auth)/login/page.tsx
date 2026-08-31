@@ -1,10 +1,6 @@
-import { PageHeader } from "@/components/shared/PageHeader";
+import type { Route } from "next";
+import { redirect } from "next/navigation";
 
 export default function LoginPage() {
-  return (
-    <PageHeader
-      title="Sign in"
-      description="Access your CarbonCircuit organization."
-    />
-  );
+  redirect("/auth/login" as Route);
 }

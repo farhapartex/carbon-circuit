@@ -37,8 +37,9 @@ func (r *MembershipRepository) FindActiveForUser(
 		ctx,
 		r.database,
 		database.TenantContext{UserID: userID.String()},
-		func(tx *gorm.DB) error {
-			return tx.Where("user_id = ? AND state = ?", userID, domain.MembershipActive).
+		func(tx database.Tx) error {
+			return tx.Session().
+				Where("user_id = ? AND state = ?", userID, domain.MembershipActive).
 				Order("created_at ASC").
 				First(&membership).Error
 		},
@@ -64,8 +65,8 @@ func (r *MembershipRepository) FindOrganization(
 		ctx,
 		r.database,
 		database.TenantContext{OrganizationID: organizationID.String()},
-		func(tx *gorm.DB) error {
-			return tx.First(&organization, "id = ?", organizationID).Error
+		func(tx database.Tx) error {
+			return tx.Session().First(&organization, "id = ?", organizationID).Error
 		},
 	)
 	if err != nil {

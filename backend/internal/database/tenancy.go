@@ -2,6 +2,7 @@ package database
 
 import (
 	"context"
+	"errors"
 	"fmt"
 
 	"github.com/google/uuid"
@@ -13,6 +14,21 @@ const (
 	organizationSetting = "app.organization_id"
 )
 
+var ErrNotInTransaction = errors.New("no transaction bound to this handle")
+
+type Tx struct {
+	session *gorm.DB
+}
+
+func (t Tx) Session() *gorm.DB { return t.session }
+
+func (t Tx) Bound() error {
+	if t.session == nil {
+		return ErrNotInTransaction
+	}
+	return nil
+}
+
 type TenantContext struct {
 	UserID         string
 	OrganizationID string
@@ -22,20 +38,20 @@ func WithinTenant(
 	ctx context.Context,
 	database *gorm.DB,
 	tenant TenantContext,
-	work func(tx *gorm.DB) error,
+	work func(tx Tx) error,
 ) error {
 	settings, err := tenant.settings()
 	if err != nil {
 		return err
 	}
 
-	return database.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
+	return database.WithContext(ctx).Transaction(func(session *gorm.DB) error {
 		for setting, value := range settings {
-			if err := applyLocalSetting(tx, setting, value); err != nil {
+			if err := applyLocalSetting(session, setting, value); err != nil {
 				return err
 			}
 		}
-		return work(tx)
+		return work(Tx{session: session})
 	})
 }
 
@@ -62,8 +78,8 @@ func (t TenantContext) settings() (map[string]string, error) {
 	return settings, nil
 }
 
-func applyLocalSetting(tx *gorm.DB, setting, value string) error {
-	if err := tx.Exec("SELECT set_config(?, ?, true)", setting, value).Error; err != nil {
+func applyLocalSetting(session *gorm.DB, setting, value string) error {
+	if err := session.Exec("SELECT set_config(?, ?, true)", setting, value).Error; err != nil {
 		return fmt.Errorf("apply %s: %w", setting, err)
 	}
 	return nil

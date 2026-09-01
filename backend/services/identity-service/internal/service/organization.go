@@ -96,12 +96,6 @@ func (s *OrganizationService) Create(
 		return Registered{}, err
 	}
 
-	if _, err := s.memberships.FindActiveForUser(ctx, user.ID); err == nil {
-		return Registered{}, ErrOrganizationExists
-	} else if !errors.Is(err, repository.ErrNoMembership) {
-		return Registered{}, err
-	}
-
 	organizationID, err := uuid.NewV7()
 	if err != nil {
 		return Registered{}, fmt.Errorf("generate organization id: %w", err)
@@ -158,6 +152,14 @@ func (s *OrganizationService) persist(
 			return Registered{}, false, decodeErr
 		}
 		return replayed, true, nil
+	}
+
+	enrolled, err := s.organizations.HasActiveMembership(tx, user.ID)
+	if err != nil {
+		return Registered{}, false, err
+	}
+	if enrolled {
+		return Registered{}, false, ErrOrganizationExists
 	}
 
 	outcome := registry.Unmatched()

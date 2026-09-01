@@ -4,6 +4,8 @@ import (
 	"errors"
 	"fmt"
 
+	"github.com/google/uuid"
+
 	"gorm.io/gorm"
 
 	"github.com/carboncircuit/backend/internal/database"
@@ -19,6 +21,7 @@ type RegistryLookup interface {
 type OrganizationWriter interface {
 	Insert(tx database.Tx, organization *domain.Organization) error
 	InsertMembership(tx database.Tx, membership *domain.OrganizationMembership) error
+	HasActiveMembership(tx database.Tx, userID uuid.UUID) (bool, error)
 }
 
 type OrganizationRepository struct{}
@@ -49,6 +52,25 @@ func (r *OrganizationRepository) FindRecord(
 	}
 
 	return record, true, nil
+}
+
+func (r *OrganizationRepository) HasActiveMembership(
+	tx database.Tx,
+	userID uuid.UUID,
+) (bool, error) {
+	if err := tx.Bound(); err != nil {
+		return false, err
+	}
+
+	var found int64
+	err := tx.Session().Model(&domain.OrganizationMembership{}).
+		Where("user_id = ? AND state = ?", userID, domain.MembershipActive).
+		Count(&found).Error
+	if err != nil {
+		return false, fmt.Errorf("count memberships: %w", err)
+	}
+
+	return found > 0, nil
 }
 
 func (r *OrganizationRepository) Insert(tx database.Tx, organization *domain.Organization) error {

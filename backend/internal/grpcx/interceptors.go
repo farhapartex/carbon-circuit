@@ -14,7 +14,10 @@ import (
 	"github.com/carboncircuit/backend/internal/logging"
 )
 
-const CorrelationMetadataKey = "x-request-id"
+const (
+	CorrelationMetadataKey = "x-request-id"
+	IdempotencyMetadataKey = "x-idempotency-key"
+)
 
 func CorrelationIDFromIncoming(ctx context.Context) string {
 	incoming, ok := metadata.FromIncomingContext(ctx)
@@ -30,6 +33,27 @@ func CorrelationIDFromIncoming(ctx context.Context) string {
 
 func WithCorrelationID(ctx context.Context, correlationID string) context.Context {
 	return metadata.AppendToOutgoingContext(ctx, CorrelationMetadataKey, correlationID)
+}
+
+func WithIdempotencyKey(ctx context.Context, key string) context.Context {
+	if key == "" {
+		return ctx
+	}
+	return metadata.AppendToOutgoingContext(ctx, IdempotencyMetadataKey, key)
+}
+
+func IdempotencyKeyFromIncoming(ctx context.Context) string {
+	incoming, ok := metadata.FromIncomingContext(ctx)
+	if !ok {
+		return ""
+	}
+
+	values := incoming.Get(IdempotencyMetadataKey)
+	if len(values) == 0 {
+		return ""
+	}
+
+	return values[0]
 }
 
 func CorrelateUnary() grpc.UnaryServerInterceptor {

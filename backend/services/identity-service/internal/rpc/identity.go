@@ -12,23 +12,26 @@ import (
 type IdentityServer struct {
 	identityv1.UnimplementedIdentityServiceServer
 
-	database *gorm.DB
-	sessions SessionResolver
-	logger   *slog.Logger
-	revision string
+	database      *gorm.DB
+	sessions      SessionResolver
+	organizations OrganizationCreator
+	logger        *slog.Logger
+	revision      string
 }
 
 func NewIdentityServer(
 	database *gorm.DB,
 	sessions SessionResolver,
+	organizations OrganizationCreator,
 	logger *slog.Logger,
 	revision string,
 ) *IdentityServer {
 	return &IdentityServer{
-		database: database,
-		sessions: sessions,
-		logger:   logger,
-		revision: revision,
+		database:      database,
+		sessions:      sessions,
+		organizations: organizations,
+		logger:        logger,
+		revision:      revision,
 	}
 }
 

@@ -85,13 +85,16 @@ func run() error {
 		BatchSize: settings.OutboxBatchSize,
 	}).Run(publisherCtx)
 
-	sessions := service.NewSessionService(
-		repository.NewUserRepository(store),
-		repository.NewMembershipRepository(store),
-		logger,
+	users := repository.NewUserRepository(store)
+	memberships := repository.NewMembershipRepository(store)
+	organizationStore := repository.NewOrganizationRepository()
+
+	sessions := service.NewSessionService(users, memberships, logger)
+	organizations := service.NewOrganizationService(
+		store, users, memberships, organizationStore, organizationStore, logger,
 	)
 
-	identityServer := rpc.NewIdentityServer(store, sessions, logger, revision)
+	identityServer := rpc.NewIdentityServer(store, sessions, organizations, logger, revision)
 
 	return grpcx.Serve(ctx, grpcx.ServerOptions{
 		Address:         settings.GRPCAddress,

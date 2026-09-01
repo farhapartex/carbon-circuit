@@ -157,6 +157,62 @@ func TestVerifyAcceptsGenuineToken(t *testing.T) {
 	}
 }
 
+func TestVerifyExtractsNamespacedProfileClaims(t *testing.T) {
+	source := newIssuer(t)
+	defer source.close()
+
+	signer, err := jose.NewSigner(
+		jose.SigningKey{Algorithm: jose.RS256, Key: source.privateKey},
+		(&jose.SignerOptions{}).WithType("JWT").WithHeader("kid", testKeyID),
+	)
+	if err != nil {
+		t.Fatalf("build signer: %v", err)
+	}
+
+	profile := map[string]any{
+		ClaimNamespace + "/email":          "nazmul@example.test",
+		ClaimNamespace + "/email_verified": true,
+		ClaimNamespace + "/name":           "Nazmul",
+	}
+
+	token, err := jwt.Signed(signer).
+		Claims(source.claimsFrom(claimOverrides{})).
+		Claims(profile).
+		CompactSerialize()
+	if err != nil {
+		t.Fatalf("sign token: %v", err)
+	}
+
+	caller, err := source.verifier(t).Verify(context.Background(), token)
+	if err != nil {
+		t.Fatalf("verify: %v", err)
+	}
+
+	if caller.Email != "nazmul@example.test" {
+		t.Fatalf("expected email claim, got %q", caller.Email)
+	}
+	if !caller.EmailVerified {
+		t.Fatal("expected email_verified claim to be carried through")
+	}
+	if caller.Name != "Nazmul" {
+		t.Fatalf("expected name claim, got %q", caller.Name)
+	}
+}
+
+func TestVerifyToleratesAbsentProfileClaims(t *testing.T) {
+	source := newIssuer(t)
+	defer source.close()
+
+	caller, err := source.verifier(t).Verify(context.Background(), source.sign(t, claimOverrides{}))
+	if err != nil {
+		t.Fatalf("verify: %v", err)
+	}
+
+	if caller.Email != "" || caller.EmailVerified || caller.Name != "" {
+		t.Fatal("expected empty profile when the action has not been deployed")
+	}
+}
+
 func TestVerifyRejectsTamperedAndForgedTokens(t *testing.T) {
 	source := newIssuer(t)
 	defer source.close()

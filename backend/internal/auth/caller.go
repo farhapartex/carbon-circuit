@@ -6,8 +6,11 @@ import (
 )
 
 type Caller struct {
-	Subject  string
-	IssuedAt time.Time
+	Subject       string
+	Email         string
+	EmailVerified bool
+	Name          string
+	IssuedAt      time.Time
 }
 
 type callerContextKey struct{}

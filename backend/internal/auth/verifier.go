@@ -41,6 +41,7 @@ func newVerifier(issuer *url.URL, audience string, keyCacheTTL time.Duration) (*
 		issuer.String(),
 		[]string{audience},
 		validator.WithAllowedClockSkew(allowedClockSkew),
+		validator.WithCustomClaims(func() validator.CustomClaims { return &profileClaims{} }),
 	)
 	if err != nil {
 		return nil, fmt.Errorf("build token validator: %w", err)
@@ -72,8 +73,16 @@ func (v *Verifier) Verify(ctx context.Context, token string) (Caller, error) {
 		return Caller{}, fmt.Errorf("%w: token carries no issued-at", ErrInvalidToken)
 	}
 
-	return Caller{
+	caller := Caller{
 		Subject:  claims.RegisteredClaims.Subject,
 		IssuedAt: time.Unix(claims.RegisteredClaims.IssuedAt, 0),
-	}, nil
+	}
+
+	if profile, present := claims.CustomClaims.(*profileClaims); present && profile != nil {
+		caller.Email = profile.Email
+		caller.EmailVerified = profile.EmailVerified
+		caller.Name = profile.Name
+	}
+
+	return caller, nil
 }

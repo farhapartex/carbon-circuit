@@ -192,6 +192,61 @@ func (UsageDimension) EnumDescriptor() ([]byte, []int) {
 	return file_carboncircuit_billing_v1_billing_proto_rawDescGZIP(), []int{2}
 }
 
+type SubscriptionState int32
+
+const (
+	SubscriptionState_SUBSCRIPTION_STATE_UNSPECIFIED  SubscriptionState = 0
+	SubscriptionState_SUBSCRIPTION_STATE_ACTIVE       SubscriptionState = 1
+	SubscriptionState_SUBSCRIPTION_STATE_GRACE_PERIOD SubscriptionState = 2
+	SubscriptionState_SUBSCRIPTION_STATE_READ_ONLY    SubscriptionState = 3
+	SubscriptionState_SUBSCRIPTION_STATE_CANCELLED    SubscriptionState = 4
+)
+
+// Enum value maps for SubscriptionState.
+var (
+	SubscriptionState_name = map[int32]string{
+		0: "SUBSCRIPTION_STATE_UNSPECIFIED",
+		1: "SUBSCRIPTION_STATE_ACTIVE",
+		2: "SUBSCRIPTION_STATE_GRACE_PERIOD",
+		3: "SUBSCRIPTION_STATE_READ_ONLY",
+		4: "SUBSCRIPTION_STATE_CANCELLED",
+	}
+	SubscriptionState_value = map[string]int32{
+		"SUBSCRIPTION_STATE_UNSPECIFIED":  0,
+		"SUBSCRIPTION_STATE_ACTIVE":       1,
+		"SUBSCRIPTION_STATE_GRACE_PERIOD": 2,
+		"SUBSCRIPTION_STATE_READ_ONLY":    3,
+		"SUBSCRIPTION_STATE_CANCELLED":    4,
+	}
+)
+
+func (x SubscriptionState) Enum() *SubscriptionState {
+	p := new(SubscriptionState)
+	*p = x
+	return p
+}
+
+func (x SubscriptionState) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (SubscriptionState) Descriptor() protoreflect.EnumDescriptor {
+	return file_carboncircuit_billing_v1_billing_proto_enumTypes[3].Descriptor()
+}
+
+func (SubscriptionState) Type() protoreflect.EnumType {
+	return &file_carboncircuit_billing_v1_billing_proto_enumTypes[3]
+}
+
+func (x SubscriptionState) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use SubscriptionState.Descriptor instead.
+func (SubscriptionState) EnumDescriptor() ([]byte, []int) {
+	return file_carboncircuit_billing_v1_billing_proto_rawDescGZIP(), []int{3}
+}
+
 type PlanLimit struct {
 	state              protoimpl.MessageState `protogen:"open.v1"`
 	Dimension          UsageDimension         `protobuf:"varint,1,opt,name=dimension,proto3,enum=carboncircuit.billing.v1.UsageDimension" json:"dimension,omitempty"`
@@ -512,6 +567,154 @@ func (x *ListPlansResponse) GetPlans() []*Plan {
 	return nil
 }
 
+type Subscription struct {
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	OrganizationId string                 `protobuf:"bytes,1,opt,name=organization_id,json=organizationId,proto3" json:"organization_id,omitempty"`
+	PlanTier       PlanTier               `protobuf:"varint,2,opt,name=plan_tier,json=planTier,proto3,enum=carboncircuit.billing.v1.PlanTier" json:"plan_tier,omitempty"`
+	State          SubscriptionState      `protobuf:"varint,3,opt,name=state,proto3,enum=carboncircuit.billing.v1.SubscriptionState" json:"state,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
+}
+
+func (x *Subscription) Reset() {
+	*x = Subscription{}
+	mi := &file_carboncircuit_billing_v1_billing_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Subscription) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Subscription) ProtoMessage() {}
+
+func (x *Subscription) ProtoReflect() protoreflect.Message {
+	mi := &file_carboncircuit_billing_v1_billing_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Subscription.ProtoReflect.Descriptor instead.
+func (*Subscription) Descriptor() ([]byte, []int) {
+	return file_carboncircuit_billing_v1_billing_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *Subscription) GetOrganizationId() string {
+	if x != nil {
+		return x.OrganizationId
+	}
+	return ""
+}
+
+func (x *Subscription) GetPlanTier() PlanTier {
+	if x != nil {
+		return x.PlanTier
+	}
+	return PlanTier_PLAN_TIER_UNSPECIFIED
+}
+
+func (x *Subscription) GetState() SubscriptionState {
+	if x != nil {
+		return x.State
+	}
+	return SubscriptionState_SUBSCRIPTION_STATE_UNSPECIFIED
+}
+
+type GetSubscriptionRequest struct {
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	OrganizationId string                 `protobuf:"bytes,1,opt,name=organization_id,json=organizationId,proto3" json:"organization_id,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
+}
+
+func (x *GetSubscriptionRequest) Reset() {
+	*x = GetSubscriptionRequest{}
+	mi := &file_carboncircuit_billing_v1_billing_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetSubscriptionRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetSubscriptionRequest) ProtoMessage() {}
+
+func (x *GetSubscriptionRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_carboncircuit_billing_v1_billing_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetSubscriptionRequest.ProtoReflect.Descriptor instead.
+func (*GetSubscriptionRequest) Descriptor() ([]byte, []int) {
+	return file_carboncircuit_billing_v1_billing_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *GetSubscriptionRequest) GetOrganizationId() string {
+	if x != nil {
+		return x.OrganizationId
+	}
+	return ""
+}
+
+type GetSubscriptionResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Subscription  *Subscription          `protobuf:"bytes,1,opt,name=subscription,proto3" json:"subscription,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetSubscriptionResponse) Reset() {
+	*x = GetSubscriptionResponse{}
+	mi := &file_carboncircuit_billing_v1_billing_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetSubscriptionResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetSubscriptionResponse) ProtoMessage() {}
+
+func (x *GetSubscriptionResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_carboncircuit_billing_v1_billing_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetSubscriptionResponse.ProtoReflect.Descriptor instead.
+func (*GetSubscriptionResponse) Descriptor() ([]byte, []int) {
+	return file_carboncircuit_billing_v1_billing_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *GetSubscriptionResponse) GetSubscription() *Subscription {
+	if x != nil {
+		return x.Subscription
+	}
+	return nil
+}
+
 var File_carboncircuit_billing_v1_billing_proto protoreflect.FileDescriptor
 
 const file_carboncircuit_billing_v1_billing_proto_rawDesc = "" +
@@ -550,7 +753,15 @@ const file_carboncircuit_billing_v1_billing_proto_rawDesc = "" +
 	"\x10ListPlansRequest\x12M\n" +
 	"\feligible_for\x18\x01 \x01(\x0e2*.carboncircuit.billing.v1.OrganizationTypeR\veligibleFor\"I\n" +
 	"\x11ListPlansResponse\x124\n" +
-	"\x05plans\x18\x01 \x03(\v2\x1e.carboncircuit.billing.v1.PlanR\x05plans*\x81\x01\n" +
+	"\x05plans\x18\x01 \x03(\v2\x1e.carboncircuit.billing.v1.PlanR\x05plans\"\xbb\x01\n" +
+	"\fSubscription\x12'\n" +
+	"\x0forganization_id\x18\x01 \x01(\tR\x0eorganizationId\x12?\n" +
+	"\tplan_tier\x18\x02 \x01(\x0e2\".carboncircuit.billing.v1.PlanTierR\bplanTier\x12A\n" +
+	"\x05state\x18\x03 \x01(\x0e2+.carboncircuit.billing.v1.SubscriptionStateR\x05state\"A\n" +
+	"\x16GetSubscriptionRequest\x12'\n" +
+	"\x0forganization_id\x18\x01 \x01(\tR\x0eorganizationId\"e\n" +
+	"\x17GetSubscriptionResponse\x12J\n" +
+	"\fsubscription\x18\x01 \x01(\v2&.carboncircuit.billing.v1.SubscriptionR\fsubscription*\x81\x01\n" +
 	"\bPlanTier\x12\x19\n" +
 	"\x15PLAN_TIER_UNSPECIFIED\x10\x00\x12\x13\n" +
 	"\x0fPLAN_TIER_BUYER\x10\x01\x12\x15\n" +
@@ -570,9 +781,16 @@ const file_carboncircuit_billing_v1_billing_proto_rawDesc = "" +
 	"\x1aUSAGE_DIMENSION_FACILITIES\x10\x03\x12\x19\n" +
 	"\x15USAGE_DIMENSION_USERS\x10\x04\x12\x1e\n" +
 	"\x1aUSAGE_DIMENSION_AI_REVIEWS\x10\x05\x12\x1e\n" +
-	"\x1aUSAGE_DIMENSION_STORAGE_GB\x10\x062v\n" +
+	"\x1aUSAGE_DIMENSION_STORAGE_GB\x10\x06*\xbf\x01\n" +
+	"\x11SubscriptionState\x12\"\n" +
+	"\x1eSUBSCRIPTION_STATE_UNSPECIFIED\x10\x00\x12\x1d\n" +
+	"\x19SUBSCRIPTION_STATE_ACTIVE\x10\x01\x12#\n" +
+	"\x1fSUBSCRIPTION_STATE_GRACE_PERIOD\x10\x02\x12 \n" +
+	"\x1cSUBSCRIPTION_STATE_READ_ONLY\x10\x03\x12 \n" +
+	"\x1cSUBSCRIPTION_STATE_CANCELLED\x10\x042\xee\x01\n" +
 	"\x0eBillingService\x12d\n" +
-	"\tListPlans\x12*.carboncircuit.billing.v1.ListPlansRequest\x1a+.carboncircuit.billing.v1.ListPlansResponseB\xf7\x01\n" +
+	"\tListPlans\x12*.carboncircuit.billing.v1.ListPlansRequest\x1a+.carboncircuit.billing.v1.ListPlansResponse\x12v\n" +
+	"\x0fGetSubscription\x120.carboncircuit.billing.v1.GetSubscriptionRequest\x1a1.carboncircuit.billing.v1.GetSubscriptionResponseB\xf7\x01\n" +
 	"\x1ccom.carboncircuit.billing.v1B\fBillingProtoP\x01ZGgithub.com/carboncircuit/backend/gen/carboncircuit/billing/v1;billingv1\xa2\x02\x03CBX\xaa\x02\x18Carboncircuit.Billing.V1\xca\x02\x18Carboncircuit\\Billing\\V1\xe2\x02$Carboncircuit\\Billing\\V1\\GPBMetadata\xea\x02\x1aCarboncircuit::Billing::V1b\x06proto3"
 
 var (
@@ -587,31 +805,40 @@ func file_carboncircuit_billing_v1_billing_proto_rawDescGZIP() []byte {
 	return file_carboncircuit_billing_v1_billing_proto_rawDescData
 }
 
-var file_carboncircuit_billing_v1_billing_proto_enumTypes = make([]protoimpl.EnumInfo, 3)
-var file_carboncircuit_billing_v1_billing_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
+var file_carboncircuit_billing_v1_billing_proto_enumTypes = make([]protoimpl.EnumInfo, 4)
+var file_carboncircuit_billing_v1_billing_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
 var file_carboncircuit_billing_v1_billing_proto_goTypes = []any{
-	(PlanTier)(0),             // 0: carboncircuit.billing.v1.PlanTier
-	(OrganizationType)(0),     // 1: carboncircuit.billing.v1.OrganizationType
-	(UsageDimension)(0),       // 2: carboncircuit.billing.v1.UsageDimension
-	(*PlanLimit)(nil),         // 3: carboncircuit.billing.v1.PlanLimit
-	(*Plan)(nil),              // 4: carboncircuit.billing.v1.Plan
-	(*ListPlansRequest)(nil),  // 5: carboncircuit.billing.v1.ListPlansRequest
-	(*ListPlansResponse)(nil), // 6: carboncircuit.billing.v1.ListPlansResponse
+	(PlanTier)(0),                   // 0: carboncircuit.billing.v1.PlanTier
+	(OrganizationType)(0),           // 1: carboncircuit.billing.v1.OrganizationType
+	(UsageDimension)(0),             // 2: carboncircuit.billing.v1.UsageDimension
+	(SubscriptionState)(0),          // 3: carboncircuit.billing.v1.SubscriptionState
+	(*PlanLimit)(nil),               // 4: carboncircuit.billing.v1.PlanLimit
+	(*Plan)(nil),                    // 5: carboncircuit.billing.v1.Plan
+	(*ListPlansRequest)(nil),        // 6: carboncircuit.billing.v1.ListPlansRequest
+	(*ListPlansResponse)(nil),       // 7: carboncircuit.billing.v1.ListPlansResponse
+	(*Subscription)(nil),            // 8: carboncircuit.billing.v1.Subscription
+	(*GetSubscriptionRequest)(nil),  // 9: carboncircuit.billing.v1.GetSubscriptionRequest
+	(*GetSubscriptionResponse)(nil), // 10: carboncircuit.billing.v1.GetSubscriptionResponse
 }
 var file_carboncircuit_billing_v1_billing_proto_depIdxs = []int32{
-	2, // 0: carboncircuit.billing.v1.PlanLimit.dimension:type_name -> carboncircuit.billing.v1.UsageDimension
-	0, // 1: carboncircuit.billing.v1.Plan.tier:type_name -> carboncircuit.billing.v1.PlanTier
-	1, // 2: carboncircuit.billing.v1.Plan.allowed_organization_types:type_name -> carboncircuit.billing.v1.OrganizationType
-	3, // 3: carboncircuit.billing.v1.Plan.limits:type_name -> carboncircuit.billing.v1.PlanLimit
-	1, // 4: carboncircuit.billing.v1.ListPlansRequest.eligible_for:type_name -> carboncircuit.billing.v1.OrganizationType
-	4, // 5: carboncircuit.billing.v1.ListPlansResponse.plans:type_name -> carboncircuit.billing.v1.Plan
-	5, // 6: carboncircuit.billing.v1.BillingService.ListPlans:input_type -> carboncircuit.billing.v1.ListPlansRequest
-	6, // 7: carboncircuit.billing.v1.BillingService.ListPlans:output_type -> carboncircuit.billing.v1.ListPlansResponse
-	7, // [7:8] is the sub-list for method output_type
-	6, // [6:7] is the sub-list for method input_type
-	6, // [6:6] is the sub-list for extension type_name
-	6, // [6:6] is the sub-list for extension extendee
-	0, // [0:6] is the sub-list for field type_name
+	2,  // 0: carboncircuit.billing.v1.PlanLimit.dimension:type_name -> carboncircuit.billing.v1.UsageDimension
+	0,  // 1: carboncircuit.billing.v1.Plan.tier:type_name -> carboncircuit.billing.v1.PlanTier
+	1,  // 2: carboncircuit.billing.v1.Plan.allowed_organization_types:type_name -> carboncircuit.billing.v1.OrganizationType
+	4,  // 3: carboncircuit.billing.v1.Plan.limits:type_name -> carboncircuit.billing.v1.PlanLimit
+	1,  // 4: carboncircuit.billing.v1.ListPlansRequest.eligible_for:type_name -> carboncircuit.billing.v1.OrganizationType
+	5,  // 5: carboncircuit.billing.v1.ListPlansResponse.plans:type_name -> carboncircuit.billing.v1.Plan
+	0,  // 6: carboncircuit.billing.v1.Subscription.plan_tier:type_name -> carboncircuit.billing.v1.PlanTier
+	3,  // 7: carboncircuit.billing.v1.Subscription.state:type_name -> carboncircuit.billing.v1.SubscriptionState
+	8,  // 8: carboncircuit.billing.v1.GetSubscriptionResponse.subscription:type_name -> carboncircuit.billing.v1.Subscription
+	6,  // 9: carboncircuit.billing.v1.BillingService.ListPlans:input_type -> carboncircuit.billing.v1.ListPlansRequest
+	9,  // 10: carboncircuit.billing.v1.BillingService.GetSubscription:input_type -> carboncircuit.billing.v1.GetSubscriptionRequest
+	7,  // 11: carboncircuit.billing.v1.BillingService.ListPlans:output_type -> carboncircuit.billing.v1.ListPlansResponse
+	10, // 12: carboncircuit.billing.v1.BillingService.GetSubscription:output_type -> carboncircuit.billing.v1.GetSubscriptionResponse
+	11, // [11:13] is the sub-list for method output_type
+	9,  // [9:11] is the sub-list for method input_type
+	9,  // [9:9] is the sub-list for extension type_name
+	9,  // [9:9] is the sub-list for extension extendee
+	0,  // [0:9] is the sub-list for field type_name
 }
 
 func init() { file_carboncircuit_billing_v1_billing_proto_init() }
@@ -626,8 +853,8 @@ func file_carboncircuit_billing_v1_billing_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_carboncircuit_billing_v1_billing_proto_rawDesc), len(file_carboncircuit_billing_v1_billing_proto_rawDesc)),
-			NumEnums:      3,
-			NumMessages:   4,
+			NumEnums:      4,
+			NumMessages:   7,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

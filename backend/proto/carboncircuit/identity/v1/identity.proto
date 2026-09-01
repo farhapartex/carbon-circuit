@@ -74,6 +74,7 @@ message SessionOrganization {
   OrganizationType type = 3;
   OrganizationState state = 4;
   VerificationStatus verification_status = 5;
+  bool treasury_designated = 6;
 }
 
 message ResolveSessionResponse {

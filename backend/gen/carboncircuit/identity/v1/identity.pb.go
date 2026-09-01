@@ -531,6 +531,7 @@ type SessionOrganization struct {
 	Type               OrganizationType       `protobuf:"varint,3,opt,name=type,proto3,enum=carboncircuit.identity.v1.OrganizationType" json:"type,omitempty"`
 	State              OrganizationState      `protobuf:"varint,4,opt,name=state,proto3,enum=carboncircuit.identity.v1.OrganizationState" json:"state,omitempty"`
 	VerificationStatus VerificationStatus     `protobuf:"varint,5,opt,name=verification_status,json=verificationStatus,proto3,enum=carboncircuit.identity.v1.VerificationStatus" json:"verification_status,omitempty"`
+	TreasuryDesignated bool                   `protobuf:"varint,6,opt,name=treasury_designated,json=treasuryDesignated,proto3" json:"treasury_designated,omitempty"`
 	unknownFields      protoimpl.UnknownFields
 	sizeCache          protoimpl.SizeCache
 }
@@ -598,6 +599,13 @@ func (x *SessionOrganization) GetVerificationStatus() VerificationStatus {
 		return x.VerificationStatus
 	}
 	return VerificationStatus_VERIFICATION_STATUS_UNSPECIFIED
+}
+
+func (x *SessionOrganization) GetTreasuryDesignated() bool {
+	if x != nil {
+		return x.TreasuryDesignated
+	}
+	return false
 }
 
 type ResolveSessionResponse struct {
@@ -688,13 +696,14 @@ const file_carboncircuit_identity_v1_identity_proto_rawDesc = "" +
 	"\x05email\x18\x02 \x01(\tR\x05email\x12\x12\n" +
 	"\x04name\x18\x03 \x01(\tR\x04name\x12L\n" +
 	"\rplatform_role\x18\x04 \x01(\x0e2'.carboncircuit.identity.v1.PlatformRoleR\fplatformRole\x12!\n" +
-	"\fmfa_enrolled\x18\x05 \x01(\bR\vmfaEnrolled\"\x9e\x02\n" +
+	"\fmfa_enrolled\x18\x05 \x01(\bR\vmfaEnrolled\"\xcf\x02\n" +
 	"\x13SessionOrganization\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12?\n" +
 	"\x04type\x18\x03 \x01(\x0e2+.carboncircuit.identity.v1.OrganizationTypeR\x04type\x12B\n" +
 	"\x05state\x18\x04 \x01(\x0e2,.carboncircuit.identity.v1.OrganizationStateR\x05state\x12^\n" +
-	"\x13verification_status\x18\x05 \x01(\x0e2-.carboncircuit.identity.v1.VerificationStatusR\x12verificationStatus\"\x94\x02\n" +
+	"\x13verification_status\x18\x05 \x01(\x0e2-.carboncircuit.identity.v1.VerificationStatusR\x12verificationStatus\x12/\n" +
+	"\x13treasury_designated\x18\x06 \x01(\bR\x12treasuryDesignated\"\x94\x02\n" +
 	"\x16ResolveSessionResponse\x12:\n" +
 	"\x04user\x18\x01 \x01(\v2&.carboncircuit.identity.v1.SessionUserR\x04user\x12)\n" +
 	"\x10needs_onboarding\x18\x02 \x01(\bR\x0fneedsOnboarding\x12R\n" +

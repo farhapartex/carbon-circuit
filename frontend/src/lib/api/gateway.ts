@@ -1,5 +1,4 @@
 import "server-only";
-import { auth0 } from "@/lib/auth0";
 import { serverConfig } from "@/lib/config/server";
 
 export class GatewayError extends Error {
@@ -20,9 +19,10 @@ const errorCodeFrom = async (response: Response): Promise<string> => {
   }
 };
 
-export const authorizedGet = async <T>(path: string): Promise<T> => {
-  const { token } = await auth0.getAccessToken();
-
+export const gatewayGet = async <T>(
+  path: string,
+  token: string,
+): Promise<T> => {
   const response = await fetch(new URL(path, serverConfig.apiGatewayUrl), {
     headers: { Accept: "application/json", Authorization: `Bearer ${token}` },
     cache: "no-store",

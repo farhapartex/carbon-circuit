@@ -66,7 +66,7 @@ func run() error {
 	}
 
 	plans := service.NewPlanService(repository.NewPlanRepository(store), cacheClient)
-	billingServer := rpc.NewBillingServer(plans, logger)
+	billingServer := rpc.NewBillingServer(plans, service.NewSubscriptionService(repository.NewSubscriptionRepository(store)), logger)
 
 	logger.Info("billing-service ready",
 		slog.String("schema", settings.DatabaseSchema),

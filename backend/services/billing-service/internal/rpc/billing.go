@@ -15,12 +15,17 @@ import (
 type BillingServer struct {
 	billingv1.UnimplementedBillingServiceServer
 
-	plans  *service.PlanService
-	logger *slog.Logger
+	plans         *service.PlanService
+	subscriptions *service.SubscriptionService
+	logger        *slog.Logger
 }
 
-func NewBillingServer(plans *service.PlanService, logger *slog.Logger) *BillingServer {
-	return &BillingServer{plans: plans, logger: logger}
+func NewBillingServer(
+	plans *service.PlanService,
+	subscriptions *service.SubscriptionService,
+	logger *slog.Logger,
+) *BillingServer {
+	return &BillingServer{plans: plans, subscriptions: subscriptions, logger: logger}
 }
 
 func (s *BillingServer) ListPlans(

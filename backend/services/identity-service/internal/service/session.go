@@ -20,9 +20,10 @@ type Claims struct {
 }
 
 type Session struct {
-	User         domain.User
-	Organization *domain.Organization
-	Role         domain.OrganizationRole
+	User               domain.User
+	Organization       *domain.Organization
+	Role               domain.OrganizationRole
+	TreasuryDesignated bool
 }
 
 func (s Session) NeedsOnboarding() bool { return s.Organization == nil }
@@ -55,12 +56,17 @@ func (s *SessionService) Resolve(ctx context.Context, claims Claims) (Session, e
 		return Session{}, err
 	}
 
-	organization, err := s.memberships.FindOrganization(ctx, membership.OrganizationID)
+	snapshot, err := s.memberships.FindOrganization(ctx, membership.OrganizationID)
 	if err != nil {
 		return Session{}, err
 	}
 
-	return Session{User: user, Organization: &organization, Role: membership.Role}, nil
+	return Session{
+		User:               user,
+		Organization:       &snapshot.Organization,
+		Role:               membership.Role,
+		TreasuryDesignated: snapshot.TreasuryDesignated,
+	}, nil
 }
 
 func (s *SessionService) provision(ctx context.Context, claims Claims) (domain.User, error) {

@@ -58,8 +58,9 @@ func (f *fakeUsers) AttachAuth0Subject(_ context.Context, userID uuid.UUID, subj
 }
 
 type fakeMemberships struct {
-	membership   *domain.OrganizationMembership
-	organization domain.Organization
+	membership         *domain.OrganizationMembership
+	organization       domain.Organization
+	treasuryDesignated bool
 }
 
 func (f *fakeMemberships) FindActiveForUser(
@@ -75,8 +76,11 @@ func (f *fakeMemberships) FindActiveForUser(
 func (f *fakeMemberships) FindOrganization(
 	_ context.Context,
 	_ uuid.UUID,
-) (domain.Organization, error) {
-	return f.organization, nil
+) (repository.OrganizationSnapshot, error) {
+	return repository.OrganizationSnapshot{
+		Organization:       f.organization,
+		TreasuryDesignated: f.treasuryDesignated,
+	}, nil
 }
 
 func newService(users repository.UserStore, memberships repository.MembershipStore) *SessionService {
@@ -232,5 +236,38 @@ func TestActiveMembershipResolvesOrganizationAndRole(t *testing.T) {
 	}
 	if session.Role != domain.RoleOwner {
 		t.Fatalf("expected owner role, got %q", session.Role)
+	}
+	if session.TreasuryDesignated {
+		t.Fatal("expected no treasury address for a fresh organization")
+	}
+}
+
+func TestDesignatedTreasuryIsReported(t *testing.T) {
+	users := newFakeUsers()
+	existing := domain.User{Email: "nazmul@example.test"}
+	existing.ID = uuid.New()
+	users.bySubject["google-oauth2|1234"] = existing
+
+	organization := domain.Organization{Name: "Alice Corp", Type: domain.OrganizationManufacturer}
+	organization.ID = uuid.New()
+
+	memberships := &fakeMemberships{
+		membership: &domain.OrganizationMembership{
+			OrganizationID: organization.ID,
+			UserID:         existing.ID,
+			Role:           domain.RoleOwner,
+			State:          domain.MembershipActive,
+		},
+		organization:       organization,
+		treasuryDesignated: true,
+	}
+
+	session, err := newService(users, memberships).Resolve(context.Background(), verifiedClaims())
+	if err != nil {
+		t.Fatalf("resolve: %v", err)
+	}
+
+	if !session.TreasuryDesignated {
+		t.Fatal("expected the designated treasury to be reported")
 	}
 }

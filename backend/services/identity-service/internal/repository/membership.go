@@ -14,9 +14,14 @@ import (
 
 var ErrNoMembership = errors.New("no active membership")
 
+type OrganizationSnapshot struct {
+	Organization       domain.Organization
+	TreasuryDesignated bool
+}
+
 type MembershipStore interface {
 	FindActiveForUser(ctx context.Context, userID uuid.UUID) (domain.OrganizationMembership, error)
-	FindOrganization(ctx context.Context, organizationID uuid.UUID) (domain.Organization, error)
+	FindOrganization(ctx context.Context, organizationID uuid.UUID) (OrganizationSnapshot, error)
 }
 
 type MembershipRepository struct {
@@ -58,20 +63,32 @@ func (r *MembershipRepository) FindActiveForUser(
 func (r *MembershipRepository) FindOrganization(
 	ctx context.Context,
 	organizationID uuid.UUID,
-) (domain.Organization, error) {
-	var organization domain.Organization
+) (OrganizationSnapshot, error) {
+	var snapshot OrganizationSnapshot
 
 	err := database.WithinTenant(
 		ctx,
 		r.database,
 		database.TenantContext{OrganizationID: organizationID.String()},
 		func(tx database.Tx) error {
-			return tx.Session().First(&organization, "id = ?", organizationID).Error
+			if err := tx.Session().First(&snapshot.Organization, "id = ?", organizationID).Error; err != nil {
+				return err
+			}
+
+			var designated int64
+			if err := tx.Session().Model(&domain.TreasuryAddress{}).
+				Where("organization_id = ? AND state = ?", organizationID, domain.TreasuryActive).
+				Count(&designated).Error; err != nil {
+				return err
+			}
+
+			snapshot.TreasuryDesignated = designated > 0
+			return nil
 		},
 	)
 	if err != nil {
-		return domain.Organization{}, fmt.Errorf("find organization: %w", err)
+		return OrganizationSnapshot{}, fmt.Errorf("find organization: %w", err)
 	}
 
-	return organization, nil
+	return snapshot, nil
 }

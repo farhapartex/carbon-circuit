@@ -53,7 +53,7 @@ func userToProto(user domain.User) *identityv1.SessionUser {
 	}
 }
 
-func organizationToProto(organization *domain.Organization) *identityv1.SessionOrganization {
+func organizationToProto(organization *domain.Organization, treasuryDesignated bool) *identityv1.SessionOrganization {
 	if organization == nil {
 		return nil
 	}
@@ -64,5 +64,6 @@ func organizationToProto(organization *domain.Organization) *identityv1.SessionO
 		Type:               organizationTypes[organization.Type],
 		State:              organizationStates[organization.State],
 		VerificationStatus: verificationStatuses[organization.VerificationStatus],
+		TreasuryDesignated: treasuryDesignated,
 	}
 }

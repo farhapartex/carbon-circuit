@@ -41,7 +41,7 @@ func (s *IdentityServer) ResolveSession(
 	return &identityv1.ResolveSessionResponse{
 		User:            userToProto(session.User),
 		NeedsOnboarding: session.NeedsOnboarding(),
-		Organization:    organizationToProto(session.Organization),
+		Organization:    organizationToProto(session.Organization, session.TreasuryDesignated),
 		Role:            organizationRoles[session.Role],
 	}, nil
 }

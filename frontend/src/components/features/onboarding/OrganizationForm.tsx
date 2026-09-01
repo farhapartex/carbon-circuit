@@ -2,8 +2,10 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
+import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { submitOrganization } from "@/lib/actions/organization";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -83,14 +85,50 @@ export function OrganizationForm() {
     },
   });
 
+  const [pending, startTransition] = useTransition();
+  const [failure, setFailure] = useState<string | null>(null);
+  const [idempotencyKey] = useState(() => crypto.randomUUID());
+
   const submit = (values: OrganizationValues) => {
+    setFailure(null);
     saveDraft("organization", { step: 1, values, evidenceIds: [] });
-    router.push("/onboarding/verification");
+
+    startTransition(async () => {
+      const result = await submitOrganization(
+        {
+          name: values.name,
+          type: values.type,
+          countryOfIncorporation: values.countryOfIncorporation,
+          businessRegistrationNumber: values.businessRegistrationNumber,
+          productCategories: ["electronics"],
+        },
+        idempotencyKey,
+      );
+
+      if (!result.ok) {
+        setFailure(failureMessage(result.code));
+        return;
+      }
+
+      router.push("/onboarding/verification");
+    });
   };
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(submit)} className="space-y-6">
+        {failure ? (
+          <div
+            role="alert"
+            className="rounded-md border border-danger-600 bg-danger-50 px-4 py-3"
+          >
+            <p className="font-700 text-body text-danger-700">
+              We could not create your organization
+            </p>
+            <p className="text-helper text-danger-700">{failure}</p>
+          </div>
+        ) : null}
+
         <FormField
           control={form.control}
           name="name"
@@ -191,10 +229,25 @@ export function OrganizationForm() {
           )}
         />
 
-        <Button type="submit" size="lg">
-          Create organization and verify
+        <Button type="submit" size="lg" disabled={pending}>
+          {pending
+            ? "Checking the register…"
+            : "Create organization and verify"}
         </Button>
       </form>
     </Form>
   );
+}
+
+function failureMessage(code: string): string {
+  switch (code) {
+    case "CONFLICT":
+      return "That registration number is already registered, or you already belong to an organization.";
+    case "REQUEST_IN_PROGRESS":
+      return "This submission is already being processed. Give it a moment.";
+    case "VALIDATION_ERROR":
+      return "Check the details above and try again.";
+    default:
+      return "Something went wrong on our side. Try again shortly.";
+  }
 }

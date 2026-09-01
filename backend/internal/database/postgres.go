@@ -37,6 +37,7 @@ func Open(ctx context.Context, options Options) (*gorm.DB, error) {
 		},
 		SkipDefaultTransaction: true,
 		PrepareStmt:            false,
+		TranslateError:         true,
 	})
 	if err != nil {
 		return nil, fmt.Errorf("open postgres: %w", err)

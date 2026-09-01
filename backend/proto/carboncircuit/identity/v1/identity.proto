@@ -7,6 +7,7 @@ option go_package = "github.com/carboncircuit/backend/gen/carboncircuit/identity
 service IdentityService {
   rpc Ping(PingRequest) returns (PingResponse);
   rpc ResolveSession(ResolveSessionRequest) returns (ResolveSessionResponse);
+  rpc CreateOrganization(CreateOrganizationRequest) returns (CreateOrganizationResponse);
 }
 
 enum OrganizationType {
@@ -82,4 +83,41 @@ message ResolveSessionResponse {
   bool needs_onboarding = 2;
   SessionOrganization organization = 3;
   OrganizationRole role = 4;
+}
+
+enum ProductCategory {
+  PRODUCT_CATEGORY_UNSPECIFIED = 0;
+  PRODUCT_CATEGORY_ELECTRONICS = 1;
+  PRODUCT_CATEGORY_AGRICULTURE = 2;
+  PRODUCT_CATEGORY_PHARMA = 3;
+  PRODUCT_CATEGORY_TEXTILES = 4;
+}
+
+enum RegistryRejection {
+  REGISTRY_REJECTION_UNSPECIFIED = 0;
+  REGISTRY_REJECTION_ENTITY_DISSOLVED = 1;
+  REGISTRY_REJECTION_SANCTIONS_FLAG = 2;
+  REGISTRY_REJECTION_NAME_MISMATCH = 3;
+}
+
+message CreateOrganizationRequest {
+  string auth0_subject = 1;
+  string name = 2;
+  OrganizationType type = 3;
+  string country_of_incorporation = 4;
+  string business_registration_number = 5;
+  repeated ProductCategory product_categories = 6;
+}
+
+message VerificationOutcome {
+  VerificationStatus status = 1;
+  RegistryRejection rejection = 2;
+  bool registry_match_found = 3;
+  string name_similarity = 4;
+}
+
+message CreateOrganizationResponse {
+  SessionOrganization organization = 1;
+  OrganizationRole role = 2;
+  VerificationOutcome outcome = 3;
 }

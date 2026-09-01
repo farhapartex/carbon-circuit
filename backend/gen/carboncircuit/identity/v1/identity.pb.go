@@ -284,6 +284,113 @@ func (PlatformRole) EnumDescriptor() ([]byte, []int) {
 	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{4}
 }
 
+type ProductCategory int32
+
+const (
+	ProductCategory_PRODUCT_CATEGORY_UNSPECIFIED ProductCategory = 0
+	ProductCategory_PRODUCT_CATEGORY_ELECTRONICS ProductCategory = 1
+	ProductCategory_PRODUCT_CATEGORY_AGRICULTURE ProductCategory = 2
+	ProductCategory_PRODUCT_CATEGORY_PHARMA      ProductCategory = 3
+	ProductCategory_PRODUCT_CATEGORY_TEXTILES    ProductCategory = 4
+)
+
+// Enum value maps for ProductCategory.
+var (
+	ProductCategory_name = map[int32]string{
+		0: "PRODUCT_CATEGORY_UNSPECIFIED",
+		1: "PRODUCT_CATEGORY_ELECTRONICS",
+		2: "PRODUCT_CATEGORY_AGRICULTURE",
+		3: "PRODUCT_CATEGORY_PHARMA",
+		4: "PRODUCT_CATEGORY_TEXTILES",
+	}
+	ProductCategory_value = map[string]int32{
+		"PRODUCT_CATEGORY_UNSPECIFIED": 0,
+		"PRODUCT_CATEGORY_ELECTRONICS": 1,
+		"PRODUCT_CATEGORY_AGRICULTURE": 2,
+		"PRODUCT_CATEGORY_PHARMA":      3,
+		"PRODUCT_CATEGORY_TEXTILES":    4,
+	}
+)
+
+func (x ProductCategory) Enum() *ProductCategory {
+	p := new(ProductCategory)
+	*p = x
+	return p
+}
+
+func (x ProductCategory) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (ProductCategory) Descriptor() protoreflect.EnumDescriptor {
+	return file_carboncircuit_identity_v1_identity_proto_enumTypes[5].Descriptor()
+}
+
+func (ProductCategory) Type() protoreflect.EnumType {
+	return &file_carboncircuit_identity_v1_identity_proto_enumTypes[5]
+}
+
+func (x ProductCategory) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use ProductCategory.Descriptor instead.
+func (ProductCategory) EnumDescriptor() ([]byte, []int) {
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{5}
+}
+
+type RegistryRejection int32
+
+const (
+	RegistryRejection_REGISTRY_REJECTION_UNSPECIFIED      RegistryRejection = 0
+	RegistryRejection_REGISTRY_REJECTION_ENTITY_DISSOLVED RegistryRejection = 1
+	RegistryRejection_REGISTRY_REJECTION_SANCTIONS_FLAG   RegistryRejection = 2
+	RegistryRejection_REGISTRY_REJECTION_NAME_MISMATCH    RegistryRejection = 3
+)
+
+// Enum value maps for RegistryRejection.
+var (
+	RegistryRejection_name = map[int32]string{
+		0: "REGISTRY_REJECTION_UNSPECIFIED",
+		1: "REGISTRY_REJECTION_ENTITY_DISSOLVED",
+		2: "REGISTRY_REJECTION_SANCTIONS_FLAG",
+		3: "REGISTRY_REJECTION_NAME_MISMATCH",
+	}
+	RegistryRejection_value = map[string]int32{
+		"REGISTRY_REJECTION_UNSPECIFIED":      0,
+		"REGISTRY_REJECTION_ENTITY_DISSOLVED": 1,
+		"REGISTRY_REJECTION_SANCTIONS_FLAG":   2,
+		"REGISTRY_REJECTION_NAME_MISMATCH":    3,
+	}
+)
+
+func (x RegistryRejection) Enum() *RegistryRejection {
+	p := new(RegistryRejection)
+	*p = x
+	return p
+}
+
+func (x RegistryRejection) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (RegistryRejection) Descriptor() protoreflect.EnumDescriptor {
+	return file_carboncircuit_identity_v1_identity_proto_enumTypes[6].Descriptor()
+}
+
+func (RegistryRejection) Type() protoreflect.EnumType {
+	return &file_carboncircuit_identity_v1_identity_proto_enumTypes[6]
+}
+
+func (x RegistryRejection) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use RegistryRejection.Descriptor instead.
+func (RegistryRejection) EnumDescriptor() ([]byte, []int) {
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{6}
+}
+
 type PingRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
@@ -676,6 +783,218 @@ func (x *ResolveSessionResponse) GetRole() OrganizationRole {
 	return OrganizationRole_ORGANIZATION_ROLE_UNSPECIFIED
 }
 
+type CreateOrganizationRequest struct {
+	state                      protoimpl.MessageState `protogen:"open.v1"`
+	Auth0Subject               string                 `protobuf:"bytes,1,opt,name=auth0_subject,json=auth0Subject,proto3" json:"auth0_subject,omitempty"`
+	Name                       string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	Type                       OrganizationType       `protobuf:"varint,3,opt,name=type,proto3,enum=carboncircuit.identity.v1.OrganizationType" json:"type,omitempty"`
+	CountryOfIncorporation     string                 `protobuf:"bytes,4,opt,name=country_of_incorporation,json=countryOfIncorporation,proto3" json:"country_of_incorporation,omitempty"`
+	BusinessRegistrationNumber string                 `protobuf:"bytes,5,opt,name=business_registration_number,json=businessRegistrationNumber,proto3" json:"business_registration_number,omitempty"`
+	ProductCategories          []ProductCategory      `protobuf:"varint,6,rep,packed,name=product_categories,json=productCategories,proto3,enum=carboncircuit.identity.v1.ProductCategory" json:"product_categories,omitempty"`
+	unknownFields              protoimpl.UnknownFields
+	sizeCache                  protoimpl.SizeCache
+}
+
+func (x *CreateOrganizationRequest) Reset() {
+	*x = CreateOrganizationRequest{}
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreateOrganizationRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateOrganizationRequest) ProtoMessage() {}
+
+func (x *CreateOrganizationRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateOrganizationRequest.ProtoReflect.Descriptor instead.
+func (*CreateOrganizationRequest) Descriptor() ([]byte, []int) {
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *CreateOrganizationRequest) GetAuth0Subject() string {
+	if x != nil {
+		return x.Auth0Subject
+	}
+	return ""
+}
+
+func (x *CreateOrganizationRequest) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *CreateOrganizationRequest) GetType() OrganizationType {
+	if x != nil {
+		return x.Type
+	}
+	return OrganizationType_ORGANIZATION_TYPE_UNSPECIFIED
+}
+
+func (x *CreateOrganizationRequest) GetCountryOfIncorporation() string {
+	if x != nil {
+		return x.CountryOfIncorporation
+	}
+	return ""
+}
+
+func (x *CreateOrganizationRequest) GetBusinessRegistrationNumber() string {
+	if x != nil {
+		return x.BusinessRegistrationNumber
+	}
+	return ""
+}
+
+func (x *CreateOrganizationRequest) GetProductCategories() []ProductCategory {
+	if x != nil {
+		return x.ProductCategories
+	}
+	return nil
+}
+
+type VerificationOutcome struct {
+	state              protoimpl.MessageState `protogen:"open.v1"`
+	Status             VerificationStatus     `protobuf:"varint,1,opt,name=status,proto3,enum=carboncircuit.identity.v1.VerificationStatus" json:"status,omitempty"`
+	Rejection          RegistryRejection      `protobuf:"varint,2,opt,name=rejection,proto3,enum=carboncircuit.identity.v1.RegistryRejection" json:"rejection,omitempty"`
+	RegistryMatchFound bool                   `protobuf:"varint,3,opt,name=registry_match_found,json=registryMatchFound,proto3" json:"registry_match_found,omitempty"`
+	NameSimilarity     string                 `protobuf:"bytes,4,opt,name=name_similarity,json=nameSimilarity,proto3" json:"name_similarity,omitempty"`
+	unknownFields      protoimpl.UnknownFields
+	sizeCache          protoimpl.SizeCache
+}
+
+func (x *VerificationOutcome) Reset() {
+	*x = VerificationOutcome{}
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *VerificationOutcome) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*VerificationOutcome) ProtoMessage() {}
+
+func (x *VerificationOutcome) ProtoReflect() protoreflect.Message {
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use VerificationOutcome.ProtoReflect.Descriptor instead.
+func (*VerificationOutcome) Descriptor() ([]byte, []int) {
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *VerificationOutcome) GetStatus() VerificationStatus {
+	if x != nil {
+		return x.Status
+	}
+	return VerificationStatus_VERIFICATION_STATUS_UNSPECIFIED
+}
+
+func (x *VerificationOutcome) GetRejection() RegistryRejection {
+	if x != nil {
+		return x.Rejection
+	}
+	return RegistryRejection_REGISTRY_REJECTION_UNSPECIFIED
+}
+
+func (x *VerificationOutcome) GetRegistryMatchFound() bool {
+	if x != nil {
+		return x.RegistryMatchFound
+	}
+	return false
+}
+
+func (x *VerificationOutcome) GetNameSimilarity() string {
+	if x != nil {
+		return x.NameSimilarity
+	}
+	return ""
+}
+
+type CreateOrganizationResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Organization  *SessionOrganization   `protobuf:"bytes,1,opt,name=organization,proto3" json:"organization,omitempty"`
+	Role          OrganizationRole       `protobuf:"varint,2,opt,name=role,proto3,enum=carboncircuit.identity.v1.OrganizationRole" json:"role,omitempty"`
+	Outcome       *VerificationOutcome   `protobuf:"bytes,3,opt,name=outcome,proto3" json:"outcome,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CreateOrganizationResponse) Reset() {
+	*x = CreateOrganizationResponse{}
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[8]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreateOrganizationResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateOrganizationResponse) ProtoMessage() {}
+
+func (x *CreateOrganizationResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[8]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateOrganizationResponse.ProtoReflect.Descriptor instead.
+func (*CreateOrganizationResponse) Descriptor() ([]byte, []int) {
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *CreateOrganizationResponse) GetOrganization() *SessionOrganization {
+	if x != nil {
+		return x.Organization
+	}
+	return nil
+}
+
+func (x *CreateOrganizationResponse) GetRole() OrganizationRole {
+	if x != nil {
+		return x.Role
+	}
+	return OrganizationRole_ORGANIZATION_ROLE_UNSPECIFIED
+}
+
+func (x *CreateOrganizationResponse) GetOutcome() *VerificationOutcome {
+	if x != nil {
+		return x.Outcome
+	}
+	return nil
+}
+
 var File_carboncircuit_identity_v1_identity_proto protoreflect.FileDescriptor
 
 const file_carboncircuit_identity_v1_identity_proto_rawDesc = "" +
@@ -708,7 +1027,23 @@ const file_carboncircuit_identity_v1_identity_proto_rawDesc = "" +
 	"\x04user\x18\x01 \x01(\v2&.carboncircuit.identity.v1.SessionUserR\x04user\x12)\n" +
 	"\x10needs_onboarding\x18\x02 \x01(\bR\x0fneedsOnboarding\x12R\n" +
 	"\forganization\x18\x03 \x01(\v2..carboncircuit.identity.v1.SessionOrganizationR\forganization\x12?\n" +
-	"\x04role\x18\x04 \x01(\x0e2+.carboncircuit.identity.v1.OrganizationRoleR\x04role*\xbf\x01\n" +
+	"\x04role\x18\x04 \x01(\x0e2+.carboncircuit.identity.v1.OrganizationRoleR\x04role\"\xec\x02\n" +
+	"\x19CreateOrganizationRequest\x12#\n" +
+	"\rauth0_subject\x18\x01 \x01(\tR\fauth0Subject\x12\x12\n" +
+	"\x04name\x18\x02 \x01(\tR\x04name\x12?\n" +
+	"\x04type\x18\x03 \x01(\x0e2+.carboncircuit.identity.v1.OrganizationTypeR\x04type\x128\n" +
+	"\x18country_of_incorporation\x18\x04 \x01(\tR\x16countryOfIncorporation\x12@\n" +
+	"\x1cbusiness_registration_number\x18\x05 \x01(\tR\x1abusinessRegistrationNumber\x12Y\n" +
+	"\x12product_categories\x18\x06 \x03(\x0e2*.carboncircuit.identity.v1.ProductCategoryR\x11productCategories\"\x83\x02\n" +
+	"\x13VerificationOutcome\x12E\n" +
+	"\x06status\x18\x01 \x01(\x0e2-.carboncircuit.identity.v1.VerificationStatusR\x06status\x12J\n" +
+	"\trejection\x18\x02 \x01(\x0e2,.carboncircuit.identity.v1.RegistryRejectionR\trejection\x120\n" +
+	"\x14registry_match_found\x18\x03 \x01(\bR\x12registryMatchFound\x12'\n" +
+	"\x0fname_similarity\x18\x04 \x01(\tR\x0enameSimilarity\"\xfb\x01\n" +
+	"\x1aCreateOrganizationResponse\x12R\n" +
+	"\forganization\x18\x01 \x01(\v2..carboncircuit.identity.v1.SessionOrganizationR\forganization\x12?\n" +
+	"\x04role\x18\x02 \x01(\x0e2+.carboncircuit.identity.v1.OrganizationRoleR\x04role\x12H\n" +
+	"\aoutcome\x18\x03 \x01(\v2..carboncircuit.identity.v1.VerificationOutcomeR\aoutcome*\xbf\x01\n" +
 	"\x10OrganizationType\x12!\n" +
 	"\x1dORGANIZATION_TYPE_UNSPECIFIED\x10\x00\x12\"\n" +
 	"\x1eORGANIZATION_TYPE_MANUFACTURER\x10\x01\x12\x1f\n" +
@@ -734,10 +1069,22 @@ const file_carboncircuit_identity_v1_identity_proto_rawDesc = "" +
 	"\fPlatformRole\x12\x1d\n" +
 	"\x19PLATFORM_ROLE_UNSPECIFIED\x10\x00\x12\x1a\n" +
 	"\x16PLATFORM_ROLE_VERIFIER\x10\x01\x12 \n" +
-	"\x1cPLATFORM_ROLE_PLATFORM_ADMIN\x10\x022\xe1\x01\n" +
+	"\x1cPLATFORM_ROLE_PLATFORM_ADMIN\x10\x02*\xb3\x01\n" +
+	"\x0fProductCategory\x12 \n" +
+	"\x1cPRODUCT_CATEGORY_UNSPECIFIED\x10\x00\x12 \n" +
+	"\x1cPRODUCT_CATEGORY_ELECTRONICS\x10\x01\x12 \n" +
+	"\x1cPRODUCT_CATEGORY_AGRICULTURE\x10\x02\x12\x1b\n" +
+	"\x17PRODUCT_CATEGORY_PHARMA\x10\x03\x12\x1d\n" +
+	"\x19PRODUCT_CATEGORY_TEXTILES\x10\x04*\xad\x01\n" +
+	"\x11RegistryRejection\x12\"\n" +
+	"\x1eREGISTRY_REJECTION_UNSPECIFIED\x10\x00\x12'\n" +
+	"#REGISTRY_REJECTION_ENTITY_DISSOLVED\x10\x01\x12%\n" +
+	"!REGISTRY_REJECTION_SANCTIONS_FLAG\x10\x02\x12$\n" +
+	" REGISTRY_REJECTION_NAME_MISMATCH\x10\x032\xe5\x02\n" +
 	"\x0fIdentityService\x12W\n" +
 	"\x04Ping\x12&.carboncircuit.identity.v1.PingRequest\x1a'.carboncircuit.identity.v1.PingResponse\x12u\n" +
-	"\x0eResolveSession\x120.carboncircuit.identity.v1.ResolveSessionRequest\x1a1.carboncircuit.identity.v1.ResolveSessionResponseB\xff\x01\n" +
+	"\x0eResolveSession\x120.carboncircuit.identity.v1.ResolveSessionRequest\x1a1.carboncircuit.identity.v1.ResolveSessionResponse\x12\x81\x01\n" +
+	"\x12CreateOrganization\x124.carboncircuit.identity.v1.CreateOrganizationRequest\x1a5.carboncircuit.identity.v1.CreateOrganizationResponseB\xff\x01\n" +
 	"\x1dcom.carboncircuit.identity.v1B\rIdentityProtoP\x01ZIgithub.com/carboncircuit/backend/gen/carboncircuit/identity/v1;identityv1\xa2\x02\x03CIX\xaa\x02\x19Carboncircuit.Identity.V1\xca\x02\x19Carboncircuit\\Identity\\V1\xe2\x02%Carboncircuit\\Identity\\V1\\GPBMetadata\xea\x02\x1bCarboncircuit::Identity::V1b\x06proto3"
 
 var (
@@ -752,38 +1099,52 @@ func file_carboncircuit_identity_v1_identity_proto_rawDescGZIP() []byte {
 	return file_carboncircuit_identity_v1_identity_proto_rawDescData
 }
 
-var file_carboncircuit_identity_v1_identity_proto_enumTypes = make([]protoimpl.EnumInfo, 5)
-var file_carboncircuit_identity_v1_identity_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
+var file_carboncircuit_identity_v1_identity_proto_enumTypes = make([]protoimpl.EnumInfo, 7)
+var file_carboncircuit_identity_v1_identity_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
 var file_carboncircuit_identity_v1_identity_proto_goTypes = []any{
-	(OrganizationType)(0),          // 0: carboncircuit.identity.v1.OrganizationType
-	(OrganizationRole)(0),          // 1: carboncircuit.identity.v1.OrganizationRole
-	(OrganizationState)(0),         // 2: carboncircuit.identity.v1.OrganizationState
-	(VerificationStatus)(0),        // 3: carboncircuit.identity.v1.VerificationStatus
-	(PlatformRole)(0),              // 4: carboncircuit.identity.v1.PlatformRole
-	(*PingRequest)(nil),            // 5: carboncircuit.identity.v1.PingRequest
-	(*PingResponse)(nil),           // 6: carboncircuit.identity.v1.PingResponse
-	(*ResolveSessionRequest)(nil),  // 7: carboncircuit.identity.v1.ResolveSessionRequest
-	(*SessionUser)(nil),            // 8: carboncircuit.identity.v1.SessionUser
-	(*SessionOrganization)(nil),    // 9: carboncircuit.identity.v1.SessionOrganization
-	(*ResolveSessionResponse)(nil), // 10: carboncircuit.identity.v1.ResolveSessionResponse
+	(OrganizationType)(0),              // 0: carboncircuit.identity.v1.OrganizationType
+	(OrganizationRole)(0),              // 1: carboncircuit.identity.v1.OrganizationRole
+	(OrganizationState)(0),             // 2: carboncircuit.identity.v1.OrganizationState
+	(VerificationStatus)(0),            // 3: carboncircuit.identity.v1.VerificationStatus
+	(PlatformRole)(0),                  // 4: carboncircuit.identity.v1.PlatformRole
+	(ProductCategory)(0),               // 5: carboncircuit.identity.v1.ProductCategory
+	(RegistryRejection)(0),             // 6: carboncircuit.identity.v1.RegistryRejection
+	(*PingRequest)(nil),                // 7: carboncircuit.identity.v1.PingRequest
+	(*PingResponse)(nil),               // 8: carboncircuit.identity.v1.PingResponse
+	(*ResolveSessionRequest)(nil),      // 9: carboncircuit.identity.v1.ResolveSessionRequest
+	(*SessionUser)(nil),                // 10: carboncircuit.identity.v1.SessionUser
+	(*SessionOrganization)(nil),        // 11: carboncircuit.identity.v1.SessionOrganization
+	(*ResolveSessionResponse)(nil),     // 12: carboncircuit.identity.v1.ResolveSessionResponse
+	(*CreateOrganizationRequest)(nil),  // 13: carboncircuit.identity.v1.CreateOrganizationRequest
+	(*VerificationOutcome)(nil),        // 14: carboncircuit.identity.v1.VerificationOutcome
+	(*CreateOrganizationResponse)(nil), // 15: carboncircuit.identity.v1.CreateOrganizationResponse
 }
 var file_carboncircuit_identity_v1_identity_proto_depIdxs = []int32{
 	4,  // 0: carboncircuit.identity.v1.SessionUser.platform_role:type_name -> carboncircuit.identity.v1.PlatformRole
 	0,  // 1: carboncircuit.identity.v1.SessionOrganization.type:type_name -> carboncircuit.identity.v1.OrganizationType
 	2,  // 2: carboncircuit.identity.v1.SessionOrganization.state:type_name -> carboncircuit.identity.v1.OrganizationState
 	3,  // 3: carboncircuit.identity.v1.SessionOrganization.verification_status:type_name -> carboncircuit.identity.v1.VerificationStatus
-	8,  // 4: carboncircuit.identity.v1.ResolveSessionResponse.user:type_name -> carboncircuit.identity.v1.SessionUser
-	9,  // 5: carboncircuit.identity.v1.ResolveSessionResponse.organization:type_name -> carboncircuit.identity.v1.SessionOrganization
+	10, // 4: carboncircuit.identity.v1.ResolveSessionResponse.user:type_name -> carboncircuit.identity.v1.SessionUser
+	11, // 5: carboncircuit.identity.v1.ResolveSessionResponse.organization:type_name -> carboncircuit.identity.v1.SessionOrganization
 	1,  // 6: carboncircuit.identity.v1.ResolveSessionResponse.role:type_name -> carboncircuit.identity.v1.OrganizationRole
-	5,  // 7: carboncircuit.identity.v1.IdentityService.Ping:input_type -> carboncircuit.identity.v1.PingRequest
-	7,  // 8: carboncircuit.identity.v1.IdentityService.ResolveSession:input_type -> carboncircuit.identity.v1.ResolveSessionRequest
-	6,  // 9: carboncircuit.identity.v1.IdentityService.Ping:output_type -> carboncircuit.identity.v1.PingResponse
-	10, // 10: carboncircuit.identity.v1.IdentityService.ResolveSession:output_type -> carboncircuit.identity.v1.ResolveSessionResponse
-	9,  // [9:11] is the sub-list for method output_type
-	7,  // [7:9] is the sub-list for method input_type
-	7,  // [7:7] is the sub-list for extension type_name
-	7,  // [7:7] is the sub-list for extension extendee
-	0,  // [0:7] is the sub-list for field type_name
+	0,  // 7: carboncircuit.identity.v1.CreateOrganizationRequest.type:type_name -> carboncircuit.identity.v1.OrganizationType
+	5,  // 8: carboncircuit.identity.v1.CreateOrganizationRequest.product_categories:type_name -> carboncircuit.identity.v1.ProductCategory
+	3,  // 9: carboncircuit.identity.v1.VerificationOutcome.status:type_name -> carboncircuit.identity.v1.VerificationStatus
+	6,  // 10: carboncircuit.identity.v1.VerificationOutcome.rejection:type_name -> carboncircuit.identity.v1.RegistryRejection
+	11, // 11: carboncircuit.identity.v1.CreateOrganizationResponse.organization:type_name -> carboncircuit.identity.v1.SessionOrganization
+	1,  // 12: carboncircuit.identity.v1.CreateOrganizationResponse.role:type_name -> carboncircuit.identity.v1.OrganizationRole
+	14, // 13: carboncircuit.identity.v1.CreateOrganizationResponse.outcome:type_name -> carboncircuit.identity.v1.VerificationOutcome
+	7,  // 14: carboncircuit.identity.v1.IdentityService.Ping:input_type -> carboncircuit.identity.v1.PingRequest
+	9,  // 15: carboncircuit.identity.v1.IdentityService.ResolveSession:input_type -> carboncircuit.identity.v1.ResolveSessionRequest
+	13, // 16: carboncircuit.identity.v1.IdentityService.CreateOrganization:input_type -> carboncircuit.identity.v1.CreateOrganizationRequest
+	8,  // 17: carboncircuit.identity.v1.IdentityService.Ping:output_type -> carboncircuit.identity.v1.PingResponse
+	12, // 18: carboncircuit.identity.v1.IdentityService.ResolveSession:output_type -> carboncircuit.identity.v1.ResolveSessionResponse
+	15, // 19: carboncircuit.identity.v1.IdentityService.CreateOrganization:output_type -> carboncircuit.identity.v1.CreateOrganizationResponse
+	17, // [17:20] is the sub-list for method output_type
+	14, // [14:17] is the sub-list for method input_type
+	14, // [14:14] is the sub-list for extension type_name
+	14, // [14:14] is the sub-list for extension extendee
+	0,  // [0:14] is the sub-list for field type_name
 }
 
 func init() { file_carboncircuit_identity_v1_identity_proto_init() }
@@ -796,8 +1157,8 @@ func file_carboncircuit_identity_v1_identity_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_carboncircuit_identity_v1_identity_proto_rawDesc), len(file_carboncircuit_identity_v1_identity_proto_rawDesc)),
-			NumEnums:      5,
-			NumMessages:   6,
+			NumEnums:      7,
+			NumMessages:   9,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

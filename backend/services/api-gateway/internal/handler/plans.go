@@ -9,7 +9,7 @@ import (
 	"github.com/carboncircuit/backend/internal/httpx"
 )
 
-var organizationTypeByName = map[string]billingv1.OrganizationType{
+var billingOrganizationTypeByName = map[string]billingv1.OrganizationType{
 	"manufacturer": billingv1.OrganizationType_ORGANIZATION_TYPE_MANUFACTURER,
 	"assembler":    billingv1.OrganizationType_ORGANIZATION_TYPE_ASSEMBLER,
 	"logistics":    billingv1.OrganizationType_ORGANIZATION_TYPE_LOGISTICS,
@@ -69,7 +69,7 @@ func (h *Handlers) ListPlans(c *gin.Context) {
 	eligibleFor := billingv1.OrganizationType_ORGANIZATION_TYPE_UNSPECIFIED
 
 	if requested := c.Query("eligible_for"); requested != "" {
-		mapped, known := organizationTypeByName[requested]
+		mapped, known := billingOrganizationTypeByName[requested]
 		if !known {
 			httpx.Fail(c, httpx.CodeValidation, httpx.FieldError{
 				Field: "eligible_for",

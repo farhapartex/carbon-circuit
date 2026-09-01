@@ -64,3 +64,20 @@ func (i *Identity) ResolveSession(
 		Name:          caller.Name,
 	})
 }
+
+func (i *Identity) CreateOrganization(
+	ctx context.Context,
+	idempotencyKey string,
+	caller auth.Caller,
+	request *identityv1.CreateOrganizationRequest,
+) (*identityv1.CreateOrganizationResponse, error) {
+	callCtx, cancel := context.WithTimeout(ctx, i.callTimeout)
+	defer cancel()
+
+	callCtx = grpcx.WithCorrelationID(callCtx, logging.CorrelationIDFrom(ctx))
+	callCtx = grpcx.WithIdempotencyKey(callCtx, idempotencyKey)
+
+	request.Auth0Subject = caller.Subject
+
+	return i.client.CreateOrganization(callCtx, request)
+}

@@ -99,6 +99,7 @@ func NewRouter(options RouterOptions) *gin.Engine {
 	)
 
 	authenticated.GET("/session", handlers.Session)
+	authenticated.GET("/me", handlers.Me)
 
 	return router
 }

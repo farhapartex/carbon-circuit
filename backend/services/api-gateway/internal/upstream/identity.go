@@ -8,6 +8,7 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 
 	identityv1 "github.com/carboncircuit/backend/gen/carboncircuit/identity/v1"
+	"github.com/carboncircuit/backend/internal/auth"
 	"github.com/carboncircuit/backend/internal/grpcx"
 	"github.com/carboncircuit/backend/internal/logging"
 )
@@ -45,4 +46,21 @@ func (i *Identity) Ping(ctx context.Context) (*identityv1.PingResponse, error) {
 	callCtx = grpcx.WithCorrelationID(callCtx, logging.CorrelationIDFrom(ctx))
 
 	return i.client.Ping(callCtx, &identityv1.PingRequest{})
+}
+
+func (i *Identity) ResolveSession(
+	ctx context.Context,
+	caller auth.Caller,
+) (*identityv1.ResolveSessionResponse, error) {
+	callCtx, cancel := context.WithTimeout(ctx, i.callTimeout)
+	defer cancel()
+
+	callCtx = grpcx.WithCorrelationID(callCtx, logging.CorrelationIDFrom(ctx))
+
+	return i.client.ResolveSession(callCtx, &identityv1.ResolveSessionRequest{
+		Auth0Subject:  caller.Subject,
+		Email:         caller.Email,
+		EmailVerified: caller.EmailVerified,
+		Name:          caller.Name,
+	})
 }

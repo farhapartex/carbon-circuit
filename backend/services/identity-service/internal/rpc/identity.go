@@ -2,6 +2,7 @@ package rpc
 
 import (
 	"context"
+	"log/slog"
 
 	"gorm.io/gorm"
 
@@ -12,11 +13,23 @@ type IdentityServer struct {
 	identityv1.UnimplementedIdentityServiceServer
 
 	database *gorm.DB
+	sessions SessionResolver
+	logger   *slog.Logger
 	revision string
 }
 
-func NewIdentityServer(database *gorm.DB, revision string) *IdentityServer {
-	return &IdentityServer{database: database, revision: revision}
+func NewIdentityServer(
+	database *gorm.DB,
+	sessions SessionResolver,
+	logger *slog.Logger,
+	revision string,
+) *IdentityServer {
+	return &IdentityServer{
+		database: database,
+		sessions: sessions,
+		logger:   logger,
+		revision: revision,
+	}
 }
 
 func (s *IdentityServer) Ping(

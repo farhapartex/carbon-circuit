@@ -12,7 +12,9 @@ import (
 	"github.com/carboncircuit/backend/internal/grpcx"
 	"github.com/carboncircuit/backend/internal/logging"
 	"github.com/carboncircuit/backend/services/identity-service/internal/config"
+	"github.com/carboncircuit/backend/services/identity-service/internal/repository"
 	"github.com/carboncircuit/backend/services/identity-service/internal/rpc"
+	"github.com/carboncircuit/backend/services/identity-service/internal/service"
 )
 
 var revision = "dev"
@@ -56,7 +58,13 @@ func run() error {
 		slog.String("environment", settings.Environment),
 	)
 
-	identityServer := rpc.NewIdentityServer(store, revision)
+	sessions := service.NewSessionService(
+		repository.NewUserRepository(store),
+		repository.NewMembershipRepository(store),
+		logger,
+	)
+
+	identityServer := rpc.NewIdentityServer(store, sessions, logger, revision)
 
 	return grpcx.Serve(ctx, grpcx.ServerOptions{
 		Address:         settings.GRPCAddress,

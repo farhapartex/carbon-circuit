@@ -10,7 +10,9 @@ import (
 	identityv1 "github.com/carboncircuit/backend/gen/carboncircuit/identity/v1"
 	"github.com/carboncircuit/backend/internal/database"
 	"github.com/carboncircuit/backend/internal/grpcx"
+	"github.com/carboncircuit/backend/internal/kafka"
 	"github.com/carboncircuit/backend/internal/logging"
+	"github.com/carboncircuit/backend/internal/outbox"
 	"github.com/carboncircuit/backend/services/identity-service/internal/config"
 	"github.com/carboncircuit/backend/services/identity-service/internal/repository"
 	"github.com/carboncircuit/backend/services/identity-service/internal/rpc"
@@ -57,6 +59,31 @@ func run() error {
 		slog.String("schema", settings.DatabaseSchema),
 		slog.String("environment", settings.Environment),
 	)
+
+	producer, err := kafka.NewProducer(kafka.ProducerOptions{
+		Brokers:          settings.KafkaBrokers,
+		AllowTopicCreate: settings.KafkaTopicCreate,
+	})
+	if err != nil {
+		return err
+	}
+	defer producer.Close()
+
+	if pingErr := producer.Ping(ctx); pingErr != nil {
+		logger.Warn("kafka unreachable at startup, outbox will retry",
+			slog.Any("error", pingErr))
+	}
+
+	publisherCtx, stopPublisher := context.WithCancel(ctx)
+	defer stopPublisher()
+
+	go outbox.NewPublisher(outbox.PublisherOptions{
+		Database:  store,
+		Dispatch:  producer,
+		Logger:    logger,
+		Interval:  settings.OutboxInterval,
+		BatchSize: settings.OutboxBatchSize,
+	}).Run(publisherCtx)
 
 	sessions := service.NewSessionService(
 		repository.NewUserRepository(store),

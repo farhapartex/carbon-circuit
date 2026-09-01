@@ -1,6 +1,7 @@
 package config
 
 import (
+	"strings"
 	"time"
 
 	sharedconfig "github.com/carboncircuit/backend/internal/config"
@@ -22,6 +23,11 @@ type Config struct {
 	ConnMaxLifetime time.Duration
 	ConnMaxIdleTime time.Duration
 	AcquireTimeout  time.Duration
+
+	KafkaBrokers     []string
+	KafkaTopicCreate bool
+	OutboxInterval   time.Duration
+	OutboxBatchSize  int
 }
 
 func Load() (Config, error) {
@@ -41,6 +47,11 @@ func Load() (Config, error) {
 		ConnMaxLifetime: loader.Duration("DATABASE_CONN_MAX_LIFETIME", 30*time.Minute),
 		ConnMaxIdleTime: loader.Duration("DATABASE_CONN_MAX_IDLE_TIME", 5*time.Minute),
 		AcquireTimeout:  loader.Duration("DATABASE_ACQUIRE_TIMEOUT", 250*time.Millisecond),
+
+		KafkaBrokers:     strings.Split(loader.StringDefault("KAFKA_BROKERS", "kafka:9092"), ","),
+		KafkaTopicCreate: loader.StringDefault("KAFKA_ALLOW_TOPIC_CREATE", "false") == "true",
+		OutboxInterval:   loader.Duration("OUTBOX_INTERVAL", time.Second),
+		OutboxBatchSize:  loader.Int("OUTBOX_BATCH_SIZE", 100),
 	}
 
 	return config, loader.Err()

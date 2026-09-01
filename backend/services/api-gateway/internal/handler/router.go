@@ -94,6 +94,7 @@ func NewRouter(options RouterOptions) *gin.Engine {
 		httpx.Authenticate(options.Verifier, options.Denylist, options.Logger),
 		httpx.EndpointClass("authenticated_read"),
 		httpx.RateLimit(options.Limiter, options.Logger),
+		httpx.RequireIdempotencyKey(),
 	)
 
 	authenticated.GET("/me", handlers.Me)

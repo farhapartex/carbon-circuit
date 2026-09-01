@@ -7,6 +7,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
+	billingv1 "github.com/carboncircuit/backend/gen/carboncircuit/billing/v1"
 	identityv1 "github.com/carboncircuit/backend/gen/carboncircuit/identity/v1"
 	"github.com/carboncircuit/backend/internal/auth"
 	"github.com/carboncircuit/backend/internal/httpx"
@@ -43,6 +44,13 @@ var platformRoleName = map[identityv1.PlatformRole]string{
 	identityv1.PlatformRole_PLATFORM_ROLE_PLATFORM_ADMIN: "platform_admin",
 }
 
+var subscriptionStateName = map[billingv1.SubscriptionState]string{
+	billingv1.SubscriptionState_SUBSCRIPTION_STATE_ACTIVE:       "active",
+	billingv1.SubscriptionState_SUBSCRIPTION_STATE_GRACE_PERIOD: "grace_period",
+	billingv1.SubscriptionState_SUBSCRIPTION_STATE_READ_ONLY:    "read_only",
+	billingv1.SubscriptionState_SUBSCRIPTION_STATE_CANCELLED:    "cancelled",
+}
+
 type sessionUserResponse struct {
 	ID           string  `json:"id"`
 	Email        string  `json:"email"`
@@ -57,13 +65,21 @@ type sessionOrganizationResponse struct {
 	Type               string `json:"type"`
 	State              string `json:"state"`
 	VerificationStatus string `json:"verification_status"`
+	Role               string `json:"role"`
+}
+
+type sessionSubscriptionResponse struct {
+	PlanTier string `json:"plan_tier"`
+	State    string `json:"state"`
 }
 
 type meResponse struct {
-	User            sessionUserResponse          `json:"user"`
-	NeedsOnboarding bool                         `json:"needs_onboarding"`
-	Organization    *sessionOrganizationResponse `json:"organization"`
-	Role            *string                      `json:"role"`
+	User                 sessionUserResponse          `json:"user"`
+	Organization         *sessionOrganizationResponse `json:"organization"`
+	Subscription         *sessionSubscriptionResponse `json:"subscription"`
+	IsSubscribed         bool                         `json:"is_subscribed"`
+	IsTreasuryDesignated bool                         `json:"is_treasury_designated"`
+	IsOnboardingDone     bool                         `json:"is_onboarding_done"`
 }
 
 func (h *Handlers) Me(c *gin.Context) {
@@ -90,7 +106,23 @@ func (h *Handlers) Me(c *gin.Context) {
 		return
 	}
 
-	httpx.Data(c, http.StatusOK, toMeResponse(resolved))
+	response := toMeResponse(resolved)
+
+	if organization := resolved.GetOrganization(); organization != nil {
+		subscription, subscriptionErr := h.Billing.GetSubscription(
+			c.Request.Context(), organization.GetId(),
+		)
+		if subscriptionErr != nil {
+			h.Logger.Error("get subscription upstream failed", errorAttributes(c, subscriptionErr)...)
+			httpx.Fail(c, httpx.CodeDependencyUnavailable)
+			return
+		}
+		applySubscription(&response, subscription.GetSubscription())
+	}
+
+	response.IsOnboardingDone = onboardingComplete(response)
+
+	httpx.Data(c, http.StatusOK, response)
 }
 
 func toMeResponse(resolved *identityv1.ResolveSessionResponse) meResponse {
@@ -104,19 +136,44 @@ func toMeResponse(resolved *identityv1.ResolveSessionResponse) meResponse {
 			PlatformRole: emptyToNil(platformRoleName[user.GetPlatformRole()]),
 			MFAEnrolled:  user.GetMfaEnrolled(),
 		},
-		NeedsOnboarding: resolved.GetNeedsOnboarding(),
 	}
 
-	if organization := resolved.GetOrganization(); organization != nil {
-		response.Organization = &sessionOrganizationResponse{
-			ID:                 organization.GetId(),
-			Name:               organization.GetName(),
-			Type:               identityOrganizationTypeName[organization.GetType()],
-			State:              organizationStateName[organization.GetState()],
-			VerificationStatus: verificationStatusName[organization.GetVerificationStatus()],
-		}
-		response.Role = emptyToNil(organizationRoleName[resolved.GetRole()])
+	organization := resolved.GetOrganization()
+	if organization == nil {
+		return response
 	}
+
+	response.Organization = &sessionOrganizationResponse{
+		ID:                 organization.GetId(),
+		Name:               organization.GetName(),
+		Type:               identityOrganizationTypeName[organization.GetType()],
+		State:              organizationStateName[organization.GetState()],
+		VerificationStatus: verificationStatusName[organization.GetVerificationStatus()],
+		Role:               organizationRoleName[resolved.GetRole()],
+	}
+	response.IsTreasuryDesignated = organization.GetTreasuryDesignated()
 
 	return response
+}
+
+func applySubscription(response *meResponse, subscription *billingv1.Subscription) {
+	if subscription == nil {
+		return
+	}
+
+	response.Subscription = &sessionSubscriptionResponse{
+		PlanTier: tierName[subscription.GetPlanTier()],
+		State:    subscriptionStateName[subscription.GetState()],
+	}
+
+	response.IsSubscribed =
+		subscription.GetState() != billingv1.SubscriptionState_SUBSCRIPTION_STATE_CANCELLED &&
+			subscription.GetState() != billingv1.SubscriptionState_SUBSCRIPTION_STATE_UNSPECIFIED
+}
+
+func onboardingComplete(response meResponse) bool {
+	return response.Organization != nil &&
+		response.IsSubscribed &&
+		response.Organization.VerificationStatus == "verified" &&
+		response.IsTreasuryDesignated
 }

@@ -47,3 +47,17 @@ func (b *Billing) ListPlans(
 
 	return b.client.ListPlans(callCtx, &billingv1.ListPlansRequest{EligibleFor: eligibleFor})
 }
+
+func (b *Billing) GetSubscription(
+	ctx context.Context,
+	organizationID string,
+) (*billingv1.GetSubscriptionResponse, error) {
+	callCtx, cancel := context.WithTimeout(ctx, b.callTimeout)
+	defer cancel()
+
+	callCtx = grpcx.WithCorrelationID(callCtx, logging.CorrelationIDFrom(ctx))
+
+	return b.client.GetSubscription(callCtx, &billingv1.GetSubscriptionRequest{
+		OrganizationId: organizationID,
+	})
+}

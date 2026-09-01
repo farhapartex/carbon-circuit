@@ -1,12 +1,16 @@
 import "server-only";
 import { gatewayGet } from "@/lib/api/gateway";
+import type { VerificationStatus } from "@/lib/status";
+import type { PlanTier } from "@/lib/types/billing";
 import type {
   OrganizationRole,
   OrganizationState,
   OrganizationType,
   PlatformRole,
 } from "@/lib/types/organization";
-import type { VerificationStatus } from "@/lib/status";
+
+export type SubscriptionState =
+  "active" | "grace_period" | "read_only" | "cancelled";
 
 type ApiMe = {
   user: {
@@ -16,15 +20,21 @@ type ApiMe = {
     platform_role: PlatformRole | null;
     mfa_enrolled: boolean;
   };
-  needs_onboarding: boolean;
   organization: {
     id: string;
     name: string;
     type: OrganizationType;
     state: OrganizationState;
     verification_status: VerificationStatus;
+    role: OrganizationRole;
   } | null;
-  role: OrganizationRole | null;
+  subscription: {
+    plan_tier: PlanTier;
+    state: SubscriptionState;
+  } | null;
+  is_subscribed: boolean;
+  is_treasury_designated: boolean;
+  is_onboarding_done: boolean;
 };
 
 export type CurrentUser = {
@@ -41,13 +51,21 @@ export type CurrentOrganization = {
   type: OrganizationType;
   state: OrganizationState;
   verificationStatus: VerificationStatus;
+  role: OrganizationRole;
+};
+
+export type CurrentSubscription = {
+  planTier: PlanTier;
+  state: SubscriptionState;
 };
 
 export type CurrentSession = {
   user: CurrentUser;
-  needsOnboarding: boolean;
   organization: CurrentOrganization | null;
-  role: OrganizationRole | null;
+  subscription: CurrentSubscription | null;
+  isSubscribed: boolean;
+  isTreasuryDesignated: boolean;
+  isOnboardingDone: boolean;
 };
 
 export const fetchMe = async (token: string): Promise<CurrentSession> => {
@@ -61,7 +79,6 @@ export const fetchMe = async (token: string): Promise<CurrentSession> => {
       platformRole: me.user.platform_role,
       mfaEnrolled: me.user.mfa_enrolled,
     },
-    needsOnboarding: me.needs_onboarding,
     organization: me.organization
       ? {
           id: me.organization.id,
@@ -69,8 +86,14 @@ export const fetchMe = async (token: string): Promise<CurrentSession> => {
           type: me.organization.type,
           state: me.organization.state,
           verificationStatus: me.organization.verification_status,
+          role: me.organization.role,
         }
       : null,
-    role: me.role,
+    subscription: me.subscription
+      ? { planTier: me.subscription.plan_tier, state: me.subscription.state }
+      : null,
+    isSubscribed: me.is_subscribed,
+    isTreasuryDesignated: me.is_treasury_designated,
+    isOnboardingDone: me.is_onboarding_done,
   };
 };

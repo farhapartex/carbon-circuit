@@ -5,6 +5,8 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+
+	"github.com/carboncircuit/backend/internal/database"
 )
 
 type State string
@@ -16,20 +18,20 @@ const (
 )
 
 type Record struct {
-	ID             uuid.UUID  `gorm:"column:id;type:uuid;primaryKey;default:uuidv7()"`
-	CreatedAt      time.Time  `gorm:"column:created_at"`
-	UpdatedAt      time.Time  `gorm:"column:updated_at"`
-	Version        int        `gorm:"column:version;default:1"`
-	OrganizationID *uuid.UUID `gorm:"column:organization_id;type:uuid"`
-	UserID         *uuid.UUID `gorm:"column:user_id;type:uuid"`
-	Endpoint       string     `gorm:"column:endpoint"`
-	IdempotencyKey string     `gorm:"column:idempotency_key"`
-	RequestHash    []byte     `gorm:"column:request_hash"`
-	State          State      `gorm:"column:state"`
-	ResponseStatus *int       `gorm:"column:response_status"`
-	ResponseBody   []byte     `gorm:"column:response_body;type:json"`
-	ResourceID     *uuid.UUID `gorm:"column:resource_id;type:uuid"`
-	CompletedAt    *time.Time `gorm:"column:completed_at"`
+	ID             uuid.UUID             `gorm:"column:id;type:uuid;primaryKey;default:uuidv7()"`
+	CreatedAt      time.Time             `gorm:"column:created_at"`
+	UpdatedAt      time.Time             `gorm:"column:updated_at"`
+	Version        int                   `gorm:"column:version;default:1"`
+	OrganizationID *uuid.UUID            `gorm:"column:organization_id;type:uuid"`
+	UserID         *uuid.UUID            `gorm:"column:user_id;type:uuid"`
+	Endpoint       string                `gorm:"column:endpoint"`
+	IdempotencyKey string                `gorm:"column:idempotency_key"`
+	RequestHash    []byte                `gorm:"column:request_hash"`
+	State          State                 `gorm:"column:state"`
+	ResponseStatus *int                  `gorm:"column:response_status"`
+	ResponseBody   database.JSONDocument `gorm:"column:response_body;type:json"`
+	ResourceID     *uuid.UUID            `gorm:"column:resource_id;type:uuid"`
+	CompletedAt    *time.Time            `gorm:"column:completed_at"`
 }
 
 func (Record) TableName() string { return "idempotency_records" }

@@ -81,7 +81,7 @@ func adopt(tx database.Tx, request Request) (Reservation, error) {
 }
 
 func replayOf(record Record) *Response {
-	response := Response{Body: record.ResponseBody, ResourceID: record.ResourceID}
+	response := Response{Body: record.ResponseBody.Bytes(), ResourceID: record.ResourceID}
 	if record.ResponseStatus != nil {
 		response.Status = *record.ResponseStatus
 	}
@@ -115,7 +115,7 @@ func Complete(tx database.Tx, recordID uuid.UUID, response Response) error {
 		Updates(map[string]any{
 			"state":           StateCompleted,
 			"response_status": response.Status,
-			"response_body":   jsonOrNull(response.Body),
+			"response_body":   database.JSONDocument(response.Body),
 			"resource_id":     response.ResourceID,
 			"completed_at":    completedAt,
 			"updated_at":      completedAt,
@@ -144,12 +144,4 @@ func Fail(tx database.Tx, recordID uuid.UUID) error {
 	}
 
 	return nil
-}
-
-func jsonOrNull(body []byte) *string {
-	if len(body) == 0 {
-		return nil
-	}
-	encoded := string(body)
-	return &encoded
 }

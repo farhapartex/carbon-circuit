@@ -3,6 +3,7 @@ import type {
   ActivityType,
   GridRegion,
   ProductCategory,
+  RecycledMaterial,
   ShippingMethod,
 } from "@/lib/types/common";
 import type { FacilityType } from "@/lib/types/organization";
@@ -82,4 +83,17 @@ export const productCategoryLabels: Record<ProductCategory, string> = {
   agriculture: "Agriculture",
   pharma: "Pharma",
   textiles: "Textiles",
+};
+
+export const recycledMaterialLabels: Record<RecycledMaterial, string> = {
+  aluminium: "Aluminium",
+  copper: "Copper",
+  steel: "Steel",
+  tin: "Tin",
+  gold: "Gold",
+  tantalum: "Tantalum",
+  plastics_abs: "ABS plastics",
+  plastics_pet: "PET plastics",
+  rare_earth_magnets: "Rare earth magnets",
+  lithium_black_mass: "Lithium black mass",
 };

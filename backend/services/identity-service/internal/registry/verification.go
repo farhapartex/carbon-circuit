@@ -22,6 +22,7 @@ type Outcome struct {
 	RecordID       *uuid.UUID
 	MatchFound     bool
 	NameSimilarity *float64
+	RegisteredName string
 }
 
 func (o Outcome) SimilarityString() string {
@@ -54,6 +55,7 @@ func Assess(declaration Declaration, record domain.BusinessRegistryRecord) Outco
 		MatchFound:     true,
 		RecordID:       &recordID,
 		NameSimilarity: &similarity,
+		RegisteredName: record.LegalName,
 	}
 
 	switch rejection := rejectionFor(record, similarity); rejection {
@@ -100,4 +102,14 @@ func (d Declaration) Validate() error {
 		return fmt.Errorf("registered legal name is required")
 	}
 	return nil
+}
+
+func (o Outcome) DisclosableName() string {
+	if o.Status == domain.VerificationVerified {
+		return o.RegisteredName
+	}
+	if o.Rejection != nil && *o.Rejection == domain.RejectionNameMismatch {
+		return o.RegisteredName
+	}
+	return ""
 }

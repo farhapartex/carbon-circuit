@@ -2,8 +2,15 @@
 
 import { PenLine, ShieldCheck, Wallet } from "lucide-react";
 import Link from "next/link";
-import { useAccount } from "wagmi";
+import { useRouter } from "next/navigation";
+import { useState, useTransition } from "react";
+import { createSiweMessage } from "viem/siwe";
+import { useAccount, useSignMessage } from "wagmi";
 import { AddressDisplay } from "@/components/shared/AddressDisplay";
+import {
+  completeTreasuryDesignation,
+  startTreasuryDesignation,
+} from "@/lib/actions/treasury";
 import { WalletConnectButton } from "@/components/shared/WalletConnectButton";
 import { WalletProvider } from "@/components/shared/WalletProvider";
 import { Button } from "@/components/ui/button";
@@ -32,7 +39,57 @@ const assurances = [
 ];
 
 function Designation() {
+  const router = useRouter();
   const { address, isConnected } = useAccount();
+  const { signMessageAsync } = useSignMessage();
+  const [pending, startTransition] = useTransition();
+  const [failure, setFailure] = useState<string | null>(null);
+  const [idempotencyKey] = useState(() => crypto.randomUUID());
+
+  const designate = () => {
+    if (!address) return;
+    setFailure(null);
+
+    startTransition(async () => {
+      const challenge = await startTreasuryDesignation(idempotencyKey);
+      if (!challenge.ok) {
+        setFailure(designationFailure(challenge.code));
+        return;
+      }
+
+      const message = createSiweMessage({
+        address,
+        chainId: challenge.challenge.chainId,
+        domain: challenge.challenge.domain,
+        nonce: challenge.challenge.nonce,
+        uri: window.location.origin,
+        version: "1",
+        statement:
+          "Designate this address as your CarbonCircuit Treasury Address.",
+      });
+
+      let signature: string;
+      try {
+        signature = await signMessageAsync({ message });
+      } catch {
+        setFailure("You declined the signature request.");
+        return;
+      }
+
+      const designated = await completeTreasuryDesignation(
+        message,
+        signature,
+        idempotencyKey,
+      );
+
+      if (!designated.ok) {
+        setFailure(designationFailure(designated.code));
+        return;
+      }
+
+      router.push("/dashboard");
+    });
+  };
 
   return (
     <div className="space-y-6">
@@ -50,7 +107,16 @@ function Designation() {
                 />
                 <AddressDisplay address={address as EthereumAddress} />
               </div>
-              <Button size="lg">Sign to designate this address</Button>
+              <Button size="lg" onClick={designate} disabled={pending}>
+                {pending
+                  ? "Waiting for your signature…"
+                  : "Sign to designate this address"}
+              </Button>
+              {failure ? (
+                <p role="alert" className="text-helper text-danger-700">
+                  {failure}
+                </p>
+              ) : null}
             </>
           ) : (
             <>
@@ -99,4 +165,19 @@ export function TreasuryDesignation() {
       <Designation />
     </WalletProvider>
   );
+}
+
+function designationFailure(code: string): string {
+  switch (code) {
+    case "FORBIDDEN":
+      return "Only an organization owner can designate the Treasury Address.";
+    case "CONFLICT":
+      return "This organization already has a Treasury Address, or that address belongs to another organization.";
+    case "VALIDATION_ERROR":
+      return "The ownership proof was rejected. Request a new signature and try again.";
+    case "REQUEST_IN_PROGRESS":
+      return "This designation is already being processed. Give it a moment.";
+    default:
+      return "Something went wrong on our side. Try again shortly.";
+  }
 }

@@ -51,10 +51,11 @@ type createOrganizationRequest struct {
 }
 
 type verificationOutcomeResponse struct {
-	Status         string  `json:"status"`
-	Rejection      *string `json:"rejection"`
-	MatchFound     bool    `json:"registry_match_found"`
-	NameSimilarity *string `json:"name_similarity"`
+	Status              string  `json:"status"`
+	Rejection           *string `json:"rejection"`
+	MatchFound          bool    `json:"registry_match_found"`
+	NameSimilarity      *string `json:"name_similarity"`
+	RegisteredLegalName *string `json:"registered_legal_name"`
 }
 
 type createOrganizationResponse struct {
@@ -157,10 +158,11 @@ func toCreateOrganizationResponse(
 			Role:               organizationRoleName[created.GetRole()],
 		},
 		Outcome: verificationOutcomeResponse{
-			Status:         verificationStatusName[outcome.GetStatus()],
-			Rejection:      emptyToNil(rejectionName[outcome.GetRejection()]),
-			MatchFound:     outcome.GetRegistryMatchFound(),
-			NameSimilarity: emptyToNil(outcome.GetNameSimilarity()),
+			Status:              verificationStatusName[outcome.GetStatus()],
+			Rejection:           emptyToNil(rejectionName[outcome.GetRejection()]),
+			MatchFound:          outcome.GetRegistryMatchFound(),
+			NameSimilarity:      emptyToNil(outcome.GetNameSimilarity()),
+			RegisteredLegalName: emptyToNil(outcome.GetRegisteredLegalName()),
 		},
 	}
 }
@@ -218,10 +220,11 @@ func (h *Handlers) GetOrganization(c *gin.Context) {
 		Role:                       organizationRoleName[detail.GetRole()],
 		CreatedAt:                  organization.GetCreatedAt(),
 		Outcome: verificationOutcomeResponse{
-			Status:         verificationStatusName[outcome.GetStatus()],
-			Rejection:      emptyToNil(rejectionName[outcome.GetRejection()]),
-			MatchFound:     outcome.GetRegistryMatchFound(),
-			NameSimilarity: emptyToNil(outcome.GetNameSimilarity()),
+			Status:              verificationStatusName[outcome.GetStatus()],
+			Rejection:           emptyToNil(rejectionName[outcome.GetRejection()]),
+			MatchFound:          outcome.GetRegistryMatchFound(),
+			NameSimilarity:      emptyToNil(outcome.GetNameSimilarity()),
+			RegisteredLegalName: emptyToNil(outcome.GetRegisteredLegalName()),
 		},
 	})
 }

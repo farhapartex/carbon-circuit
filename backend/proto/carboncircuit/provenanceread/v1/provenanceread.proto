@@ -1,0 +1,54 @@
+syntax = "proto3";
+
+package carboncircuit.provenanceread.v1;
+
+option go_package = "github.com/carboncircuit/backend/gen/carboncircuit/provenanceread/v1;provenancereadv1";
+
+service ProvenanceReadService {
+  rpc Ping(PingRequest) returns (PingResponse);
+  rpc TrackBatch(TrackBatchRequest) returns (TrackBatchResponse);
+}
+
+message PingRequest {}
+
+message PingResponse {
+  string service = 1;
+  string revision = 2;
+  bool database_reachable = 3;
+}
+
+message ScoreComponent {
+  string label = 1;
+  int32 earned = 2;
+  int32 available = 3;
+  string explanation = 4;
+}
+
+message PublicCheckpoint {
+  string type = 1;
+  string location_label = 2;
+  string country_code = 3;
+  string shipping_method = 4;
+  string occurred_at = 5;
+  string anchor_status = 6;
+  int32 anchor_epoch = 7;
+  string anchor_transaction_hash = 8;
+  bool superseded = 9;
+}
+
+message TrackBatchRequest {
+  string public_reference = 1;
+}
+
+message TrackBatchResponse {
+  string public_reference = 1;
+  string product_category = 2;
+  string component_type = 3;
+  string originating_facility_name = 4;
+  string originating_facility_country = 5;
+  string produced_at = 6;
+  int32 provenance_score = 7;
+  repeated ScoreComponent score_components = 8;
+  repeated PublicCheckpoint checkpoints = 9;
+  string last_updated_at = 10;
+}

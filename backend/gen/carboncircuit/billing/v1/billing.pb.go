@@ -716,12 +716,10 @@ func (x *GetSubscriptionResponse) GetSubscription() *Subscription {
 }
 
 type CreateSubscriptionRequest struct {
-	state            protoimpl.MessageState `protogen:"open.v1"`
-	OrganizationId   string                 `protobuf:"bytes,1,opt,name=organization_id,json=organizationId,proto3" json:"organization_id,omitempty"`
-	OrganizationType OrganizationType       `protobuf:"varint,2,opt,name=organization_type,json=organizationType,proto3,enum=carboncircuit.billing.v1.OrganizationType" json:"organization_type,omitempty"`
-	PlanTier         PlanTier               `protobuf:"varint,3,opt,name=plan_tier,json=planTier,proto3,enum=carboncircuit.billing.v1.PlanTier" json:"plan_tier,omitempty"`
-	unknownFields    protoimpl.UnknownFields
-	sizeCache        protoimpl.SizeCache
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	PlanTier      PlanTier               `protobuf:"varint,3,opt,name=plan_tier,json=planTier,proto3,enum=carboncircuit.billing.v1.PlanTier" json:"plan_tier,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *CreateSubscriptionRequest) Reset() {
@@ -752,20 +750,6 @@ func (x *CreateSubscriptionRequest) ProtoReflect() protoreflect.Message {
 // Deprecated: Use CreateSubscriptionRequest.ProtoReflect.Descriptor instead.
 func (*CreateSubscriptionRequest) Descriptor() ([]byte, []int) {
 	return file_carboncircuit_billing_v1_billing_proto_rawDescGZIP(), []int{7}
-}
-
-func (x *CreateSubscriptionRequest) GetOrganizationId() string {
-	if x != nil {
-		return x.OrganizationId
-	}
-	return ""
-}
-
-func (x *CreateSubscriptionRequest) GetOrganizationType() OrganizationType {
-	if x != nil {
-		return x.OrganizationType
-	}
-	return OrganizationType_ORGANIZATION_TYPE_UNSPECIFIED
 }
 
 func (x *CreateSubscriptionRequest) GetPlanTier() PlanTier {
@@ -865,11 +849,9 @@ const file_carboncircuit_billing_v1_billing_proto_rawDesc = "" +
 	"\x16GetSubscriptionRequest\x12'\n" +
 	"\x0forganization_id\x18\x01 \x01(\tR\x0eorganizationId\"e\n" +
 	"\x17GetSubscriptionResponse\x12J\n" +
-	"\fsubscription\x18\x01 \x01(\v2&.carboncircuit.billing.v1.SubscriptionR\fsubscription\"\xde\x01\n" +
-	"\x19CreateSubscriptionRequest\x12'\n" +
-	"\x0forganization_id\x18\x01 \x01(\tR\x0eorganizationId\x12W\n" +
-	"\x11organization_type\x18\x02 \x01(\x0e2*.carboncircuit.billing.v1.OrganizationTypeR\x10organizationType\x12?\n" +
-	"\tplan_tier\x18\x03 \x01(\x0e2\".carboncircuit.billing.v1.PlanTierR\bplanTier\"h\n" +
+	"\fsubscription\x18\x01 \x01(\v2&.carboncircuit.billing.v1.SubscriptionR\fsubscription\"\x8c\x01\n" +
+	"\x19CreateSubscriptionRequest\x12?\n" +
+	"\tplan_tier\x18\x03 \x01(\x0e2\".carboncircuit.billing.v1.PlanTierR\bplanTierJ\x04\b\x01\x10\x02J\x04\b\x02\x10\x03R\x0forganization_idR\x11organization_type\"h\n" +
 	"\x1aCreateSubscriptionResponse\x12J\n" +
 	"\fsubscription\x18\x01 \x01(\v2&.carboncircuit.billing.v1.SubscriptionR\fsubscription*\x81\x01\n" +
 	"\bPlanTier\x12\x19\n" +
@@ -943,20 +925,19 @@ var file_carboncircuit_billing_v1_billing_proto_depIdxs = []int32{
 	0,  // 6: carboncircuit.billing.v1.Subscription.plan_tier:type_name -> carboncircuit.billing.v1.PlanTier
 	3,  // 7: carboncircuit.billing.v1.Subscription.state:type_name -> carboncircuit.billing.v1.SubscriptionState
 	8,  // 8: carboncircuit.billing.v1.GetSubscriptionResponse.subscription:type_name -> carboncircuit.billing.v1.Subscription
-	1,  // 9: carboncircuit.billing.v1.CreateSubscriptionRequest.organization_type:type_name -> carboncircuit.billing.v1.OrganizationType
-	0,  // 10: carboncircuit.billing.v1.CreateSubscriptionRequest.plan_tier:type_name -> carboncircuit.billing.v1.PlanTier
-	8,  // 11: carboncircuit.billing.v1.CreateSubscriptionResponse.subscription:type_name -> carboncircuit.billing.v1.Subscription
-	6,  // 12: carboncircuit.billing.v1.BillingService.ListPlans:input_type -> carboncircuit.billing.v1.ListPlansRequest
-	9,  // 13: carboncircuit.billing.v1.BillingService.GetSubscription:input_type -> carboncircuit.billing.v1.GetSubscriptionRequest
-	11, // 14: carboncircuit.billing.v1.BillingService.CreateSubscription:input_type -> carboncircuit.billing.v1.CreateSubscriptionRequest
-	7,  // 15: carboncircuit.billing.v1.BillingService.ListPlans:output_type -> carboncircuit.billing.v1.ListPlansResponse
-	10, // 16: carboncircuit.billing.v1.BillingService.GetSubscription:output_type -> carboncircuit.billing.v1.GetSubscriptionResponse
-	12, // 17: carboncircuit.billing.v1.BillingService.CreateSubscription:output_type -> carboncircuit.billing.v1.CreateSubscriptionResponse
-	15, // [15:18] is the sub-list for method output_type
-	12, // [12:15] is the sub-list for method input_type
-	12, // [12:12] is the sub-list for extension type_name
-	12, // [12:12] is the sub-list for extension extendee
-	0,  // [0:12] is the sub-list for field type_name
+	0,  // 9: carboncircuit.billing.v1.CreateSubscriptionRequest.plan_tier:type_name -> carboncircuit.billing.v1.PlanTier
+	8,  // 10: carboncircuit.billing.v1.CreateSubscriptionResponse.subscription:type_name -> carboncircuit.billing.v1.Subscription
+	6,  // 11: carboncircuit.billing.v1.BillingService.ListPlans:input_type -> carboncircuit.billing.v1.ListPlansRequest
+	9,  // 12: carboncircuit.billing.v1.BillingService.GetSubscription:input_type -> carboncircuit.billing.v1.GetSubscriptionRequest
+	11, // 13: carboncircuit.billing.v1.BillingService.CreateSubscription:input_type -> carboncircuit.billing.v1.CreateSubscriptionRequest
+	7,  // 14: carboncircuit.billing.v1.BillingService.ListPlans:output_type -> carboncircuit.billing.v1.ListPlansResponse
+	10, // 15: carboncircuit.billing.v1.BillingService.GetSubscription:output_type -> carboncircuit.billing.v1.GetSubscriptionResponse
+	12, // 16: carboncircuit.billing.v1.BillingService.CreateSubscription:output_type -> carboncircuit.billing.v1.CreateSubscriptionResponse
+	14, // [14:17] is the sub-list for method output_type
+	11, // [11:14] is the sub-list for method input_type
+	11, // [11:11] is the sub-list for extension type_name
+	11, // [11:11] is the sub-list for extension extendee
+	0,  // [0:11] is the sub-list for field type_name
 }
 
 func init() { file_carboncircuit_billing_v1_billing_proto_init() }

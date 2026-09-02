@@ -785,7 +785,6 @@ func (x *ResolveSessionResponse) GetRole() OrganizationRole {
 
 type CreateOrganizationRequest struct {
 	state                      protoimpl.MessageState `protogen:"open.v1"`
-	Auth0Subject               string                 `protobuf:"bytes,1,opt,name=auth0_subject,json=auth0Subject,proto3" json:"auth0_subject,omitempty"`
 	Name                       string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
 	Type                       OrganizationType       `protobuf:"varint,3,opt,name=type,proto3,enum=carboncircuit.identity.v1.OrganizationType" json:"type,omitempty"`
 	CountryOfIncorporation     string                 `protobuf:"bytes,4,opt,name=country_of_incorporation,json=countryOfIncorporation,proto3" json:"country_of_incorporation,omitempty"`
@@ -823,13 +822,6 @@ func (x *CreateOrganizationRequest) ProtoReflect() protoreflect.Message {
 // Deprecated: Use CreateOrganizationRequest.ProtoReflect.Descriptor instead.
 func (*CreateOrganizationRequest) Descriptor() ([]byte, []int) {
 	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{6}
-}
-
-func (x *CreateOrganizationRequest) GetAuth0Subject() string {
-	if x != nil {
-		return x.Auth0Subject
-	}
-	return ""
 }
 
 func (x *CreateOrganizationRequest) GetName() string {
@@ -1027,14 +1019,13 @@ const file_carboncircuit_identity_v1_identity_proto_rawDesc = "" +
 	"\x04user\x18\x01 \x01(\v2&.carboncircuit.identity.v1.SessionUserR\x04user\x12)\n" +
 	"\x10needs_onboarding\x18\x02 \x01(\bR\x0fneedsOnboarding\x12R\n" +
 	"\forganization\x18\x03 \x01(\v2..carboncircuit.identity.v1.SessionOrganizationR\forganization\x12?\n" +
-	"\x04role\x18\x04 \x01(\x0e2+.carboncircuit.identity.v1.OrganizationRoleR\x04role\"\xec\x02\n" +
-	"\x19CreateOrganizationRequest\x12#\n" +
-	"\rauth0_subject\x18\x01 \x01(\tR\fauth0Subject\x12\x12\n" +
+	"\x04role\x18\x04 \x01(\x0e2+.carboncircuit.identity.v1.OrganizationRoleR\x04role\"\xdc\x02\n" +
+	"\x19CreateOrganizationRequest\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12?\n" +
 	"\x04type\x18\x03 \x01(\x0e2+.carboncircuit.identity.v1.OrganizationTypeR\x04type\x128\n" +
 	"\x18country_of_incorporation\x18\x04 \x01(\tR\x16countryOfIncorporation\x12@\n" +
 	"\x1cbusiness_registration_number\x18\x05 \x01(\tR\x1abusinessRegistrationNumber\x12Y\n" +
-	"\x12product_categories\x18\x06 \x03(\x0e2*.carboncircuit.identity.v1.ProductCategoryR\x11productCategories\"\x83\x02\n" +
+	"\x12product_categories\x18\x06 \x03(\x0e2*.carboncircuit.identity.v1.ProductCategoryR\x11productCategoriesJ\x04\b\x01\x10\x02R\rauth0_subject\"\x83\x02\n" +
 	"\x13VerificationOutcome\x12E\n" +
 	"\x06status\x18\x01 \x01(\x0e2-.carboncircuit.identity.v1.VerificationStatusR\x06status\x12J\n" +
 	"\trejection\x18\x02 \x01(\x0e2,.carboncircuit.identity.v1.RegistryRejectionR\trejection\x120\n" +

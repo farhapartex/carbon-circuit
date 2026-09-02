@@ -88,13 +88,14 @@ message GetSubscriptionRequest {
   string organization_id = 1;
 }
 
+
 message GetSubscriptionResponse {
   Subscription subscription = 1;
 }
 
 message CreateSubscriptionRequest {
-  string organization_id = 1;
-  OrganizationType organization_type = 2;
+  reserved 1, 2;
+  reserved "organization_id", "organization_type";
   PlanTier plan_tier = 3;
 }
 

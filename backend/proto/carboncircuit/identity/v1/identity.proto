@@ -101,7 +101,8 @@ enum RegistryRejection {
 }
 
 message CreateOrganizationRequest {
-  string auth0_subject = 1;
+  reserved 1;
+  reserved "auth0_subject";
   string name = 2;
   OrganizationType type = 3;
   string country_of_incorporation = 4;

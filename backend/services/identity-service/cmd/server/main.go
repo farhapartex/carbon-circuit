@@ -97,7 +97,9 @@ func run() error {
 		store, users, memberships, organizationStore, organizationStore, logger,
 	)
 
-	identityServer := rpc.NewIdentityServer(store, sessions, organizations, logger, revision)
+	describer := service.NewOrganizationReader(store, organizationStore, logger)
+
+	identityServer := rpc.NewIdentityServer(store, sessions, organizations, describer, logger, revision)
 
 	publicKey, err := sharedconfig.Ed25519PublicKey(settings.ServiceTokenPublicKey)
 	if err != nil {

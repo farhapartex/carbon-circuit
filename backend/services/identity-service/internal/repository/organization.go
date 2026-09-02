@@ -18,6 +18,12 @@ type RegistryLookup interface {
 	FindRecord(tx database.Tx, countryCode, registrationNumber string) (domain.BusinessRegistryRecord, bool, error)
 }
 
+type OrganizationReader interface {
+	Find(tx database.Tx, organizationID uuid.UUID) (domain.Organization, bool, error)
+	HasTreasury(tx database.Tx, organizationID uuid.UUID) (bool, error)
+	FindRecordByID(tx database.Tx, recordID uuid.UUID) (domain.BusinessRegistryRecord, bool, error)
+}
+
 type OrganizationWriter interface {
 	Insert(tx database.Tx, organization *domain.Organization) error
 	InsertMembership(tx database.Tx, membership *domain.OrganizationMembership) error
@@ -102,4 +108,65 @@ func (r *OrganizationRepository) InsertMembership(
 	}
 
 	return nil
+}
+
+func (r *OrganizationRepository) Find(
+	tx database.Tx,
+	organizationID uuid.UUID,
+) (domain.Organization, bool, error) {
+	if err := tx.Bound(); err != nil {
+		return domain.Organization{}, false, err
+	}
+
+	var organization domain.Organization
+
+	err := tx.Session().First(&organization, "id = ?", organizationID).Error
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		return domain.Organization{}, false, nil
+	}
+	if err != nil {
+		return domain.Organization{}, false, fmt.Errorf("find organization: %w", err)
+	}
+
+	return organization, true, nil
+}
+
+func (r *OrganizationRepository) HasTreasury(
+	tx database.Tx,
+	organizationID uuid.UUID,
+) (bool, error) {
+	if err := tx.Bound(); err != nil {
+		return false, err
+	}
+
+	var found int64
+	err := tx.Session().Model(&domain.TreasuryAddress{}).
+		Where("organization_id = ? AND state = ?", organizationID, domain.TreasuryActive).
+		Count(&found).Error
+	if err != nil {
+		return false, fmt.Errorf("count treasury addresses: %w", err)
+	}
+
+	return found > 0, nil
+}
+
+func (r *OrganizationRepository) FindRecordByID(
+	tx database.Tx,
+	recordID uuid.UUID,
+) (domain.BusinessRegistryRecord, bool, error) {
+	if err := tx.Bound(); err != nil {
+		return domain.BusinessRegistryRecord{}, false, err
+	}
+
+	var record domain.BusinessRegistryRecord
+
+	err := tx.Session().First(&record, "id = ?", recordID).Error
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		return domain.BusinessRegistryRecord{}, false, nil
+	}
+	if err != nil {
+		return domain.BusinessRegistryRecord{}, false, fmt.Errorf("find registry record: %w", err)
+	}
+
+	return record, true, nil
 }

@@ -15,6 +15,7 @@ type IdentityServer struct {
 	database      *gorm.DB
 	sessions      SessionResolver
 	organizations OrganizationCreator
+	describer     OrganizationDescriber
 	logger        *slog.Logger
 	revision      string
 }
@@ -23,6 +24,7 @@ func NewIdentityServer(
 	database *gorm.DB,
 	sessions SessionResolver,
 	organizations OrganizationCreator,
+	describer OrganizationDescriber,
 	logger *slog.Logger,
 	revision string,
 ) *IdentityServer {
@@ -30,6 +32,7 @@ func NewIdentityServer(
 		database:      database,
 		sessions:      sessions,
 		organizations: organizations,
+		describer:     describer,
 		logger:        logger,
 		revision:      revision,
 	}

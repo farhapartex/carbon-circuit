@@ -84,10 +84,11 @@ func (s *IdentityServer) CreateOrganization(
 		Organization: organizationToProto(&registered.Organization, false),
 		Role:         organizationRoles[registered.Role],
 		Outcome: &identityv1.VerificationOutcome{
-			Status:             verificationStatuses[registered.Outcome.Status],
-			Rejection:          rejectionProto(registered.Outcome.Rejection),
-			RegistryMatchFound: registered.Outcome.MatchFound,
-			NameSimilarity:     registered.Outcome.SimilarityString(),
+			Status:              verificationStatuses[registered.Outcome.Status],
+			Rejection:           rejectionProto(registered.Outcome.Rejection),
+			RegistryMatchFound:  registered.Outcome.MatchFound,
+			NameSimilarity:      registered.Outcome.SimilarityString(),
+			RegisteredLegalName: registered.Outcome.DisclosableName(),
 		},
 	}, nil
 }

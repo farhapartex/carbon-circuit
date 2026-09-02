@@ -1207,6 +1207,222 @@ func (x *GetOrganizationResponse) GetOutcome() *VerificationOutcome {
 	return nil
 }
 
+type IssueTreasuryNonceRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *IssueTreasuryNonceRequest) Reset() {
+	*x = IssueTreasuryNonceRequest{}
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[12]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *IssueTreasuryNonceRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*IssueTreasuryNonceRequest) ProtoMessage() {}
+
+func (x *IssueTreasuryNonceRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[12]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use IssueTreasuryNonceRequest.ProtoReflect.Descriptor instead.
+func (*IssueTreasuryNonceRequest) Descriptor() ([]byte, []int) {
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{12}
+}
+
+type IssueTreasuryNonceResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Nonce         string                 `protobuf:"bytes,1,opt,name=nonce,proto3" json:"nonce,omitempty"`
+	Domain        string                 `protobuf:"bytes,2,opt,name=domain,proto3" json:"domain,omitempty"`
+	ChainId       string                 `protobuf:"bytes,3,opt,name=chain_id,json=chainId,proto3" json:"chain_id,omitempty"`
+	IssuedAt      string                 `protobuf:"bytes,4,opt,name=issued_at,json=issuedAt,proto3" json:"issued_at,omitempty"`
+	ExpiresAt     string                 `protobuf:"bytes,5,opt,name=expires_at,json=expiresAt,proto3" json:"expires_at,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *IssueTreasuryNonceResponse) Reset() {
+	*x = IssueTreasuryNonceResponse{}
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[13]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *IssueTreasuryNonceResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*IssueTreasuryNonceResponse) ProtoMessage() {}
+
+func (x *IssueTreasuryNonceResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[13]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use IssueTreasuryNonceResponse.ProtoReflect.Descriptor instead.
+func (*IssueTreasuryNonceResponse) Descriptor() ([]byte, []int) {
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{13}
+}
+
+func (x *IssueTreasuryNonceResponse) GetNonce() string {
+	if x != nil {
+		return x.Nonce
+	}
+	return ""
+}
+
+func (x *IssueTreasuryNonceResponse) GetDomain() string {
+	if x != nil {
+		return x.Domain
+	}
+	return ""
+}
+
+func (x *IssueTreasuryNonceResponse) GetChainId() string {
+	if x != nil {
+		return x.ChainId
+	}
+	return ""
+}
+
+func (x *IssueTreasuryNonceResponse) GetIssuedAt() string {
+	if x != nil {
+		return x.IssuedAt
+	}
+	return ""
+}
+
+func (x *IssueTreasuryNonceResponse) GetExpiresAt() string {
+	if x != nil {
+		return x.ExpiresAt
+	}
+	return ""
+}
+
+type DesignateTreasuryRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Message       string                 `protobuf:"bytes,1,opt,name=message,proto3" json:"message,omitempty"`
+	Signature     string                 `protobuf:"bytes,2,opt,name=signature,proto3" json:"signature,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DesignateTreasuryRequest) Reset() {
+	*x = DesignateTreasuryRequest{}
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[14]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DesignateTreasuryRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DesignateTreasuryRequest) ProtoMessage() {}
+
+func (x *DesignateTreasuryRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[14]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DesignateTreasuryRequest.ProtoReflect.Descriptor instead.
+func (*DesignateTreasuryRequest) Descriptor() ([]byte, []int) {
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{14}
+}
+
+func (x *DesignateTreasuryRequest) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
+func (x *DesignateTreasuryRequest) GetSignature() string {
+	if x != nil {
+		return x.Signature
+	}
+	return ""
+}
+
+type DesignateTreasuryResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Address       string                 `protobuf:"bytes,1,opt,name=address,proto3" json:"address,omitempty"`
+	DesignatedAt  string                 `protobuf:"bytes,2,opt,name=designated_at,json=designatedAt,proto3" json:"designated_at,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DesignateTreasuryResponse) Reset() {
+	*x = DesignateTreasuryResponse{}
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[15]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DesignateTreasuryResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DesignateTreasuryResponse) ProtoMessage() {}
+
+func (x *DesignateTreasuryResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[15]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DesignateTreasuryResponse.ProtoReflect.Descriptor instead.
+func (*DesignateTreasuryResponse) Descriptor() ([]byte, []int) {
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{15}
+}
+
+func (x *DesignateTreasuryResponse) GetAddress() string {
+	if x != nil {
+		return x.Address
+	}
+	return ""
+}
+
+func (x *DesignateTreasuryResponse) GetDesignatedAt() string {
+	if x != nil {
+		return x.DesignatedAt
+	}
+	return ""
+}
+
 var File_carboncircuit_identity_v1_identity_proto protoreflect.FileDescriptor
 
 const file_carboncircuit_identity_v1_identity_proto_rawDesc = "" +
@@ -1273,7 +1489,21 @@ const file_carboncircuit_identity_v1_identity_proto_rawDesc = "" +
 	"\x17GetOrganizationResponse\x12Q\n" +
 	"\forganization\x18\x01 \x01(\v2-.carboncircuit.identity.v1.OrganizationDetailR\forganization\x12?\n" +
 	"\x04role\x18\x02 \x01(\x0e2+.carboncircuit.identity.v1.OrganizationRoleR\x04role\x12H\n" +
-	"\aoutcome\x18\x03 \x01(\v2..carboncircuit.identity.v1.VerificationOutcomeR\aoutcome*\xbf\x01\n" +
+	"\aoutcome\x18\x03 \x01(\v2..carboncircuit.identity.v1.VerificationOutcomeR\aoutcome\"\x1b\n" +
+	"\x19IssueTreasuryNonceRequest\"\xa1\x01\n" +
+	"\x1aIssueTreasuryNonceResponse\x12\x14\n" +
+	"\x05nonce\x18\x01 \x01(\tR\x05nonce\x12\x16\n" +
+	"\x06domain\x18\x02 \x01(\tR\x06domain\x12\x19\n" +
+	"\bchain_id\x18\x03 \x01(\tR\achainId\x12\x1b\n" +
+	"\tissued_at\x18\x04 \x01(\tR\bissuedAt\x12\x1d\n" +
+	"\n" +
+	"expires_at\x18\x05 \x01(\tR\texpiresAt\"R\n" +
+	"\x18DesignateTreasuryRequest\x12\x18\n" +
+	"\amessage\x18\x01 \x01(\tR\amessage\x12\x1c\n" +
+	"\tsignature\x18\x02 \x01(\tR\tsignature\"Z\n" +
+	"\x19DesignateTreasuryResponse\x12\x18\n" +
+	"\aaddress\x18\x01 \x01(\tR\aaddress\x12#\n" +
+	"\rdesignated_at\x18\x02 \x01(\tR\fdesignatedAt*\xbf\x01\n" +
 	"\x10OrganizationType\x12!\n" +
 	"\x1dORGANIZATION_TYPE_UNSPECIFIED\x10\x00\x12\"\n" +
 	"\x1eORGANIZATION_TYPE_MANUFACTURER\x10\x01\x12\x1f\n" +
@@ -1310,12 +1540,14 @@ const file_carboncircuit_identity_v1_identity_proto_rawDesc = "" +
 	"\x1eREGISTRY_REJECTION_UNSPECIFIED\x10\x00\x12'\n" +
 	"#REGISTRY_REJECTION_ENTITY_DISSOLVED\x10\x01\x12%\n" +
 	"!REGISTRY_REJECTION_SANCTIONS_FLAG\x10\x02\x12$\n" +
-	" REGISTRY_REJECTION_NAME_MISMATCH\x10\x032\xdf\x03\n" +
+	" REGISTRY_REJECTION_NAME_MISMATCH\x10\x032\xe3\x05\n" +
 	"\x0fIdentityService\x12W\n" +
 	"\x04Ping\x12&.carboncircuit.identity.v1.PingRequest\x1a'.carboncircuit.identity.v1.PingResponse\x12u\n" +
 	"\x0eResolveSession\x120.carboncircuit.identity.v1.ResolveSessionRequest\x1a1.carboncircuit.identity.v1.ResolveSessionResponse\x12\x81\x01\n" +
 	"\x12CreateOrganization\x124.carboncircuit.identity.v1.CreateOrganizationRequest\x1a5.carboncircuit.identity.v1.CreateOrganizationResponse\x12x\n" +
-	"\x0fGetOrganization\x121.carboncircuit.identity.v1.GetOrganizationRequest\x1a2.carboncircuit.identity.v1.GetOrganizationResponseB\xff\x01\n" +
+	"\x0fGetOrganization\x121.carboncircuit.identity.v1.GetOrganizationRequest\x1a2.carboncircuit.identity.v1.GetOrganizationResponse\x12\x81\x01\n" +
+	"\x12IssueTreasuryNonce\x124.carboncircuit.identity.v1.IssueTreasuryNonceRequest\x1a5.carboncircuit.identity.v1.IssueTreasuryNonceResponse\x12~\n" +
+	"\x11DesignateTreasury\x123.carboncircuit.identity.v1.DesignateTreasuryRequest\x1a4.carboncircuit.identity.v1.DesignateTreasuryResponseB\xff\x01\n" +
 	"\x1dcom.carboncircuit.identity.v1B\rIdentityProtoP\x01ZIgithub.com/carboncircuit/backend/gen/carboncircuit/identity/v1;identityv1\xa2\x02\x03CIX\xaa\x02\x19Carboncircuit.Identity.V1\xca\x02\x19Carboncircuit\\Identity\\V1\xe2\x02%Carboncircuit\\Identity\\V1\\GPBMetadata\xea\x02\x1bCarboncircuit::Identity::V1b\x06proto3"
 
 var (
@@ -1331,7 +1563,7 @@ func file_carboncircuit_identity_v1_identity_proto_rawDescGZIP() []byte {
 }
 
 var file_carboncircuit_identity_v1_identity_proto_enumTypes = make([]protoimpl.EnumInfo, 7)
-var file_carboncircuit_identity_v1_identity_proto_msgTypes = make([]protoimpl.MessageInfo, 12)
+var file_carboncircuit_identity_v1_identity_proto_msgTypes = make([]protoimpl.MessageInfo, 16)
 var file_carboncircuit_identity_v1_identity_proto_goTypes = []any{
 	(OrganizationType)(0),              // 0: carboncircuit.identity.v1.OrganizationType
 	(OrganizationRole)(0),              // 1: carboncircuit.identity.v1.OrganizationRole
@@ -1352,6 +1584,10 @@ var file_carboncircuit_identity_v1_identity_proto_goTypes = []any{
 	(*GetOrganizationRequest)(nil),     // 16: carboncircuit.identity.v1.GetOrganizationRequest
 	(*OrganizationDetail)(nil),         // 17: carboncircuit.identity.v1.OrganizationDetail
 	(*GetOrganizationResponse)(nil),    // 18: carboncircuit.identity.v1.GetOrganizationResponse
+	(*IssueTreasuryNonceRequest)(nil),  // 19: carboncircuit.identity.v1.IssueTreasuryNonceRequest
+	(*IssueTreasuryNonceResponse)(nil), // 20: carboncircuit.identity.v1.IssueTreasuryNonceResponse
+	(*DesignateTreasuryRequest)(nil),   // 21: carboncircuit.identity.v1.DesignateTreasuryRequest
+	(*DesignateTreasuryResponse)(nil),  // 22: carboncircuit.identity.v1.DesignateTreasuryResponse
 }
 var file_carboncircuit_identity_v1_identity_proto_depIdxs = []int32{
 	4,  // 0: carboncircuit.identity.v1.SessionUser.platform_role:type_name -> carboncircuit.identity.v1.PlatformRole
@@ -1379,12 +1615,16 @@ var file_carboncircuit_identity_v1_identity_proto_depIdxs = []int32{
 	9,  // 22: carboncircuit.identity.v1.IdentityService.ResolveSession:input_type -> carboncircuit.identity.v1.ResolveSessionRequest
 	13, // 23: carboncircuit.identity.v1.IdentityService.CreateOrganization:input_type -> carboncircuit.identity.v1.CreateOrganizationRequest
 	16, // 24: carboncircuit.identity.v1.IdentityService.GetOrganization:input_type -> carboncircuit.identity.v1.GetOrganizationRequest
-	8,  // 25: carboncircuit.identity.v1.IdentityService.Ping:output_type -> carboncircuit.identity.v1.PingResponse
-	12, // 26: carboncircuit.identity.v1.IdentityService.ResolveSession:output_type -> carboncircuit.identity.v1.ResolveSessionResponse
-	15, // 27: carboncircuit.identity.v1.IdentityService.CreateOrganization:output_type -> carboncircuit.identity.v1.CreateOrganizationResponse
-	18, // 28: carboncircuit.identity.v1.IdentityService.GetOrganization:output_type -> carboncircuit.identity.v1.GetOrganizationResponse
-	25, // [25:29] is the sub-list for method output_type
-	21, // [21:25] is the sub-list for method input_type
+	19, // 25: carboncircuit.identity.v1.IdentityService.IssueTreasuryNonce:input_type -> carboncircuit.identity.v1.IssueTreasuryNonceRequest
+	21, // 26: carboncircuit.identity.v1.IdentityService.DesignateTreasury:input_type -> carboncircuit.identity.v1.DesignateTreasuryRequest
+	8,  // 27: carboncircuit.identity.v1.IdentityService.Ping:output_type -> carboncircuit.identity.v1.PingResponse
+	12, // 28: carboncircuit.identity.v1.IdentityService.ResolveSession:output_type -> carboncircuit.identity.v1.ResolveSessionResponse
+	15, // 29: carboncircuit.identity.v1.IdentityService.CreateOrganization:output_type -> carboncircuit.identity.v1.CreateOrganizationResponse
+	18, // 30: carboncircuit.identity.v1.IdentityService.GetOrganization:output_type -> carboncircuit.identity.v1.GetOrganizationResponse
+	20, // 31: carboncircuit.identity.v1.IdentityService.IssueTreasuryNonce:output_type -> carboncircuit.identity.v1.IssueTreasuryNonceResponse
+	22, // 32: carboncircuit.identity.v1.IdentityService.DesignateTreasury:output_type -> carboncircuit.identity.v1.DesignateTreasuryResponse
+	27, // [27:33] is the sub-list for method output_type
+	21, // [21:27] is the sub-list for method input_type
 	21, // [21:21] is the sub-list for extension type_name
 	21, // [21:21] is the sub-list for extension extendee
 	0,  // [0:21] is the sub-list for field type_name
@@ -1401,7 +1641,7 @@ func file_carboncircuit_identity_v1_identity_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_carboncircuit_identity_v1_identity_proto_rawDesc), len(file_carboncircuit_identity_v1_identity_proto_rawDesc)),
 			NumEnums:      7,
-			NumMessages:   12,
+			NumMessages:   16,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

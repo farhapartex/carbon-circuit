@@ -23,6 +23,8 @@ const (
 	IdentityService_ResolveSession_FullMethodName     = "/carboncircuit.identity.v1.IdentityService/ResolveSession"
 	IdentityService_CreateOrganization_FullMethodName = "/carboncircuit.identity.v1.IdentityService/CreateOrganization"
 	IdentityService_GetOrganization_FullMethodName    = "/carboncircuit.identity.v1.IdentityService/GetOrganization"
+	IdentityService_IssueTreasuryNonce_FullMethodName = "/carboncircuit.identity.v1.IdentityService/IssueTreasuryNonce"
+	IdentityService_DesignateTreasury_FullMethodName  = "/carboncircuit.identity.v1.IdentityService/DesignateTreasury"
 )
 
 // IdentityServiceClient is the client API for IdentityService service.
@@ -33,6 +35,8 @@ type IdentityServiceClient interface {
 	ResolveSession(ctx context.Context, in *ResolveSessionRequest, opts ...grpc.CallOption) (*ResolveSessionResponse, error)
 	CreateOrganization(ctx context.Context, in *CreateOrganizationRequest, opts ...grpc.CallOption) (*CreateOrganizationResponse, error)
 	GetOrganization(ctx context.Context, in *GetOrganizationRequest, opts ...grpc.CallOption) (*GetOrganizationResponse, error)
+	IssueTreasuryNonce(ctx context.Context, in *IssueTreasuryNonceRequest, opts ...grpc.CallOption) (*IssueTreasuryNonceResponse, error)
+	DesignateTreasury(ctx context.Context, in *DesignateTreasuryRequest, opts ...grpc.CallOption) (*DesignateTreasuryResponse, error)
 }
 
 type identityServiceClient struct {
@@ -83,6 +87,26 @@ func (c *identityServiceClient) GetOrganization(ctx context.Context, in *GetOrga
 	return out, nil
 }
 
+func (c *identityServiceClient) IssueTreasuryNonce(ctx context.Context, in *IssueTreasuryNonceRequest, opts ...grpc.CallOption) (*IssueTreasuryNonceResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(IssueTreasuryNonceResponse)
+	err := c.cc.Invoke(ctx, IdentityService_IssueTreasuryNonce_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *identityServiceClient) DesignateTreasury(ctx context.Context, in *DesignateTreasuryRequest, opts ...grpc.CallOption) (*DesignateTreasuryResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(DesignateTreasuryResponse)
+	err := c.cc.Invoke(ctx, IdentityService_DesignateTreasury_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // IdentityServiceServer is the server API for IdentityService service.
 // All implementations must embed UnimplementedIdentityServiceServer
 // for forward compatibility.
@@ -91,6 +115,8 @@ type IdentityServiceServer interface {
 	ResolveSession(context.Context, *ResolveSessionRequest) (*ResolveSessionResponse, error)
 	CreateOrganization(context.Context, *CreateOrganizationRequest) (*CreateOrganizationResponse, error)
 	GetOrganization(context.Context, *GetOrganizationRequest) (*GetOrganizationResponse, error)
+	IssueTreasuryNonce(context.Context, *IssueTreasuryNonceRequest) (*IssueTreasuryNonceResponse, error)
+	DesignateTreasury(context.Context, *DesignateTreasuryRequest) (*DesignateTreasuryResponse, error)
 	mustEmbedUnimplementedIdentityServiceServer()
 }
 
@@ -112,6 +138,12 @@ func (UnimplementedIdentityServiceServer) CreateOrganization(context.Context, *C
 }
 func (UnimplementedIdentityServiceServer) GetOrganization(context.Context, *GetOrganizationRequest) (*GetOrganizationResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method GetOrganization not implemented")
+}
+func (UnimplementedIdentityServiceServer) IssueTreasuryNonce(context.Context, *IssueTreasuryNonceRequest) (*IssueTreasuryNonceResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method IssueTreasuryNonce not implemented")
+}
+func (UnimplementedIdentityServiceServer) DesignateTreasury(context.Context, *DesignateTreasuryRequest) (*DesignateTreasuryResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method DesignateTreasury not implemented")
 }
 func (UnimplementedIdentityServiceServer) mustEmbedUnimplementedIdentityServiceServer() {}
 func (UnimplementedIdentityServiceServer) testEmbeddedByValue()                         {}
@@ -206,6 +238,42 @@ func _IdentityService_GetOrganization_Handler(srv interface{}, ctx context.Conte
 	return interceptor(ctx, in, info, handler)
 }
 
+func _IdentityService_IssueTreasuryNonce_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(IssueTreasuryNonceRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(IdentityServiceServer).IssueTreasuryNonce(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: IdentityService_IssueTreasuryNonce_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IdentityServiceServer).IssueTreasuryNonce(ctx, req.(*IssueTreasuryNonceRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _IdentityService_DesignateTreasury_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DesignateTreasuryRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(IdentityServiceServer).DesignateTreasury(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: IdentityService_DesignateTreasury_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IdentityServiceServer).DesignateTreasury(ctx, req.(*DesignateTreasuryRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // IdentityService_ServiceDesc is the grpc.ServiceDesc for IdentityService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -228,6 +296,14 @@ var IdentityService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetOrganization",
 			Handler:    _IdentityService_GetOrganization_Handler,
+		},
+		{
+			MethodName: "IssueTreasuryNonce",
+			Handler:    _IdentityService_IssueTreasuryNonce_Handler,
+		},
+		{
+			MethodName: "DesignateTreasury",
+			Handler:    _IdentityService_DesignateTreasury_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

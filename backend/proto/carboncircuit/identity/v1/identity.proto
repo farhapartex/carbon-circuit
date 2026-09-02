@@ -9,6 +9,8 @@ service IdentityService {
   rpc ResolveSession(ResolveSessionRequest) returns (ResolveSessionResponse);
   rpc CreateOrganization(CreateOrganizationRequest) returns (CreateOrganizationResponse);
   rpc GetOrganization(GetOrganizationRequest) returns (GetOrganizationResponse);
+  rpc IssueTreasuryNonce(IssueTreasuryNonceRequest) returns (IssueTreasuryNonceResponse);
+  rpc DesignateTreasury(DesignateTreasuryRequest) returns (DesignateTreasuryResponse);
 }
 
 enum OrganizationType {
@@ -144,4 +146,24 @@ message GetOrganizationResponse {
   OrganizationDetail organization = 1;
   OrganizationRole role = 2;
   VerificationOutcome outcome = 3;
+}
+
+message IssueTreasuryNonceRequest {}
+
+message IssueTreasuryNonceResponse {
+  string nonce = 1;
+  string domain = 2;
+  string chain_id = 3;
+  string issued_at = 4;
+  string expires_at = 5;
+}
+
+message DesignateTreasuryRequest {
+  string message = 1;
+  string signature = 2;
+}
+
+message DesignateTreasuryResponse {
+  string address = 1;
+  string designated_at = 2;
 }

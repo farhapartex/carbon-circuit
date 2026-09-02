@@ -1,5 +1,6 @@
 import { ShieldCheck } from "lucide-react";
 import { StatusPill } from "@/components/shared/StatusPill";
+import { productCategoryLabels } from "@/lib/labels";
 import {
   claimStatusPresentation,
   facilityVerificationPresentation,
@@ -89,13 +90,6 @@ export function ProvenanceScoreBadge({
   );
 }
 
-const PRODUCT_CATEGORY_LABELS: Record<ProductCategory, string> = {
-  electronics: "Electronics",
-  agriculture: "Agriculture",
-  pharma: "Pharma",
-  textiles: "Textiles",
-};
-
 export const ProductCategoryBadge = ({
   category,
 }: {
@@ -103,7 +97,7 @@ export const ProductCategoryBadge = ({
 }) => (
   <StatusPill
     presentation={{
-      label: PRODUCT_CATEGORY_LABELS[category],
+      label: productCategoryLabels[category],
       variant: "neutral",
     }}
     showDot={false}

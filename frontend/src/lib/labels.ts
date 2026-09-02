@@ -2,6 +2,7 @@ import type { FacilityVerificationStatus } from "@/lib/status";
 import type {
   ActivityType,
   GridRegion,
+  ProductCategory,
   ShippingMethod,
 } from "@/lib/types/common";
 import type { FacilityType } from "@/lib/types/organization";
@@ -74,4 +75,11 @@ export const gridRegionLabels: Record<GridRegion, string> = {
   MY: "MY (Malaysia)",
   SG: "SG (Singapore)",
   TH: "TH (Thailand)",
+};
+
+export const productCategoryLabels: Record<ProductCategory, string> = {
+  electronics: "Electronics",
+  agriculture: "Agriculture",
+  pharma: "Pharma",
+  textiles: "Textiles",
 };

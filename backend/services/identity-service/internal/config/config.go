@@ -32,6 +32,10 @@ type Config struct {
 	KafkaTopicCreate bool
 	OutboxInterval   time.Duration
 	OutboxBatchSize  int
+
+	WalletDomain  string
+	WalletChainID int
+	NonceWindow   time.Duration
 }
 
 func Load() (Config, error) {
@@ -62,6 +66,10 @@ func Load() (Config, error) {
 		KafkaTopicCreate: loader.StringDefault("KAFKA_ALLOW_TOPIC_CREATE", "false") == "true",
 		OutboxInterval:   loader.Duration("OUTBOX_INTERVAL", time.Second),
 		OutboxBatchSize:  loader.Int("OUTBOX_BATCH_SIZE", 100),
+
+		WalletDomain:  loader.String("WALLET_DOMAIN"),
+		WalletChainID: loader.Int("WALLET_CHAIN_ID", 31337),
+		NonceWindow:   loader.Duration("WALLET_NONCE_WINDOW", 5*time.Minute),
 	}
 
 	return config, loader.Err()

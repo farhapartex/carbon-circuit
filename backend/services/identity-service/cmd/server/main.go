@@ -20,6 +20,7 @@ import (
 	"github.com/carboncircuit/backend/services/identity-service/internal/repository"
 	"github.com/carboncircuit/backend/services/identity-service/internal/rpc"
 	"github.com/carboncircuit/backend/services/identity-service/internal/service"
+	"github.com/carboncircuit/backend/services/identity-service/internal/wallet"
 )
 
 var revision = "dev"
@@ -99,7 +100,17 @@ func run() error {
 
 	describer := service.NewOrganizationReader(store, organizationStore, logger)
 
-	identityServer := rpc.NewIdentityServer(store, sessions, organizations, describer, logger, revision)
+	treasury := service.NewTreasuryService(
+		store,
+		repository.NewTreasuryRepository(),
+		wallet.Expectation{Domain: settings.WalletDomain, ChainID: settings.WalletChainID},
+		settings.NonceWindow,
+		logger,
+	)
+
+	identityServer := rpc.NewIdentityServer(
+		store, sessions, organizations, describer, treasury, logger, revision,
+	)
 
 	publicKey, err := sharedconfig.Ed25519PublicKey(settings.ServiceTokenPublicKey)
 	if err != nil {

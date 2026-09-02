@@ -19,6 +19,7 @@ type Config struct {
 
 	IdentityAddress     string
 	BillingAddress      string
+	ProvenanceAddress   string
 	RedisAddress        string
 	RedisPassword       string
 	RedisDatabase       int
@@ -52,6 +53,7 @@ func Load() (Config, error) {
 
 		IdentityAddress:     loader.String("IDENTITY_SERVICE_ADDRESS"),
 		BillingAddress:      loader.String("BILLING_SERVICE_ADDRESS"),
+		ProvenanceAddress:   loader.StringDefault("PROVENANCE_SERVICE_ADDRESS", "provenance-service:9093"),
 		RedisAddress:        loader.StringDefault("REDIS_ADDRESS", "redis:6379"),
 		RedisPassword:       loader.StringDefault("REDIS_PASSWORD", ""),
 		RedisDatabase:       loader.Int("REDIS_DATABASE", 0),

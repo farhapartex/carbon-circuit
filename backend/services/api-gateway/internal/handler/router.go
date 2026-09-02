@@ -14,16 +14,18 @@ import (
 )
 
 type Handlers struct {
-	Identity *upstream.Identity
-	Billing  *upstream.Billing
-	Resolver *caller.Resolver
-	Logger   *slog.Logger
-	Revision string
+	Identity   *upstream.Identity
+	Billing    *upstream.Billing
+	Provenance *upstream.Provenance
+	Resolver   *caller.Resolver
+	Logger     *slog.Logger
+	Revision   string
 }
 
 type RouterOptions struct {
 	Identity    *upstream.Identity
 	Billing     *upstream.Billing
+	Provenance  *upstream.Provenance
 	Limiter     *ratelimit.Limiter
 	Verifier    httpx.TokenVerifier
 	Denylist    httpx.RevocationChecker
@@ -48,11 +50,12 @@ func NewRouter(options RouterOptions) *gin.Engine {
 	}
 
 	handlers := &Handlers{
-		Identity: options.Identity,
-		Resolver: options.Resolver,
-		Billing:  options.Billing,
-		Logger:   options.Logger,
-		Revision: options.Revision,
+		Identity:   options.Identity,
+		Resolver:   options.Resolver,
+		Billing:    options.Billing,
+		Provenance: options.Provenance,
+		Logger:     options.Logger,
+		Revision:   options.Revision,
 	}
 
 	router := gin.New()
@@ -119,6 +122,15 @@ func NewRouter(options RouterOptions) *gin.Engine {
 	authenticated.GET("/facilities", handlers.ListFacilities)
 	authenticated.POST("/facilities", handlers.CreateFacility)
 	authenticated.GET("/facilities/:facilityId", handlers.GetFacility)
+	authenticated.GET("/batches", handlers.ListBatches)
+	authenticated.POST("/batches", handlers.CreateBatch)
+	authenticated.GET("/batches/:batchId", handlers.GetBatch)
+	authenticated.GET("/batches/:batchId/checkpoints", handlers.ListCheckpoints)
+	authenticated.POST("/batches/:batchId/checkpoints", handlers.LogCheckpoint)
+	authenticated.GET(
+		"/batches/:batchId/components/:componentBatchId",
+		handlers.GetComponentBatch,
+	)
 
 	return router
 }

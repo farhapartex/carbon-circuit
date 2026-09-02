@@ -62,6 +62,19 @@ func run() error {
 	}
 	defer closeUpstream(logger, "billing", billing.Close)
 
+	provenanceCreds, err := upstreamCredentials(settings, "provenance-service", logger)
+	if err != nil {
+		return err
+	}
+
+	provenance, err := upstream.DialProvenance(
+		settings.ProvenanceAddress, settings.UpstreamCallTimeout, provenanceCreds,
+	)
+	if err != nil {
+		return err
+	}
+	defer closeUpstream(logger, "provenance", provenance.Close)
+
 	cacheClient := cache.New(settings.RedisAddress, settings.RedisPassword, settings.RedisDatabase, logger)
 	defer closeUpstream(logger, "redis", cacheClient.Close)
 
@@ -97,12 +110,14 @@ func run() error {
 	logger.Info("api-gateway ready",
 		slog.String("identity", settings.IdentityAddress),
 		slog.String("billing", settings.BillingAddress),
+		slog.String("provenance", settings.ProvenanceAddress),
 		slog.Int("public_read_per_minute", settings.PublicReadPerMinute),
 	)
 
 	router := handler.NewRouter(handler.RouterOptions{
 		Identity:    identity,
 		Billing:     billing,
+		Provenance:  provenance,
 		Limiter:     limiter,
 		Verifier:    verifier,
 		Denylist:    denylist,

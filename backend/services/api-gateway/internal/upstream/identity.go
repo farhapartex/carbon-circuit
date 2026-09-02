@@ -123,10 +123,7 @@ func (i *Identity) DesignateTreasury(
 }
 
 func (i *Identity) call(ctx context.Context, idempotencyKey string) (context.Context, context.CancelFunc) {
-	callCtx, cancel := context.WithTimeout(ctx, i.callTimeout)
-	callCtx = grpcx.WithCorrelationID(callCtx, logging.CorrelationIDFrom(ctx))
-	callCtx = grpcx.WithIdempotencyKey(callCtx, idempotencyKey)
-	return callCtx, cancel
+	return callContext(ctx, idempotencyKey, i.callTimeout)
 }
 
 func (i *Identity) ListMembers(ctx context.Context) (*identityv1.ListMembersResponse, error) {

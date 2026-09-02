@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { z } from "zod";
+import { submitCheckpoint } from "@/lib/actions/batches";
 import { Button } from "@/components/ui/button";
 import { Combobox } from "@/components/ui/combobox";
 import {
@@ -42,6 +43,22 @@ const shippingMethods = Object.keys(shippingMethodLabels) as ShippingMethod[];
 
 const toLocalInput = (iso: string) => iso.slice(0, 16);
 
+const failureMessage = (code: string) => {
+  if (code === "FORBIDDEN") {
+    return "Only the organization that owns this batch can log checkpoints on it.";
+  }
+  if (code === "VALIDATION_ERROR") {
+    return "Check the event time and shipping method, then try again.";
+  }
+  if (code === "CONFLICT") {
+    return "That checkpoint was already logged. Reload the batch to see it.";
+  }
+  if (code === "RESOURCE_NOT_FOUND") {
+    return "This batch no longer exists.";
+  }
+  return "We could not log this checkpoint. Please try again.";
+};
+
 type CheckpointFormProps = {
   batchId: string;
   batchLabel: string;
@@ -56,6 +73,7 @@ export function CheckpointForm({
   const router = useRouter();
   const [pending, startTransition] = useTransition();
   const [failure, setFailure] = useState<string | null>(null);
+  const [idempotencyKey] = useState(() => crypto.randomUUID());
 
   const earliest = toLocalInput(producedAt);
   const latest = toLocalInput(new Date().toISOString());
@@ -103,13 +121,27 @@ export function CheckpointForm({
 
   const selectedType = useWatch({ control: form.control, name: "type" });
 
-  const submit = () => {
+  const submit = (values: CheckpointValues) => {
     setFailure(null);
-    startTransition(() => {
-      setFailure(
-        "Checkpoints cannot be logged yet — the provenance service is not built.",
+    startTransition(async () => {
+      const result = await submitCheckpoint(
+        batchId,
+        {
+          type: values.type,
+          locationLabel: values.locationLabel,
+          countryCode: values.countryCode,
+          shippingMethod: values.shippingMethod ?? "",
+          occurredAt: new Date(values.occurredAt).toISOString(),
+        },
+        idempotencyKey,
       );
-      router.refresh();
+
+      if (!result.ok) {
+        setFailure(failureMessage(result.code));
+        return;
+      }
+
+      router.push(`/batches/${batchId}`);
     });
   };
 
@@ -119,9 +151,9 @@ export function CheckpointForm({
         {failure ? (
           <div
             role="alert"
-            className="rounded-md border border-warning-600 bg-warning-50 px-4 py-3"
+            className="rounded-md border border-danger-600 bg-danger-50 px-4 py-3"
           >
-            <p className="text-helper text-warning-700">{failure}</p>
+            <p className="text-helper text-danger-700">{failure}</p>
           </div>
         ) : null}
 

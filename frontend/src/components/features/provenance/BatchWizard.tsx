@@ -16,10 +16,24 @@ import {
   type BatchStep,
 } from "@/components/features/provenance/batchDraft";
 import { StepIndicator } from "@/components/shared/StepIndicator";
+import { submitBatch } from "@/lib/actions/batches";
 import { Form } from "@/components/ui/form";
 import { useFormDraftStore } from "@/stores/form-drafts";
 import type { FacilityRecord } from "@/lib/api/facilities";
 import type { ProductCategory } from "@/lib/types";
+
+const failureMessage = (code: string) => {
+  if (code === "FORBIDDEN") {
+    return "Your organization cannot create batches on its current plan or state.";
+  }
+  if (code === "VALIDATION_ERROR") {
+    return "Check the quantity, production date, and component references.";
+  }
+  if (code === "CONFLICT") {
+    return "A batch with that reference already exists for your organization.";
+  }
+  return "We could not create this batch. Please try again.";
+};
 
 const STEP_LABELS: Record<BatchStep, string> = {
   category: "Category",
@@ -38,11 +52,13 @@ export function BatchWizard({
 }: BatchWizardProps) {
   const router = useRouter();
   const saveDraft = useFormDraftStore((state) => state.saveDraft);
+  const clearDraft = useFormDraftStore((state) => state.clearDraft);
   const draft = useFormDraftStore((state) => state.drafts.batch);
 
   const [stepIndex, setStepIndex] = useState(draft?.step ?? 0);
   const [failure, setFailure] = useState<string | null>(null);
   const [pending, startTransition] = useTransition();
+  const [idempotencyKey] = useState(() => crypto.randomUUID());
 
   const form = useForm<BatchDraftValues>({
     resolver: zodResolver(batchDraftSchema),
@@ -106,13 +122,33 @@ export function BatchWizard({
     setStepIndex(previous);
   };
 
-  const submit = () => {
+  const submit = (values: BatchDraftValues) => {
     setFailure(null);
-    startTransition(() => {
-      setFailure(
-        "Batches cannot be created yet — the provenance service is not built.",
+    startTransition(async () => {
+      const result = await submitBatch(
+        {
+          originatingFacilityId: values.originatingFacilityId,
+          productCategory: values.productCategory,
+          componentType: values.componentType,
+          lotNumber: values.lotNumber ?? "",
+          quantity: values.quantity,
+          unit: values.unit,
+          producedAt: new Date(`${values.producedAt}T00:00:00Z`).toISOString(),
+          externalId: values.externalId ?? "",
+          parentReferences: values.parentReferences
+            .map((parent) => parent.value)
+            .filter((value) => value.length > 0),
+        },
+        idempotencyKey,
       );
-      router.refresh();
+
+      if (!result.ok) {
+        setFailure(failureMessage(result.code));
+        return;
+      }
+
+      clearDraft("batch");
+      router.push(`/batches/${result.detail.batch.id}`);
     });
   };
 
@@ -130,9 +166,9 @@ export function BatchWizard({
         {failure ? (
           <div
             role="alert"
-            className="rounded-md border border-warning-600 bg-warning-50 px-4 py-3"
+            className="rounded-md border border-danger-600 bg-danger-50 px-4 py-3"
           >
-            <p className="text-helper text-warning-700">{failure}</p>
+            <p className="text-helper text-danger-700">{failure}</p>
           </div>
         ) : null}
 

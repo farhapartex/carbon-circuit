@@ -71,6 +71,16 @@ services:
       timeout: 5s
       retries: 20
 
+  devcerts:
+    build:
+      context: .
+      dockerfile: build/devcerts.Dockerfile
+    user: "0:0"
+    command: ["-out", "/certs", "-owner", "65532"]
+    volumes:
+      - certs:/certs
+    restart: "no"
+
   identity-migrate:
     build:
       context: .
@@ -103,6 +113,8 @@ services:
     build:
       context: .
       dockerfile: services/billing-service/Dockerfile
+    volumes:
+      - certs:/certs:ro
     env_file:
       - services/billing-service/.env
     depends_on:
@@ -119,6 +131,8 @@ services:
     build:
       context: .
       dockerfile: services/identity-service/Dockerfile
+    volumes:
+      - certs:/certs:ro
     env_file:
       - services/identity-service/.env
     depends_on:
@@ -133,6 +147,8 @@ services:
     build:
       context: .
       dockerfile: services/api-gateway/Dockerfile
+    volumes:
+      - certs:/certs:ro
     env_file:
       - services/api-gateway/.env
     depends_on:
@@ -143,5 +159,6 @@ services:
       - "8080:8080"
 
 volumes:
+  certs:
   postgres-data:
   redis-data:

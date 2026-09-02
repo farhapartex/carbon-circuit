@@ -20,15 +20,16 @@ const validity = 365 * 24 * time.Hour
 func main() {
 	directory := flag.String("out", "certs", "directory to write certificates into")
 	names := flag.String("services", "api-gateway,identity-service,billing-service", "comma separated service names")
+	owner := flag.Int("owner", -1, "uid and gid to own the written files, -1 to leave unchanged")
 	flag.Parse()
 
-	if err := generate(*directory, strings.Split(*names, ",")); err != nil {
+	if err := generate(*directory, strings.Split(*names, ","), *owner); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}
 }
 
-func generate(directory string, services []string) error {
+func generate(directory string, services []string, owner int) error {
 	if err := os.MkdirAll(directory, 0o755); err != nil {
 		return fmt.Errorf("create %s: %w", directory, err)
 	}
@@ -38,7 +39,7 @@ func generate(directory string, services []string) error {
 		return err
 	}
 
-	if err := writePair(directory, "ca", authority, authorityKey, nil, nil); err != nil {
+	if err := writePair(directory, "ca", authority, authorityKey, owner); err != nil {
 		return err
 	}
 
@@ -57,7 +58,7 @@ func generate(directory string, services []string) error {
 		if leafErr != nil {
 			return leafErr
 		}
-		if err := writePair(directory, service, certificate, key, nil, nil); err != nil {
+		if err := writePair(directory, service, certificate, key, owner); err != nil {
 			return err
 		}
 		fmt.Printf("issued %s\n", service)
@@ -127,7 +128,7 @@ func writePair(
 	directory, name string,
 	certificate []byte,
 	key ed25519.PrivateKey,
-	_ any, _ any,
+	owner int,
 ) error {
 	certPath := filepath.Join(directory, name+".crt")
 	keyPath := filepath.Join(directory, name+".key")
@@ -141,7 +142,25 @@ func writePair(
 		return fmt.Errorf("marshal %s key: %w", name, err)
 	}
 
-	return writePem(keyPath, "PRIVATE KEY", encoded, 0o600)
+	if err := writePem(keyPath, "PRIVATE KEY", encoded, 0o600); err != nil {
+		return err
+	}
+
+	return claim([]string{certPath, keyPath}, owner)
+}
+
+func claim(paths []string, owner int) error {
+	if owner < 0 {
+		return nil
+	}
+
+	for _, path := range paths {
+		if err := os.Chown(path, owner, owner); err != nil {
+			return fmt.Errorf("chown %s: %w", path, err)
+		}
+	}
+
+	return nil
 }
 
 func writePem(path, blockType string, contents []byte, mode os.FileMode) error {

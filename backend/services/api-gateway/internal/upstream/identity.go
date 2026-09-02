@@ -93,3 +93,31 @@ func (i *Identity) GetOrganization(
 
 	return i.client.GetOrganization(callCtx, &identityv1.GetOrganizationRequest{})
 }
+
+func (i *Identity) IssueTreasuryNonce(
+	ctx context.Context,
+) (*identityv1.IssueTreasuryNonceResponse, error) {
+	callCtx, cancel := context.WithTimeout(ctx, i.callTimeout)
+	defer cancel()
+
+	callCtx = grpcx.WithCorrelationID(callCtx, logging.CorrelationIDFrom(ctx))
+
+	return i.client.IssueTreasuryNonce(callCtx, &identityv1.IssueTreasuryNonceRequest{})
+}
+
+func (i *Identity) DesignateTreasury(
+	ctx context.Context,
+	idempotencyKey string,
+	message, signature string,
+) (*identityv1.DesignateTreasuryResponse, error) {
+	callCtx, cancel := context.WithTimeout(ctx, i.callTimeout)
+	defer cancel()
+
+	callCtx = grpcx.WithCorrelationID(callCtx, logging.CorrelationIDFrom(ctx))
+	callCtx = grpcx.WithIdempotencyKey(callCtx, idempotencyKey)
+
+	return i.client.DesignateTreasury(callCtx, &identityv1.DesignateTreasuryRequest{
+		Message:   message,
+		Signature: signature,
+	})
+}

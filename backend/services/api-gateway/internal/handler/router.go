@@ -106,6 +106,8 @@ func NewRouter(options RouterOptions) *gin.Engine {
 	authenticated.GET("/organizations/current", handlers.GetOrganization)
 	authenticated.POST("/organizations", handlers.CreateOrganization)
 	authenticated.POST("/subscriptions", handlers.CreateSubscription)
+	authenticated.POST("/treasury/nonce", handlers.IssueTreasuryNonce)
+	authenticated.POST("/treasury", handlers.DesignateTreasury)
 
 	return router
 }

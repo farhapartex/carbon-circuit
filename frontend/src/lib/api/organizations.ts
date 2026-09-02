@@ -32,6 +32,7 @@ type ApiCreated = {
     rejection: RegistryRejection | null;
     registry_match_found: boolean;
     name_similarity: string | null;
+    registered_legal_name: string | null;
   };
 };
 
@@ -43,6 +44,7 @@ export type CreatedOrganization = {
   rejection: RegistryRejection | null;
   registryMatchFound: boolean;
   nameSimilarity: string | null;
+  registeredLegalName: string | null;
 };
 
 export const createOrganization = async (
@@ -71,5 +73,6 @@ export const createOrganization = async (
     rejection: created.outcome.rejection,
     registryMatchFound: created.outcome.registry_match_found,
     nameSimilarity: created.outcome.name_similarity,
+    registeredLegalName: created.outcome.registered_legal_name,
   };
 };

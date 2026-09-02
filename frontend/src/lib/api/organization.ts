@@ -25,6 +25,7 @@ type ApiOrganizationDetail = {
     rejection: RegistryRejection | null;
     registry_match_found: boolean;
     name_similarity: string | null;
+    registered_legal_name: string | null;
   };
 };
 
@@ -45,6 +46,7 @@ export type OrganizationDetail = {
     rejection: RegistryRejection | null;
     registryMatchFound: boolean;
     nameSimilarity: number | null;
+    registeredLegalName: string | null;
   };
 };
 
@@ -76,6 +78,7 @@ export const fetchCurrentOrganization = async (
         detail.outcome.name_similarity === null
           ? null
           : Number(detail.outcome.name_similarity),
+      registeredLegalName: detail.outcome.registered_legal_name,
     },
   };
 };

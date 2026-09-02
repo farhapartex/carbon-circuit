@@ -36,12 +36,13 @@ type memberResponse struct {
 }
 
 type invitationResponse struct {
-	ID        string `json:"id"`
-	Email     string `json:"email"`
-	Role      string `json:"role"`
-	State     string `json:"state"`
-	InvitedAt string `json:"invited_at"`
-	ExpiresAt string `json:"expires_at"`
+	ID            string `json:"id"`
+	Email         string `json:"email"`
+	Role          string `json:"role"`
+	State         string `json:"state"`
+	InvitedAt     string `json:"invited_at"`
+	ExpiresAt     string `json:"expires_at"`
+	InvitedByName string `json:"invited_by_name"`
 }
 
 type teamResponse struct {
@@ -227,12 +228,13 @@ func (h *Handlers) forgetCaller(c *gin.Context, subject string) {
 
 func toInvitationResponse(invitation *identityv1.Invitation) invitationResponse {
 	return invitationResponse{
-		ID:        invitation.GetId(),
-		Email:     invitation.GetEmail(),
-		Role:      organizationRoleName[invitation.GetRole()],
-		State:     invitationStateName[invitation.GetState()],
-		InvitedAt: invitation.GetInvitedAt(),
-		ExpiresAt: invitation.GetExpiresAt(),
+		ID:            invitation.GetId(),
+		Email:         invitation.GetEmail(),
+		Role:          organizationRoleName[invitation.GetRole()],
+		State:         invitationStateName[invitation.GetState()],
+		InvitedAt:     invitation.GetInvitedAt(),
+		ExpiresAt:     invitation.GetExpiresAt(),
+		InvitedByName: invitation.GetInvitedByName(),
 	}
 }
 

@@ -19,6 +19,16 @@ var (
 	ErrAlreadyMember     = errors.New("that email already belongs to this organization")
 )
 
+type InvitationRecord struct {
+	ID            uuid.UUID
+	Email         string
+	Role          domain.OrganizationRole
+	State         domain.InvitationState
+	InvitedByName string
+	CreatedAt     time.Time
+	ExpiresAt     time.Time
+}
+
 type MemberRecord struct {
 	UserID       uuid.UUID
 	Email        string
@@ -31,7 +41,7 @@ type MemberRecord struct {
 
 type TeamStore interface {
 	ListMembers(tx database.Tx, organizationID uuid.UUID) ([]MemberRecord, error)
-	ListInvitations(tx database.Tx, organizationID uuid.UUID) ([]domain.Invitation, error)
+	ListInvitations(tx database.Tx, organizationID uuid.UUID) ([]InvitationRecord, error)
 	CountActiveOwners(tx database.Tx, organizationID uuid.UUID) (int, error)
 	FindMembership(tx database.Tx, organizationID, userID uuid.UUID) (domain.OrganizationMembership, error)
 	CreateInvitation(tx database.Tx, invitation *domain.Invitation) error
@@ -77,17 +87,21 @@ func (r *TeamRepository) ListMembers(
 func (r *TeamRepository) ListInvitations(
 	tx database.Tx,
 	organizationID uuid.UUID,
-) ([]domain.Invitation, error) {
+) ([]InvitationRecord, error) {
 	if err := tx.Bound(); err != nil {
 		return nil, err
 	}
 
-	var invitations []domain.Invitation
+	var invitations []InvitationRecord
 
 	err := tx.Session().
-		Where("organization_id = ? AND state = ?", organizationID, domain.InvitationPending).
-		Order("created_at DESC").
-		Find(&invitations).Error
+		Table("identity.invitations AS i").
+		Select("i.id, i.email, i.role, i.state, u.name AS invited_by_name, i.created_at, i.expires_at").
+		Joins("JOIN identity.users u ON u.id = i.invited_by_user_id").
+		Where("i.organization_id = ? AND i.state = ? AND i.deleted_at IS NULL",
+			organizationID, domain.InvitationPending).
+		Order("i.created_at DESC").
+		Scan(&invitations).Error
 	if err != nil {
 		return nil, fmt.Errorf("list invitations: %w", err)
 	}

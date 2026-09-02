@@ -199,6 +199,7 @@ message Invitation {
   InvitationState state = 4;
   string invited_at = 5;
   string expires_at = 6;
+  string invited_by_name = 7;
 }
 
 message ListMembersRequest {}

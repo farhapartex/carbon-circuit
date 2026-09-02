@@ -99,7 +99,15 @@ func (s *IdentityServer) ListMembers(
 	}
 
 	for _, invitation := range team.Invitations {
-		response.Invitations = append(response.Invitations, invitationToProto(invitation))
+		response.Invitations = append(response.Invitations, &identityv1.Invitation{
+			Id:            invitation.ID.String(),
+			Email:         invitation.Email,
+			Role:          organizationRoles[invitation.Role],
+			State:         invitationStates[invitation.State],
+			InvitedAt:     invitation.CreatedAt.UTC().Format(time.RFC3339),
+			ExpiresAt:     invitation.ExpiresAt.UTC().Format(time.RFC3339),
+			InvitedByName: invitation.InvitedByName,
+		})
 	}
 
 	return response, nil

@@ -33,7 +33,7 @@ var (
 
 type Team struct {
 	Members     []repository.MemberRecord
-	Invitations []domain.Invitation
+	Invitations []repository.InvitationRecord
 }
 
 type Invite struct {

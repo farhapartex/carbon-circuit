@@ -1578,6 +1578,7 @@ type Invitation struct {
 	State         InvitationState        `protobuf:"varint,4,opt,name=state,proto3,enum=carboncircuit.identity.v1.InvitationState" json:"state,omitempty"`
 	InvitedAt     string                 `protobuf:"bytes,5,opt,name=invited_at,json=invitedAt,proto3" json:"invited_at,omitempty"`
 	ExpiresAt     string                 `protobuf:"bytes,6,opt,name=expires_at,json=expiresAt,proto3" json:"expires_at,omitempty"`
+	InvitedByName string                 `protobuf:"bytes,7,opt,name=invited_by_name,json=invitedByName,proto3" json:"invited_by_name,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1650,6 +1651,13 @@ func (x *Invitation) GetInvitedAt() string {
 func (x *Invitation) GetExpiresAt() string {
 	if x != nil {
 		return x.ExpiresAt
+	}
+	return ""
+}
+
+func (x *Invitation) GetInvitedByName() string {
+	if x != nil {
+		return x.InvitedByName
 	}
 	return ""
 }
@@ -2310,7 +2318,7 @@ const file_carboncircuit_identity_v1_identity_proto_rawDesc = "" +
 	"\x04role\x18\x04 \x01(\x0e2+.carboncircuit.identity.v1.OrganizationRoleR\x04role\x12!\n" +
 	"\fmfa_enrolled\x18\x05 \x01(\bR\vmfaEnrolled\x12\x1b\n" +
 	"\tjoined_at\x18\x06 \x01(\tR\bjoinedAt\x12$\n" +
-	"\x0elast_active_at\x18\a \x01(\tR\flastActiveAt\"\xf3\x01\n" +
+	"\x0elast_active_at\x18\a \x01(\tR\flastActiveAt\"\x9b\x02\n" +
 	"\n" +
 	"Invitation\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x14\n" +
@@ -2320,7 +2328,8 @@ const file_carboncircuit_identity_v1_identity_proto_rawDesc = "" +
 	"\n" +
 	"invited_at\x18\x05 \x01(\tR\tinvitedAt\x12\x1d\n" +
 	"\n" +
-	"expires_at\x18\x06 \x01(\tR\texpiresAt\"\x14\n" +
+	"expires_at\x18\x06 \x01(\tR\texpiresAt\x12&\n" +
+	"\x0finvited_by_name\x18\a \x01(\tR\rinvitedByName\"\x14\n" +
 	"\x12ListMembersRequest\"\x9b\x01\n" +
 	"\x13ListMembersResponse\x12;\n" +
 	"\amembers\x18\x01 \x03(\v2!.carboncircuit.identity.v1.MemberR\amembers\x12G\n" +

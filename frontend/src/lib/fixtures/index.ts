@@ -4,7 +4,6 @@ import * as claimFixtures from "@/lib/fixtures/claims";
 import * as marketplaceFixtures from "@/lib/fixtures/marketplace";
 import * as notificationFixtures from "@/lib/fixtures/notifications";
 import * as organizationFixtures from "@/lib/fixtures/organizations";
-import * as registryFixtures from "@/lib/fixtures/registry";
 import type {
   AIReviewAvailability,
   Batch,
@@ -178,7 +177,3 @@ export const failingRequest = async (
 ): Promise<never> => {
   throw new FixtureRequestError(code, "01JQFIXTURE0000000000000000");
 };
-
-export const verifyRegistration = registryFixtures.verifyRegistration;
-export const NAME_SIMILARITY_THRESHOLD =
-  registryFixtures.NAME_SIMILARITY_THRESHOLD;

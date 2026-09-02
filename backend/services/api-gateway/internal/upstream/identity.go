@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials/insecure"
+	"google.golang.org/grpc/credentials"
 
 	identityv1 "github.com/carboncircuit/backend/gen/carboncircuit/identity/v1"
 	"github.com/carboncircuit/backend/internal/auth"
@@ -19,10 +19,14 @@ type Identity struct {
 	callTimeout time.Duration
 }
 
-func DialIdentity(address string, callTimeout time.Duration) (*Identity, error) {
+func DialIdentity(
+	address string,
+	callTimeout time.Duration,
+	transport credentials.TransportCredentials,
+) (*Identity, error) {
 	connection, err := grpc.NewClient(
 		address,
-		grpc.WithTransportCredentials(insecure.NewCredentials()),
+		grpc.WithTransportCredentials(transport),
 	)
 	if err != nil {
 		return nil, err
@@ -68,7 +72,6 @@ func (i *Identity) ResolveSession(
 func (i *Identity) CreateOrganization(
 	ctx context.Context,
 	idempotencyKey string,
-	caller auth.Caller,
 	request *identityv1.CreateOrganizationRequest,
 ) (*identityv1.CreateOrganizationResponse, error) {
 	callCtx, cancel := context.WithTimeout(ctx, i.callTimeout)
@@ -76,8 +79,6 @@ func (i *Identity) CreateOrganization(
 
 	callCtx = grpcx.WithCorrelationID(callCtx, logging.CorrelationIDFrom(ctx))
 	callCtx = grpcx.WithIdempotencyKey(callCtx, idempotencyKey)
-
-	request.Auth0Subject = caller.Subject
 
 	return i.client.CreateOrganization(callCtx, request)
 }

@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials/insecure"
+	"google.golang.org/grpc/credentials"
 
 	billingv1 "github.com/carboncircuit/backend/gen/carboncircuit/billing/v1"
 	"github.com/carboncircuit/backend/internal/grpcx"
@@ -18,10 +18,14 @@ type Billing struct {
 	callTimeout time.Duration
 }
 
-func DialBilling(address string, callTimeout time.Duration) (*Billing, error) {
+func DialBilling(
+	address string,
+	callTimeout time.Duration,
+	transport credentials.TransportCredentials,
+) (*Billing, error) {
 	connection, err := grpc.NewClient(
 		address,
-		grpc.WithTransportCredentials(insecure.NewCredentials()),
+		grpc.WithTransportCredentials(transport),
 	)
 	if err != nil {
 		return nil, err

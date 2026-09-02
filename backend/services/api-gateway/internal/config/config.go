@@ -4,6 +4,7 @@ import (
 	"time"
 
 	sharedconfig "github.com/carboncircuit/backend/internal/config"
+	"github.com/carboncircuit/backend/internal/grpcx"
 )
 
 const ServiceName = "api-gateway"
@@ -30,6 +31,10 @@ type Config struct {
 
 	Auth0Domain      string
 	Auth0Audience    string
+	ServiceTokenSeed string
+	TokenLifetime    time.Duration
+	CallerContextTTL time.Duration
+	TLS              grpcx.TLSFiles
 	KeyCacheTTL      time.Duration
 	RevocationWindow time.Duration
 }
@@ -59,6 +64,14 @@ func Load() (Config, error) {
 
 		Auth0Domain:      loader.String("AUTH0_DOMAIN"),
 		Auth0Audience:    loader.String("AUTH0_AUDIENCE"),
+		ServiceTokenSeed: loader.String("SERVICE_TOKEN_SEED"),
+		TokenLifetime:    loader.Duration("SERVICE_TOKEN_LIFETIME", 30*time.Second),
+		CallerContextTTL: loader.Duration("CALLER_CONTEXT_TTL", time.Minute),
+		TLS: grpcx.TLSFiles{
+			CertificateAuthority: loader.StringDefault("TLS_CA_FILE", ""),
+			Certificate:          loader.StringDefault("TLS_CERT_FILE", ""),
+			PrivateKey:           loader.StringDefault("TLS_KEY_FILE", ""),
+		},
 		KeyCacheTTL:      loader.Duration("AUTH0_KEY_CACHE_TTL", 5*time.Minute),
 		RevocationWindow: loader.Duration("REVOCATION_WINDOW", 15*time.Minute),
 	}

@@ -9,8 +9,8 @@ import (
 	"google.golang.org/grpc/status"
 
 	identityv1 "github.com/carboncircuit/backend/gen/carboncircuit/identity/v1"
-	"github.com/carboncircuit/backend/internal/auth"
 	"github.com/carboncircuit/backend/internal/httpx"
+	"github.com/carboncircuit/backend/services/api-gateway/internal/caller"
 )
 
 var errUnsupportedCategory = errors.New("unsupported product category")
@@ -56,8 +56,7 @@ type createOrganizationResponse struct {
 }
 
 func (h *Handlers) CreateOrganization(c *gin.Context) {
-	caller, verified := auth.CallerFrom(c.Request.Context())
-	if !verified {
+	if _, resolved := caller.ContextFrom(c.Request.Context()); !resolved {
 		httpx.Fail(c, httpx.CodeUnauthenticated)
 		return
 	}
@@ -92,8 +91,7 @@ func (h *Handlers) CreateOrganization(c *gin.Context) {
 		return
 	}
 
-	created, err := h.Identity.CreateOrganization(c.Request.Context(), key, caller, &identityv1.CreateOrganizationRequest{
-		Auth0Subject:               caller.Subject,
+	created, err := h.Identity.CreateOrganization(c.Request.Context(), key, &identityv1.CreateOrganizationRequest{
 		Name:                       body.Name,
 		Type:                       organizationType,
 		CountryOfIncorporation:     body.CountryOfIncorporation,

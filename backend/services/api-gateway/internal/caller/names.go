@@ -2,6 +2,13 @@ package caller
 
 import identityv1 "github.com/carboncircuit/backend/gen/carboncircuit/identity/v1"
 
+var organizationTypeName = map[identityv1.OrganizationType]string{
+	identityv1.OrganizationType_ORGANIZATION_TYPE_MANUFACTURER: "manufacturer",
+	identityv1.OrganizationType_ORGANIZATION_TYPE_ASSEMBLER:    "assembler",
+	identityv1.OrganizationType_ORGANIZATION_TYPE_LOGISTICS:    "logistics",
+	identityv1.OrganizationType_ORGANIZATION_TYPE_CREDIT_BUYER: "credit_buyer",
+}
+
 var organizationStateName = map[identityv1.OrganizationState]string{
 	identityv1.OrganizationState_ORGANIZATION_STATE_ACTIVE:     "active",
 	identityv1.OrganizationState_ORGANIZATION_STATE_RESTRICTED: "restricted",

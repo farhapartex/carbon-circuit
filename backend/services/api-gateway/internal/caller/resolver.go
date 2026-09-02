@@ -64,6 +64,7 @@ func contextFrom(
 	}
 
 	context.OrganizationID = organization.GetId()
+	context.OrganizationType = organizationTypeName[organization.GetType()]
 	context.OrganizationState = organizationStateName[organization.GetState()]
 	context.VerificationStatus = verificationStatusName[organization.GetVerificationStatus()]
 	context.Role = organizationRoleName[resolved.GetRole()]

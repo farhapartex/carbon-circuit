@@ -6,13 +6,16 @@ import (
 	"os"
 
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials"
 
 	identityv1 "github.com/carboncircuit/backend/gen/carboncircuit/identity/v1"
+	sharedconfig "github.com/carboncircuit/backend/internal/config"
 	"github.com/carboncircuit/backend/internal/database"
 	"github.com/carboncircuit/backend/internal/grpcx"
 	"github.com/carboncircuit/backend/internal/kafka"
 	"github.com/carboncircuit/backend/internal/logging"
 	"github.com/carboncircuit/backend/internal/outbox"
+	"github.com/carboncircuit/backend/internal/servicetoken"
 	"github.com/carboncircuit/backend/services/identity-service/internal/config"
 	"github.com/carboncircuit/backend/services/identity-service/internal/repository"
 	"github.com/carboncircuit/backend/services/identity-service/internal/rpc"
@@ -96,7 +99,32 @@ func run() error {
 
 	identityServer := rpc.NewIdentityServer(store, sessions, organizations, logger, revision)
 
+	publicKey, err := sharedconfig.Ed25519PublicKey(settings.ServiceTokenPublicKey)
+	if err != nil {
+		return err
+	}
+
+	exempt := map[string]bool{
+		"/carboncircuit.identity.v1.IdentityService/ResolveSession": true,
+		"/carboncircuit.identity.v1.IdentityService/Ping":           true,
+	}
+
+	var transport credentials.TransportCredentials
+	if settings.TLS.Configured() {
+		transport, err = grpcx.ServerCredentials(settings.TLS)
+		if err != nil {
+			return err
+		}
+		logger.Info("serving grpc over mutual tls")
+	} else {
+		logger.Warn("grpc is serving without mutual tls")
+	}
+
 	return grpcx.Serve(ctx, grpcx.ServerOptions{
+		Interceptors: []grpc.UnaryServerInterceptor{
+			grpcx.RequireServiceToken(servicetoken.NewVerifier(publicKey), exempt),
+		},
+		TransportCreds:  transport,
 		Address:         settings.GRPCAddress,
 		Logger:          logger,
 		ShutdownTimeout: settings.ShutdownTimeout,

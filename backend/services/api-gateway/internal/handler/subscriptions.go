@@ -8,9 +8,8 @@ import (
 	"google.golang.org/grpc/status"
 
 	billingv1 "github.com/carboncircuit/backend/gen/carboncircuit/billing/v1"
-	identityv1 "github.com/carboncircuit/backend/gen/carboncircuit/identity/v1"
-	"github.com/carboncircuit/backend/internal/auth"
 	"github.com/carboncircuit/backend/internal/httpx"
+	"github.com/carboncircuit/backend/services/api-gateway/internal/caller"
 )
 
 var planTierByName = map[string]billingv1.PlanTier{
@@ -20,17 +19,7 @@ var planTierByName = map[string]billingv1.PlanTier{
 	"enterprise": billingv1.PlanTier_PLAN_TIER_ENTERPRISE,
 }
 
-var billingOrganizationType = map[identityv1.OrganizationType]billingv1.OrganizationType{
-	identityv1.OrganizationType_ORGANIZATION_TYPE_MANUFACTURER: billingv1.OrganizationType_ORGANIZATION_TYPE_MANUFACTURER,
-	identityv1.OrganizationType_ORGANIZATION_TYPE_ASSEMBLER:    billingv1.OrganizationType_ORGANIZATION_TYPE_ASSEMBLER,
-	identityv1.OrganizationType_ORGANIZATION_TYPE_LOGISTICS:    billingv1.OrganizationType_ORGANIZATION_TYPE_LOGISTICS,
-	identityv1.OrganizationType_ORGANIZATION_TYPE_CREDIT_BUYER: billingv1.OrganizationType_ORGANIZATION_TYPE_CREDIT_BUYER,
-}
-
-var plansPurchasableBy = map[identityv1.OrganizationRole]bool{
-	identityv1.OrganizationRole_ORGANIZATION_ROLE_OWNER: true,
-	identityv1.OrganizationRole_ORGANIZATION_ROLE_ADMIN: true,
-}
+var plansPurchasableBy = map[string]bool{"owner": true, "admin": true}
 
 type createSubscriptionRequest struct {
 	PlanTier string `json:"plan_tier" binding:"required"`
@@ -42,8 +31,8 @@ type subscriptionResponse struct {
 }
 
 func (h *Handlers) CreateSubscription(c *gin.Context) {
-	caller, verified := auth.CallerFrom(c.Request.Context())
-	if !verified {
+	resolved, present := caller.ContextFrom(c.Request.Context())
+	if !present {
 		httpx.Fail(c, httpx.CodeUnauthenticated)
 		return
 	}
@@ -69,15 +58,7 @@ func (h *Handlers) CreateSubscription(c *gin.Context) {
 		return
 	}
 
-	resolved, err := h.Identity.ResolveSession(c.Request.Context(), caller)
-	if err != nil {
-		h.Logger.Error("resolve session upstream failed", errorAttributes(c, err)...)
-		httpx.Fail(c, httpx.CodeDependencyUnavailable)
-		return
-	}
-
-	organization := resolved.GetOrganization()
-	if organization == nil {
+	if !resolved.HasOrganization() {
 		httpx.Fail(c, httpx.CodeValidation, httpx.FieldError{
 			Field: "organization",
 			Code:  "REQUIRED",
@@ -85,17 +66,13 @@ func (h *Handlers) CreateSubscription(c *gin.Context) {
 		return
 	}
 
-	if !plansPurchasableBy[resolved.GetRole()] {
+	if !plansPurchasableBy[resolved.Role] {
 		httpx.Fail(c, httpx.CodeForbidden)
 		return
 	}
 
 	created, err := h.Billing.CreateSubscription(c.Request.Context(), key,
-		&billingv1.CreateSubscriptionRequest{
-			OrganizationId:   organization.GetId(),
-			OrganizationType: billingOrganizationType[organization.GetType()],
-			PlanTier:         tier,
-		})
+		&billingv1.CreateSubscriptionRequest{PlanTier: tier})
 	if err != nil {
 		h.failSubscribe(c, err)
 		return

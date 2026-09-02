@@ -5,11 +5,15 @@ import (
 	"time"
 
 	sharedconfig "github.com/carboncircuit/backend/internal/config"
+	"github.com/carboncircuit/backend/internal/grpcx"
 )
 
 const ServiceName = "identity-service"
 
 type Config struct {
+	ServiceTokenPublicKey string
+	TLS                   grpcx.TLSFiles
+
 	Environment     string
 	LogLevel        string
 	GRPCAddress     string
@@ -34,6 +38,12 @@ func Load() (Config, error) {
 	loader := sharedconfig.NewLoader(ServiceName)
 
 	config := Config{
+		ServiceTokenPublicKey: loader.String("SERVICE_TOKEN_PUBLIC_KEY"),
+		TLS: grpcx.TLSFiles{
+			CertificateAuthority: loader.StringDefault("TLS_CA_FILE", ""),
+			Certificate:          loader.StringDefault("TLS_CERT_FILE", ""),
+			PrivateKey:           loader.StringDefault("TLS_KEY_FILE", ""),
+		},
 		Environment:     loader.StringDefault("ENVIRONMENT", "development"),
 		LogLevel:        loader.StringDefault("LOG_LEVEL", "info"),
 		GRPCAddress:     loader.StringDefault("GRPC_ADDRESS", ":9091"),

@@ -6,12 +6,15 @@ import (
 	"os"
 
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials"
 
 	billingv1 "github.com/carboncircuit/backend/gen/carboncircuit/billing/v1"
 	"github.com/carboncircuit/backend/internal/cache"
+	sharedconfig "github.com/carboncircuit/backend/internal/config"
 	"github.com/carboncircuit/backend/internal/database"
 	"github.com/carboncircuit/backend/internal/grpcx"
 	"github.com/carboncircuit/backend/internal/logging"
+	"github.com/carboncircuit/backend/internal/servicetoken"
 	"github.com/carboncircuit/backend/services/billing-service/internal/config"
 	"github.com/carboncircuit/backend/services/billing-service/internal/repository"
 	"github.com/carboncircuit/backend/services/billing-service/internal/rpc"
@@ -80,7 +83,31 @@ func run() error {
 		slog.String("revision", revision),
 	)
 
+	publicKey, err := sharedconfig.Ed25519PublicKey(settings.ServiceTokenPublicKey)
+	if err != nil {
+		return err
+	}
+
+	exempt := map[string]bool{
+		"/carboncircuit.billing.v1.BillingService/ListPlans": true,
+	}
+
+	var transport credentials.TransportCredentials
+	if settings.TLS.Configured() {
+		transport, err = grpcx.ServerCredentials(settings.TLS)
+		if err != nil {
+			return err
+		}
+		logger.Info("serving grpc over mutual tls")
+	} else {
+		logger.Warn("grpc is serving without mutual tls")
+	}
+
 	return grpcx.Serve(ctx, grpcx.ServerOptions{
+		Interceptors: []grpc.UnaryServerInterceptor{
+			grpcx.RequireServiceToken(servicetoken.NewVerifier(publicKey), exempt),
+		},
+		TransportCreds:  transport,
 		Address:         settings.GRPCAddress,
 		Logger:          logger,
 		ShutdownTimeout: settings.ShutdownTimeout,

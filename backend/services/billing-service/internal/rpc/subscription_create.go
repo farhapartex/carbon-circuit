@@ -4,7 +4,6 @@ import (
 	"context"
 	"errors"
 	"log/slog"
-	"strings"
 
 	"github.com/google/uuid"
 	"google.golang.org/grpc/codes"
@@ -17,6 +16,13 @@ import (
 	"github.com/carboncircuit/backend/services/billing-service/internal/service"
 )
 
+var organizationTypeByName = map[string]domain.OrganizationType{
+	"manufacturer": domain.OrganizationManufacturer,
+	"assembler":    domain.OrganizationAssembler,
+	"logistics":    domain.OrganizationLogistics,
+	"credit_buyer": domain.OrganizationCreditBuyer,
+}
+
 var tierFromProto = map[billingv1.PlanTier]domain.PlanTier{
 	billingv1.PlanTier_PLAN_TIER_BUYER:      domain.TierBuyer,
 	billingv1.PlanTier_PLAN_TIER_STARTER:    domain.TierStarter,
@@ -28,9 +34,14 @@ func (s *BillingServer) CreateSubscription(
 	ctx context.Context,
 	request *billingv1.CreateSubscriptionRequest,
 ) (*billingv1.CreateSubscriptionResponse, error) {
-	organizationID, err := uuid.Parse(strings.TrimSpace(request.GetOrganizationId()))
+	verified, present := grpcx.CallerFrom(ctx)
+	if !present || !verified.HasOrganization() {
+		return nil, status.Error(codes.Unauthenticated, "a verified organization is required")
+	}
+
+	organizationID, err := uuid.Parse(verified.OrganizationID)
 	if err != nil {
-		return nil, status.Error(codes.InvalidArgument, "organization_id must be a uuid")
+		return nil, status.Error(codes.Unauthenticated, "service token carries an unusable organization")
 	}
 
 	tier, known := tierFromProto[request.GetPlanTier()]
@@ -38,9 +49,9 @@ func (s *BillingServer) CreateSubscription(
 		return nil, status.Error(codes.InvalidArgument, "plan_tier must be a known tier")
 	}
 
-	organizationType, known := organizationTypeFromProto[request.GetOrganizationType()]
+	organizationType, known := organizationTypeByName[verified.OrganizationType]
 	if !known {
-		return nil, status.Error(codes.InvalidArgument, "organization_type must be known")
+		return nil, status.Error(codes.Unauthenticated, "service token carries an unknown organization type")
 	}
 
 	key := grpcx.IdempotencyKeyFromIncoming(ctx)

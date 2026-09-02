@@ -44,10 +44,16 @@ func (s *IdentityServer) CreateOrganization(
 	ctx context.Context,
 	request *identityv1.CreateOrganizationRequest,
 ) (*identityv1.CreateOrganizationResponse, error) {
-	subject := strings.TrimSpace(request.GetAuth0Subject())
-	if subject == "" {
-		return nil, status.Error(codes.InvalidArgument, "auth0_subject is required")
+	verified, present := grpcx.CallerFrom(ctx)
+	if !present || verified.Subject == "" {
+		return nil, status.Error(codes.Unauthenticated, "a verified caller is required")
 	}
+
+	if verified.HasOrganization() {
+		return nil, status.Error(codes.AlreadyExists, "ORGANIZATION_EXISTS")
+	}
+
+	subject := verified.Subject
 
 	organizationType, known := organizationTypeFromProto[request.GetType()]
 	if !known {

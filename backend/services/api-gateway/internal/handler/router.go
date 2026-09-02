@@ -8,6 +8,8 @@ import (
 
 	"github.com/carboncircuit/backend/internal/httpx"
 	"github.com/carboncircuit/backend/internal/ratelimit"
+	"github.com/carboncircuit/backend/internal/servicetoken"
+	"github.com/carboncircuit/backend/services/api-gateway/internal/caller"
 	"github.com/carboncircuit/backend/services/api-gateway/internal/upstream"
 )
 
@@ -24,6 +26,8 @@ type RouterOptions struct {
 	Limiter     *ratelimit.Limiter
 	Verifier    httpx.TokenVerifier
 	Denylist    httpx.RevocationChecker
+	Resolver    *caller.Resolver
+	Signer      *servicetoken.Signer
 	Logger      *slog.Logger
 	Environment string
 	Revision    string
@@ -92,6 +96,7 @@ func NewRouter(options RouterOptions) *gin.Engine {
 	authenticated := router.Group("/v1")
 	authenticated.Use(
 		httpx.Authenticate(options.Verifier, options.Denylist, options.Logger),
+		caller.Stamp(options.Resolver, options.Signer, options.Logger),
 		httpx.EndpointClass("authenticated_read"),
 		httpx.RateLimit(options.Limiter, options.Logger),
 		httpx.RequireIdempotencyKey(),

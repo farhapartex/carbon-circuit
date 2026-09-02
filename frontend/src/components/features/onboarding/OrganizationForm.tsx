@@ -24,6 +24,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { registryMarketOptions } from "@/lib/countries";
 import { useFormDraftStore } from "@/stores/form-drafts";
 
 const ORGANIZATION_TYPES = [
@@ -49,7 +50,7 @@ const ORGANIZATION_TYPES = [
   },
 ] as const;
 
-const COUNTRIES = ["TW", "SG", "UK", "MY", "JP", "KR", "DE", "VN", "US"];
+const countries = registryMarketOptions();
 
 const organizationSchema = z.object({
   name: z.string().min(2, "Enter your registered legal name."),
@@ -190,18 +191,23 @@ export function OrganizationForm() {
               <FormLabel>Country of incorporation</FormLabel>
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
-                  <SelectTrigger>
+                  <SelectTrigger className="w-full">
                     <SelectValue />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  {COUNTRIES.map((country) => (
-                    <SelectItem key={country} value={country}>
-                      {country}
+                  {countries.map((country) => (
+                    <SelectItem key={country.code} value={country.code}>
+                      {country.name}
                     </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
+              <FormDescription>
+                These are the markets our business register covers. If your
+                country is not listed, contact support and we will verify the
+                organization manually.
+              </FormDescription>
               <FormMessage />
             </FormItem>
           )}

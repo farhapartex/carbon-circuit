@@ -23,6 +23,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { allCountryOptions } from "@/lib/countries";
 import {
   checkpointTypeLabels,
   movesGoods,
@@ -30,7 +31,7 @@ import {
 } from "@/lib/labels";
 import type { CheckpointType, ShippingMethod } from "@/lib/types";
 
-const COUNTRIES = ["TW", "SG", "UK", "MY", "JP", "KR", "DE", "VN", "US"];
+const countries = allCountryOptions();
 
 const checkpointTypes = Object.keys(checkpointTypeLabels) as CheckpointType[];
 const shippingMethods = Object.keys(shippingMethodLabels) as ShippingMethod[];
@@ -175,14 +176,14 @@ export function CheckpointForm({
               <FormLabel>Country</FormLabel>
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
-                  <SelectTrigger>
+                  <SelectTrigger className="w-full">
                     <SelectValue />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  {COUNTRIES.map((country) => (
-                    <SelectItem key={country} value={country}>
-                      {country}
+                  {countries.map((country) => (
+                    <SelectItem key={country.code} value={country.code}>
+                      {country.name}
                     </SelectItem>
                   ))}
                 </SelectContent>

@@ -118,8 +118,16 @@ func run() error {
 		logger,
 	)
 
+	facilities := service.NewFacilityService(
+		store,
+		repository.NewFacilityRepository(),
+		organizationStore,
+		logger,
+	)
+
 	identityServer := rpc.NewIdentityServer(
-		store, sessions, organizations, describer, treasury, team, logger, revision,
+		store, sessions, organizations, describer, treasury, team, facilities,
+		logger, revision,
 	)
 
 	publicKey, err := sharedconfig.Ed25519PublicKey(settings.ServiceTokenPublicKey)

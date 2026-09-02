@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials"
 	"google.golang.org/grpc/health"
 	"google.golang.org/grpc/health/grpc_health_v1"
 	"google.golang.org/grpc/reflection"
@@ -22,6 +23,8 @@ type ServerOptions struct {
 	ReportHealth    func(context.Context) bool
 	HealthInterval  time.Duration
 	ServiceName     string
+	Interceptors    []grpc.UnaryServerInterceptor
+	TransportCreds  credentials.TransportCredentials
 }
 
 func Serve(ctx context.Context, options ServerOptions) error {
@@ -30,13 +33,18 @@ func Serve(ctx context.Context, options ServerOptions) error {
 		return err
 	}
 
-	server := grpc.NewServer(
-		grpc.ChainUnaryInterceptor(
-			CorrelateUnary(),
-			RecoverUnary(options.Logger),
-			LogUnary(options.Logger),
-		),
-	)
+	interceptors := append([]grpc.UnaryServerInterceptor{
+		CorrelateUnary(),
+		RecoverUnary(options.Logger),
+		LogUnary(options.Logger),
+	}, options.Interceptors...)
+
+	settings := []grpc.ServerOption{grpc.ChainUnaryInterceptor(interceptors...)}
+	if options.TransportCreds != nil {
+		settings = append(settings, grpc.Creds(options.TransportCreds))
+	}
+
+	server := grpc.NewServer(settings...)
 
 	options.Register(server)
 

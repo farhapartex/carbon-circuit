@@ -7,6 +7,7 @@ import (
 	"io"
 	"log/slog"
 	"os"
+	"sync/atomic"
 	"testing"
 	"time"
 
@@ -94,6 +95,8 @@ func seedUser(t *testing.T, handle *gorm.DB) (uuid.UUID, string) {
 			return
 		}
 
+		handle.Exec(`DELETE FROM identity.siwe_nonces WHERE user_id = ?`, userID)
+
 		if err := handle.Exec(`DELETE FROM identity.users WHERE id = ?`, userID).Error; err != nil {
 			t.Errorf("delete probe user %s: %v", userID, err)
 		}
@@ -102,7 +105,9 @@ func seedUser(t *testing.T, handle *gorm.DB) (uuid.UUID, string) {
 	return userID, subject
 }
 
-func registryRow(t *testing.T, handle *gorm.DB, condition string) (string, string, string) {
+var registryCursor atomic.Int64
+
+func unusedRegistryRow(t *testing.T, handle *gorm.DB, condition string) (string, string, string) {
 	t.Helper()
 
 	var row struct {
@@ -111,9 +116,12 @@ func registryRow(t *testing.T, handle *gorm.DB, condition string) (string, strin
 		LegalName          string
 	}
 
+	offset := registryCursor.Add(1)
+
 	query := fmt.Sprintf(
 		`SELECT country_code, registration_number, legal_name
-		 FROM identity.business_registry_records WHERE %s LIMIT 1`, condition,
+		 FROM identity.business_registry_records
+		 WHERE %s ORDER BY registration_number OFFSET %d LIMIT 1`, condition, offset,
 	)
 	if err := handle.Raw(query).Scan(&row).Error; err != nil {
 		t.Fatalf("select registry row: %v", err)
@@ -179,7 +187,7 @@ func registration(name, country, number, key string) service.Registration {
 func TestExactRegistryMatchVerifies(t *testing.T) {
 	handle := store(t)
 	_, subject := seedUser(t, handle)
-	country, number, legalName := registryRow(t, handle, "entity_status = 'active' AND NOT sanctioned")
+	country, number, legalName := unusedRegistryRow(t, handle, "entity_status = 'active' AND NOT sanctioned")
 
 	registered, err := create(t, handle, organizations(handle), subject, registration(legalName, country, number, "key-verified-1"))
 	if err != nil {
@@ -235,7 +243,7 @@ func TestUnknownRegistrationNumberIsUnverified(t *testing.T) {
 func TestDissolvedEntityIsRejectedAndSuspended(t *testing.T) {
 	handle := store(t)
 	_, subject := seedUser(t, handle)
-	country, number, legalName := registryRow(t, handle, "entity_status = 'dissolved'")
+	country, number, legalName := unusedRegistryRow(t, handle, "entity_status = 'dissolved'")
 
 	registered, err := create(t, handle, organizations(handle), subject, registration(legalName, country, number, "key-dissolved-1"))
 	if err != nil {
@@ -256,7 +264,7 @@ func TestDissolvedEntityIsRejectedAndSuspended(t *testing.T) {
 func TestSanctionedEntityIsRejectedAndSuspended(t *testing.T) {
 	handle := store(t)
 	_, subject := seedUser(t, handle)
-	country, number, legalName := registryRow(t, handle, "sanctioned AND entity_status = 'active'")
+	country, number, legalName := unusedRegistryRow(t, handle, "sanctioned AND entity_status = 'active'")
 
 	registered, err := create(t, handle, organizations(handle), subject, registration(legalName, country, number, "key-sanctioned-1"))
 	if err != nil {
@@ -274,7 +282,7 @@ func TestSanctionedEntityIsRejectedAndSuspended(t *testing.T) {
 func TestNameMismatchIsRejected(t *testing.T) {
 	handle := store(t)
 	_, subject := seedUser(t, handle)
-	country, number, _ := registryRow(t, handle, "entity_status = 'active' AND NOT sanctioned")
+	country, number, _ := unusedRegistryRow(t, handle, "entity_status = 'active' AND NOT sanctioned")
 
 	registered, err := create(t, handle, organizations(handle), subject, registration("Totally Unrelated Trading Company", country, number, "key-mismatch-1"))
 	if err != nil {
@@ -295,7 +303,7 @@ func TestNameMismatchIsRejected(t *testing.T) {
 func TestRetryWithSameKeyReplaysWithoutCreatingAnother(t *testing.T) {
 	handle := store(t)
 	userID, subject := seedUser(t, handle)
-	country, number, legalName := registryRow(t, handle, "entity_status = 'active' AND NOT sanctioned")
+	country, number, legalName := unusedRegistryRow(t, handle, "entity_status = 'active' AND NOT sanctioned")
 
 	creator := organizations(handle)
 	request := registration(legalName, country, number, "key-replay-1")
@@ -359,7 +367,7 @@ func TestRetryWithSameKeyReplaysWithoutCreatingAnother(t *testing.T) {
 func TestSecondOrganizationForSameUserIsRefused(t *testing.T) {
 	handle := store(t)
 	_, subject := seedUser(t, handle)
-	country, number, legalName := registryRow(t, handle, "entity_status = 'active' AND NOT sanctioned")
+	country, number, legalName := unusedRegistryRow(t, handle, "entity_status = 'active' AND NOT sanctioned")
 
 	creator := organizations(handle)
 

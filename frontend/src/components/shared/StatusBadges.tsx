@@ -2,6 +2,7 @@ import { ShieldCheck } from "lucide-react";
 import { StatusPill } from "@/components/shared/StatusPill";
 import {
   claimStatusPresentation,
+  facilityVerificationPresentation,
   fraudSeverityPresentation,
   listingStatusPresentation,
   provenanceBandForScore,
@@ -11,6 +12,7 @@ import {
   trustTierPresentation,
   verificationStatusPresentation,
   type ClaimStatus,
+  type FacilityVerificationStatus,
   type FraudSeverity,
   type ListingStatus,
   type QueuePriority,
@@ -38,6 +40,12 @@ export const TransactionStatusPill = ({
 export const TrustTierBadge = ({ tier }: { tier: TrustTier }) => (
   <StatusPill presentation={trustTierPresentation[tier]} />
 );
+
+export const FacilityVerificationBadge = ({
+  status,
+}: {
+  status: FacilityVerificationStatus;
+}) => <StatusPill presentation={facilityVerificationPresentation[status]} />;
 
 export const VerificationStatusBadge = ({
   status,

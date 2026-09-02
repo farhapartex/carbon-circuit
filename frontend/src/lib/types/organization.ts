@@ -1,5 +1,9 @@
 import type { CreditAmount } from "@/lib/decimal";
-import type { TrustTier, VerificationStatus } from "@/lib/status";
+import type {
+  FacilityVerificationStatus,
+  TrustTier,
+  VerificationStatus,
+} from "@/lib/status";
 import type {
   CountryCode,
   EthereumAddress,
@@ -47,9 +51,6 @@ export type FacilityType =
   | "component_fabrication"
   | "assembly"
   | "distribution";
-
-export type FacilityVerificationStatus =
-  "facility_matched" | "organization_matched" | "self_declared";
 
 export type Facility = {
   id: Id;

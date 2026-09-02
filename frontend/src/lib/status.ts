@@ -75,6 +75,18 @@ export const verificationStatusPresentation: Record<
   rejected: { label: "Rejected", variant: "danger" },
 };
 
+export type FacilityVerificationStatus =
+  "facility_matched" | "organization_matched" | "self_declared";
+
+export const facilityVerificationPresentation: Record<
+  FacilityVerificationStatus,
+  StatusPresentation
+> = {
+  facility_matched: { label: "Registry matched", variant: "success" },
+  organization_matched: { label: "Organization matched", variant: "info" },
+  self_declared: { label: "Self declared", variant: "warning" },
+};
+
 export type ProvenanceBand = "complete" | "strong" | "partial" | "limited";
 
 export const provenanceBandPresentation: Record<

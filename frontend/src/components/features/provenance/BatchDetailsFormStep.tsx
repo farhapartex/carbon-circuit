@@ -20,12 +20,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import type { Facility } from "@/lib/types";
+import type { FacilityRecord } from "@/lib/api/facilities";
 import type { BatchDraftValues } from "@/components/features/provenance/batchDraft";
 
 type BatchDetailsFormStepProps = {
   control: Control<BatchDraftValues>;
-  facilities: Facility[];
+  facilities: FacilityRecord[];
 };
 
 export function BatchDetailsFormStep({

@@ -18,7 +18,8 @@ import {
 } from "@/components/features/provenance/batchDraft";
 import { Form } from "@/components/ui/form";
 import { useFormDraftStore } from "@/stores/form-drafts";
-import type { Facility, ProductCategory } from "@/lib/types";
+import type { FacilityRecord } from "@/lib/api/facilities";
+import type { ProductCategory } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
 const STEP_LABELS: Record<BatchStep, string> = {
@@ -28,7 +29,7 @@ const STEP_LABELS: Record<BatchStep, string> = {
 };
 
 type BatchWizardProps = {
-  facilities: Facility[];
+  facilities: FacilityRecord[];
   availableCategories: ProductCategory[];
 };
 

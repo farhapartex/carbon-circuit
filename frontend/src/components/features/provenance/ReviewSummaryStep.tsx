@@ -3,7 +3,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { productCategoryLabels } from "@/lib/labels";
 import type { BatchDraftValues } from "@/components/features/provenance/batchDraft";
-import type { Facility } from "@/lib/types";
+import type { FacilityRecord } from "@/lib/api/facilities";
 
 const numberFormat = new Intl.NumberFormat("en-US");
 
@@ -16,7 +16,7 @@ const Row = ({ label, value }: { label: string; value: string }) => (
 
 type ReviewSummaryStepProps = {
   values: BatchDraftValues;
-  facilities: Facility[];
+  facilities: FacilityRecord[];
 };
 
 export function ReviewSummaryStep({

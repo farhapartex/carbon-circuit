@@ -72,3 +72,7 @@ func RequireServiceToken(
 		return handler(withCaller(ctx, caller), request)
 	}
 }
+
+func ForwardServiceToken(ctx context.Context) context.Context {
+	return WithServiceToken(ctx, serviceTokenFrom(ctx))
+}

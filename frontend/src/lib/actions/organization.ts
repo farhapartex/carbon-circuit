@@ -1,14 +1,13 @@
 "use server";
 
 import { GatewayError } from "@/lib/api/gateway";
-import { fetchMe } from "@/lib/api/me";
 import {
   createOrganization,
   type CreatedOrganization,
   type OrganizationDraft,
 } from "@/lib/api/organizations";
 import { auth0 } from "@/lib/auth0";
-import { TENANCY_KEY, tenancyFrom } from "@/lib/session";
+import { TENANCY_KEY, type Tenancy } from "@/lib/session";
 
 export type SubmitOrganizationResult =
   { ok: true; organization: CreatedOrganization } | { ok: false; code: string };
@@ -29,24 +28,30 @@ export const submitOrganization = async (
     throw error;
   }
 
-  await refreshTenancy(token);
+  await recordTenancy(draft, organization);
 
   return { ok: true, organization };
 };
 
-const refreshTenancy = async (token: string) => {
+const recordTenancy = async (
+  draft: OrganizationDraft,
+  organization: CreatedOrganization,
+) => {
   const session = await auth0.getSession();
   if (!session) {
     return;
   }
 
-  try {
-    const current = await fetchMe(token);
-    await auth0.updateSession({
-      ...session,
-      [TENANCY_KEY]: tenancyFrom(current),
-    });
-  } catch {
-    return;
-  }
+  const tenancy: Tenancy = {
+    organizationId: organization.id,
+    organizationType: draft.type,
+    organizationState: organization.state,
+    verificationStatus: organization.verificationStatus,
+    role: "owner",
+    isSubscribed: false,
+    isTreasuryDesignated: false,
+    isOnboardingDone: false,
+  };
+
+  await auth0.updateSession({ ...session, [TENANCY_KEY]: tenancy });
 };

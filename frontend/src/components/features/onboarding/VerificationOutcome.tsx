@@ -1,17 +1,11 @@
-"use client";
-
 import { CheckCircle2, Info, ShieldX } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
-import { NAME_SIMILARITY_THRESHOLD, verifyRegistration } from "@/lib/fixtures";
-import type {
-  RegistryRejectionReason,
-  RegistryVerificationOutcome,
-} from "@/lib/types";
-import { useFormDraftStore } from "@/stores/form-drafts";
+import type { RegistryRejection } from "@/lib/api/organizations";
+import type { VerificationStatus } from "@/lib/status";
+
+const NAME_SIMILARITY_THRESHOLD = 0.85;
 
 const GATED_CAPABILITIES = [
   "Submit sustainability claims",
@@ -19,7 +13,7 @@ const GATED_CAPABILITIES = [
   "List credits for sale",
 ];
 
-const REJECTION_EXPLANATIONS: Record<RegistryRejectionReason, string> = {
+const REJECTION_EXPLANATIONS: Record<RegistryRejection, string> = {
   entity_dissolved:
     "The registry lists this entity as dissolved. We cannot issue credits against a company that no longer legally exists.",
   sanctions_flag:
@@ -28,59 +22,26 @@ const REJECTION_EXPLANATIONS: Record<RegistryRejectionReason, string> = {
     "The name you entered does not closely enough match the registered legal name.",
 };
 
-export function VerificationOutcome() {
-  const draft = useFormDraftStore((state) => state.drafts.organization);
-  const [outcome, setOutcome] = useState<RegistryVerificationOutcome | null>(
-    null,
-  );
+type VerificationOutcomeProps = {
+  declaredName: string;
+  countryCode: string;
+  registrationNumber: string;
+  status: VerificationStatus;
+  rejection: RegistryRejection | null;
+  nameSimilarity: number | null;
+  registeredLegalName: string | null;
+};
 
-  const declaredName = String(draft?.values.name ?? "");
-  const countryCode = String(draft?.values.countryOfIncorporation ?? "");
-  const registrationNumber = String(
-    draft?.values.businessRegistrationNumber ?? "",
-  );
-
-  useEffect(() => {
-    if (!registrationNumber) return;
-    let cancelled = false;
-    verifyRegistration(countryCode, registrationNumber, declaredName).then(
-      (result) => {
-        if (!cancelled) setOutcome(result);
-      },
-    );
-    return () => {
-      cancelled = true;
-    };
-  }, [countryCode, registrationNumber, declaredName]);
-
-  if (!draft) {
-    return (
-      <Card>
-        <CardContent className="space-y-4">
-          <p>We do not have your organization details yet.</p>
-          <Button asChild>
-            <Link href="/onboarding/organization">Start again</Link>
-          </Button>
-        </CardContent>
-      </Card>
-    );
-  }
-
-  if (!outcome) {
-    return (
-      <Card>
-        <CardHeader>
-          <CardTitle>Checking the business registry…</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-3">
-          <Skeleton className="h-4 w-3/4" />
-          <Skeleton className="h-4 w-1/2" />
-        </CardContent>
-      </Card>
-    );
-  }
-
-  if (outcome.status === "verified") {
+export function VerificationOutcome({
+  declaredName,
+  countryCode,
+  registrationNumber,
+  status,
+  rejection,
+  nameSimilarity,
+  registeredLegalName,
+}: VerificationOutcomeProps) {
+  if (status === "verified") {
     return (
       <Card className="border-success-600/30 bg-success-50">
         <CardHeader>
@@ -94,24 +55,16 @@ export function VerificationOutcome() {
             {registrationNumber} matched an active entity in the {countryCode}{" "}
             register. Every capability your plan includes is available to you.
           </p>
-          <dl className="grid gap-3 sm:grid-cols-2">
-            <div>
+          {registeredLegalName ? (
+            <dl>
               <dt className="text-caption text-success-700/80">
                 Registered legal name
               </dt>
               <dd className="font-medium text-success-700">
-                {outcome.matchedRecord?.legalName}
+                {registeredLegalName}
               </dd>
-            </div>
-            <div>
-              <dt className="text-caption text-success-700/80">
-                Registered address
-              </dt>
-              <dd className="font-medium text-success-700">
-                {outcome.matchedRecord?.registeredAddress}
-              </dd>
-            </div>
-          </dl>
+            </dl>
+          ) : null}
           <Button asChild size="lg">
             <Link href="/onboarding/plan">Choose a plan</Link>
           </Button>
@@ -120,7 +73,7 @@ export function VerificationOutcome() {
     );
   }
 
-  if (outcome.status === "unverified") {
+  if (status === "unverified") {
     return (
       <Card className="border-warning-600/30 bg-warning-50">
         <CardHeader>
@@ -144,16 +97,13 @@ export function VerificationOutcome() {
           </ul>
           <p className="text-caption text-warning-700">
             Facilities you register will also be treated as self-declared, which
-            halves the credit ceiling any claim can reach.
+            halves the credit ceiling any claim can reach. To resolve it,
+            contact support with your registration documents and we will verify
+            the organization manually.
           </p>
-          <div className="flex flex-wrap gap-2">
-            <Button asChild size="lg">
-              <Link href="/onboarding/plan">Continue anyway</Link>
-            </Button>
-            <Button asChild size="lg" variant="outline">
-              <Link href="/onboarding/organization">Correct the number</Link>
-            </Button>
-          </div>
+          <Button asChild size="lg">
+            <Link href="/onboarding/plan">Continue to plan selection</Link>
+          </Button>
         </CardContent>
       </Card>
     );
@@ -168,46 +118,44 @@ export function VerificationOutcome() {
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
-        <p className="text-caption text-pretty text-danger-700">
-          {outcome.rejectionReason
-            ? REJECTION_EXPLANATIONS[outcome.rejectionReason]
-            : null}
-        </p>
-        {outcome.rejectionReason === "name_mismatch" ? (
+        {rejection ? (
+          <p className="text-caption text-pretty text-danger-700">
+            {REJECTION_EXPLANATIONS[rejection]}
+          </p>
+        ) : null}
+
+        {rejection === "name_mismatch" ? (
           <dl className="space-y-2">
             <div>
               <dt className="text-caption text-danger-700/80">You entered</dt>
               <dd className="font-medium text-danger-700">{declaredName}</dd>
             </div>
-            <div>
-              <dt className="text-caption text-danger-700/80">
-                The register says
-              </dt>
-              <dd className="font-medium text-danger-700">
-                {outcome.matchedRecord?.legalName}
-              </dd>
-            </div>
-            <div>
-              <dt className="text-caption text-danger-700/80">Similarity</dt>
-              <dd className="font-medium text-danger-700 tabular-nums">
-                {Math.round((outcome.nameSimilarity ?? 0) * 100)}%, below the{" "}
-                {Math.round(NAME_SIMILARITY_THRESHOLD * 100)}% threshold
-              </dd>
-            </div>
+            {registeredLegalName ? (
+              <div>
+                <dt className="text-caption text-danger-700/80">
+                  The register says
+                </dt>
+                <dd className="font-medium text-danger-700">
+                  {registeredLegalName}
+                </dd>
+              </div>
+            ) : null}
+            {nameSimilarity !== null ? (
+              <div>
+                <dt className="text-caption text-danger-700/80">Similarity</dt>
+                <dd className="font-medium text-danger-700 tabular-nums">
+                  {Math.round(nameSimilarity * 100)}%, below the{" "}
+                  {Math.round(NAME_SIMILARITY_THRESHOLD * 100)}% threshold
+                </dd>
+              </div>
+            ) : null}
           </dl>
         ) : null}
+
         <p className="text-caption text-danger-700">
           Your account exists but no platform actions are available. Our team
           reviews suspended registrations manually and will be in touch.
         </p>
-        <div className="flex flex-wrap gap-2">
-          <Button size="lg" variant="outline">
-            Contact support
-          </Button>
-          <Button asChild size="lg" variant="ghost">
-            <Link href="/onboarding/organization">Review what you entered</Link>
-          </Button>
-        </div>
       </CardContent>
     </Card>
   );

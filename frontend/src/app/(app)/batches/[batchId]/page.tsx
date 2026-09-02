@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CheckpointTimeline } from "@/components/features/provenance/CheckpointTimeline";
+import { ParentBatchLinks } from "@/components/features/provenance/ParentBatchLinks";
 import { ProvenanceScorePanel } from "@/components/features/provenance/ProvenanceScorePanel";
 import { CopyButton } from "@/components/shared/CopyButton";
 import { PageHeader } from "@/components/shared/PageHeader";
@@ -53,40 +54,7 @@ export default async function BatchDetailPage({
             </CardContent>
           </Card>
 
-          {batch.parentBatches.length > 0 ? (
-            <Card>
-              <CardHeader>
-                <CardTitle>Component batches</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                {batch.parentBatches.map((parent) => (
-                  <div
-                    key={parent.id}
-                    className="flex flex-wrap items-center justify-between gap-2 rounded-md border border-neutral-200 px-4 py-3"
-                  >
-                    <span>
-                      <span className="block font-medium">
-                        {parent.componentType}
-                      </span>
-                      <span className="block text-caption text-neutral-600">
-                        {parent.originatingFacilityName} ·{" "}
-                        {parent.originatingFacilityCountry}
-                      </span>
-                    </span>
-                    {parent.resolved ? (
-                      <Button asChild size="sm" variant="outline">
-                        <Link href={`/batches/${parent.id}`}>View</Link>
-                      </Button>
-                    ) : (
-                      <span className="text-caption text-neutral-600">
-                        Held by another organization
-                      </span>
-                    )}
-                  </div>
-                ))}
-              </CardContent>
-            </Card>
-          ) : null}
+          <ParentBatchLinks batchId={batch.id} parents={batch.parentBatches} />
         </div>
 
         <div className="space-y-6">

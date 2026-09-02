@@ -178,6 +178,14 @@ func (s *TreasuryService) persist(
 		}, true, nil
 	}
 
+	existing, err := s.treasury.HasActiveTreasury(tx, organizationID)
+	if err != nil {
+		return Designation{}, false, err
+	}
+	if existing {
+		return Designation{}, false, ErrTreasuryDesignated
+	}
+
 	consumed, err := s.treasury.ConsumeNonce(tx, proof.Nonce, time.Now())
 	if err != nil {
 		if errors.Is(err, repository.ErrNonceUnknown) {
@@ -198,10 +206,7 @@ func (s *TreasuryService) persist(
 	}
 
 	if err := s.treasury.InsertTreasury(tx, &treasury, consumed.ID, ownership.Signature); err != nil {
-		switch {
-		case errors.Is(err, repository.ErrTreasuryExists):
-			return Designation{}, false, ErrTreasuryDesignated
-		case errors.Is(err, repository.ErrAddressDesignated):
+		if errors.Is(err, repository.ErrAddressDesignated) {
 			return Designation{}, false, ErrAddressTaken
 		}
 		return Designation{}, false, err

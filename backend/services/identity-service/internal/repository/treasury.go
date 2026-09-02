@@ -21,6 +21,7 @@ var (
 type TreasuryStore interface {
 	IssueNonce(tx database.Tx, nonce *domain.SiweNonce) error
 	ConsumeNonce(tx database.Tx, nonce string, at time.Time) (domain.SiweNonce, error)
+	HasActiveTreasury(tx database.Tx, organizationID uuid.UUID) (bool, error)
 	InsertTreasury(tx database.Tx, treasury *domain.TreasuryAddress, nonceID uuid.UUID, signature string) error
 }
 
@@ -83,7 +84,7 @@ func (r *TreasuryRepository) InsertTreasury(
 
 	err := tx.Session().Create(treasury).Error
 	if errors.Is(err, gorm.ErrDuplicatedKey) {
-		return classifyConflict(tx, treasury.OrganizationID, treasury.Address)
+		return ErrAddressDesignated
 	}
 	if err != nil {
 		return fmt.Errorf("insert treasury address: %w", err)
@@ -92,16 +93,21 @@ func (r *TreasuryRepository) InsertTreasury(
 	return nil
 }
 
-func classifyConflict(tx database.Tx, organizationID uuid.UUID, address string) error {
-	var mine int64
-	tx.Session().Model(&domain.TreasuryAddress{}).
-		Where("organization_id = ? AND state = ?", organizationID, domain.TreasuryActive).
-		Count(&mine)
-
-	if mine > 0 {
-		return ErrTreasuryExists
+func (r *TreasuryRepository) HasActiveTreasury(
+	tx database.Tx,
+	organizationID uuid.UUID,
+) (bool, error) {
+	if err := tx.Bound(); err != nil {
+		return false, err
 	}
 
-	_ = address
-	return ErrAddressDesignated
+	var found int64
+	err := tx.Session().Model(&domain.TreasuryAddress{}).
+		Where("organization_id = ? AND state = ?", organizationID, domain.TreasuryActive).
+		Count(&found).Error
+	if err != nil {
+		return false, fmt.Errorf("count treasury addresses: %w", err)
+	}
+
+	return found > 0, nil
 }

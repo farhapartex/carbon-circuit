@@ -3,11 +3,14 @@ import { OnboardingStepper } from "@/components/features/onboarding/OnboardingSt
 import { PlanSelector } from "@/components/features/onboarding/PlanSelector";
 import { PageHeader } from "@/components/shared/PageHeader";
 import { fetchPlans } from "@/lib/api/plans";
+import { auth0 } from "@/lib/auth0";
+import { tenancyOf } from "@/lib/session";
 
 export const metadata: Metadata = { title: "Choose a plan" };
 
 export default async function OnboardingPlanPage() {
-  const plans = await fetchPlans();
+  const tenancy = tenancyOf(await auth0.getSession());
+  const plans = await fetchPlans(tenancy?.organizationType ?? undefined);
 
   return (
     <>

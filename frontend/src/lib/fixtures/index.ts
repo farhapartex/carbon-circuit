@@ -133,6 +133,21 @@ export const getPublicBatchView = async (
 ): Promise<PublicBatchView | null> =>
   batchFixtures.publicBatchViews[publicReference] ?? null;
 
+export const getComponentBatchView = async (
+  batchId: string,
+  componentBatchId: string,
+): Promise<PublicBatchView | null> => {
+  const batch = await getBatch(batchId);
+  if (!batch) return null;
+
+  const declared = batch.parentBatches.find(
+    (parent) => parent.id === componentBatchId && parent.resolved,
+  );
+  if (!declared) return null;
+
+  return batchFixtures.componentBatchViews[componentBatchId] ?? null;
+};
+
 export const listClaims = async (
   page = 1,
 ): Promise<Paginated<SustainabilityClaim>> =>

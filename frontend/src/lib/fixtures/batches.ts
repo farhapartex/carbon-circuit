@@ -463,3 +463,296 @@ export const publicBatchViews: Record<string, PublicBatchView> = {
     lastUpdatedAt: "2026-08-29T01:30:00Z",
   },
 };
+
+const polysiliconScore = scoreFrom([
+  {
+    label: "Checkpoint completeness",
+    earned: 40,
+    available: 40,
+    explanation: "All 5 expected checkpoint types recorded.",
+  },
+  {
+    label: "On-chain anchoring",
+    earned: 20,
+    available: 20,
+    explanation: "All 5 checkpoints included in a confirmed epoch anchor.",
+  },
+  {
+    label: "Chain depth resolution",
+    earned: 15,
+    available: 15,
+    explanation: "This batch declares no parent batches.",
+  },
+  {
+    label: "Reporting timeliness",
+    earned: 12,
+    available: 15,
+    explanation: "Median reporting lag of 9 hours.",
+  },
+  {
+    label: "Facility sustainability record",
+    earned: 10,
+    available: 10,
+    explanation: "Originating facility holds an approved 2026 claim.",
+  },
+]);
+
+const photoresistScore = scoreFrom([
+  {
+    label: "Checkpoint completeness",
+    earned: 24,
+    available: 40,
+    explanation: "3 of 5 expected checkpoint types recorded.",
+  },
+  {
+    label: "On-chain anchoring",
+    earned: 20,
+    available: 20,
+    explanation: "All 3 checkpoints included in a confirmed epoch anchor.",
+  },
+  {
+    label: "Chain depth resolution",
+    earned: 15,
+    available: 15,
+    explanation: "This batch declares no parent batches.",
+  },
+  {
+    label: "Reporting timeliness",
+    earned: 15,
+    available: 15,
+    explanation: "Median reporting lag of 2 hours, well under 24 hours.",
+  },
+  {
+    label: "Facility sustainability record",
+    earned: 0,
+    available: 10,
+    explanation: "Originating facility has no approved sustainability claim.",
+  },
+]);
+
+const polysiliconCheckpoints: Checkpoint[] = [
+  {
+    id: "chk_poly_1",
+    batchId: "bat_polysilicon_221",
+    type: "production_complete",
+    location: {
+      label: "Kuantan Polysilicon Works",
+      countryCode: "MY",
+      coordinates: { latitude: 3.8077, longitude: 103.326 },
+    },
+    shippingMethod: null,
+    occurredAt: "2026-05-18T06:30:00Z",
+    reportedAt: "2026-05-18T15:10:00Z",
+    reportedByOrganizationName: "Kuantan Polysilicon Works",
+    anchor: {
+      status: "confirmed",
+      epoch: 38104,
+      transactionHash:
+        "0xa1b2c3d4e5f60718293a4b5c6d7e8f90a1b2c3d4e5f60718293a4b5c6d7e8f90",
+      inclusionProofAvailable: true,
+    },
+    supersededByCheckpointId: null,
+    supersedesCheckpointId: null,
+    correctionReason: null,
+  },
+  {
+    id: "chk_poly_2",
+    batchId: "bat_polysilicon_221",
+    type: "departed_origin",
+    location: {
+      label: "Port of Kuantan",
+      countryCode: "MY",
+      coordinates: { latitude: 3.9741, longitude: 103.4292 },
+    },
+    shippingMethod: "sea_freight_bulk",
+    occurredAt: "2026-05-21T09:00:00Z",
+    reportedAt: "2026-05-21T18:40:00Z",
+    reportedByOrganizationName: "Straits Bulk Logistics",
+    anchor: {
+      status: "confirmed",
+      epoch: 38311,
+      transactionHash:
+        "0xb2c3d4e5f60718293a4b5c6d7e8f90a1b2c3d4e5f60718293a4b5c6d7e8f90a1",
+      inclusionProofAvailable: true,
+    },
+    supersededByCheckpointId: null,
+    supersedesCheckpointId: null,
+    correctionReason: null,
+  },
+  {
+    id: "chk_poly_3",
+    batchId: "bat_polysilicon_221",
+    type: "customs_export",
+    location: {
+      label: "Kuantan Customs",
+      countryCode: "MY",
+      coordinates: null,
+    },
+    shippingMethod: null,
+    occurredAt: "2026-05-21T14:20:00Z",
+    reportedAt: "2026-05-22T01:05:00Z",
+    reportedByOrganizationName: "Straits Bulk Logistics",
+    anchor: {
+      status: "confirmed",
+      epoch: 38344,
+      transactionHash:
+        "0xc3d4e5f60718293a4b5c6d7e8f90a1b2c3d4e5f60718293a4b5c6d7e8f90a1b2",
+      inclusionProofAvailable: true,
+    },
+    supersededByCheckpointId: null,
+    supersedesCheckpointId: null,
+    correctionReason: null,
+  },
+  {
+    id: "chk_poly_4",
+    batchId: "bat_polysilicon_221",
+    type: "customs_import",
+    location: {
+      label: "Keelung Customs",
+      countryCode: "TW",
+      coordinates: null,
+    },
+    shippingMethod: null,
+    occurredAt: "2026-06-02T08:15:00Z",
+    reportedAt: "2026-06-02T16:30:00Z",
+    reportedByOrganizationName: "Straits Bulk Logistics",
+    anchor: {
+      status: "confirmed",
+      epoch: 39102,
+      transactionHash:
+        "0xd4e5f60718293a4b5c6d7e8f90a1b2c3d4e5f60718293a4b5c6d7e8f90a1b2c3",
+      inclusionProofAvailable: true,
+    },
+    supersededByCheckpointId: null,
+    supersedesCheckpointId: null,
+    correctionReason: null,
+  },
+  {
+    id: "chk_poly_5",
+    batchId: "bat_polysilicon_221",
+    type: "arrived_destination",
+    location: {
+      label: "Hsinchu Fab TW-01",
+      countryCode: "TW",
+      coordinates: { latitude: 24.7784, longitude: 121.0033 },
+    },
+    shippingMethod: "road_hgv",
+    occurredAt: "2026-06-03T05:40:00Z",
+    reportedAt: "2026-06-03T09:55:00Z",
+    reportedByOrganizationName: verifiedManufacturer.name,
+    anchor: {
+      status: "confirmed",
+      epoch: 39188,
+      transactionHash:
+        "0xe5f60718293a4b5c6d7e8f90a1b2c3d4e5f60718293a4b5c6d7e8f90a1b2c3d4",
+      inclusionProofAvailable: true,
+    },
+    supersededByCheckpointId: null,
+    supersedesCheckpointId: null,
+    correctionReason: null,
+  },
+];
+
+const photoresistCheckpoints: Checkpoint[] = [
+  {
+    id: "chk_resist_1",
+    batchId: "bat_photoresist_57",
+    type: "production_complete",
+    location: {
+      label: "Kawasaki Speciality Chemicals",
+      countryCode: "JP",
+      coordinates: { latitude: 35.5308, longitude: 139.7029 },
+    },
+    shippingMethod: null,
+    occurredAt: "2026-06-05T23:10:00Z",
+    reportedAt: "2026-06-06T01:20:00Z",
+    reportedByOrganizationName: "Kawasaki Speciality Chemicals",
+    anchor: {
+      status: "confirmed",
+      epoch: 39420,
+      transactionHash:
+        "0xf60718293a4b5c6d7e8f90a1b2c3d4e5f60718293a4b5c6d7e8f90a1b2c3d4e5",
+      inclusionProofAvailable: true,
+    },
+    supersededByCheckpointId: null,
+    supersedesCheckpointId: null,
+    correctionReason: null,
+  },
+  {
+    id: "chk_resist_2",
+    batchId: "bat_photoresist_57",
+    type: "departed_origin",
+    location: {
+      label: "Tokyo Haneda Airport",
+      countryCode: "JP",
+      coordinates: { latitude: 35.5494, longitude: 139.7798 },
+    },
+    shippingMethod: "air_freight_short_haul",
+    occurredAt: "2026-06-08T13:45:00Z",
+    reportedAt: "2026-06-08T15:30:00Z",
+    reportedByOrganizationName: "Nihon Express Cargo",
+    anchor: {
+      status: "confirmed",
+      epoch: 39655,
+      transactionHash:
+        "0x0718293a4b5c6d7e8f90a1b2c3d4e5f60718293a4b5c6d7e8f90a1b2c3d4e5f6",
+      inclusionProofAvailable: true,
+    },
+    supersededByCheckpointId: null,
+    supersedesCheckpointId: null,
+    correctionReason: null,
+  },
+  {
+    id: "chk_resist_3",
+    batchId: "bat_photoresist_57",
+    type: "customs_export",
+    location: { label: "Haneda Customs", countryCode: "JP", coordinates: null },
+    shippingMethod: null,
+    occurredAt: "2026-06-08T18:05:00Z",
+    reportedAt: "2026-06-08T20:15:00Z",
+    reportedByOrganizationName: "Nihon Express Cargo",
+    anchor: {
+      status: "confirmed",
+      epoch: 39681,
+      transactionHash:
+        "0x18293a4b5c6d7e8f90a1b2c3d4e5f60718293a4b5c6d7e8f90a1b2c3d4e5f607",
+      inclusionProofAvailable: true,
+    },
+    supersededByCheckpointId: null,
+    supersedesCheckpointId: null,
+    correctionReason: null,
+  },
+];
+
+export const componentBatchViews: Record<string, PublicBatchView> = {
+  bat_polysilicon_221: {
+    publicReference: "mR3xKp8Zc1Vt5nQwJ7dBaU",
+    productCategory: "electronics",
+    componentType: "Electronic-grade polysilicon",
+    producedAt: "2026-05-18T06:30:00Z",
+    originatingFacilityName: "Kuantan Polysilicon Works",
+    originatingFacilityCountry: "MY",
+    provenanceScore: polysiliconScore,
+    checkpoints: polysiliconCheckpoints,
+    approvedClaimSummaries: [
+      {
+        activityTypeLabel: "Renewable energy",
+        vintageYear: 2026,
+        approvedAt: "2026-04-30T08:00:00Z",
+      },
+    ],
+    lastUpdatedAt: "2026-06-03T09:55:00Z",
+  },
+  bat_photoresist_57: {
+    publicReference: "vN9jHs2Yq6Fw0zLxG4mCtP",
+    productCategory: "electronics",
+    componentType: "EUV photoresist, batch 57",
+    producedAt: "2026-06-05T23:10:00Z",
+    originatingFacilityName: "Kawasaki Speciality Chemicals",
+    originatingFacilityCountry: "JP",
+    provenanceScore: photoresistScore,
+    checkpoints: photoresistCheckpoints,
+    approvedClaimSummaries: [],
+    lastUpdatedAt: "2026-06-08T20:15:00Z",
+  },
+};

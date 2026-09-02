@@ -5,14 +5,9 @@ import { CreditAmountDisplay } from "@/components/shared/CreditAmountDisplay";
 import { DataTable, type DataTableColumn } from "@/components/shared/DataTable";
 import { EmptyState } from "@/components/shared/EmptyState";
 import { TimestampDisplay } from "@/components/shared/TimestampDisplay";
-import type { ActivityType, Retirement } from "@/lib/types";
+import type { Retirement } from "@/lib/types";
+import { activityTypeLabels } from "@/lib/labels";
 import { explorerTransactionUrl } from "@/lib/wallet/chain";
-
-const ACTIVITY_LABELS: Record<ActivityType, string> = {
-  renewable_energy: "Renewable energy",
-  reduced_emission_logistics: "Reduced-emission logistics",
-  responsible_sourcing: "Responsible sourcing",
-};
 
 const columns: DataTableColumn<Retirement>[] = [
   {
@@ -41,7 +36,7 @@ const columns: DataTableColumn<Retirement>[] = [
     key: "activityType",
     header: "Activity",
     render: (retirement) =>
-      ACTIVITY_LABELS[retirement.creditClass.activityType],
+      activityTypeLabels[retirement.creditClass.activityType],
   },
   {
     key: "quantity",

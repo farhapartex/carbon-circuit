@@ -19,7 +19,7 @@ const validity = 365 * 24 * time.Hour
 
 func main() {
 	directory := flag.String("out", "certs", "directory to write certificates into")
-	names := flag.String("services", "api-gateway,identity-service,billing-service", "comma separated service names")
+	names := flag.String("services", "api-gateway,identity-service,billing-service,provenance-service", "comma separated service names")
 	owner := flag.Int("owner", -1, "uid and gid to own the written files, -1 to leave unchanged")
 	flag.Parse()
 

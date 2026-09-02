@@ -127,6 +127,36 @@ services:
     expose:
       - "9092"
 
+  provenance-migrate:
+    build:
+      context: .
+      dockerfile: services/provenance-service/Dockerfile
+    entrypoint: ["/provenance-migrate"]
+    command: ["up"]
+    environment:
+      DATABASE_MIGRATION_DSN: postgres://provenance_service:provenance_service@postgres:5432/carboncircuit?sslmode=disable
+      DATABASE_SCHEMA: provenance
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: "no"
+
+  provenance-service:
+    build:
+      context: .
+      dockerfile: services/provenance-service/Dockerfile
+    volumes:
+      - certs:/certs:ro
+    env_file:
+      - services/provenance-service/.env
+    depends_on:
+      pgbouncer:
+        condition: service_healthy
+      provenance-migrate:
+        condition: service_completed_successfully
+    expose:
+      - "9093"
+
   identity-service:
     build:
       context: .
@@ -154,6 +184,7 @@ services:
     depends_on:
       - identity-service
       - billing-service
+      - provenance-service
       - redis
     ports:
       - "8080:8080"

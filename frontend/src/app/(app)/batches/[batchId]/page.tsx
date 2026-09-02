@@ -28,6 +28,7 @@ export default async function BatchDetailPage({
     <>
       <div className="flex flex-wrap items-start justify-between gap-4">
         <PageHeader
+          backTo={{ href: "/batches", label: "Batches" }}
           title={batch.componentType}
           description={`${numberFormat.format(batch.quantity)} ${batch.unit} produced at ${batch.originatingFacilityName}.`}
         />

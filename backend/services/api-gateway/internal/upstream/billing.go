@@ -61,3 +61,17 @@ func (b *Billing) GetSubscription(
 		OrganizationId: organizationID,
 	})
 }
+
+func (b *Billing) CreateSubscription(
+	ctx context.Context,
+	idempotencyKey string,
+	request *billingv1.CreateSubscriptionRequest,
+) (*billingv1.CreateSubscriptionResponse, error) {
+	callCtx, cancel := context.WithTimeout(ctx, b.callTimeout)
+	defer cancel()
+
+	callCtx = grpcx.WithCorrelationID(callCtx, logging.CorrelationIDFrom(ctx))
+	callCtx = grpcx.WithIdempotencyKey(callCtx, idempotencyKey)
+
+	return b.client.CreateSubscription(callCtx, request)
+}

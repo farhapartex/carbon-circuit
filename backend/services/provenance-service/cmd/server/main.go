@@ -12,7 +12,9 @@ import (
 	sharedconfig "github.com/carboncircuit/backend/internal/config"
 	"github.com/carboncircuit/backend/internal/database"
 	"github.com/carboncircuit/backend/internal/grpcx"
+	"github.com/carboncircuit/backend/internal/kafka"
 	"github.com/carboncircuit/backend/internal/logging"
+	"github.com/carboncircuit/backend/internal/outbox"
 	"github.com/carboncircuit/backend/internal/servicetoken"
 	"github.com/carboncircuit/backend/services/provenance-service/internal/config"
 	"github.com/carboncircuit/backend/services/provenance-service/internal/repository"
@@ -56,6 +58,31 @@ func run() error {
 			logger.Error("closing database", slog.Any("error", closeErr))
 		}
 	}()
+
+	producer, err := kafka.NewProducer(kafka.ProducerOptions{
+		Brokers:          settings.KafkaBrokers,
+		AllowTopicCreate: settings.KafkaTopicCreate,
+	})
+	if err != nil {
+		return err
+	}
+	defer producer.Close()
+
+	if pingErr := producer.Ping(ctx); pingErr != nil {
+		logger.Warn("kafka unreachable at startup, outbox will retry",
+			slog.Any("error", pingErr))
+	}
+
+	publisherCtx, stopPublisher := context.WithCancel(ctx)
+	defer stopPublisher()
+
+	go outbox.NewPublisher(outbox.PublisherOptions{
+		Database:  store,
+		Dispatch:  producer,
+		Logger:    logger,
+		Interval:  settings.OutboxInterval,
+		BatchSize: settings.OutboxBatchSize,
+	}).Run(publisherCtx)
 
 	publicKey, err := sharedconfig.Ed25519PublicKey(settings.ServiceTokenPublicKey)
 	if err != nil {

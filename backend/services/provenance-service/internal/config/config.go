@@ -1,6 +1,7 @@
 package config
 
 import (
+	"strings"
 	"time"
 
 	sharedconfig "github.com/carboncircuit/backend/internal/config"
@@ -33,6 +34,11 @@ type Config struct {
 
 	IdentityAddress string
 	CallTimeout     time.Duration
+
+	KafkaBrokers     []string
+	KafkaTopicCreate bool
+	OutboxInterval   time.Duration
+	OutboxBatchSize  int
 }
 
 func Load() (Config, error) {
@@ -65,6 +71,11 @@ func Load() (Config, error) {
 
 		IdentityAddress: loader.StringDefault("IDENTITY_ADDRESS", "identity-service:9091"),
 		CallTimeout:     loader.Duration("CALL_TIMEOUT", 2*time.Second),
+
+		KafkaBrokers:     strings.Split(loader.StringDefault("KAFKA_BROKERS", "kafka:9092"), ","),
+		KafkaTopicCreate: loader.StringDefault("KAFKA_ALLOW_TOPIC_CREATE", "false") == "true",
+		OutboxInterval:   loader.Duration("OUTBOX_INTERVAL", time.Second),
+		OutboxBatchSize:  loader.Int("OUTBOX_BATCH_SIZE", 100),
 	}
 
 	return config, loader.Err()

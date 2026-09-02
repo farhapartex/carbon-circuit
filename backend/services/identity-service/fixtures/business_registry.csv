@@ -13,7 +13,7 @@ US,US-78-1653229,Fenwick Quantum Freight Inc.,"44 Industrial Avenue, Portland, O
 DE,DE-HRB177517,Vantage Thermal Capital GmbH,"36 Harbour Way, Munich, DE",2008-04-28,active,"{4652,7010}",false
 FR,FR-945238934,Formosa Circuit Capital S.A.S.,"120 Industrial Avenue, Lyon, FR",2018-03-25,active,"{6420,7010}",false
 PL,PL-9991217960,Fenwick Composite Materials Sp. z o.o.,"268 Fabrication Lane, Gdansk, PL",2014-03-06,active,"{2610,2611}",false
-UK,UK-71808679,Halcyon Composite Foundry Ltd.,"184 Harbour Way, Manchester, UK",2016-06-14,active,"{2611,2620}",false
+GB,GB-71808679,Halcyon Composite Foundry Ltd.,"184 Harbour Way, Manchester, GB",2016-06-14,active,"{2611,2620}",false
 TW,TW-10744488,"Northwind Integrated Modules Co., Ltd.","207 Science Road, Tainan, TW",2020-12-03,active,"{2640,2630}",false
 CN,CN-872434412,"Aetheris Advanced Freight Co., Ltd.","54 Technology Boulevard, Shenzhen, CN",2005-01-18,active,"{5229,4923}",false
 KR,KR-977456060,"Thistle Micro Materials Co., Ltd.","246 Science Road, Suwon, KR",2011-09-25,active,"{2611,2610}",false
@@ -27,7 +27,7 @@ US,US-43-7970882,Ridgeline Circuit Capital Inc.,"42 Harbour Way, San Jose, CA, U
 DE,DE-HRB922516,Kestrel Thermal Supply Chain GmbH,"171 Fabrication Lane, Dresden, DE",2003-05-10,active,"{5210,5229}",false
 FR,FR-735969900,Lodestar Thermal Freight S.A.S.,"21 Harbour Way, Lyon, FR",2022-08-23,active,"{4923,5229}",true
 PL,PL-5099619648,Copperleaf Circuit Semiconductor Sp. z o.o.,"256 Industrial Avenue, Wroclaw, PL",1995-12-01,active,"{2611,2620}",false
-UK,UK-70387662,Grandview Thermal Group Ltd.,"194 Industrial Avenue, Manchester, UK",2004-12-05,active,"{4652,7010}",false
+GB,GB-70387662,Grandview Thermal Group Ltd.,"194 Industrial Avenue, Manchester, GB",2004-12-05,active,"{4652,7010}",false
 TW,TW-23791859,"Aetheris Advanced Electronics Co., Ltd.","6 Science Road, Taipei, TW",2022-05-26,active,"{2620,2630}",false
 CN,CN-288503363,"Northwind Advanced Capital Co., Ltd.","206 Export Zone, Dongguan, CN",1999-05-15,active,"{7010,6420}",false
 KR,KR-773538329,"Copperleaf Precision Holdings Co., Ltd.","50 Industrial Avenue, Suwon, KR",2011-11-20,active,"{4652,7010}",false
@@ -40,7 +40,7 @@ US,US-22-5484642,Everline Micro Modules Inc.,"21 Science Road, Portland, OR, US"
 DE,DE-HRB974443,Estuary Photonic Wafer GmbH,"76 Science Road, Munich, DE",2020-12-20,active,"{2611,2610}",true
 FR,FR-271457406,Estuary Thermal Group S.A.S.,"273 Science Road, Lyon, FR",1998-06-19,active,"{4652,6420}",false
 PL,PL-7091136402,Lumen Thermal Modules Sp. z o.o.,"44 Innovation Park, Gdansk, PL",2002-08-22,active,"{2630,2640}",false
-UK,UK-53445543,Talon Thermal Wafer Ltd.,"161 Technology Boulevard, Manchester, UK",2017-04-28,active,"{2610,2620}",false
+GB,GB-53445543,Talon Thermal Wafer Ltd.,"161 Technology Boulevard, Manchester, GB",2017-04-28,active,"{2610,2620}",false
 TW,TW-57116038,"Solstice Quantum Systems Co., Ltd.","23 Innovation Park, Hsinchu, TW",2023-08-26,active,"{2620,2630}",false
 CN,CN-487800744,"Estuary Circuit Capital Co., Ltd.","183 Fabrication Lane, Chengdu, CN",2018-07-11,active,"{6420,4652}",false
 KR,KR-877701047,"Formosa Photonic Systems Co., Ltd.","96 Industrial Avenue, Incheon, KR",2007-04-13,active,"{2620,2640}",false
@@ -54,7 +54,7 @@ US,US-18-6611658,Northwind Precision Supply Chain Inc.,"13 Innovation Park, San 
 DE,DE-HRB277173,Ridgeline Precision Semiconductor GmbH,"56 Harbour Way, Regensburg, DE",2011-11-26,active,"{2611,2620}",false
 FR,FR-494953783,Cobalt Thermal Transport S.A.S.,"256 Harbour Way, Lyon, FR",1995-03-26,active,"{5210,5229}",false
 PL,PL-2682355648,Kestrel Integrated Assembly Sp. z o.o.,"233 Export Zone, Katowice, PL",2013-12-04,active,"{2630,2620}",false
-UK,UK-24883577,Fenwick Composite Assembly Ltd.,"168 Export Zone, Newport, UK",1995-12-24,active,"{2640,2620}",false
+GB,GB-24883577,Fenwick Composite Assembly Ltd.,"168 Export Zone, Newport, GB",1995-12-24,active,"{2640,2620}",false
 TW,TW-94554638,"Meridian Quantum Holdings Co., Ltd.","258 Science Road, Tainan, TW",1997-06-12,active,"{4652,6420}",false
 CN,CN-878232680,"Auralis Quantum Assembly Co., Ltd.","13 Science Road, Dongguan, CN",2006-02-13,dissolved,"{2630,2620}",false
 KR,KR-779412624,"Verdant Micro Holdings Co., Ltd.","212 Harbour Way, Incheon, KR",2000-05-06,active,"{4652,6420}",false
@@ -68,7 +68,7 @@ US,US-67-6544390,Lodestar Thermal Ventures Inc.,"185 Technology Boulevard, Phoen
 DE,DE-HRB663576,Northwind Advanced Transport GmbH,"124 Science Road, Dresden, DE",1999-12-16,active,"{4923,5210}",true
 FR,FR-404619235,Zenith Integrated Devices S.A.S.,"56 Industrial Avenue, Grenoble, FR",2004-07-24,active,"{2620,2640}",false
 PL,PL-4220888811,Vantage Quantum Group Sp. z o.o.,"15 Innovation Park, Gdansk, PL",2004-07-02,active,"{6420,4652}",false
-UK,UK-85881599,Solstice Precision Semiconductor Ltd.,"74 Innovation Park, Newport, UK",2013-06-28,active,"{2610,2611}",false
+GB,GB-85881599,Solstice Precision Semiconductor Ltd.,"74 Innovation Park, Newport, GB",2013-06-28,active,"{2610,2611}",false
 TW,TW-88637300,"Formosa Micro Assembly Co., Ltd.","247 Innovation Park, Taichung, TW",1997-02-24,active,"{2630,2640}",false
 CN,CN-538173835,"Estuary Substrate Modules Co., Ltd.","27 Fabrication Lane, Shenzhen, CN",2014-02-06,active,"{2620,2630}",false
 KR,KR-280562341,"Cinder Substrate Logistics Co., Ltd.","228 Industrial Avenue, Incheon, KR",2023-05-10,active,"{5229,4923}",false
@@ -81,7 +81,7 @@ IN,IN-U2611TN2002PTC917254,Meridian Micro Capital Pvt. Ltd.,"42 Harbour Way, Pun
 DE,DE-HRB284697,Nimbus Quantum Transport GmbH,"16 Technology Boulevard, Regensburg, DE",2020-11-16,active,"{5229,4923}",false
 FR,FR-583308606,Lodestar Quantum Group S.A.S.,"267 Technology Boulevard, Grenoble, FR",1998-10-19,active,"{4652,7010}",false
 PL,PL-2099662699,Everline Circuit Electronics Sp. z o.o.,"122 Export Zone, Wroclaw, PL",1995-12-24,active,"{2630,2620}",false
-UK,UK-96557525,Auralis Thermal Holdings Ltd.,"285 Fabrication Lane, Newport, UK",2013-10-27,active,"{4652,7010}",false
+GB,GB-96557525,Auralis Thermal Holdings Ltd.,"285 Fabrication Lane, Newport, GB",2013-10-27,active,"{4652,7010}",false
 TW,TW-58785453,"Ironwood Circuit Wafer Co., Ltd.","293 Technology Boulevard, Tainan, TW",2016-06-27,active,"{2610,2620}",false
 CN,CN-615094829,"Grandview Micro Group Co., Ltd.","295 Harbour Way, Wuxi, CN",1996-08-06,active,"{7010,6420}",false
 KR,KR-312047733,"Silverbrook Advanced Supply Chain Co., Ltd.","149 Technology Boulevard, Cheonan, KR",2015-02-24,active,"{5229,4923}",false
@@ -95,7 +95,7 @@ US,US-88-2169825,Halcyon Precision Transport Inc.,"215 Export Zone, Portland, OR
 DE,DE-HRB157745,Talon Composite Ventures GmbH,"226 Technology Boulevard, Regensburg, DE",2004-03-03,active,"{6420,4652}",false
 FR,FR-623263354,Meridian Advanced Electronics S.A.S.,"239 Science Road, Lyon, FR",2004-07-03,active,"{2620,2630}",false
 PL,PL-1991344810,Halcyon Substrate Electronics Sp. z o.o.,"246 Innovation Park, Wroclaw, PL",2014-06-28,dissolved,"{2640,2630}",false
-UK,UK-29599353,Lumen Integrated Capital Ltd.,"54 Fabrication Lane, Cambridge, UK",2005-05-25,dissolved,"{6420,4652}",false
+GB,GB-29599353,Lumen Integrated Capital Ltd.,"54 Fabrication Lane, Cambridge, GB",2005-05-25,dissolved,"{6420,4652}",false
 TW,TW-40292345,"Lodestar Circuit Systems Co., Ltd.","290 Industrial Avenue, Tainan, TW",2001-12-06,active,"{2620,2630}",false
 CN,CN-610882308,"Silverbrook Precision Components Co., Ltd.","144 Innovation Park, Suzhou, CN",2005-03-05,active,"{2610,2620}",false
 KR,KR-801535191,"Meridian Photonic Holdings Co., Ltd.","60 Innovation Park, Seoul, KR",2006-08-04,active,"{7010,6420}",false

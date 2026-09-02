@@ -1,0 +1,187 @@
+syntax = "proto3";
+
+package carboncircuit.provenance.v1;
+
+option go_package = "github.com/carboncircuit/backend/gen/carboncircuit/provenance/v1;provenancev1";
+
+service ProvenanceService {
+  rpc Ping(PingRequest) returns (PingResponse);
+  rpc CreateBatch(CreateBatchRequest) returns (CreateBatchResponse);
+  rpc ListBatches(ListBatchesRequest) returns (ListBatchesResponse);
+  rpc GetBatch(GetBatchRequest) returns (GetBatchResponse);
+  rpc ListCheckpoints(ListCheckpointsRequest) returns (ListCheckpointsResponse);
+  rpc LogCheckpoint(LogCheckpointRequest) returns (LogCheckpointResponse);
+  rpc GetComponentBatch(GetComponentBatchRequest) returns (GetComponentBatchResponse);
+}
+
+enum ProductCategory {
+  PRODUCT_CATEGORY_UNSPECIFIED = 0;
+  PRODUCT_CATEGORY_ELECTRONICS = 1;
+  PRODUCT_CATEGORY_AGRICULTURE = 2;
+  PRODUCT_CATEGORY_PHARMA = 3;
+  PRODUCT_CATEGORY_TEXTILES = 4;
+}
+
+enum CheckpointType {
+  CHECKPOINT_TYPE_UNSPECIFIED = 0;
+  CHECKPOINT_TYPE_PRODUCTION_COMPLETE = 1;
+  CHECKPOINT_TYPE_DEPARTED_ORIGIN = 2;
+  CHECKPOINT_TYPE_CUSTOMS_EXPORT = 3;
+  CHECKPOINT_TYPE_CUSTOMS_IMPORT = 4;
+  CHECKPOINT_TYPE_ARRIVED_DESTINATION = 5;
+}
+
+enum AnchorStatus {
+  ANCHOR_STATUS_UNSPECIFIED = 0;
+  ANCHOR_STATUS_UNANCHORED = 1;
+  ANCHOR_STATUS_PROVISIONAL = 2;
+  ANCHOR_STATUS_CONFIRMED = 3;
+}
+
+message ScoreComponent {
+  string label = 1;
+  int32 earned = 2;
+  int32 available = 3;
+  string explanation = 4;
+}
+
+message ProvenanceScore {
+  int32 total = 1;
+  repeated ScoreComponent components = 2;
+}
+
+message Batch {
+  string id = 1;
+  string organization_id = 2;
+  string originating_facility_id = 3;
+  string originating_facility_name = 4;
+  string public_reference = 5;
+  ProductCategory product_category = 6;
+  string component_type = 7;
+  string lot_number = 8;
+  string quantity = 9;
+  string unit = 10;
+  string produced_at = 11;
+  string external_id = 12;
+  int32 checkpoint_count = 13;
+  ProvenanceScore provenance_score = 14;
+  string created_at = 15;
+}
+
+message ParentBatch {
+  string declared_reference = 1;
+  bool resolved = 2;
+  string id = 3;
+  string component_type = 4;
+  ProductCategory product_category = 5;
+  string originating_facility_name = 6;
+}
+
+message Checkpoint {
+  string id = 1;
+  string batch_id = 2;
+  CheckpointType type = 3;
+  string location_label = 4;
+  string country_code = 5;
+  string latitude = 6;
+  string longitude = 7;
+  string shipping_method = 8;
+  string occurred_at = 9;
+  string reported_at = 10;
+  string reported_by_organization_name = 11;
+  AnchorStatus anchor_status = 12;
+  int32 anchor_epoch = 13;
+  string anchor_transaction_hash = 14;
+  bool inclusion_proof_available = 15;
+  string supersedes_checkpoint_id = 16;
+  string superseded_by_checkpoint_id = 17;
+  string correction_reason = 18;
+}
+
+message PingRequest {}
+
+message PingResponse {
+  string service = 1;
+  string revision = 2;
+  bool database_reachable = 3;
+}
+
+message CreateBatchRequest {
+  string originating_facility_id = 1;
+  ProductCategory product_category = 2;
+  string component_type = 3;
+  string lot_number = 4;
+  string quantity = 5;
+  string unit = 6;
+  string produced_at = 7;
+  string external_id = 8;
+  repeated string parent_references = 9;
+}
+
+message CreateBatchResponse {
+  Batch batch = 1;
+  repeated ParentBatch parents = 2;
+  bool replayed = 3;
+}
+
+message ListBatchesRequest {
+  string after = 1;
+  int32 limit = 2;
+}
+
+message ListBatchesResponse {
+  repeated Batch batches = 1;
+  string cursor = 2;
+  bool has_more = 3;
+}
+
+message GetBatchRequest {
+  string batch_id = 1;
+}
+
+message GetBatchResponse {
+  Batch batch = 1;
+  repeated ParentBatch parents = 2;
+}
+
+message ListCheckpointsRequest {
+  string batch_id = 1;
+  string after = 2;
+  int32 limit = 3;
+}
+
+message ListCheckpointsResponse {
+  repeated Checkpoint checkpoints = 1;
+  string cursor = 2;
+  bool has_more = 3;
+}
+
+message LogCheckpointRequest {
+  string batch_id = 1;
+  CheckpointType type = 2;
+  string location_label = 3;
+  string country_code = 4;
+  string latitude = 5;
+  string longitude = 6;
+  string shipping_method = 7;
+  string occurred_at = 8;
+  string corrects_checkpoint_id = 9;
+  string correction_reason = 10;
+  string external_id = 11;
+}
+
+message LogCheckpointResponse {
+  Checkpoint checkpoint = 1;
+  ProvenanceScore provenance_score = 2;
+  bool replayed = 3;
+}
+
+message GetComponentBatchRequest {
+  string batch_id = 1;
+  string component_batch_id = 2;
+}
+
+message GetComponentBatchResponse {
+  Batch batch = 1;
+  repeated Checkpoint checkpoints = 2;
+}

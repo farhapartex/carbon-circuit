@@ -84,3 +84,13 @@ func applyLocalSetting(session *gorm.DB, setting, value string) error {
 	}
 	return nil
 }
+
+func Within(
+	ctx context.Context,
+	database *gorm.DB,
+	work func(tx Tx) error,
+) error {
+	return database.WithContext(ctx).Transaction(func(session *gorm.DB) error {
+		return work(Tx{session: session})
+	})
+}

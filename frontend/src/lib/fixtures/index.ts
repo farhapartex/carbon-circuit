@@ -41,11 +41,30 @@ const paginate = <T>(items: T[], page = 1, perPage = DEFAULT_PER_PAGE) =>
     },
   }) satisfies Paginated<T>;
 
-const cursorPaginate = <T>(items: T[]) =>
-  ({
-    items,
-    meta: { nextCursor: null, hasMore: false },
-  }) satisfies CursorPaginated<T>;
+const cursorPaginate = <T>(
+  items: T[],
+  cursorOf: (item: T) => string,
+  after?: string,
+  limit = 25,
+) => {
+  const start = after
+    ? items.findIndex((item) => cursorOf(item) === after) + 1
+    : 0;
+  const page = items.slice(start, start + limit);
+  const hasMore = start + limit < items.length;
+
+  return {
+    items: page,
+    meta: {
+      nextCursor: hasMore
+        ? page.at(-1)
+          ? cursorOf(page[page.length - 1]!)
+          : null
+        : null,
+      hasMore,
+    },
+  } satisfies CursorPaginated<T>;
+};
 
 export const getCurrentOrganization = async (): Promise<Organization> =>
   organizationFixtures.verifiedManufacturer;
@@ -89,11 +108,14 @@ export const getPendingTreasuryChange = async () =>
 export const listActiveSessions = async () =>
   organizationFixtures.activeSessions;
 
-export const listBatches = async (page = 1): Promise<Paginated<Batch>> =>
-  paginate(batchFixtures.batches, page);
+export const listBatches = async (
+  after?: string,
+  limit = 25,
+): Promise<CursorPaginated<Batch>> =>
+  cursorPaginate(batchFixtures.batches, (batch) => batch.id, after, limit);
 
-export const listEmptyBatches = async (): Promise<Paginated<Batch>> =>
-  paginate([] as Batch[]);
+export const listEmptyBatches = async (): Promise<CursorPaginated<Batch>> =>
+  cursorPaginate([] as Batch[], (batch) => batch.id);
 
 export const getBatch = async (batchId: string): Promise<Batch | null> =>
   batchFixtures.batches.find((batch) => batch.id === batchId) ?? null;
@@ -101,7 +123,10 @@ export const getBatch = async (batchId: string): Promise<Batch | null> =>
 export const listCheckpoints = async (
   batchId: string,
 ): Promise<CursorPaginated<Checkpoint>> =>
-  cursorPaginate(batchFixtures.checkpointsByBatchId[batchId] ?? []);
+  cursorPaginate(
+    batchFixtures.checkpointsByBatchId[batchId] ?? [],
+    (checkpoint) => checkpoint.id,
+  );
 
 export const getPublicBatchView = async (
   publicReference: string,
@@ -143,7 +168,10 @@ export const getListing = async (
 export const listTrades = async () => marketplaceFixtures.trades;
 
 export const listRetirements = async (): Promise<CursorPaginated<Retirement>> =>
-  cursorPaginate(marketplaceFixtures.retirements);
+  cursorPaginate(
+    marketplaceFixtures.retirements,
+    (retirement) => retirement.id,
+  );
 
 export const getSubscription = async (): Promise<Subscription> =>
   billingFixtures.currentSubscription;
@@ -158,7 +186,11 @@ export const listInvoices = async (): Promise<Invoice[]> =>
 
 export const listNotifications = async (): Promise<
   CursorPaginated<Notification>
-> => cursorPaginate(notificationFixtures.notifications);
+> =>
+  cursorPaginate(
+    notificationFixtures.notifications,
+    (notification) => notification.id,
+  );
 
 export const listFraudFlags = async () => notificationFixtures.fraudFlags;
 

@@ -157,6 +157,38 @@ services:
     expose:
       - "9093"
 
+  provenance-read-migrate:
+    build:
+      context: .
+      dockerfile: services/provenance-read-service/Dockerfile
+    entrypoint: ["/provenance-read-migrate"]
+    command: ["up"]
+    environment:
+      DATABASE_MIGRATION_DSN: postgres://provenance_read_service:provenance_read_service@postgres:5432/carboncircuit?sslmode=disable
+      DATABASE_SCHEMA: provenance_read
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: "no"
+
+  provenance-read-service:
+    build:
+      context: .
+      dockerfile: services/provenance-read-service/Dockerfile
+    volumes:
+      - certs:/certs:ro
+    env_file:
+      - services/provenance-read-service/.env
+    depends_on:
+      pgbouncer:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+      provenance-read-migrate:
+        condition: service_completed_successfully
+    expose:
+      - "9094"
+
   identity-service:
     build:
       context: .
@@ -185,6 +217,7 @@ services:
       - identity-service
       - billing-service
       - provenance-service
+      - provenance-read-service
       - redis
     ports:
       - "8080:8080"

@@ -16,6 +16,7 @@ import (
 type Handlers struct {
 	Identity *upstream.Identity
 	Billing  *upstream.Billing
+	Resolver *caller.Resolver
 	Logger   *slog.Logger
 	Revision string
 }
@@ -48,6 +49,7 @@ func NewRouter(options RouterOptions) *gin.Engine {
 
 	handlers := &Handlers{
 		Identity: options.Identity,
+		Resolver: options.Resolver,
 		Billing:  options.Billing,
 		Logger:   options.Logger,
 		Revision: options.Revision,
@@ -108,6 +110,12 @@ func NewRouter(options RouterOptions) *gin.Engine {
 	authenticated.POST("/subscriptions", handlers.CreateSubscription)
 	authenticated.POST("/treasury/nonce", handlers.IssueTreasuryNonce)
 	authenticated.POST("/treasury", handlers.DesignateTreasury)
+	authenticated.GET("/members", handlers.ListMembers)
+	authenticated.POST("/invitations", handlers.InviteMember)
+	authenticated.DELETE("/invitations/:invitationId", handlers.RevokeInvitation)
+	authenticated.PATCH("/members/:userId", handlers.ChangeMemberRole)
+	authenticated.DELETE("/members/:userId", handlers.RevokeMember)
+	authenticated.POST("/invitations/accept", handlers.AcceptInvitation)
 
 	return router
 }

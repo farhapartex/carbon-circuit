@@ -121,3 +121,72 @@ func (i *Identity) DesignateTreasury(
 		Signature: signature,
 	})
 }
+
+func (i *Identity) call(ctx context.Context, idempotencyKey string) (context.Context, context.CancelFunc) {
+	callCtx, cancel := context.WithTimeout(ctx, i.callTimeout)
+	callCtx = grpcx.WithCorrelationID(callCtx, logging.CorrelationIDFrom(ctx))
+	callCtx = grpcx.WithIdempotencyKey(callCtx, idempotencyKey)
+	return callCtx, cancel
+}
+
+func (i *Identity) ListMembers(ctx context.Context) (*identityv1.ListMembersResponse, error) {
+	callCtx, cancel := i.call(ctx, "")
+	defer cancel()
+	return i.client.ListMembers(callCtx, &identityv1.ListMembersRequest{})
+}
+
+func (i *Identity) InviteMember(
+	ctx context.Context,
+	idempotencyKey, email string,
+	role identityv1.OrganizationRole,
+) (*identityv1.InviteMemberResponse, error) {
+	callCtx, cancel := i.call(ctx, idempotencyKey)
+	defer cancel()
+	return i.client.InviteMember(callCtx, &identityv1.InviteMemberRequest{
+		Email: email,
+		Role:  role,
+	})
+}
+
+func (i *Identity) RevokeInvitation(
+	ctx context.Context,
+	idempotencyKey, invitationID string,
+) error {
+	callCtx, cancel := i.call(ctx, idempotencyKey)
+	defer cancel()
+	_, err := i.client.RevokeInvitation(callCtx, &identityv1.RevokeInvitationRequest{
+		InvitationId: invitationID,
+	})
+	return err
+}
+
+func (i *Identity) ChangeMemberRole(
+	ctx context.Context,
+	idempotencyKey, userID string,
+	role identityv1.OrganizationRole,
+) (*identityv1.ChangeMemberRoleResponse, error) {
+	callCtx, cancel := i.call(ctx, idempotencyKey)
+	defer cancel()
+	return i.client.ChangeMemberRole(callCtx, &identityv1.ChangeMemberRoleRequest{
+		UserId: userID,
+		Role:   role,
+	})
+}
+
+func (i *Identity) RevokeMember(
+	ctx context.Context,
+	idempotencyKey, userID string,
+) (*identityv1.RevokeMemberResponse, error) {
+	callCtx, cancel := i.call(ctx, idempotencyKey)
+	defer cancel()
+	return i.client.RevokeMember(callCtx, &identityv1.RevokeMemberRequest{UserId: userID})
+}
+
+func (i *Identity) AcceptInvitation(
+	ctx context.Context,
+	idempotencyKey, token string,
+) (*identityv1.AcceptInvitationResponse, error) {
+	callCtx, cancel := i.call(ctx, idempotencyKey)
+	defer cancel()
+	return i.client.AcceptInvitation(callCtx, &identityv1.AcceptInvitationRequest{Token: token})
+}

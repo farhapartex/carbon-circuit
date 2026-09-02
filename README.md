@@ -26,6 +26,47 @@ The design is also explicit about what it *doesn't* guarantee — it cannot dete
 
 ---
 
+## How it fits together
+
+A request enters through one door, its caller is resolved once, and nothing user-facing ever waits on the chain or the model.
+
+```mermaid
+flowchart TB
+    subgraph clients["Clients"]
+        direction LR
+        Portal["Next.js portal<br/>access token never in the browser"]
+        Partner["Partner ERP<br/>API key · external_id"]
+        Scan["Public QR scan<br/>unauthenticated"]
+    end
+
+    Scan --> CDN["CDN edge cache<br/>absorbs ~95% of scan traffic"]
+
+    Gateway["API GATEWAY<br/>the only public entry point<br/>authenticate · rate limit · idempotency"]
+
+    Portal --> Gateway
+    Partner --> Gateway
+    CDN -. "cache miss" .-> Gateway
+
+    Gateway -- "resolve caller context once,<br/>then sign an internal token" --> Context["Identity + Billing<br/>organizations · roles · plans"]
+    Gateway -- "mTLS + service token" --> Domain["DOMAIN SERVICES<br/>provenance · evidence · sustainability<br/>credit ledger · marketplace"]
+
+    Domain -- "business effect, outbox row and<br/>idempotency record in one transaction" --> Postgres[("PostgreSQL<br/>schema and role per service<br/>row-level security")]
+    Postgres -. "outbox drained" .-> Kafka["Kafka<br/>transactional outbox and inbox"]
+    Kafka -. "event id deduplicated on consume" .-> Consumers["ASYNC CONSUMERS<br/>provenance read · AI agent<br/>fraud detection · chain observer"]
+
+    Domain -- "mint carrying verifier signatures" --> Writer["CHAIN WRITER<br/>the only holder of signing keys<br/>executor only, never authorizes"]
+    Writer -- "signed transaction" --> Chain["BASE L2<br/>CarbonCreditToken · ProvenanceAnchor<br/>Marketplace · BatchRegistry"]
+
+    Chain -. "events at 30 confirmations" .-> Consumers
+    Consumers -. "reconcile balances,<br/>fill the read model" .-> Postgres
+```
+
+Solid arrows are synchronous. Dotted arrows are asynchronous — events, cache fills, and chain confirmations. Two boundaries are drawn harder than the rest: the **API Gateway** is the only internet-addressable service, and **Chain Writer** is the only component with signing keys — and even it cannot authorize a mint, because the contract verifies verifier signatures for itself.
+
+The detailed version, with all fifteen services and three annotated request paths, is in [Architecture](./docs/ARCHITECTURE.md).
+
+---
+
 ## Where the project stands
 
 | | |

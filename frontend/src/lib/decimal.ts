@@ -127,3 +127,12 @@ export const applyBasisPoints = (
 
 export const isZeroUsdcAmount = (amount: UsdcAmount): boolean =>
   dn.equal(asUsdc(amount), dn.from(0, USDC_DECIMALS));
+
+const quantityFormat = new Intl.NumberFormat("en-US", {
+  maximumFractionDigits: 6,
+});
+
+export const formatQuantity = (value: string): string =>
+  quantityFormat.format(
+    value as unknown as Parameters<typeof quantityFormat.format>[0],
+  );

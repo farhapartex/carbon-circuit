@@ -391,6 +391,61 @@ func (RegistryRejection) EnumDescriptor() ([]byte, []int) {
 	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{6}
 }
 
+type InvitationState int32
+
+const (
+	InvitationState_INVITATION_STATE_UNSPECIFIED InvitationState = 0
+	InvitationState_INVITATION_STATE_PENDING     InvitationState = 1
+	InvitationState_INVITATION_STATE_ACCEPTED    InvitationState = 2
+	InvitationState_INVITATION_STATE_REVOKED     InvitationState = 3
+	InvitationState_INVITATION_STATE_EXPIRED     InvitationState = 4
+)
+
+// Enum value maps for InvitationState.
+var (
+	InvitationState_name = map[int32]string{
+		0: "INVITATION_STATE_UNSPECIFIED",
+		1: "INVITATION_STATE_PENDING",
+		2: "INVITATION_STATE_ACCEPTED",
+		3: "INVITATION_STATE_REVOKED",
+		4: "INVITATION_STATE_EXPIRED",
+	}
+	InvitationState_value = map[string]int32{
+		"INVITATION_STATE_UNSPECIFIED": 0,
+		"INVITATION_STATE_PENDING":     1,
+		"INVITATION_STATE_ACCEPTED":    2,
+		"INVITATION_STATE_REVOKED":     3,
+		"INVITATION_STATE_EXPIRED":     4,
+	}
+)
+
+func (x InvitationState) Enum() *InvitationState {
+	p := new(InvitationState)
+	*p = x
+	return p
+}
+
+func (x InvitationState) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (InvitationState) Descriptor() protoreflect.EnumDescriptor {
+	return file_carboncircuit_identity_v1_identity_proto_enumTypes[7].Descriptor()
+}
+
+func (InvitationState) Type() protoreflect.EnumType {
+	return &file_carboncircuit_identity_v1_identity_proto_enumTypes[7]
+}
+
+func (x InvitationState) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use InvitationState.Descriptor instead.
+func (InvitationState) EnumDescriptor() ([]byte, []int) {
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{7}
+}
+
 type PingRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
@@ -1423,6 +1478,750 @@ func (x *DesignateTreasuryResponse) GetDesignatedAt() string {
 	return ""
 }
 
+type Member struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	UserId        string                 `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	Email         string                 `protobuf:"bytes,2,opt,name=email,proto3" json:"email,omitempty"`
+	Name          string                 `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
+	Role          OrganizationRole       `protobuf:"varint,4,opt,name=role,proto3,enum=carboncircuit.identity.v1.OrganizationRole" json:"role,omitempty"`
+	MfaEnrolled   bool                   `protobuf:"varint,5,opt,name=mfa_enrolled,json=mfaEnrolled,proto3" json:"mfa_enrolled,omitempty"`
+	JoinedAt      string                 `protobuf:"bytes,6,opt,name=joined_at,json=joinedAt,proto3" json:"joined_at,omitempty"`
+	LastActiveAt  string                 `protobuf:"bytes,7,opt,name=last_active_at,json=lastActiveAt,proto3" json:"last_active_at,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *Member) Reset() {
+	*x = Member{}
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[16]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Member) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Member) ProtoMessage() {}
+
+func (x *Member) ProtoReflect() protoreflect.Message {
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[16]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Member.ProtoReflect.Descriptor instead.
+func (*Member) Descriptor() ([]byte, []int) {
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{16}
+}
+
+func (x *Member) GetUserId() string {
+	if x != nil {
+		return x.UserId
+	}
+	return ""
+}
+
+func (x *Member) GetEmail() string {
+	if x != nil {
+		return x.Email
+	}
+	return ""
+}
+
+func (x *Member) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *Member) GetRole() OrganizationRole {
+	if x != nil {
+		return x.Role
+	}
+	return OrganizationRole_ORGANIZATION_ROLE_UNSPECIFIED
+}
+
+func (x *Member) GetMfaEnrolled() bool {
+	if x != nil {
+		return x.MfaEnrolled
+	}
+	return false
+}
+
+func (x *Member) GetJoinedAt() string {
+	if x != nil {
+		return x.JoinedAt
+	}
+	return ""
+}
+
+func (x *Member) GetLastActiveAt() string {
+	if x != nil {
+		return x.LastActiveAt
+	}
+	return ""
+}
+
+type Invitation struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Email         string                 `protobuf:"bytes,2,opt,name=email,proto3" json:"email,omitempty"`
+	Role          OrganizationRole       `protobuf:"varint,3,opt,name=role,proto3,enum=carboncircuit.identity.v1.OrganizationRole" json:"role,omitempty"`
+	State         InvitationState        `protobuf:"varint,4,opt,name=state,proto3,enum=carboncircuit.identity.v1.InvitationState" json:"state,omitempty"`
+	InvitedAt     string                 `protobuf:"bytes,5,opt,name=invited_at,json=invitedAt,proto3" json:"invited_at,omitempty"`
+	ExpiresAt     string                 `protobuf:"bytes,6,opt,name=expires_at,json=expiresAt,proto3" json:"expires_at,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *Invitation) Reset() {
+	*x = Invitation{}
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[17]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Invitation) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Invitation) ProtoMessage() {}
+
+func (x *Invitation) ProtoReflect() protoreflect.Message {
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[17]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Invitation.ProtoReflect.Descriptor instead.
+func (*Invitation) Descriptor() ([]byte, []int) {
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{17}
+}
+
+func (x *Invitation) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *Invitation) GetEmail() string {
+	if x != nil {
+		return x.Email
+	}
+	return ""
+}
+
+func (x *Invitation) GetRole() OrganizationRole {
+	if x != nil {
+		return x.Role
+	}
+	return OrganizationRole_ORGANIZATION_ROLE_UNSPECIFIED
+}
+
+func (x *Invitation) GetState() InvitationState {
+	if x != nil {
+		return x.State
+	}
+	return InvitationState_INVITATION_STATE_UNSPECIFIED
+}
+
+func (x *Invitation) GetInvitedAt() string {
+	if x != nil {
+		return x.InvitedAt
+	}
+	return ""
+}
+
+func (x *Invitation) GetExpiresAt() string {
+	if x != nil {
+		return x.ExpiresAt
+	}
+	return ""
+}
+
+type ListMembersRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListMembersRequest) Reset() {
+	*x = ListMembersRequest{}
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[18]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListMembersRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListMembersRequest) ProtoMessage() {}
+
+func (x *ListMembersRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[18]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListMembersRequest.ProtoReflect.Descriptor instead.
+func (*ListMembersRequest) Descriptor() ([]byte, []int) {
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{18}
+}
+
+type ListMembersResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Members       []*Member              `protobuf:"bytes,1,rep,name=members,proto3" json:"members,omitempty"`
+	Invitations   []*Invitation          `protobuf:"bytes,2,rep,name=invitations,proto3" json:"invitations,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListMembersResponse) Reset() {
+	*x = ListMembersResponse{}
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[19]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListMembersResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListMembersResponse) ProtoMessage() {}
+
+func (x *ListMembersResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[19]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListMembersResponse.ProtoReflect.Descriptor instead.
+func (*ListMembersResponse) Descriptor() ([]byte, []int) {
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{19}
+}
+
+func (x *ListMembersResponse) GetMembers() []*Member {
+	if x != nil {
+		return x.Members
+	}
+	return nil
+}
+
+func (x *ListMembersResponse) GetInvitations() []*Invitation {
+	if x != nil {
+		return x.Invitations
+	}
+	return nil
+}
+
+type InviteMemberRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Email         string                 `protobuf:"bytes,1,opt,name=email,proto3" json:"email,omitempty"`
+	Role          OrganizationRole       `protobuf:"varint,2,opt,name=role,proto3,enum=carboncircuit.identity.v1.OrganizationRole" json:"role,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *InviteMemberRequest) Reset() {
+	*x = InviteMemberRequest{}
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[20]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *InviteMemberRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*InviteMemberRequest) ProtoMessage() {}
+
+func (x *InviteMemberRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[20]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use InviteMemberRequest.ProtoReflect.Descriptor instead.
+func (*InviteMemberRequest) Descriptor() ([]byte, []int) {
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{20}
+}
+
+func (x *InviteMemberRequest) GetEmail() string {
+	if x != nil {
+		return x.Email
+	}
+	return ""
+}
+
+func (x *InviteMemberRequest) GetRole() OrganizationRole {
+	if x != nil {
+		return x.Role
+	}
+	return OrganizationRole_ORGANIZATION_ROLE_UNSPECIFIED
+}
+
+type InviteMemberResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Invitation    *Invitation            `protobuf:"bytes,1,opt,name=invitation,proto3" json:"invitation,omitempty"`
+	Token         string                 `protobuf:"bytes,2,opt,name=token,proto3" json:"token,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *InviteMemberResponse) Reset() {
+	*x = InviteMemberResponse{}
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[21]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *InviteMemberResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*InviteMemberResponse) ProtoMessage() {}
+
+func (x *InviteMemberResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[21]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use InviteMemberResponse.ProtoReflect.Descriptor instead.
+func (*InviteMemberResponse) Descriptor() ([]byte, []int) {
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{21}
+}
+
+func (x *InviteMemberResponse) GetInvitation() *Invitation {
+	if x != nil {
+		return x.Invitation
+	}
+	return nil
+}
+
+func (x *InviteMemberResponse) GetToken() string {
+	if x != nil {
+		return x.Token
+	}
+	return ""
+}
+
+type RevokeInvitationRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	InvitationId  string                 `protobuf:"bytes,1,opt,name=invitation_id,json=invitationId,proto3" json:"invitation_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *RevokeInvitationRequest) Reset() {
+	*x = RevokeInvitationRequest{}
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[22]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RevokeInvitationRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RevokeInvitationRequest) ProtoMessage() {}
+
+func (x *RevokeInvitationRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[22]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RevokeInvitationRequest.ProtoReflect.Descriptor instead.
+func (*RevokeInvitationRequest) Descriptor() ([]byte, []int) {
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{22}
+}
+
+func (x *RevokeInvitationRequest) GetInvitationId() string {
+	if x != nil {
+		return x.InvitationId
+	}
+	return ""
+}
+
+type RevokeInvitationResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *RevokeInvitationResponse) Reset() {
+	*x = RevokeInvitationResponse{}
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[23]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RevokeInvitationResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RevokeInvitationResponse) ProtoMessage() {}
+
+func (x *RevokeInvitationResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[23]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RevokeInvitationResponse.ProtoReflect.Descriptor instead.
+func (*RevokeInvitationResponse) Descriptor() ([]byte, []int) {
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{23}
+}
+
+type ChangeMemberRoleRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	UserId        string                 `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	Role          OrganizationRole       `protobuf:"varint,2,opt,name=role,proto3,enum=carboncircuit.identity.v1.OrganizationRole" json:"role,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ChangeMemberRoleRequest) Reset() {
+	*x = ChangeMemberRoleRequest{}
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[24]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ChangeMemberRoleRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ChangeMemberRoleRequest) ProtoMessage() {}
+
+func (x *ChangeMemberRoleRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[24]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ChangeMemberRoleRequest.ProtoReflect.Descriptor instead.
+func (*ChangeMemberRoleRequest) Descriptor() ([]byte, []int) {
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{24}
+}
+
+func (x *ChangeMemberRoleRequest) GetUserId() string {
+	if x != nil {
+		return x.UserId
+	}
+	return ""
+}
+
+func (x *ChangeMemberRoleRequest) GetRole() OrganizationRole {
+	if x != nil {
+		return x.Role
+	}
+	return OrganizationRole_ORGANIZATION_ROLE_UNSPECIFIED
+}
+
+type ChangeMemberRoleResponse struct {
+	state           protoimpl.MessageState `protogen:"open.v1"`
+	Member          *Member                `protobuf:"bytes,1,opt,name=member,proto3" json:"member,omitempty"`
+	AffectedSubject string                 `protobuf:"bytes,2,opt,name=affected_subject,json=affectedSubject,proto3" json:"affected_subject,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
+}
+
+func (x *ChangeMemberRoleResponse) Reset() {
+	*x = ChangeMemberRoleResponse{}
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[25]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ChangeMemberRoleResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ChangeMemberRoleResponse) ProtoMessage() {}
+
+func (x *ChangeMemberRoleResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[25]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ChangeMemberRoleResponse.ProtoReflect.Descriptor instead.
+func (*ChangeMemberRoleResponse) Descriptor() ([]byte, []int) {
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{25}
+}
+
+func (x *ChangeMemberRoleResponse) GetMember() *Member {
+	if x != nil {
+		return x.Member
+	}
+	return nil
+}
+
+func (x *ChangeMemberRoleResponse) GetAffectedSubject() string {
+	if x != nil {
+		return x.AffectedSubject
+	}
+	return ""
+}
+
+type RevokeMemberRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	UserId        string                 `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *RevokeMemberRequest) Reset() {
+	*x = RevokeMemberRequest{}
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[26]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RevokeMemberRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RevokeMemberRequest) ProtoMessage() {}
+
+func (x *RevokeMemberRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[26]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RevokeMemberRequest.ProtoReflect.Descriptor instead.
+func (*RevokeMemberRequest) Descriptor() ([]byte, []int) {
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{26}
+}
+
+func (x *RevokeMemberRequest) GetUserId() string {
+	if x != nil {
+		return x.UserId
+	}
+	return ""
+}
+
+type RevokeMemberResponse struct {
+	state           protoimpl.MessageState `protogen:"open.v1"`
+	AffectedSubject string                 `protobuf:"bytes,1,opt,name=affected_subject,json=affectedSubject,proto3" json:"affected_subject,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
+}
+
+func (x *RevokeMemberResponse) Reset() {
+	*x = RevokeMemberResponse{}
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[27]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RevokeMemberResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RevokeMemberResponse) ProtoMessage() {}
+
+func (x *RevokeMemberResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[27]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RevokeMemberResponse.ProtoReflect.Descriptor instead.
+func (*RevokeMemberResponse) Descriptor() ([]byte, []int) {
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{27}
+}
+
+func (x *RevokeMemberResponse) GetAffectedSubject() string {
+	if x != nil {
+		return x.AffectedSubject
+	}
+	return ""
+}
+
+type AcceptInvitationRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Token         string                 `protobuf:"bytes,1,opt,name=token,proto3" json:"token,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AcceptInvitationRequest) Reset() {
+	*x = AcceptInvitationRequest{}
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[28]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AcceptInvitationRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AcceptInvitationRequest) ProtoMessage() {}
+
+func (x *AcceptInvitationRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[28]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AcceptInvitationRequest.ProtoReflect.Descriptor instead.
+func (*AcceptInvitationRequest) Descriptor() ([]byte, []int) {
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{28}
+}
+
+func (x *AcceptInvitationRequest) GetToken() string {
+	if x != nil {
+		return x.Token
+	}
+	return ""
+}
+
+type AcceptInvitationResponse struct {
+	state            protoimpl.MessageState `protogen:"open.v1"`
+	OrganizationId   string                 `protobuf:"bytes,1,opt,name=organization_id,json=organizationId,proto3" json:"organization_id,omitempty"`
+	OrganizationName string                 `protobuf:"bytes,2,opt,name=organization_name,json=organizationName,proto3" json:"organization_name,omitempty"`
+	Role             OrganizationRole       `protobuf:"varint,3,opt,name=role,proto3,enum=carboncircuit.identity.v1.OrganizationRole" json:"role,omitempty"`
+	unknownFields    protoimpl.UnknownFields
+	sizeCache        protoimpl.SizeCache
+}
+
+func (x *AcceptInvitationResponse) Reset() {
+	*x = AcceptInvitationResponse{}
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[29]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AcceptInvitationResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AcceptInvitationResponse) ProtoMessage() {}
+
+func (x *AcceptInvitationResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[29]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AcceptInvitationResponse.ProtoReflect.Descriptor instead.
+func (*AcceptInvitationResponse) Descriptor() ([]byte, []int) {
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{29}
+}
+
+func (x *AcceptInvitationResponse) GetOrganizationId() string {
+	if x != nil {
+		return x.OrganizationId
+	}
+	return ""
+}
+
+func (x *AcceptInvitationResponse) GetOrganizationName() string {
+	if x != nil {
+		return x.OrganizationName
+	}
+	return ""
+}
+
+func (x *AcceptInvitationResponse) GetRole() OrganizationRole {
+	if x != nil {
+		return x.Role
+	}
+	return OrganizationRole_ORGANIZATION_ROLE_UNSPECIFIED
+}
+
 var File_carboncircuit_identity_v1_identity_proto protoreflect.FileDescriptor
 
 const file_carboncircuit_identity_v1_identity_proto_rawDesc = "" +
@@ -1503,7 +2302,56 @@ const file_carboncircuit_identity_v1_identity_proto_rawDesc = "" +
 	"\tsignature\x18\x02 \x01(\tR\tsignature\"Z\n" +
 	"\x19DesignateTreasuryResponse\x12\x18\n" +
 	"\aaddress\x18\x01 \x01(\tR\aaddress\x12#\n" +
-	"\rdesignated_at\x18\x02 \x01(\tR\fdesignatedAt*\xbf\x01\n" +
+	"\rdesignated_at\x18\x02 \x01(\tR\fdesignatedAt\"\xf2\x01\n" +
+	"\x06Member\x12\x17\n" +
+	"\auser_id\x18\x01 \x01(\tR\x06userId\x12\x14\n" +
+	"\x05email\x18\x02 \x01(\tR\x05email\x12\x12\n" +
+	"\x04name\x18\x03 \x01(\tR\x04name\x12?\n" +
+	"\x04role\x18\x04 \x01(\x0e2+.carboncircuit.identity.v1.OrganizationRoleR\x04role\x12!\n" +
+	"\fmfa_enrolled\x18\x05 \x01(\bR\vmfaEnrolled\x12\x1b\n" +
+	"\tjoined_at\x18\x06 \x01(\tR\bjoinedAt\x12$\n" +
+	"\x0elast_active_at\x18\a \x01(\tR\flastActiveAt\"\xf3\x01\n" +
+	"\n" +
+	"Invitation\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\x12\x14\n" +
+	"\x05email\x18\x02 \x01(\tR\x05email\x12?\n" +
+	"\x04role\x18\x03 \x01(\x0e2+.carboncircuit.identity.v1.OrganizationRoleR\x04role\x12@\n" +
+	"\x05state\x18\x04 \x01(\x0e2*.carboncircuit.identity.v1.InvitationStateR\x05state\x12\x1d\n" +
+	"\n" +
+	"invited_at\x18\x05 \x01(\tR\tinvitedAt\x12\x1d\n" +
+	"\n" +
+	"expires_at\x18\x06 \x01(\tR\texpiresAt\"\x14\n" +
+	"\x12ListMembersRequest\"\x9b\x01\n" +
+	"\x13ListMembersResponse\x12;\n" +
+	"\amembers\x18\x01 \x03(\v2!.carboncircuit.identity.v1.MemberR\amembers\x12G\n" +
+	"\vinvitations\x18\x02 \x03(\v2%.carboncircuit.identity.v1.InvitationR\vinvitations\"l\n" +
+	"\x13InviteMemberRequest\x12\x14\n" +
+	"\x05email\x18\x01 \x01(\tR\x05email\x12?\n" +
+	"\x04role\x18\x02 \x01(\x0e2+.carboncircuit.identity.v1.OrganizationRoleR\x04role\"s\n" +
+	"\x14InviteMemberResponse\x12E\n" +
+	"\n" +
+	"invitation\x18\x01 \x01(\v2%.carboncircuit.identity.v1.InvitationR\n" +
+	"invitation\x12\x14\n" +
+	"\x05token\x18\x02 \x01(\tR\x05token\">\n" +
+	"\x17RevokeInvitationRequest\x12#\n" +
+	"\rinvitation_id\x18\x01 \x01(\tR\finvitationId\"\x1a\n" +
+	"\x18RevokeInvitationResponse\"s\n" +
+	"\x17ChangeMemberRoleRequest\x12\x17\n" +
+	"\auser_id\x18\x01 \x01(\tR\x06userId\x12?\n" +
+	"\x04role\x18\x02 \x01(\x0e2+.carboncircuit.identity.v1.OrganizationRoleR\x04role\"\x80\x01\n" +
+	"\x18ChangeMemberRoleResponse\x129\n" +
+	"\x06member\x18\x01 \x01(\v2!.carboncircuit.identity.v1.MemberR\x06member\x12)\n" +
+	"\x10affected_subject\x18\x02 \x01(\tR\x0faffectedSubject\".\n" +
+	"\x13RevokeMemberRequest\x12\x17\n" +
+	"\auser_id\x18\x01 \x01(\tR\x06userId\"A\n" +
+	"\x14RevokeMemberResponse\x12)\n" +
+	"\x10affected_subject\x18\x01 \x01(\tR\x0faffectedSubject\"/\n" +
+	"\x17AcceptInvitationRequest\x12\x14\n" +
+	"\x05token\x18\x01 \x01(\tR\x05token\"\xb1\x01\n" +
+	"\x18AcceptInvitationResponse\x12'\n" +
+	"\x0forganization_id\x18\x01 \x01(\tR\x0eorganizationId\x12+\n" +
+	"\x11organization_name\x18\x02 \x01(\tR\x10organizationName\x12?\n" +
+	"\x04role\x18\x03 \x01(\x0e2+.carboncircuit.identity.v1.OrganizationRoleR\x04role*\xbf\x01\n" +
 	"\x10OrganizationType\x12!\n" +
 	"\x1dORGANIZATION_TYPE_UNSPECIFIED\x10\x00\x12\"\n" +
 	"\x1eORGANIZATION_TYPE_MANUFACTURER\x10\x01\x12\x1f\n" +
@@ -1540,14 +2388,26 @@ const file_carboncircuit_identity_v1_identity_proto_rawDesc = "" +
 	"\x1eREGISTRY_REJECTION_UNSPECIFIED\x10\x00\x12'\n" +
 	"#REGISTRY_REJECTION_ENTITY_DISSOLVED\x10\x01\x12%\n" +
 	"!REGISTRY_REJECTION_SANCTIONS_FLAG\x10\x02\x12$\n" +
-	" REGISTRY_REJECTION_NAME_MISMATCH\x10\x032\xe3\x05\n" +
+	" REGISTRY_REJECTION_NAME_MISMATCH\x10\x03*\xac\x01\n" +
+	"\x0fInvitationState\x12 \n" +
+	"\x1cINVITATION_STATE_UNSPECIFIED\x10\x00\x12\x1c\n" +
+	"\x18INVITATION_STATE_PENDING\x10\x01\x12\x1d\n" +
+	"\x19INVITATION_STATE_ACCEPTED\x10\x02\x12\x1c\n" +
+	"\x18INVITATION_STATE_REVOKED\x10\x03\x12\x1c\n" +
+	"\x18INVITATION_STATE_EXPIRED\x10\x042\xaa\v\n" +
 	"\x0fIdentityService\x12W\n" +
 	"\x04Ping\x12&.carboncircuit.identity.v1.PingRequest\x1a'.carboncircuit.identity.v1.PingResponse\x12u\n" +
 	"\x0eResolveSession\x120.carboncircuit.identity.v1.ResolveSessionRequest\x1a1.carboncircuit.identity.v1.ResolveSessionResponse\x12\x81\x01\n" +
 	"\x12CreateOrganization\x124.carboncircuit.identity.v1.CreateOrganizationRequest\x1a5.carboncircuit.identity.v1.CreateOrganizationResponse\x12x\n" +
 	"\x0fGetOrganization\x121.carboncircuit.identity.v1.GetOrganizationRequest\x1a2.carboncircuit.identity.v1.GetOrganizationResponse\x12\x81\x01\n" +
 	"\x12IssueTreasuryNonce\x124.carboncircuit.identity.v1.IssueTreasuryNonceRequest\x1a5.carboncircuit.identity.v1.IssueTreasuryNonceResponse\x12~\n" +
-	"\x11DesignateTreasury\x123.carboncircuit.identity.v1.DesignateTreasuryRequest\x1a4.carboncircuit.identity.v1.DesignateTreasuryResponseB\xff\x01\n" +
+	"\x11DesignateTreasury\x123.carboncircuit.identity.v1.DesignateTreasuryRequest\x1a4.carboncircuit.identity.v1.DesignateTreasuryResponse\x12l\n" +
+	"\vListMembers\x12-.carboncircuit.identity.v1.ListMembersRequest\x1a..carboncircuit.identity.v1.ListMembersResponse\x12o\n" +
+	"\fInviteMember\x12..carboncircuit.identity.v1.InviteMemberRequest\x1a/.carboncircuit.identity.v1.InviteMemberResponse\x12{\n" +
+	"\x10RevokeInvitation\x122.carboncircuit.identity.v1.RevokeInvitationRequest\x1a3.carboncircuit.identity.v1.RevokeInvitationResponse\x12{\n" +
+	"\x10ChangeMemberRole\x122.carboncircuit.identity.v1.ChangeMemberRoleRequest\x1a3.carboncircuit.identity.v1.ChangeMemberRoleResponse\x12o\n" +
+	"\fRevokeMember\x12..carboncircuit.identity.v1.RevokeMemberRequest\x1a/.carboncircuit.identity.v1.RevokeMemberResponse\x12{\n" +
+	"\x10AcceptInvitation\x122.carboncircuit.identity.v1.AcceptInvitationRequest\x1a3.carboncircuit.identity.v1.AcceptInvitationResponseB\xff\x01\n" +
 	"\x1dcom.carboncircuit.identity.v1B\rIdentityProtoP\x01ZIgithub.com/carboncircuit/backend/gen/carboncircuit/identity/v1;identityv1\xa2\x02\x03CIX\xaa\x02\x19Carboncircuit.Identity.V1\xca\x02\x19Carboncircuit\\Identity\\V1\xe2\x02%Carboncircuit\\Identity\\V1\\GPBMetadata\xea\x02\x1bCarboncircuit::Identity::V1b\x06proto3"
 
 var (
@@ -1562,8 +2422,8 @@ func file_carboncircuit_identity_v1_identity_proto_rawDescGZIP() []byte {
 	return file_carboncircuit_identity_v1_identity_proto_rawDescData
 }
 
-var file_carboncircuit_identity_v1_identity_proto_enumTypes = make([]protoimpl.EnumInfo, 7)
-var file_carboncircuit_identity_v1_identity_proto_msgTypes = make([]protoimpl.MessageInfo, 16)
+var file_carboncircuit_identity_v1_identity_proto_enumTypes = make([]protoimpl.EnumInfo, 8)
+var file_carboncircuit_identity_v1_identity_proto_msgTypes = make([]protoimpl.MessageInfo, 30)
 var file_carboncircuit_identity_v1_identity_proto_goTypes = []any{
 	(OrganizationType)(0),              // 0: carboncircuit.identity.v1.OrganizationType
 	(OrganizationRole)(0),              // 1: carboncircuit.identity.v1.OrganizationRole
@@ -1572,62 +2432,99 @@ var file_carboncircuit_identity_v1_identity_proto_goTypes = []any{
 	(PlatformRole)(0),                  // 4: carboncircuit.identity.v1.PlatformRole
 	(ProductCategory)(0),               // 5: carboncircuit.identity.v1.ProductCategory
 	(RegistryRejection)(0),             // 6: carboncircuit.identity.v1.RegistryRejection
-	(*PingRequest)(nil),                // 7: carboncircuit.identity.v1.PingRequest
-	(*PingResponse)(nil),               // 8: carboncircuit.identity.v1.PingResponse
-	(*ResolveSessionRequest)(nil),      // 9: carboncircuit.identity.v1.ResolveSessionRequest
-	(*SessionUser)(nil),                // 10: carboncircuit.identity.v1.SessionUser
-	(*SessionOrganization)(nil),        // 11: carboncircuit.identity.v1.SessionOrganization
-	(*ResolveSessionResponse)(nil),     // 12: carboncircuit.identity.v1.ResolveSessionResponse
-	(*CreateOrganizationRequest)(nil),  // 13: carboncircuit.identity.v1.CreateOrganizationRequest
-	(*VerificationOutcome)(nil),        // 14: carboncircuit.identity.v1.VerificationOutcome
-	(*CreateOrganizationResponse)(nil), // 15: carboncircuit.identity.v1.CreateOrganizationResponse
-	(*GetOrganizationRequest)(nil),     // 16: carboncircuit.identity.v1.GetOrganizationRequest
-	(*OrganizationDetail)(nil),         // 17: carboncircuit.identity.v1.OrganizationDetail
-	(*GetOrganizationResponse)(nil),    // 18: carboncircuit.identity.v1.GetOrganizationResponse
-	(*IssueTreasuryNonceRequest)(nil),  // 19: carboncircuit.identity.v1.IssueTreasuryNonceRequest
-	(*IssueTreasuryNonceResponse)(nil), // 20: carboncircuit.identity.v1.IssueTreasuryNonceResponse
-	(*DesignateTreasuryRequest)(nil),   // 21: carboncircuit.identity.v1.DesignateTreasuryRequest
-	(*DesignateTreasuryResponse)(nil),  // 22: carboncircuit.identity.v1.DesignateTreasuryResponse
+	(InvitationState)(0),               // 7: carboncircuit.identity.v1.InvitationState
+	(*PingRequest)(nil),                // 8: carboncircuit.identity.v1.PingRequest
+	(*PingResponse)(nil),               // 9: carboncircuit.identity.v1.PingResponse
+	(*ResolveSessionRequest)(nil),      // 10: carboncircuit.identity.v1.ResolveSessionRequest
+	(*SessionUser)(nil),                // 11: carboncircuit.identity.v1.SessionUser
+	(*SessionOrganization)(nil),        // 12: carboncircuit.identity.v1.SessionOrganization
+	(*ResolveSessionResponse)(nil),     // 13: carboncircuit.identity.v1.ResolveSessionResponse
+	(*CreateOrganizationRequest)(nil),  // 14: carboncircuit.identity.v1.CreateOrganizationRequest
+	(*VerificationOutcome)(nil),        // 15: carboncircuit.identity.v1.VerificationOutcome
+	(*CreateOrganizationResponse)(nil), // 16: carboncircuit.identity.v1.CreateOrganizationResponse
+	(*GetOrganizationRequest)(nil),     // 17: carboncircuit.identity.v1.GetOrganizationRequest
+	(*OrganizationDetail)(nil),         // 18: carboncircuit.identity.v1.OrganizationDetail
+	(*GetOrganizationResponse)(nil),    // 19: carboncircuit.identity.v1.GetOrganizationResponse
+	(*IssueTreasuryNonceRequest)(nil),  // 20: carboncircuit.identity.v1.IssueTreasuryNonceRequest
+	(*IssueTreasuryNonceResponse)(nil), // 21: carboncircuit.identity.v1.IssueTreasuryNonceResponse
+	(*DesignateTreasuryRequest)(nil),   // 22: carboncircuit.identity.v1.DesignateTreasuryRequest
+	(*DesignateTreasuryResponse)(nil),  // 23: carboncircuit.identity.v1.DesignateTreasuryResponse
+	(*Member)(nil),                     // 24: carboncircuit.identity.v1.Member
+	(*Invitation)(nil),                 // 25: carboncircuit.identity.v1.Invitation
+	(*ListMembersRequest)(nil),         // 26: carboncircuit.identity.v1.ListMembersRequest
+	(*ListMembersResponse)(nil),        // 27: carboncircuit.identity.v1.ListMembersResponse
+	(*InviteMemberRequest)(nil),        // 28: carboncircuit.identity.v1.InviteMemberRequest
+	(*InviteMemberResponse)(nil),       // 29: carboncircuit.identity.v1.InviteMemberResponse
+	(*RevokeInvitationRequest)(nil),    // 30: carboncircuit.identity.v1.RevokeInvitationRequest
+	(*RevokeInvitationResponse)(nil),   // 31: carboncircuit.identity.v1.RevokeInvitationResponse
+	(*ChangeMemberRoleRequest)(nil),    // 32: carboncircuit.identity.v1.ChangeMemberRoleRequest
+	(*ChangeMemberRoleResponse)(nil),   // 33: carboncircuit.identity.v1.ChangeMemberRoleResponse
+	(*RevokeMemberRequest)(nil),        // 34: carboncircuit.identity.v1.RevokeMemberRequest
+	(*RevokeMemberResponse)(nil),       // 35: carboncircuit.identity.v1.RevokeMemberResponse
+	(*AcceptInvitationRequest)(nil),    // 36: carboncircuit.identity.v1.AcceptInvitationRequest
+	(*AcceptInvitationResponse)(nil),   // 37: carboncircuit.identity.v1.AcceptInvitationResponse
 }
 var file_carboncircuit_identity_v1_identity_proto_depIdxs = []int32{
 	4,  // 0: carboncircuit.identity.v1.SessionUser.platform_role:type_name -> carboncircuit.identity.v1.PlatformRole
 	0,  // 1: carboncircuit.identity.v1.SessionOrganization.type:type_name -> carboncircuit.identity.v1.OrganizationType
 	2,  // 2: carboncircuit.identity.v1.SessionOrganization.state:type_name -> carboncircuit.identity.v1.OrganizationState
 	3,  // 3: carboncircuit.identity.v1.SessionOrganization.verification_status:type_name -> carboncircuit.identity.v1.VerificationStatus
-	10, // 4: carboncircuit.identity.v1.ResolveSessionResponse.user:type_name -> carboncircuit.identity.v1.SessionUser
-	11, // 5: carboncircuit.identity.v1.ResolveSessionResponse.organization:type_name -> carboncircuit.identity.v1.SessionOrganization
+	11, // 4: carboncircuit.identity.v1.ResolveSessionResponse.user:type_name -> carboncircuit.identity.v1.SessionUser
+	12, // 5: carboncircuit.identity.v1.ResolveSessionResponse.organization:type_name -> carboncircuit.identity.v1.SessionOrganization
 	1,  // 6: carboncircuit.identity.v1.ResolveSessionResponse.role:type_name -> carboncircuit.identity.v1.OrganizationRole
 	0,  // 7: carboncircuit.identity.v1.CreateOrganizationRequest.type:type_name -> carboncircuit.identity.v1.OrganizationType
 	5,  // 8: carboncircuit.identity.v1.CreateOrganizationRequest.product_categories:type_name -> carboncircuit.identity.v1.ProductCategory
 	3,  // 9: carboncircuit.identity.v1.VerificationOutcome.status:type_name -> carboncircuit.identity.v1.VerificationStatus
 	6,  // 10: carboncircuit.identity.v1.VerificationOutcome.rejection:type_name -> carboncircuit.identity.v1.RegistryRejection
-	11, // 11: carboncircuit.identity.v1.CreateOrganizationResponse.organization:type_name -> carboncircuit.identity.v1.SessionOrganization
+	12, // 11: carboncircuit.identity.v1.CreateOrganizationResponse.organization:type_name -> carboncircuit.identity.v1.SessionOrganization
 	1,  // 12: carboncircuit.identity.v1.CreateOrganizationResponse.role:type_name -> carboncircuit.identity.v1.OrganizationRole
-	14, // 13: carboncircuit.identity.v1.CreateOrganizationResponse.outcome:type_name -> carboncircuit.identity.v1.VerificationOutcome
+	15, // 13: carboncircuit.identity.v1.CreateOrganizationResponse.outcome:type_name -> carboncircuit.identity.v1.VerificationOutcome
 	0,  // 14: carboncircuit.identity.v1.OrganizationDetail.type:type_name -> carboncircuit.identity.v1.OrganizationType
 	2,  // 15: carboncircuit.identity.v1.OrganizationDetail.state:type_name -> carboncircuit.identity.v1.OrganizationState
 	3,  // 16: carboncircuit.identity.v1.OrganizationDetail.verification_status:type_name -> carboncircuit.identity.v1.VerificationStatus
 	5,  // 17: carboncircuit.identity.v1.OrganizationDetail.product_categories:type_name -> carboncircuit.identity.v1.ProductCategory
-	17, // 18: carboncircuit.identity.v1.GetOrganizationResponse.organization:type_name -> carboncircuit.identity.v1.OrganizationDetail
+	18, // 18: carboncircuit.identity.v1.GetOrganizationResponse.organization:type_name -> carboncircuit.identity.v1.OrganizationDetail
 	1,  // 19: carboncircuit.identity.v1.GetOrganizationResponse.role:type_name -> carboncircuit.identity.v1.OrganizationRole
-	14, // 20: carboncircuit.identity.v1.GetOrganizationResponse.outcome:type_name -> carboncircuit.identity.v1.VerificationOutcome
-	7,  // 21: carboncircuit.identity.v1.IdentityService.Ping:input_type -> carboncircuit.identity.v1.PingRequest
-	9,  // 22: carboncircuit.identity.v1.IdentityService.ResolveSession:input_type -> carboncircuit.identity.v1.ResolveSessionRequest
-	13, // 23: carboncircuit.identity.v1.IdentityService.CreateOrganization:input_type -> carboncircuit.identity.v1.CreateOrganizationRequest
-	16, // 24: carboncircuit.identity.v1.IdentityService.GetOrganization:input_type -> carboncircuit.identity.v1.GetOrganizationRequest
-	19, // 25: carboncircuit.identity.v1.IdentityService.IssueTreasuryNonce:input_type -> carboncircuit.identity.v1.IssueTreasuryNonceRequest
-	21, // 26: carboncircuit.identity.v1.IdentityService.DesignateTreasury:input_type -> carboncircuit.identity.v1.DesignateTreasuryRequest
-	8,  // 27: carboncircuit.identity.v1.IdentityService.Ping:output_type -> carboncircuit.identity.v1.PingResponse
-	12, // 28: carboncircuit.identity.v1.IdentityService.ResolveSession:output_type -> carboncircuit.identity.v1.ResolveSessionResponse
-	15, // 29: carboncircuit.identity.v1.IdentityService.CreateOrganization:output_type -> carboncircuit.identity.v1.CreateOrganizationResponse
-	18, // 30: carboncircuit.identity.v1.IdentityService.GetOrganization:output_type -> carboncircuit.identity.v1.GetOrganizationResponse
-	20, // 31: carboncircuit.identity.v1.IdentityService.IssueTreasuryNonce:output_type -> carboncircuit.identity.v1.IssueTreasuryNonceResponse
-	22, // 32: carboncircuit.identity.v1.IdentityService.DesignateTreasury:output_type -> carboncircuit.identity.v1.DesignateTreasuryResponse
-	27, // [27:33] is the sub-list for method output_type
-	21, // [21:27] is the sub-list for method input_type
-	21, // [21:21] is the sub-list for extension type_name
-	21, // [21:21] is the sub-list for extension extendee
-	0,  // [0:21] is the sub-list for field type_name
+	15, // 20: carboncircuit.identity.v1.GetOrganizationResponse.outcome:type_name -> carboncircuit.identity.v1.VerificationOutcome
+	1,  // 21: carboncircuit.identity.v1.Member.role:type_name -> carboncircuit.identity.v1.OrganizationRole
+	1,  // 22: carboncircuit.identity.v1.Invitation.role:type_name -> carboncircuit.identity.v1.OrganizationRole
+	7,  // 23: carboncircuit.identity.v1.Invitation.state:type_name -> carboncircuit.identity.v1.InvitationState
+	24, // 24: carboncircuit.identity.v1.ListMembersResponse.members:type_name -> carboncircuit.identity.v1.Member
+	25, // 25: carboncircuit.identity.v1.ListMembersResponse.invitations:type_name -> carboncircuit.identity.v1.Invitation
+	1,  // 26: carboncircuit.identity.v1.InviteMemberRequest.role:type_name -> carboncircuit.identity.v1.OrganizationRole
+	25, // 27: carboncircuit.identity.v1.InviteMemberResponse.invitation:type_name -> carboncircuit.identity.v1.Invitation
+	1,  // 28: carboncircuit.identity.v1.ChangeMemberRoleRequest.role:type_name -> carboncircuit.identity.v1.OrganizationRole
+	24, // 29: carboncircuit.identity.v1.ChangeMemberRoleResponse.member:type_name -> carboncircuit.identity.v1.Member
+	1,  // 30: carboncircuit.identity.v1.AcceptInvitationResponse.role:type_name -> carboncircuit.identity.v1.OrganizationRole
+	8,  // 31: carboncircuit.identity.v1.IdentityService.Ping:input_type -> carboncircuit.identity.v1.PingRequest
+	10, // 32: carboncircuit.identity.v1.IdentityService.ResolveSession:input_type -> carboncircuit.identity.v1.ResolveSessionRequest
+	14, // 33: carboncircuit.identity.v1.IdentityService.CreateOrganization:input_type -> carboncircuit.identity.v1.CreateOrganizationRequest
+	17, // 34: carboncircuit.identity.v1.IdentityService.GetOrganization:input_type -> carboncircuit.identity.v1.GetOrganizationRequest
+	20, // 35: carboncircuit.identity.v1.IdentityService.IssueTreasuryNonce:input_type -> carboncircuit.identity.v1.IssueTreasuryNonceRequest
+	22, // 36: carboncircuit.identity.v1.IdentityService.DesignateTreasury:input_type -> carboncircuit.identity.v1.DesignateTreasuryRequest
+	26, // 37: carboncircuit.identity.v1.IdentityService.ListMembers:input_type -> carboncircuit.identity.v1.ListMembersRequest
+	28, // 38: carboncircuit.identity.v1.IdentityService.InviteMember:input_type -> carboncircuit.identity.v1.InviteMemberRequest
+	30, // 39: carboncircuit.identity.v1.IdentityService.RevokeInvitation:input_type -> carboncircuit.identity.v1.RevokeInvitationRequest
+	32, // 40: carboncircuit.identity.v1.IdentityService.ChangeMemberRole:input_type -> carboncircuit.identity.v1.ChangeMemberRoleRequest
+	34, // 41: carboncircuit.identity.v1.IdentityService.RevokeMember:input_type -> carboncircuit.identity.v1.RevokeMemberRequest
+	36, // 42: carboncircuit.identity.v1.IdentityService.AcceptInvitation:input_type -> carboncircuit.identity.v1.AcceptInvitationRequest
+	9,  // 43: carboncircuit.identity.v1.IdentityService.Ping:output_type -> carboncircuit.identity.v1.PingResponse
+	13, // 44: carboncircuit.identity.v1.IdentityService.ResolveSession:output_type -> carboncircuit.identity.v1.ResolveSessionResponse
+	16, // 45: carboncircuit.identity.v1.IdentityService.CreateOrganization:output_type -> carboncircuit.identity.v1.CreateOrganizationResponse
+	19, // 46: carboncircuit.identity.v1.IdentityService.GetOrganization:output_type -> carboncircuit.identity.v1.GetOrganizationResponse
+	21, // 47: carboncircuit.identity.v1.IdentityService.IssueTreasuryNonce:output_type -> carboncircuit.identity.v1.IssueTreasuryNonceResponse
+	23, // 48: carboncircuit.identity.v1.IdentityService.DesignateTreasury:output_type -> carboncircuit.identity.v1.DesignateTreasuryResponse
+	27, // 49: carboncircuit.identity.v1.IdentityService.ListMembers:output_type -> carboncircuit.identity.v1.ListMembersResponse
+	29, // 50: carboncircuit.identity.v1.IdentityService.InviteMember:output_type -> carboncircuit.identity.v1.InviteMemberResponse
+	31, // 51: carboncircuit.identity.v1.IdentityService.RevokeInvitation:output_type -> carboncircuit.identity.v1.RevokeInvitationResponse
+	33, // 52: carboncircuit.identity.v1.IdentityService.ChangeMemberRole:output_type -> carboncircuit.identity.v1.ChangeMemberRoleResponse
+	35, // 53: carboncircuit.identity.v1.IdentityService.RevokeMember:output_type -> carboncircuit.identity.v1.RevokeMemberResponse
+	37, // 54: carboncircuit.identity.v1.IdentityService.AcceptInvitation:output_type -> carboncircuit.identity.v1.AcceptInvitationResponse
+	43, // [43:55] is the sub-list for method output_type
+	31, // [31:43] is the sub-list for method input_type
+	31, // [31:31] is the sub-list for extension type_name
+	31, // [31:31] is the sub-list for extension extendee
+	0,  // [0:31] is the sub-list for field type_name
 }
 
 func init() { file_carboncircuit_identity_v1_identity_proto_init() }
@@ -1640,8 +2537,8 @@ func file_carboncircuit_identity_v1_identity_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_carboncircuit_identity_v1_identity_proto_rawDesc), len(file_carboncircuit_identity_v1_identity_proto_rawDesc)),
-			NumEnums:      7,
-			NumMessages:   16,
+			NumEnums:      8,
+			NumMessages:   30,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

@@ -11,6 +11,12 @@ service IdentityService {
   rpc GetOrganization(GetOrganizationRequest) returns (GetOrganizationResponse);
   rpc IssueTreasuryNonce(IssueTreasuryNonceRequest) returns (IssueTreasuryNonceResponse);
   rpc DesignateTreasury(DesignateTreasuryRequest) returns (DesignateTreasuryResponse);
+  rpc ListMembers(ListMembersRequest) returns (ListMembersResponse);
+  rpc InviteMember(InviteMemberRequest) returns (InviteMemberResponse);
+  rpc RevokeInvitation(RevokeInvitationRequest) returns (RevokeInvitationResponse);
+  rpc ChangeMemberRole(ChangeMemberRoleRequest) returns (ChangeMemberRoleResponse);
+  rpc RevokeMember(RevokeMemberRequest) returns (RevokeMemberResponse);
+  rpc AcceptInvitation(AcceptInvitationRequest) returns (AcceptInvitationResponse);
 }
 
 enum OrganizationType {
@@ -166,4 +172,82 @@ message DesignateTreasuryRequest {
 message DesignateTreasuryResponse {
   string address = 1;
   string designated_at = 2;
+}
+
+enum InvitationState {
+  INVITATION_STATE_UNSPECIFIED = 0;
+  INVITATION_STATE_PENDING = 1;
+  INVITATION_STATE_ACCEPTED = 2;
+  INVITATION_STATE_REVOKED = 3;
+  INVITATION_STATE_EXPIRED = 4;
+}
+
+message Member {
+  string user_id = 1;
+  string email = 2;
+  string name = 3;
+  OrganizationRole role = 4;
+  bool mfa_enrolled = 5;
+  string joined_at = 6;
+  string last_active_at = 7;
+}
+
+message Invitation {
+  string id = 1;
+  string email = 2;
+  OrganizationRole role = 3;
+  InvitationState state = 4;
+  string invited_at = 5;
+  string expires_at = 6;
+}
+
+message ListMembersRequest {}
+
+message ListMembersResponse {
+  repeated Member members = 1;
+  repeated Invitation invitations = 2;
+}
+
+message InviteMemberRequest {
+  string email = 1;
+  OrganizationRole role = 2;
+}
+
+message InviteMemberResponse {
+  Invitation invitation = 1;
+  string token = 2;
+}
+
+message RevokeInvitationRequest {
+  string invitation_id = 1;
+}
+
+message RevokeInvitationResponse {}
+
+message ChangeMemberRoleRequest {
+  string user_id = 1;
+  OrganizationRole role = 2;
+}
+
+message ChangeMemberRoleResponse {
+  Member member = 1;
+  string affected_subject = 2;
+}
+
+message RevokeMemberRequest {
+  string user_id = 1;
+}
+
+message RevokeMemberResponse {
+  string affected_subject = 1;
+}
+
+message AcceptInvitationRequest {
+  string token = 1;
+}
+
+message AcceptInvitationResponse {
+  string organization_id = 1;
+  string organization_name = 2;
+  OrganizationRole role = 3;
 }

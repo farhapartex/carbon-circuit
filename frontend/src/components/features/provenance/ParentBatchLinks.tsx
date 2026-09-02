@@ -1,12 +1,11 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { countryName } from "@/lib/countries";
-import type { Id, ParentBatchReference } from "@/lib/types";
+import type { ParentBatchRecord } from "@/lib/api/batches";
 
 type ParentBatchLinksProps = {
-  batchId: Id;
-  parents: ParentBatchReference[];
+  batchId: string;
+  parents: ParentBatchRecord[];
 };
 
 export function ParentBatchLinks({ batchId, parents }: ParentBatchLinksProps) {
@@ -20,17 +19,19 @@ export function ParentBatchLinks({ batchId, parents }: ParentBatchLinksProps) {
       <CardContent className="space-y-3">
         {parents.map((parent) => (
           <div
-            key={parent.id}
+            key={parent.declaredReference}
             className="flex flex-wrap items-center justify-between gap-2 rounded-md border border-neutral-200 px-4 py-3"
           >
-            <span>
-              <span className="block font-medium">{parent.componentType}</span>
-              <span className="block text-caption text-neutral-600">
-                {parent.originatingFacilityName} ·{" "}
-                {countryName(parent.originatingFacilityCountry)}
+            <span className="min-w-0">
+              <span className="block font-medium">
+                {parent.componentType ?? "Undisclosed component"}
+              </span>
+              <span className="block truncate text-caption text-neutral-600">
+                {parent.originatingFacilityName ??
+                  `Declared as ${parent.declaredReference}`}
               </span>
             </span>
-            {parent.resolved ? (
+            {parent.resolved && parent.id !== null ? (
               <Button asChild size="sm" variant="outline">
                 <Link href={`/batches/${batchId}/components/${parent.id}`}>
                   View

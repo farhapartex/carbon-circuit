@@ -10,11 +10,10 @@ import { TimestampDisplay } from "@/components/shared/TimestampDisplay";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { loadMoreBatches } from "@/lib/actions/batches";
-import type { Batch, CursorMeta } from "@/lib/types";
+import type { BatchRecord } from "@/lib/api/batches";
+import { formatQuantity } from "@/lib/decimal";
 
-const numberFormat = new Intl.NumberFormat("en-US");
-
-const columns: DataTableColumn<Batch>[] = [
+const columns: DataTableColumn<BatchRecord>[] = [
   {
     key: "reference",
     header: "Batch",
@@ -43,7 +42,7 @@ const columns: DataTableColumn<Batch>[] = [
     alignEnd: true,
     render: (batch) => (
       <span className="tabular-nums">
-        {numberFormat.format(batch.quantity)} {batch.unit}
+        {formatQuantity(batch.quantity)} {batch.unit}
       </span>
     ),
   },
@@ -74,20 +73,23 @@ const columns: DataTableColumn<Batch>[] = [
 ];
 
 type BatchTableProps = {
-  batches: Batch[];
-  meta: CursorMeta;
+  batches: BatchRecord[];
+  cursor: string | null;
+  hasMore: boolean;
 };
 
-export function BatchTable({ batches, meta }: BatchTableProps) {
+export function BatchTable({ batches, cursor, hasMore }: BatchTableProps) {
   const [loaded, setLoaded] = useState(batches);
-  const [cursor, setCursor] = useState(meta);
+  const [nextCursor, setNextCursor] = useState(cursor);
+  const [more, setMore] = useState(hasMore);
   const [pending, startTransition] = useTransition();
 
   const loadMore = (after: string) => {
     startTransition(async () => {
       const page = await loadMoreBatches(after);
       setLoaded((current) => [...current, ...page.items]);
-      setCursor(page.meta);
+      setNextCursor(page.cursor);
+      setMore(page.hasMore);
     });
   };
 
@@ -112,10 +114,10 @@ export function BatchTable({ batches, meta }: BatchTableProps) {
         }
       />
 
-      {cursor.hasMore && !pending ? (
+      {more && nextCursor !== null && !pending ? (
         <Pagination
           mode="cursor"
-          meta={cursor}
+          meta={{ nextCursor, hasMore: more }}
           loadedCount={loaded.length}
           onLoadMore={loadMore}
         />

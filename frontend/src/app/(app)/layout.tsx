@@ -14,6 +14,7 @@ export default async function AppLayout({ children }: LayoutProps<"/">) {
       organizationType={tenancy?.organizationType ?? null}
       organizationState={tenancy?.organizationState ?? "active"}
       verificationStatus={tenancy?.verificationStatus ?? "unverified"}
+      treasuryDesignated={tenancy?.isTreasuryDesignated ?? false}
       userName={session?.user.name ?? "Account"}
       userEmail={session?.user.email ?? ""}
       unreadNotificationCount={

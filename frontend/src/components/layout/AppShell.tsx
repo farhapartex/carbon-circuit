@@ -14,6 +14,7 @@ type AppShellProps = {
   organizationType: OrganizationType | null;
   organizationState: OrganizationState;
   verificationStatus: VerificationStatus;
+  treasuryDesignated: boolean;
   userName: string;
   userEmail: string;
   unreadNotificationCount: number;
@@ -25,6 +26,7 @@ export function AppShell({
   organizationType,
   organizationState,
   verificationStatus,
+  treasuryDesignated,
   userName,
   userEmail,
   unreadNotificationCount,
@@ -48,6 +50,7 @@ export function AppShell({
           <VerificationStatusBanner
             organizationState={organizationState}
             verificationStatus={verificationStatus}
+            treasuryDesignated={treasuryDesignated}
           />
           <main className="flex-1 px-6 py-8">
             <div className="mx-auto max-w-6xl space-y-8">{children}</div>

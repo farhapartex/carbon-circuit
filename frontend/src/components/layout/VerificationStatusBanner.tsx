@@ -1,4 +1,4 @@
-import { AlertTriangle, Info } from "lucide-react";
+import { AlertTriangle, Info, Wallet } from "lucide-react";
 import Link from "next/link";
 import type { VerificationStatus } from "@/lib/status";
 import type { OrganizationState } from "@/lib/types/organization";
@@ -12,11 +12,13 @@ const gatedCapabilities = [
 type VerificationStatusBannerProps = {
   organizationState: OrganizationState;
   verificationStatus: VerificationStatus;
+  treasuryDesignated: boolean;
 };
 
 export function VerificationStatusBanner({
   organizationState,
   verificationStatus,
+  treasuryDesignated,
 }: VerificationStatusBannerProps) {
   const organization = {
     state: organizationState,
@@ -27,7 +29,7 @@ export function VerificationStatusBanner({
     organization.state === "active" &&
     organization.verificationStatus === "verified"
   ) {
-    return null;
+    return treasuryDesignated ? null : <TreasuryPrompt />;
   }
 
   if (organization.state === "restricted") {
@@ -80,14 +82,28 @@ export function VerificationStatusBanner({
       <Info className="mt-0.5 size-4 shrink-0 text-warning-600" aria-hidden />
       <p className="text-caption text-warning-700">
         Your organization did not match the business registry, so you cannot{" "}
-        {gatedCapabilities.join(", ")}. Everything else works normally.{" "}
+        {gatedCapabilities.join(", ")}. Everything else works normally. Contact
+        support with your registration documents and we will verify the
+        organization manually.
+      </p>
+    </div>
+  );
+}
+
+function TreasuryPrompt() {
+  return (
+    <div className="flex items-start gap-3 border-b border-primary-600/30 bg-primary-50 px-6 py-3">
+      <Wallet className="mt-0.5 size-4 shrink-0 text-primary-600" aria-hidden />
+      <p className="text-caption text-primary-700">
+        Your organization has no Treasury Address, so credits you earn cannot be
+        delivered.{" "}
         <Link
-          href="/settings/organization"
+          href="/onboarding/wallet"
           className="font-medium underline underline-offset-4"
         >
-          Correct your registration number
-        </Link>{" "}
-        or contact support for manual verification.
+          Designate one by signing from your wallet
+        </Link>
+        .
       </p>
     </div>
   );

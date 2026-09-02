@@ -2,7 +2,7 @@ import { Link2, MapPin } from "lucide-react";
 import { TimestampDisplay } from "@/components/shared/TimestampDisplay";
 import { Timeline, type TimelineEntry } from "@/components/shared/Timeline";
 import { checkpointTypeLabels } from "@/lib/labels";
-import type { Checkpoint, CheckpointType } from "@/lib/types";
+import type { Checkpoint } from "@/lib/types";
 
 const anchorLabel = (checkpoint: Checkpoint) => {
   if (checkpoint.anchor.status === "confirmed") {

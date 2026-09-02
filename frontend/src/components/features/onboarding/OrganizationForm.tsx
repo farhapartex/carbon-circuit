@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { submitOrganization } from "@/lib/actions/organization";
 import { Button } from "@/components/ui/button";
+import { Combobox } from "@/components/ui/combobox";
 import {
   Form,
   FormControl,
@@ -50,7 +51,10 @@ const ORGANIZATION_TYPES = [
   },
 ] as const;
 
-const countries = registryMarketOptions();
+const countryChoices = registryMarketOptions().map((country) => ({
+  value: country.code,
+  label: country.name,
+}));
 
 const organizationSchema = z.object({
   name: z.string().min(2, "Enter your registered legal name."),
@@ -189,20 +193,16 @@ export function OrganizationForm() {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Country of incorporation</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
-                <FormControl>
-                  <SelectTrigger className="w-full">
-                    <SelectValue />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  {countries.map((country) => (
-                    <SelectItem key={country.code} value={country.code}>
-                      {country.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <FormControl>
+                <Combobox
+                  options={countryChoices}
+                  value={field.value}
+                  onValueChange={field.onChange}
+                  placeholder="Select a country"
+                  searchPlaceholder="Search markets"
+                  emptyMessage="No covered market matches that."
+                />
+              </FormControl>
               <FormDescription>
                 These are the markets our business register covers. If your
                 country is not listed, contact support and we will verify the

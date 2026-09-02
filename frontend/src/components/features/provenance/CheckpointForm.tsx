@@ -3,9 +3,10 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
+import { Combobox } from "@/components/ui/combobox";
 import {
   Form,
   FormControl,
@@ -31,7 +32,10 @@ import {
 } from "@/lib/labels";
 import type { CheckpointType, ShippingMethod } from "@/lib/types";
 
-const countries = allCountryOptions();
+const countryChoices = allCountryOptions().map((country) => ({
+  value: country.code,
+  label: country.name,
+}));
 
 const checkpointTypes = Object.keys(checkpointTypeLabels) as CheckpointType[];
 const shippingMethods = Object.keys(shippingMethodLabels) as ShippingMethod[];
@@ -97,7 +101,7 @@ export function CheckpointForm({
     },
   });
 
-  const selectedType = form.watch("type");
+  const selectedType = useWatch({ control: form.control, name: "type" });
 
   const submit = () => {
     setFailure(null);
@@ -174,20 +178,16 @@ export function CheckpointForm({
           render={({ field }) => (
             <FormItem>
               <FormLabel>Country</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
-                <FormControl>
-                  <SelectTrigger className="w-full">
-                    <SelectValue />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  {countries.map((country) => (
-                    <SelectItem key={country.code} value={country.code}>
-                      {country.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <FormControl>
+                <Combobox
+                  options={countryChoices}
+                  value={field.value}
+                  onValueChange={field.onChange}
+                  placeholder="Select a country"
+                  searchPlaceholder="Search countries"
+                  emptyMessage="No country matches that."
+                />
+              </FormControl>
               <FormMessage />
             </FormItem>
           )}

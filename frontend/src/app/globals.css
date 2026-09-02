@@ -179,7 +179,11 @@
   }
 }
 
-*:focus-visible {
+*:focus-visible:not(
+    [data-slot="select-item"],
+    [data-slot="dropdown-menu-item"],
+    [data-slot="combobox-item"]
+  ) {
   outline: 2px solid var(--color-primary-600);
   outline-offset: 2px;
 }

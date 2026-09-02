@@ -98,3 +98,32 @@ export const usdcAmountToBaseUnits = (amount: UsdcAmount): bigint =>
 
 export const usdcAmountFromBaseUnits = (baseUnits: bigint): UsdcAmount =>
   dn.toString([baseUnits, USDC_DECIMALS]) as UsdcAmount;
+
+export const addUsdcAmounts = (a: UsdcAmount, b: UsdcAmount): UsdcAmount =>
+  dn.toString(dn.add(asUsdc(a), asUsdc(b))) as UsdcAmount;
+
+export const subtractUsdcAmounts = (a: UsdcAmount, b: UsdcAmount): UsdcAmount =>
+  dn.toString(dn.subtract(asUsdc(a), asUsdc(b))) as UsdcAmount;
+
+export const costOf = (
+  quantity: CreditAmount,
+  pricePerTonne: UsdcAmount,
+): UsdcAmount =>
+  dn.toString(
+    dn.multiply(asCredits(quantity), asUsdc(pricePerTonne), USDC_DECIMALS),
+  ) as UsdcAmount;
+
+export const applyBasisPoints = (
+  amount: UsdcAmount,
+  basisPoints: number,
+): UsdcAmount =>
+  dn.toString(
+    dn.divide(
+      dn.multiply(asUsdc(amount), dn.from(basisPoints, 0), USDC_DECIMALS),
+      dn.from(10000, 0),
+      USDC_DECIMALS,
+    ),
+  ) as UsdcAmount;
+
+export const isZeroUsdcAmount = (amount: UsdcAmount): boolean =>
+  dn.equal(asUsdc(amount), dn.from(0, USDC_DECIMALS));

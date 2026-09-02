@@ -1,16 +1,21 @@
 import { AppShell } from "@/components/layout/AppShell";
-import { getCurrentOrganization, listNotifications } from "@/lib/fixtures";
-import { organizationUsers } from "@/lib/fixtures/organizations";
+import { auth0 } from "@/lib/auth0";
+import { listNotifications } from "@/lib/fixtures";
+import { tenancyOf } from "@/lib/session";
 
 export default async function AppLayout({ children }: LayoutProps<"/">) {
-  const organization = await getCurrentOrganization();
+  const session = await auth0.getSession();
+  const tenancy = tenancyOf(session);
   const notifications = await listNotifications();
-  const signedInUser = organizationUsers[0];
 
   return (
     <AppShell
-      organization={organization}
-      userName={signedInUser?.name ?? "Account"}
+      organizationName={tenancy?.organizationName ?? "Your organization"}
+      organizationType={tenancy?.organizationType ?? null}
+      organizationState={tenancy?.organizationState ?? "active"}
+      verificationStatus={tenancy?.verificationStatus ?? "unverified"}
+      userName={session?.user.name ?? "Account"}
+      userEmail={session?.user.email ?? ""}
       unreadNotificationCount={
         notifications.items.filter((notification) => !notification.read).length
       }

@@ -1,6 +1,7 @@
 import { AlertTriangle, Info } from "lucide-react";
 import Link from "next/link";
-import type { Organization } from "@/lib/types";
+import type { VerificationStatus } from "@/lib/status";
+import type { OrganizationState } from "@/lib/types/organization";
 
 const gatedCapabilities = [
   "submit sustainability claims",
@@ -9,12 +10,19 @@ const gatedCapabilities = [
 ];
 
 type VerificationStatusBannerProps = {
-  organization: Organization;
+  organizationState: OrganizationState;
+  verificationStatus: VerificationStatus;
 };
 
 export function VerificationStatusBanner({
-  organization,
+  organizationState,
+  verificationStatus,
 }: VerificationStatusBannerProps) {
+  const organization = {
+    state: organizationState,
+    verificationStatus,
+  };
+
   if (
     organization.state === "active" &&
     organization.verificationStatus === "verified"

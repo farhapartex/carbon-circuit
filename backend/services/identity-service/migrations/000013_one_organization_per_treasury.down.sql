@@ -1,0 +1,1 @@
+DROP INDEX identity.treasury_addresses_one_organization_per_address;

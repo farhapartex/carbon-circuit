@@ -82,3 +82,14 @@ func (i *Identity) CreateOrganization(
 
 	return i.client.CreateOrganization(callCtx, request)
 }
+
+func (i *Identity) GetOrganization(
+	ctx context.Context,
+) (*identityv1.GetOrganizationResponse, error) {
+	callCtx, cancel := context.WithTimeout(ctx, i.callTimeout)
+	defer cancel()
+
+	callCtx = grpcx.WithCorrelationID(callCtx, logging.CorrelationIDFrom(ctx))
+
+	return i.client.GetOrganization(callCtx, &identityv1.GetOrganizationRequest{})
+}

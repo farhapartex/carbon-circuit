@@ -29,6 +29,13 @@ var productCategoryByName = map[string]identityv1.ProductCategory{
 	"textiles":    identityv1.ProductCategory_PRODUCT_CATEGORY_TEXTILES,
 }
 
+var productCategoryName = map[identityv1.ProductCategory]string{
+	identityv1.ProductCategory_PRODUCT_CATEGORY_ELECTRONICS: "electronics",
+	identityv1.ProductCategory_PRODUCT_CATEGORY_AGRICULTURE: "agriculture",
+	identityv1.ProductCategory_PRODUCT_CATEGORY_PHARMA:      "pharma",
+	identityv1.ProductCategory_PRODUCT_CATEGORY_TEXTILES:    "textiles",
+}
+
 var rejectionName = map[identityv1.RegistryRejection]string{
 	identityv1.RegistryRejection_REGISTRY_REJECTION_ENTITY_DISSOLVED: "entity_dissolved",
 	identityv1.RegistryRejection_REGISTRY_REJECTION_SANCTIONS_FLAG:   "sanctions_flag",
@@ -156,4 +163,65 @@ func toCreateOrganizationResponse(
 			NameSimilarity: emptyToNil(outcome.GetNameSimilarity()),
 		},
 	}
+}
+
+type organizationDetailResponse struct {
+	ID                         string                      `json:"id"`
+	Name                       string                      `json:"name"`
+	Type                       string                      `json:"type"`
+	State                      string                      `json:"state"`
+	VerificationStatus         string                      `json:"verification_status"`
+	CountryOfIncorporation     string                      `json:"country_of_incorporation"`
+	BusinessRegistrationNumber string                      `json:"business_registration_number"`
+	ProductCategories          []string                    `json:"product_categories"`
+	TreasuryDesignated         bool                        `json:"treasury_designated"`
+	Role                       string                      `json:"role"`
+	CreatedAt                  string                      `json:"created_at"`
+	Outcome                    verificationOutcomeResponse `json:"outcome"`
+}
+
+func (h *Handlers) GetOrganization(c *gin.Context) {
+	if _, resolved := caller.ContextFrom(c.Request.Context()); !resolved {
+		httpx.Fail(c, httpx.CodeUnauthenticated)
+		return
+	}
+
+	detail, err := h.Identity.GetOrganization(c.Request.Context())
+	if err != nil {
+		if status.Code(err) == codes.NotFound {
+			httpx.Fail(c, httpx.CodeResourceNotFound)
+			return
+		}
+		h.Logger.Error("get organization upstream failed", errorAttributes(c, err)...)
+		httpx.Fail(c, httpx.CodeDependencyUnavailable)
+		return
+	}
+
+	organization := detail.GetOrganization()
+	outcome := detail.GetOutcome()
+
+	categories := make([]string, 0, len(organization.GetProductCategories()))
+	for _, category := range organization.GetProductCategories() {
+		categories = append(categories, productCategoryName[category])
+	}
+
+	httpx.Data(c, http.StatusOK, organizationDetailResponse{
+		ID:                         organization.GetId(),
+		Name:                       organization.GetName(),
+		Type:                       identityOrganizationTypeName[organization.GetType()],
+		State:                      organizationStateName[organization.GetState()],
+		VerificationStatus:         verificationStatusName[organization.GetVerificationStatus()],
+		CountryOfIncorporation:     organization.GetCountryOfIncorporation(),
+		BusinessRegistrationNumber: organization.GetBusinessRegistrationNumber(),
+		ProductCategories:          categories,
+		TreasuryDesignated:         organization.GetTreasuryDesignated(),
+		Role:                       organizationRoleName[detail.GetRole()],
+		CreatedAt:                  organization.GetCreatedAt(),
+		Outcome: verificationOutcomeResponse{
+			Status:         verificationStatusName[outcome.GetStatus()],
+			Rejection:      emptyToNil(rejectionName[outcome.GetRejection()]),
+			MatchFound:     outcome.GetRegistryMatchFound(),
+			NameSimilarity: emptyToNil(outcome.GetNameSimilarity()),
+		},
+	})
 }

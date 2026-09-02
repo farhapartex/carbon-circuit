@@ -26,6 +26,7 @@ type ApiInvitation = {
   state: InvitationState;
   invited_at: string;
   expires_at: string;
+  invited_by_name: string;
 };
 
 type ApiTeam = {
@@ -50,6 +51,7 @@ export type Invitation = {
   state: InvitationState;
   invitedAt: string;
   expiresAt: string;
+  invitedByName: string;
 };
 
 export type Team = {
@@ -79,6 +81,7 @@ const toInvitation = (invitation: ApiInvitation): Invitation => ({
   state: invitation.state,
   invitedAt: invitation.invited_at,
   expiresAt: invitation.expires_at,
+  invitedByName: invitation.invited_by_name,
 });
 
 export const fetchTeam = async (token: string): Promise<Team> => {

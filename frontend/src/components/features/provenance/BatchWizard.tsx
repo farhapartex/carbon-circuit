@@ -1,7 +1,6 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Check } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { useForm, useWatch } from "react-hook-form";
@@ -16,11 +15,11 @@ import {
   type BatchDraftValues,
   type BatchStep,
 } from "@/components/features/provenance/batchDraft";
+import { StepIndicator } from "@/components/shared/StepIndicator";
 import { Form } from "@/components/ui/form";
 import { useFormDraftStore } from "@/stores/form-drafts";
 import type { FacilityRecord } from "@/lib/api/facilities";
 import type { ProductCategory } from "@/lib/types";
-import { cn } from "@/lib/utils";
 
 const STEP_LABELS: Record<BatchStep, string> = {
   category: "Category",
@@ -123,49 +122,10 @@ export function BatchWizard({
         onSubmit={form.handleSubmit(submit)}
         className="max-w-2xl space-y-8"
       >
-        <ol className="flex flex-wrap items-center gap-x-2 gap-y-3">
-          {BATCH_STEPS.map((name, index) => {
-            const done = index < stepIndex;
-            const active = index === stepIndex;
-
-            return (
-              <li key={name} className="flex items-center gap-2">
-                <span
-                  aria-current={active ? "step" : undefined}
-                  className={cn(
-                    "flex size-6 shrink-0 items-center justify-center rounded-full text-caption font-medium tabular-nums",
-                    done && "bg-primary-700 text-white",
-                    active &&
-                      "bg-primary-50 text-primary-800 ring-2 ring-primary-600",
-                    !done && !active && "bg-neutral-100 text-neutral-600",
-                  )}
-                >
-                  {done ? (
-                    <Check className="size-3.5" aria-hidden />
-                  ) : (
-                    index + 1
-                  )}
-                </span>
-                <span
-                  className={cn(
-                    "text-caption",
-                    active
-                      ? "font-medium text-neutral-900"
-                      : "text-neutral-600",
-                  )}
-                >
-                  {STEP_LABELS[name]}
-                </span>
-                {index < BATCH_STEPS.length - 1 ? (
-                  <span
-                    className="ml-2 hidden h-px w-8 bg-neutral-200 sm:block"
-                    aria-hidden
-                  />
-                ) : null}
-              </li>
-            );
-          })}
-        </ol>
+        <StepIndicator
+          steps={BATCH_STEPS.map((name) => STEP_LABELS[name])}
+          currentIndex={stepIndex}
+        />
 
         {failure ? (
           <div

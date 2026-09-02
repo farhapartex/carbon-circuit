@@ -20,7 +20,7 @@ type RegistryLookup interface {
 
 type OrganizationReader interface {
 	Find(tx database.Tx, organizationID uuid.UUID) (domain.Organization, bool, error)
-	HasTreasury(tx database.Tx, organizationID uuid.UUID) (bool, error)
+	ActiveTreasuryAddress(tx database.Tx, organizationID uuid.UUID) (string, bool, error)
 	FindRecordByID(tx database.Tx, recordID uuid.UUID) (domain.BusinessRegistryRecord, bool, error)
 }
 
@@ -131,23 +131,28 @@ func (r *OrganizationRepository) Find(
 	return organization, true, nil
 }
 
-func (r *OrganizationRepository) HasTreasury(
+func (r *OrganizationRepository) ActiveTreasuryAddress(
 	tx database.Tx,
 	organizationID uuid.UUID,
-) (bool, error) {
+) (string, bool, error) {
 	if err := tx.Bound(); err != nil {
-		return false, err
+		return "", false, err
 	}
 
-	var found int64
-	err := tx.Session().Model(&domain.TreasuryAddress{}).
+	var treasury domain.TreasuryAddress
+
+	err := tx.Session().
 		Where("organization_id = ? AND state = ?", organizationID, domain.TreasuryActive).
-		Count(&found).Error
+		First(&treasury).Error
+
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		return "", false, nil
+	}
 	if err != nil {
-		return false, fmt.Errorf("count treasury addresses: %w", err)
+		return "", false, fmt.Errorf("find treasury address: %w", err)
 	}
 
-	return found > 0, nil
+	return treasury.Address, true, nil
 }
 
 func (r *OrganizationRepository) FindRecordByID(

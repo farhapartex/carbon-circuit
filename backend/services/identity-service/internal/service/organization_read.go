@@ -20,6 +20,7 @@ var ErrOrganizationNotFound = errors.New("organization not found")
 type Detail struct {
 	Organization       domain.Organization
 	TreasuryDesignated bool
+	TreasuryAddress    string
 	Outcome            registry.Outcome
 }
 
@@ -56,7 +57,7 @@ func (r *OrganizationReader) Detail(
 				return ErrOrganizationNotFound
 			}
 
-			designated, err := r.organizations.HasTreasury(tx, organizationID)
+			treasuryAddress, designated, err := r.organizations.ActiveTreasuryAddress(tx, organizationID)
 			if err != nil {
 				return err
 			}
@@ -76,6 +77,7 @@ func (r *OrganizationReader) Detail(
 			detail = Detail{
 				Organization:       organization,
 				TreasuryDesignated: designated,
+				TreasuryAddress:    treasuryAddress,
 				Outcome:            outcome,
 			}
 			return nil

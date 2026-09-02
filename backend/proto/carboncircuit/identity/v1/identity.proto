@@ -149,6 +149,7 @@ message OrganizationDetail {
   repeated ProductCategory product_categories = 8;
   bool treasury_designated = 9;
   string created_at = 10;
+  string treasury_address = 11;
 }
 
 message GetOrganizationResponse {

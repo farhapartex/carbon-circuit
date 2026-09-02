@@ -74,6 +74,7 @@ func (s *IdentityServer) GetOrganization(
 			BusinessRegistrationNumber: organization.BusinessRegistrationNumber,
 			ProductCategories:          categories,
 			TreasuryDesignated:         detail.TreasuryDesignated,
+			TreasuryAddress:            detail.TreasuryAddress,
 			CreatedAt:                  organization.CreatedAt.UTC().Format(time.RFC3339),
 		},
 		Role:    organizationRoles[roleFrom(verified.Role)],

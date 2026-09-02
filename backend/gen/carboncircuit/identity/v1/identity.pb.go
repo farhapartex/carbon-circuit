@@ -1354,6 +1354,7 @@ type OrganizationDetail struct {
 	ProductCategories          []ProductCategory      `protobuf:"varint,8,rep,packed,name=product_categories,json=productCategories,proto3,enum=carboncircuit.identity.v1.ProductCategory" json:"product_categories,omitempty"`
 	TreasuryDesignated         bool                   `protobuf:"varint,9,opt,name=treasury_designated,json=treasuryDesignated,proto3" json:"treasury_designated,omitempty"`
 	CreatedAt                  string                 `protobuf:"bytes,10,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	TreasuryAddress            string                 `protobuf:"bytes,11,opt,name=treasury_address,json=treasuryAddress,proto3" json:"treasury_address,omitempty"`
 	unknownFields              protoimpl.UnknownFields
 	sizeCache                  protoimpl.SizeCache
 }
@@ -1454,6 +1455,13 @@ func (x *OrganizationDetail) GetTreasuryDesignated() bool {
 func (x *OrganizationDetail) GetCreatedAt() string {
 	if x != nil {
 		return x.CreatedAt
+	}
+	return ""
+}
+
+func (x *OrganizationDetail) GetTreasuryAddress() string {
+	if x != nil {
+		return x.TreasuryAddress
 	}
 	return ""
 }
@@ -3019,7 +3027,7 @@ const file_carboncircuit_identity_v1_identity_proto_rawDesc = "" +
 	"\forganization\x18\x01 \x01(\v2..carboncircuit.identity.v1.SessionOrganizationR\forganization\x12?\n" +
 	"\x04role\x18\x02 \x01(\x0e2+.carboncircuit.identity.v1.OrganizationRoleR\x04role\x12H\n" +
 	"\aoutcome\x18\x03 \x01(\v2..carboncircuit.identity.v1.VerificationOutcomeR\aoutcome\"\x18\n" +
-	"\x16GetOrganizationRequest\"\xc4\x04\n" +
+	"\x16GetOrganizationRequest\"\xef\x04\n" +
 	"\x12OrganizationDetail\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12?\n" +
@@ -3032,7 +3040,8 @@ const file_carboncircuit_identity_v1_identity_proto_rawDesc = "" +
 	"\x13treasury_designated\x18\t \x01(\bR\x12treasuryDesignated\x12\x1d\n" +
 	"\n" +
 	"created_at\x18\n" +
-	" \x01(\tR\tcreatedAt\"\xf7\x01\n" +
+	" \x01(\tR\tcreatedAt\x12)\n" +
+	"\x10treasury_address\x18\v \x01(\tR\x0ftreasuryAddress\"\xf7\x01\n" +
 	"\x17GetOrganizationResponse\x12Q\n" +
 	"\forganization\x18\x01 \x01(\v2-.carboncircuit.identity.v1.OrganizationDetailR\forganization\x12?\n" +
 	"\x04role\x18\x02 \x01(\x0e2+.carboncircuit.identity.v1.OrganizationRoleR\x04role\x12H\n" +

@@ -177,6 +177,7 @@ type organizationDetailResponse struct {
 	BusinessRegistrationNumber string                      `json:"business_registration_number"`
 	ProductCategories          []string                    `json:"product_categories"`
 	TreasuryDesignated         bool                        `json:"treasury_designated"`
+	TreasuryAddress            *string                     `json:"treasury_address"`
 	Role                       string                      `json:"role"`
 	CreatedAt                  string                      `json:"created_at"`
 	Outcome                    verificationOutcomeResponse `json:"outcome"`
@@ -217,6 +218,7 @@ func (h *Handlers) GetOrganization(c *gin.Context) {
 		BusinessRegistrationNumber: organization.GetBusinessRegistrationNumber(),
 		ProductCategories:          categories,
 		TreasuryDesignated:         organization.GetTreasuryDesignated(),
+		TreasuryAddress:            emptyToNil(organization.GetTreasuryAddress()),
 		Role:                       organizationRoleName[detail.GetRole()],
 		CreatedAt:                  organization.GetCreatedAt(),
 		Outcome: verificationOutcomeResponse{

@@ -7,7 +7,7 @@ import { SustainabilityHighlightCard } from "@/components/features/provenance/Su
 import { VerifyOnChainLink } from "@/components/features/provenance/VerifyOnChainLink";
 import { ProductCategoryBadge } from "@/components/shared/StatusBadges";
 import { TimestampDisplay } from "@/components/shared/TimestampDisplay";
-import { getPublicBatchView } from "@/lib/fixtures";
+import { fetchPublicBatch } from "@/lib/api/track";
 
 export const metadata: Metadata = {
   title: "Batch provenance",
@@ -18,7 +18,7 @@ export default async function TrackBatchPage(
   props: PageProps<"/track/[publicRef]">,
 ) {
   const { publicRef } = await props.params;
-  const batch = await getPublicBatchView(publicRef);
+  const batch = await fetchPublicBatch(publicRef);
 
   if (!batch) notFound();
 

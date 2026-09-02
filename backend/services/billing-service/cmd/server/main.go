@@ -65,8 +65,15 @@ func run() error {
 		logger.Warn("redis unreachable at startup, serving from postgres", slog.Any("error", pingErr))
 	}
 
+	subscriptionStore := repository.NewSubscriptionRepository(store)
+
 	plans := service.NewPlanService(repository.NewPlanRepository(store), cacheClient)
-	billingServer := rpc.NewBillingServer(plans, service.NewSubscriptionService(repository.NewSubscriptionRepository(store)), logger)
+	billingServer := rpc.NewBillingServer(
+		plans,
+		service.NewSubscriptionService(subscriptionStore),
+		service.NewSubscriptionCreator(store, subscriptionStore, logger),
+		logger,
+	)
 
 	logger.Info("billing-service ready",
 		slog.String("schema", settings.DatabaseSchema),

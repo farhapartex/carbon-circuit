@@ -1,0 +1,95 @@
+package rpc
+
+import (
+	"context"
+	"errors"
+	"log/slog"
+	"strings"
+
+	"github.com/google/uuid"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
+
+	billingv1 "github.com/carboncircuit/backend/gen/carboncircuit/billing/v1"
+	"github.com/carboncircuit/backend/internal/grpcx"
+	"github.com/carboncircuit/backend/internal/logging"
+	"github.com/carboncircuit/backend/services/billing-service/internal/domain"
+	"github.com/carboncircuit/backend/services/billing-service/internal/service"
+)
+
+var tierFromProto = map[billingv1.PlanTier]domain.PlanTier{
+	billingv1.PlanTier_PLAN_TIER_BUYER:      domain.TierBuyer,
+	billingv1.PlanTier_PLAN_TIER_STARTER:    domain.TierStarter,
+	billingv1.PlanTier_PLAN_TIER_GROWTH:     domain.TierGrowth,
+	billingv1.PlanTier_PLAN_TIER_ENTERPRISE: domain.TierEnterprise,
+}
+
+func (s *BillingServer) CreateSubscription(
+	ctx context.Context,
+	request *billingv1.CreateSubscriptionRequest,
+) (*billingv1.CreateSubscriptionResponse, error) {
+	organizationID, err := uuid.Parse(strings.TrimSpace(request.GetOrganizationId()))
+	if err != nil {
+		return nil, status.Error(codes.InvalidArgument, "organization_id must be a uuid")
+	}
+
+	tier, known := tierFromProto[request.GetPlanTier()]
+	if !known {
+		return nil, status.Error(codes.InvalidArgument, "plan_tier must be a known tier")
+	}
+
+	organizationType, known := organizationTypeFromProto[request.GetOrganizationType()]
+	if !known {
+		return nil, status.Error(codes.InvalidArgument, "organization_type must be known")
+	}
+
+	key := grpcx.IdempotencyKeyFromIncoming(ctx)
+	if key == "" {
+		return nil, status.Error(codes.InvalidArgument, "an idempotency key is required")
+	}
+
+	enrolled, err := s.creator.Create(ctx, service.Enrolment{
+		OrganizationID:   organizationID,
+		OrganizationType: organizationType,
+		Tier:             tier,
+		IdempotencyKey:   key,
+		RequestBody:      []byte(organizationID.String() + "\x1f" + string(tier)),
+	})
+	if err != nil {
+		return nil, s.enrolmentFailure(ctx, organizationID, err)
+	}
+
+	subscription := enrolled.Subscription
+
+	return &billingv1.CreateSubscriptionResponse{
+		Subscription: &billingv1.Subscription{
+			OrganizationId: subscription.OrganizationID.String(),
+			PlanTier:       tierToProto[subscription.Plan.Tier],
+			State:          subscriptionStates[subscription.State],
+		},
+	}, nil
+}
+
+func (s *BillingServer) enrolmentFailure(
+	ctx context.Context,
+	organizationID uuid.UUID,
+	err error,
+) error {
+	switch {
+	case errors.Is(err, service.ErrRequestInProgress):
+		return status.Error(codes.Aborted, "REQUEST_IN_PROGRESS")
+	case errors.Is(err, service.ErrIdempotencyConflict):
+		return status.Error(codes.AlreadyExists, "IDEMPOTENCY_KEY_REUSED")
+	case errors.Is(err, service.ErrSubscriptionExists):
+		return status.Error(codes.AlreadyExists, "SUBSCRIPTION_EXISTS")
+	case errors.Is(err, service.ErrPlanNotAllowed):
+		return status.Error(codes.PermissionDenied, "PLAN_NOT_ALLOWED")
+	}
+
+	s.logger.Error("create subscription failed",
+		slog.String("organization_id", organizationID.String()),
+		slog.String("request_id", logging.CorrelationIDFrom(ctx)),
+		slog.Any("error", err),
+	)
+	return status.Error(codes.Internal, "could not create subscription")
+}

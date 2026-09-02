@@ -17,15 +17,22 @@ type BillingServer struct {
 
 	plans         *service.PlanService
 	subscriptions *service.SubscriptionService
+	creator       *service.SubscriptionCreator
 	logger        *slog.Logger
 }
 
 func NewBillingServer(
 	plans *service.PlanService,
 	subscriptions *service.SubscriptionService,
+	creator *service.SubscriptionCreator,
 	logger *slog.Logger,
 ) *BillingServer {
-	return &BillingServer{plans: plans, subscriptions: subscriptions, logger: logger}
+	return &BillingServer{
+		plans:         plans,
+		subscriptions: subscriptions,
+		creator:       creator,
+		logger:        logger,
+	}
 }
 
 func (s *BillingServer) ListPlans(

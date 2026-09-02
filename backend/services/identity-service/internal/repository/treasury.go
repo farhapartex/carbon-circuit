@@ -21,7 +21,7 @@ var (
 type TreasuryStore interface {
 	IssueNonce(tx database.Tx, nonce *domain.SiweNonce) error
 	ConsumeNonce(tx database.Tx, nonce string, at time.Time) (domain.SiweNonce, error)
-	InsertTreasury(tx database.Tx, treasury *domain.TreasuryAddress) error
+	InsertTreasury(tx database.Tx, treasury *domain.TreasuryAddress, nonceID uuid.UUID, signature string) error
 }
 
 type TreasuryRepository struct{}
@@ -71,10 +71,15 @@ func (r *TreasuryRepository) ConsumeNonce(
 func (r *TreasuryRepository) InsertTreasury(
 	tx database.Tx,
 	treasury *domain.TreasuryAddress,
+	nonceID uuid.UUID,
+	signature string,
 ) error {
 	if err := tx.Bound(); err != nil {
 		return err
 	}
+
+	treasury.NonceID = nonceID
+	treasury.ProofSignature = []byte(signature)
 
 	err := tx.Session().Create(treasury).Error
 	if errors.Is(err, gorm.ErrDuplicatedKey) {

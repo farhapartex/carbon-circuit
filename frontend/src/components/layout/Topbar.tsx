@@ -1,21 +1,19 @@
 import { Bell } from "lucide-react";
 import Link from "next/link";
+import { AccountMenu } from "@/components/shared/AccountMenu";
 import { WalletConnectButton } from "@/components/shared/WalletConnectButton";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-
-const initialsOf = (name: string) =>
-  name
-    .split(/\s+/)
-    .slice(0, 2)
-    .map((part) => part.charAt(0).toUpperCase())
-    .join("");
 
 type TopbarProps = {
   userName: string;
+  userEmail: string;
   unreadNotificationCount: number;
 };
 
-export function Topbar({ userName, unreadNotificationCount }: TopbarProps) {
+export function Topbar({
+  userName,
+  userEmail,
+  unreadNotificationCount,
+}: TopbarProps) {
   return (
     <header className="flex h-14 shrink-0 items-center justify-end gap-3 border-b border-neutral-200 bg-white px-6">
       <WalletConnectButton />
@@ -37,13 +35,7 @@ export function Topbar({ userName, unreadNotificationCount }: TopbarProps) {
         ) : null}
       </Link>
 
-      <Link href="/settings/profile" aria-label="Account settings">
-        <Avatar className="size-8">
-          <AvatarFallback className="text-caption">
-            {initialsOf(userName)}
-          </AvatarFallback>
-        </Avatar>
-      </Link>
+      <AccountMenu userName={userName} userEmail={userEmail} />
     </header>
   );
 }

@@ -17,6 +17,7 @@ type IdentityServer struct {
 	organizations OrganizationCreator
 	describer     OrganizationDescriber
 	treasury      TreasuryDesignator
+	team          TeamManager
 	logger        *slog.Logger
 	revision      string
 }
@@ -27,6 +28,7 @@ func NewIdentityServer(
 	organizations OrganizationCreator,
 	describer OrganizationDescriber,
 	treasury TreasuryDesignator,
+	team TeamManager,
 	logger *slog.Logger,
 	revision string,
 ) *IdentityServer {
@@ -36,6 +38,7 @@ func NewIdentityServer(
 		organizations: organizations,
 		describer:     describer,
 		treasury:      treasury,
+		team:          team,
 		logger:        logger,
 		revision:      revision,
 	}

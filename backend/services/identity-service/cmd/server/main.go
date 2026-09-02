@@ -108,8 +108,18 @@ func run() error {
 		logger,
 	)
 
+	team := service.NewTeamService(
+		store,
+		repository.NewTeamRepository(),
+		users,
+		organizationStore,
+		memberships,
+		settings.InvitationTTL,
+		logger,
+	)
+
 	identityServer := rpc.NewIdentityServer(
-		store, sessions, organizations, describer, treasury, logger, revision,
+		store, sessions, organizations, describer, treasury, team, logger, revision,
 	)
 
 	publicKey, err := sharedconfig.Ed25519PublicKey(settings.ServiceTokenPublicKey)

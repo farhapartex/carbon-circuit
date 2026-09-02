@@ -36,6 +36,7 @@ type Config struct {
 	WalletDomain  string
 	WalletChainID int
 	NonceWindow   time.Duration
+	InvitationTTL time.Duration
 }
 
 func Load() (Config, error) {
@@ -70,6 +71,7 @@ func Load() (Config, error) {
 		WalletDomain:  loader.String("WALLET_DOMAIN"),
 		WalletChainID: loader.Int("WALLET_CHAIN_ID", 31337),
 		NonceWindow:   loader.Duration("WALLET_NONCE_WINDOW", 5*time.Minute),
+		InvitationTTL: loader.Duration("INVITATION_TTL", 7*24*time.Hour),
 	}
 
 	return config, loader.Err()

@@ -44,6 +44,7 @@ const recordTenancy = async (
 
   const tenancy: Tenancy = {
     organizationId: organization.id,
+    organizationName: organization.name,
     organizationType: draft.type,
     organizationState: organization.state,
     verificationStatus: organization.verificationStatus,

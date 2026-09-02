@@ -12,6 +12,7 @@ export const TENANCY_KEY = "tenancy";
 
 export type Tenancy = {
   organizationId: string | null;
+  organizationName: string | null;
   organizationType: OrganizationType | null;
   organizationState: OrganizationState | null;
   verificationStatus: VerificationStatus | null;
@@ -23,6 +24,7 @@ export type Tenancy = {
 
 export const tenancyFrom = (session: CurrentSession): Tenancy => ({
   organizationId: session.organization?.id ?? null,
+  organizationName: session.organization?.name ?? null,
   organizationType: session.organization?.type ?? null,
   organizationState: session.organization?.state ?? null,
   verificationStatus: session.organization?.verificationStatus ?? null,

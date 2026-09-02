@@ -14,6 +14,7 @@ import (
 	"gorm.io/gorm"
 
 	"github.com/carboncircuit/backend/internal/database"
+	"github.com/carboncircuit/backend/internal/events"
 	"github.com/carboncircuit/backend/internal/idempotency"
 	"github.com/carboncircuit/backend/internal/outbox"
 	"github.com/carboncircuit/backend/services/provenance-service/internal/domain"
@@ -75,8 +76,9 @@ func (a Actor) mayProduce() error {
 }
 
 type Facility struct {
-	ID   uuid.UUID
-	Name string
+	ID          uuid.UUID
+	Name        string
+	CountryCode string
 }
 
 type FacilityResolver interface {
@@ -261,18 +263,19 @@ func (s *BatchService) persist(
 	}
 
 	batch := domain.Batch{
-		OrganizationID:          actor.OrganizationID,
-		OriginatingFacilityID:   facility.ID,
-		OriginatingFacilityName: facility.Name,
-		PublicReference:         publicReference,
-		ProductCategory:         declaration.ProductCategory,
-		ComponentType:           strings.TrimSpace(declaration.ComponentType),
-		LotNumber:               optional(declaration.LotNumber),
-		Quantity:                declaration.Quantity,
-		Unit:                    strings.TrimSpace(declaration.Unit),
-		ProducedAt:              declaration.ProducedAt,
-		ExternalID:              optional(declaration.ExternalID),
-		ScoreComponents:         emptyScoreComponents,
+		OrganizationID:             actor.OrganizationID,
+		OriginatingFacilityID:      facility.ID,
+		OriginatingFacilityName:    facility.Name,
+		OriginatingFacilityCountry: facility.CountryCode,
+		PublicReference:            publicReference,
+		ProductCategory:            declaration.ProductCategory,
+		ComponentType:              strings.TrimSpace(declaration.ComponentType),
+		LotNumber:                  optional(declaration.LotNumber),
+		Quantity:                   declaration.Quantity,
+		Unit:                       strings.TrimSpace(declaration.Unit),
+		ProducedAt:                 declaration.ProducedAt,
+		ExternalID:                 optional(declaration.ExternalID),
+		ScoreComponents:            emptyScoreComponents,
 	}
 	batch.ID = batchID
 
@@ -296,11 +299,18 @@ func (s *BatchService) persist(
 		AggregateType: batchAggregate,
 		AggregateID:   batch.ID,
 		EventType:     batchCreatedEvent,
-		Payload: map[string]string{
-			"batch_id":         batch.ID.String(),
-			"organization_id":  batch.OrganizationID.String(),
-			"public_reference": batch.PublicReference,
-			"product_category": string(batch.ProductCategory),
+		Payload: events.BatchCreated{
+			BatchID:                    batch.ID.String(),
+			OrganizationID:             batch.OrganizationID.String(),
+			PublicReference:            batch.PublicReference,
+			ProductCategory:            string(batch.ProductCategory),
+			ComponentType:              batch.ComponentType,
+			OriginatingFacilityName:    batch.OriginatingFacilityName,
+			OriginatingFacilityCountry: batch.OriginatingFacilityCountry,
+			ProducedAt:                 batch.ProducedAt.UTC().Format(time.RFC3339),
+			ProvenanceScore:            batch.ProvenanceScore,
+			ScoreComponents:            publishedComponents(batch),
+			OccurredAt:                 time.Now().UTC().Format(time.RFC3339),
 		},
 	}); err != nil {
 		return BatchView{}, false, err
@@ -452,4 +462,12 @@ func optional(value string) *string {
 		return nil
 	}
 	return &trimmed
+}
+
+func publishedComponents(batch domain.Batch) []events.ScoreComponent {
+	var components []events.ScoreComponent
+	if len(batch.ScoreComponents) > 0 {
+		_ = json.Unmarshal(batch.ScoreComponents, &components)
+	}
+	return components
 }

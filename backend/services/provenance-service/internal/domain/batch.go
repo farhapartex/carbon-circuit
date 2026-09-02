@@ -57,20 +57,21 @@ var ExpectedCheckpointSequence = map[ProductCategory][]CheckpointType{
 
 type Batch struct {
 	domain.Base
-	OrganizationID          uuid.UUID             `gorm:"column:organization_id;type:uuid"`
-	OriginatingFacilityID   uuid.UUID             `gorm:"column:originating_facility_id;type:uuid"`
-	OriginatingFacilityName string                `gorm:"column:originating_facility_name"`
-	PublicReference         string                `gorm:"column:public_reference;type:char(22)"`
-	ProductCategory         ProductCategory       `gorm:"column:product_category"`
-	ComponentType           string                `gorm:"column:component_type"`
-	LotNumber               *string               `gorm:"column:lot_number"`
-	Quantity                string                `gorm:"column:quantity;type:numeric(28,6)"`
-	Unit                    string                `gorm:"column:unit"`
-	ProducedAt              time.Time             `gorm:"column:produced_at"`
-	ExternalID              *string               `gorm:"column:external_id"`
-	CheckpointCount         int                   `gorm:"column:checkpoint_count"`
-	ProvenanceScore         int                   `gorm:"column:provenance_score"`
-	ScoreComponents         database.JSONDocument `gorm:"column:score_components;type:json"`
+	OrganizationID             uuid.UUID             `gorm:"column:organization_id;type:uuid"`
+	OriginatingFacilityID      uuid.UUID             `gorm:"column:originating_facility_id;type:uuid"`
+	OriginatingFacilityName    string                `gorm:"column:originating_facility_name"`
+	OriginatingFacilityCountry string                `gorm:"column:originating_facility_country;type:char(2)"`
+	PublicReference            string                `gorm:"column:public_reference;type:char(22)"`
+	ProductCategory            ProductCategory       `gorm:"column:product_category"`
+	ComponentType              string                `gorm:"column:component_type"`
+	LotNumber                  *string               `gorm:"column:lot_number"`
+	Quantity                   string                `gorm:"column:quantity;type:numeric(28,6)"`
+	Unit                       string                `gorm:"column:unit"`
+	ProducedAt                 time.Time             `gorm:"column:produced_at"`
+	ExternalID                 *string               `gorm:"column:external_id"`
+	CheckpointCount            int                   `gorm:"column:checkpoint_count"`
+	ProvenanceScore            int                   `gorm:"column:provenance_score"`
+	ScoreComponents            database.JSONDocument `gorm:"column:score_components;type:json"`
 }
 
 func (Batch) TableName() string { return "batches" }

@@ -71,5 +71,9 @@ func (i *Identity) Facility(
 		return service.Facility{}, errors.New("identity returned an unusable facility id")
 	}
 
-	return service.Facility{ID: resolved, Name: facility.GetName()}, nil
+	return service.Facility{
+		ID:          resolved,
+		Name:        facility.GetName(),
+		CountryCode: facility.GetCountryCode(),
+	}, nil
 }

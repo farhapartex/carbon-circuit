@@ -11,6 +11,7 @@ import (
 	"github.com/google/uuid"
 
 	"github.com/carboncircuit/backend/internal/database"
+	"github.com/carboncircuit/backend/internal/events"
 	"github.com/carboncircuit/backend/internal/idempotency"
 	"github.com/carboncircuit/backend/internal/outbox"
 	"github.com/carboncircuit/backend/services/provenance-service/internal/domain"
@@ -242,23 +243,36 @@ func (s *BatchService) appendCheckpoint(
 		return LoggedCheckpoint{}, false, err
 	}
 
+	logged := events.CheckpointLogged{
+		BatchID:         batchID.String(),
+		CheckpointID:    checkpoint.ID.String(),
+		OrganizationID:  batch.OrganizationID.String(),
+		Type:            string(checkpoint.Type),
+		LocationLabel:   checkpoint.LocationLabel,
+		CountryCode:     checkpoint.CountryCode,
+		ShippingMethod:  stringOrBlank(checkpoint.ShippingMethod),
+		OccurredAt:      checkpoint.OccurredAt.UTC().Format(time.RFC3339),
+		AnchorStatus:    string(checkpoint.AnchorStatus),
+		ProvenanceScore: batch.ProvenanceScore,
+		ScoreComponents: publishedComponents(batch),
+	}
+
+	if checkpoint.SupersedesCheckpointID != nil {
+		logged.SupersedesCheckpointID = checkpoint.SupersedesCheckpointID.String()
+	}
+
 	if _, err := outbox.Append(tx, outbox.Envelope{
 		AggregateType: batchAggregate,
 		AggregateID:   batchID,
 		EventType:     checkpointLoggedEvent,
-		Payload: map[string]string{
-			"batch_id":        batchID.String(),
-			"checkpoint_id":   checkpoint.ID.String(),
-			"organization_id": batch.OrganizationID.String(),
-			"type":            string(checkpoint.Type),
-		},
+		Payload:       logged,
 	}); err != nil {
 		return LoggedCheckpoint{}, false, err
 	}
 
-	logged := LoggedCheckpoint{Checkpoint: checkpoint, Batch: batch}
+	recorded := LoggedCheckpoint{Checkpoint: checkpoint, Batch: batch}
 
-	body, err := json.Marshal(logged)
+	body, err := json.Marshal(recorded)
 	if err != nil {
 		return LoggedCheckpoint{}, false, fmt.Errorf("encode idempotent response: %w", err)
 	}
@@ -271,7 +285,14 @@ func (s *BatchService) appendCheckpoint(
 		return LoggedCheckpoint{}, false, err
 	}
 
-	return logged, false, nil
+	return recorded, false, nil
+}
+
+func stringOrBlank(value *string) string {
+	if value == nil {
+		return ""
+	}
+	return *value
 }
 
 func (s *BatchService) verifyCorrectable(

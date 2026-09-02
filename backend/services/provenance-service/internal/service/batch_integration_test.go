@@ -32,7 +32,7 @@ func (s stubFacilities) Facility(
 	if s.missing {
 		return service.Facility{}, service.ErrFacilityUnknown
 	}
-	return service.Facility{ID: facilityID, Name: s.name}, nil
+	return service.Facility{ID: facilityID, Name: s.name, CountryCode: "TW"}, nil
 }
 
 func store(t *testing.T) *gorm.DB {

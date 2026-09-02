@@ -11,6 +11,7 @@ type Caller struct {
 	Subject            string `json:"sub"`
 	UserID             string `json:"uid"`
 	OrganizationID     string `json:"org,omitempty"`
+	OrganizationType   string `json:"otype,omitempty"`
 	Role               string `json:"role,omitempty"`
 	PlatformRole       string `json:"prole,omitempty"`
 	PlanTier           string `json:"plan,omitempty"`

@@ -31,6 +31,9 @@ const (
 	IdentityService_ChangeMemberRole_FullMethodName   = "/carboncircuit.identity.v1.IdentityService/ChangeMemberRole"
 	IdentityService_RevokeMember_FullMethodName       = "/carboncircuit.identity.v1.IdentityService/RevokeMember"
 	IdentityService_AcceptInvitation_FullMethodName   = "/carboncircuit.identity.v1.IdentityService/AcceptInvitation"
+	IdentityService_CreateFacility_FullMethodName     = "/carboncircuit.identity.v1.IdentityService/CreateFacility"
+	IdentityService_ListFacilities_FullMethodName     = "/carboncircuit.identity.v1.IdentityService/ListFacilities"
+	IdentityService_GetFacility_FullMethodName        = "/carboncircuit.identity.v1.IdentityService/GetFacility"
 )
 
 // IdentityServiceClient is the client API for IdentityService service.
@@ -49,6 +52,9 @@ type IdentityServiceClient interface {
 	ChangeMemberRole(ctx context.Context, in *ChangeMemberRoleRequest, opts ...grpc.CallOption) (*ChangeMemberRoleResponse, error)
 	RevokeMember(ctx context.Context, in *RevokeMemberRequest, opts ...grpc.CallOption) (*RevokeMemberResponse, error)
 	AcceptInvitation(ctx context.Context, in *AcceptInvitationRequest, opts ...grpc.CallOption) (*AcceptInvitationResponse, error)
+	CreateFacility(ctx context.Context, in *CreateFacilityRequest, opts ...grpc.CallOption) (*CreateFacilityResponse, error)
+	ListFacilities(ctx context.Context, in *ListFacilitiesRequest, opts ...grpc.CallOption) (*ListFacilitiesResponse, error)
+	GetFacility(ctx context.Context, in *GetFacilityRequest, opts ...grpc.CallOption) (*GetFacilityResponse, error)
 }
 
 type identityServiceClient struct {
@@ -179,6 +185,36 @@ func (c *identityServiceClient) AcceptInvitation(ctx context.Context, in *Accept
 	return out, nil
 }
 
+func (c *identityServiceClient) CreateFacility(ctx context.Context, in *CreateFacilityRequest, opts ...grpc.CallOption) (*CreateFacilityResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(CreateFacilityResponse)
+	err := c.cc.Invoke(ctx, IdentityService_CreateFacility_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *identityServiceClient) ListFacilities(ctx context.Context, in *ListFacilitiesRequest, opts ...grpc.CallOption) (*ListFacilitiesResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListFacilitiesResponse)
+	err := c.cc.Invoke(ctx, IdentityService_ListFacilities_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *identityServiceClient) GetFacility(ctx context.Context, in *GetFacilityRequest, opts ...grpc.CallOption) (*GetFacilityResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetFacilityResponse)
+	err := c.cc.Invoke(ctx, IdentityService_GetFacility_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // IdentityServiceServer is the server API for IdentityService service.
 // All implementations must embed UnimplementedIdentityServiceServer
 // for forward compatibility.
@@ -195,6 +231,9 @@ type IdentityServiceServer interface {
 	ChangeMemberRole(context.Context, *ChangeMemberRoleRequest) (*ChangeMemberRoleResponse, error)
 	RevokeMember(context.Context, *RevokeMemberRequest) (*RevokeMemberResponse, error)
 	AcceptInvitation(context.Context, *AcceptInvitationRequest) (*AcceptInvitationResponse, error)
+	CreateFacility(context.Context, *CreateFacilityRequest) (*CreateFacilityResponse, error)
+	ListFacilities(context.Context, *ListFacilitiesRequest) (*ListFacilitiesResponse, error)
+	GetFacility(context.Context, *GetFacilityRequest) (*GetFacilityResponse, error)
 	mustEmbedUnimplementedIdentityServiceServer()
 }
 
@@ -240,6 +279,15 @@ func (UnimplementedIdentityServiceServer) RevokeMember(context.Context, *RevokeM
 }
 func (UnimplementedIdentityServiceServer) AcceptInvitation(context.Context, *AcceptInvitationRequest) (*AcceptInvitationResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method AcceptInvitation not implemented")
+}
+func (UnimplementedIdentityServiceServer) CreateFacility(context.Context, *CreateFacilityRequest) (*CreateFacilityResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method CreateFacility not implemented")
+}
+func (UnimplementedIdentityServiceServer) ListFacilities(context.Context, *ListFacilitiesRequest) (*ListFacilitiesResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ListFacilities not implemented")
+}
+func (UnimplementedIdentityServiceServer) GetFacility(context.Context, *GetFacilityRequest) (*GetFacilityResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetFacility not implemented")
 }
 func (UnimplementedIdentityServiceServer) mustEmbedUnimplementedIdentityServiceServer() {}
 func (UnimplementedIdentityServiceServer) testEmbeddedByValue()                         {}
@@ -478,6 +526,60 @@ func _IdentityService_AcceptInvitation_Handler(srv interface{}, ctx context.Cont
 	return interceptor(ctx, in, info, handler)
 }
 
+func _IdentityService_CreateFacility_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateFacilityRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(IdentityServiceServer).CreateFacility(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: IdentityService_CreateFacility_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IdentityServiceServer).CreateFacility(ctx, req.(*CreateFacilityRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _IdentityService_ListFacilities_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListFacilitiesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(IdentityServiceServer).ListFacilities(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: IdentityService_ListFacilities_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IdentityServiceServer).ListFacilities(ctx, req.(*ListFacilitiesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _IdentityService_GetFacility_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetFacilityRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(IdentityServiceServer).GetFacility(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: IdentityService_GetFacility_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IdentityServiceServer).GetFacility(ctx, req.(*GetFacilityRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // IdentityService_ServiceDesc is the grpc.ServiceDesc for IdentityService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -532,6 +634,18 @@ var IdentityService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "AcceptInvitation",
 			Handler:    _IdentityService_AcceptInvitation_Handler,
+		},
+		{
+			MethodName: "CreateFacility",
+			Handler:    _IdentityService_CreateFacility_Handler,
+		},
+		{
+			MethodName: "ListFacilities",
+			Handler:    _IdentityService_ListFacilities_Handler,
+		},
+		{
+			MethodName: "GetFacility",
+			Handler:    _IdentityService_GetFacility_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -446,6 +446,262 @@ func (InvitationState) EnumDescriptor() ([]byte, []int) {
 	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{7}
 }
 
+type FacilityType int32
+
+const (
+	FacilityType_FACILITY_TYPE_UNSPECIFIED             FacilityType = 0
+	FacilityType_FACILITY_TYPE_RAW_MATERIAL_PROCESSING FacilityType = 1
+	FacilityType_FACILITY_TYPE_COMPONENT_FABRICATION   FacilityType = 2
+	FacilityType_FACILITY_TYPE_ASSEMBLY                FacilityType = 3
+	FacilityType_FACILITY_TYPE_DISTRIBUTION            FacilityType = 4
+)
+
+// Enum value maps for FacilityType.
+var (
+	FacilityType_name = map[int32]string{
+		0: "FACILITY_TYPE_UNSPECIFIED",
+		1: "FACILITY_TYPE_RAW_MATERIAL_PROCESSING",
+		2: "FACILITY_TYPE_COMPONENT_FABRICATION",
+		3: "FACILITY_TYPE_ASSEMBLY",
+		4: "FACILITY_TYPE_DISTRIBUTION",
+	}
+	FacilityType_value = map[string]int32{
+		"FACILITY_TYPE_UNSPECIFIED":             0,
+		"FACILITY_TYPE_RAW_MATERIAL_PROCESSING": 1,
+		"FACILITY_TYPE_COMPONENT_FABRICATION":   2,
+		"FACILITY_TYPE_ASSEMBLY":                3,
+		"FACILITY_TYPE_DISTRIBUTION":            4,
+	}
+)
+
+func (x FacilityType) Enum() *FacilityType {
+	p := new(FacilityType)
+	*p = x
+	return p
+}
+
+func (x FacilityType) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (FacilityType) Descriptor() protoreflect.EnumDescriptor {
+	return file_carboncircuit_identity_v1_identity_proto_enumTypes[8].Descriptor()
+}
+
+func (FacilityType) Type() protoreflect.EnumType {
+	return &file_carboncircuit_identity_v1_identity_proto_enumTypes[8]
+}
+
+func (x FacilityType) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use FacilityType.Descriptor instead.
+func (FacilityType) EnumDescriptor() ([]byte, []int) {
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{8}
+}
+
+type FacilityVerification int32
+
+const (
+	FacilityVerification_FACILITY_VERIFICATION_UNSPECIFIED          FacilityVerification = 0
+	FacilityVerification_FACILITY_VERIFICATION_FACILITY_MATCHED     FacilityVerification = 1
+	FacilityVerification_FACILITY_VERIFICATION_ORGANIZATION_MATCHED FacilityVerification = 2
+	FacilityVerification_FACILITY_VERIFICATION_SELF_DECLARED        FacilityVerification = 3
+)
+
+// Enum value maps for FacilityVerification.
+var (
+	FacilityVerification_name = map[int32]string{
+		0: "FACILITY_VERIFICATION_UNSPECIFIED",
+		1: "FACILITY_VERIFICATION_FACILITY_MATCHED",
+		2: "FACILITY_VERIFICATION_ORGANIZATION_MATCHED",
+		3: "FACILITY_VERIFICATION_SELF_DECLARED",
+	}
+	FacilityVerification_value = map[string]int32{
+		"FACILITY_VERIFICATION_UNSPECIFIED":          0,
+		"FACILITY_VERIFICATION_FACILITY_MATCHED":     1,
+		"FACILITY_VERIFICATION_ORGANIZATION_MATCHED": 2,
+		"FACILITY_VERIFICATION_SELF_DECLARED":        3,
+	}
+)
+
+func (x FacilityVerification) Enum() *FacilityVerification {
+	p := new(FacilityVerification)
+	*p = x
+	return p
+}
+
+func (x FacilityVerification) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (FacilityVerification) Descriptor() protoreflect.EnumDescriptor {
+	return file_carboncircuit_identity_v1_identity_proto_enumTypes[9].Descriptor()
+}
+
+func (FacilityVerification) Type() protoreflect.EnumType {
+	return &file_carboncircuit_identity_v1_identity_proto_enumTypes[9]
+}
+
+func (x FacilityVerification) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use FacilityVerification.Descriptor instead.
+func (FacilityVerification) EnumDescriptor() ([]byte, []int) {
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{9}
+}
+
+type TrustTier int32
+
+const (
+	TrustTier_TRUST_TIER_UNSPECIFIED TrustTier = 0
+	TrustTier_TRUST_TIER_NEW         TrustTier = 1
+	TrustTier_TRUST_TIER_VERIFIED    TrustTier = 2
+	TrustTier_TRUST_TIER_TRUSTED     TrustTier = 3
+)
+
+// Enum value maps for TrustTier.
+var (
+	TrustTier_name = map[int32]string{
+		0: "TRUST_TIER_UNSPECIFIED",
+		1: "TRUST_TIER_NEW",
+		2: "TRUST_TIER_VERIFIED",
+		3: "TRUST_TIER_TRUSTED",
+	}
+	TrustTier_value = map[string]int32{
+		"TRUST_TIER_UNSPECIFIED": 0,
+		"TRUST_TIER_NEW":         1,
+		"TRUST_TIER_VERIFIED":    2,
+		"TRUST_TIER_TRUSTED":     3,
+	}
+)
+
+func (x TrustTier) Enum() *TrustTier {
+	p := new(TrustTier)
+	*p = x
+	return p
+}
+
+func (x TrustTier) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (TrustTier) Descriptor() protoreflect.EnumDescriptor {
+	return file_carboncircuit_identity_v1_identity_proto_enumTypes[10].Descriptor()
+}
+
+func (TrustTier) Type() protoreflect.EnumType {
+	return &file_carboncircuit_identity_v1_identity_proto_enumTypes[10]
+}
+
+func (x TrustTier) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use TrustTier.Descriptor instead.
+func (TrustTier) EnumDescriptor() ([]byte, []int) {
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{10}
+}
+
+type GridRegion int32
+
+const (
+	GridRegion_GRID_REGION_UNSPECIFIED GridRegion = 0
+	GridRegion_GRID_REGION_US_CAISO    GridRegion = 1
+	GridRegion_GRID_REGION_US_ERCOT    GridRegion = 2
+	GridRegion_GRID_REGION_US_PJM      GridRegion = 3
+	GridRegion_GRID_REGION_US_MISO     GridRegion = 4
+	GridRegion_GRID_REGION_EU_DE       GridRegion = 5
+	GridRegion_GRID_REGION_EU_FR       GridRegion = 6
+	GridRegion_GRID_REGION_EU_PL       GridRegion = 7
+	GridRegion_GRID_REGION_UK          GridRegion = 8
+	GridRegion_GRID_REGION_CN_EAST     GridRegion = 9
+	GridRegion_GRID_REGION_CN_SOUTH    GridRegion = 10
+	GridRegion_GRID_REGION_IN_NORTH    GridRegion = 11
+	GridRegion_GRID_REGION_JP          GridRegion = 12
+	GridRegion_GRID_REGION_KR          GridRegion = 13
+	GridRegion_GRID_REGION_TW          GridRegion = 14
+	GridRegion_GRID_REGION_VN          GridRegion = 15
+	GridRegion_GRID_REGION_MY          GridRegion = 16
+	GridRegion_GRID_REGION_SG          GridRegion = 17
+	GridRegion_GRID_REGION_TH          GridRegion = 18
+)
+
+// Enum value maps for GridRegion.
+var (
+	GridRegion_name = map[int32]string{
+		0:  "GRID_REGION_UNSPECIFIED",
+		1:  "GRID_REGION_US_CAISO",
+		2:  "GRID_REGION_US_ERCOT",
+		3:  "GRID_REGION_US_PJM",
+		4:  "GRID_REGION_US_MISO",
+		5:  "GRID_REGION_EU_DE",
+		6:  "GRID_REGION_EU_FR",
+		7:  "GRID_REGION_EU_PL",
+		8:  "GRID_REGION_UK",
+		9:  "GRID_REGION_CN_EAST",
+		10: "GRID_REGION_CN_SOUTH",
+		11: "GRID_REGION_IN_NORTH",
+		12: "GRID_REGION_JP",
+		13: "GRID_REGION_KR",
+		14: "GRID_REGION_TW",
+		15: "GRID_REGION_VN",
+		16: "GRID_REGION_MY",
+		17: "GRID_REGION_SG",
+		18: "GRID_REGION_TH",
+	}
+	GridRegion_value = map[string]int32{
+		"GRID_REGION_UNSPECIFIED": 0,
+		"GRID_REGION_US_CAISO":    1,
+		"GRID_REGION_US_ERCOT":    2,
+		"GRID_REGION_US_PJM":      3,
+		"GRID_REGION_US_MISO":     4,
+		"GRID_REGION_EU_DE":       5,
+		"GRID_REGION_EU_FR":       6,
+		"GRID_REGION_EU_PL":       7,
+		"GRID_REGION_UK":          8,
+		"GRID_REGION_CN_EAST":     9,
+		"GRID_REGION_CN_SOUTH":    10,
+		"GRID_REGION_IN_NORTH":    11,
+		"GRID_REGION_JP":          12,
+		"GRID_REGION_KR":          13,
+		"GRID_REGION_TW":          14,
+		"GRID_REGION_VN":          15,
+		"GRID_REGION_MY":          16,
+		"GRID_REGION_SG":          17,
+		"GRID_REGION_TH":          18,
+	}
+)
+
+func (x GridRegion) Enum() *GridRegion {
+	p := new(GridRegion)
+	*p = x
+	return p
+}
+
+func (x GridRegion) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (GridRegion) Descriptor() protoreflect.EnumDescriptor {
+	return file_carboncircuit_identity_v1_identity_proto_enumTypes[11].Descriptor()
+}
+
+func (GridRegion) Type() protoreflect.EnumType {
+	return &file_carboncircuit_identity_v1_identity_proto_enumTypes[11]
+}
+
+func (x GridRegion) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use GridRegion.Descriptor instead.
+func (GridRegion) EnumDescriptor() ([]byte, []int) {
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{11}
+}
+
 type PingRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
@@ -2230,6 +2486,490 @@ func (x *AcceptInvitationResponse) GetRole() OrganizationRole {
 	return OrganizationRole_ORGANIZATION_ROLE_UNSPECIFIED
 }
 
+type Facility struct {
+	state                 protoimpl.MessageState `protogen:"open.v1"`
+	Id                    string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	OrganizationId        string                 `protobuf:"bytes,2,opt,name=organization_id,json=organizationId,proto3" json:"organization_id,omitempty"`
+	Name                  string                 `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
+	Address               string                 `protobuf:"bytes,4,opt,name=address,proto3" json:"address,omitempty"`
+	CountryCode           string                 `protobuf:"bytes,5,opt,name=country_code,json=countryCode,proto3" json:"country_code,omitempty"`
+	GridRegion            GridRegion             `protobuf:"varint,6,opt,name=grid_region,json=gridRegion,proto3,enum=carboncircuit.identity.v1.GridRegion" json:"grid_region,omitempty"`
+	Type                  FacilityType           `protobuf:"varint,7,opt,name=type,proto3,enum=carboncircuit.identity.v1.FacilityType" json:"type,omitempty"`
+	FacilityReference     string                 `protobuf:"bytes,8,opt,name=facility_reference,json=facilityReference,proto3" json:"facility_reference,omitempty"`
+	VerificationStatus    FacilityVerification   `protobuf:"varint,9,opt,name=verification_status,json=verificationStatus,proto3,enum=carboncircuit.identity.v1.FacilityVerification" json:"verification_status,omitempty"`
+	CeilingDiscountFactor string                 `protobuf:"bytes,10,opt,name=ceiling_discount_factor,json=ceilingDiscountFactor,proto3" json:"ceiling_discount_factor,omitempty"`
+	TrustTier             TrustTier              `protobuf:"varint,11,opt,name=trust_tier,json=trustTier,proto3,enum=carboncircuit.identity.v1.TrustTier" json:"trust_tier,omitempty"`
+	DeclaredCapacity      string                 `protobuf:"bytes,12,opt,name=declared_capacity,json=declaredCapacity,proto3" json:"declared_capacity,omitempty"`
+	DeclaredEnergyKwh     string                 `protobuf:"bytes,13,opt,name=declared_energy_kwh,json=declaredEnergyKwh,proto3" json:"declared_energy_kwh,omitempty"`
+	AttestedCapacity      string                 `protobuf:"bytes,14,opt,name=attested_capacity,json=attestedCapacity,proto3" json:"attested_capacity,omitempty"`
+	AttestedEnergyKwh     string                 `protobuf:"bytes,15,opt,name=attested_energy_kwh,json=attestedEnergyKwh,proto3" json:"attested_energy_kwh,omitempty"`
+	CreatedAt             string                 `protobuf:"bytes,16,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	unknownFields         protoimpl.UnknownFields
+	sizeCache             protoimpl.SizeCache
+}
+
+func (x *Facility) Reset() {
+	*x = Facility{}
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[30]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Facility) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Facility) ProtoMessage() {}
+
+func (x *Facility) ProtoReflect() protoreflect.Message {
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[30]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Facility.ProtoReflect.Descriptor instead.
+func (*Facility) Descriptor() ([]byte, []int) {
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{30}
+}
+
+func (x *Facility) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *Facility) GetOrganizationId() string {
+	if x != nil {
+		return x.OrganizationId
+	}
+	return ""
+}
+
+func (x *Facility) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *Facility) GetAddress() string {
+	if x != nil {
+		return x.Address
+	}
+	return ""
+}
+
+func (x *Facility) GetCountryCode() string {
+	if x != nil {
+		return x.CountryCode
+	}
+	return ""
+}
+
+func (x *Facility) GetGridRegion() GridRegion {
+	if x != nil {
+		return x.GridRegion
+	}
+	return GridRegion_GRID_REGION_UNSPECIFIED
+}
+
+func (x *Facility) GetType() FacilityType {
+	if x != nil {
+		return x.Type
+	}
+	return FacilityType_FACILITY_TYPE_UNSPECIFIED
+}
+
+func (x *Facility) GetFacilityReference() string {
+	if x != nil {
+		return x.FacilityReference
+	}
+	return ""
+}
+
+func (x *Facility) GetVerificationStatus() FacilityVerification {
+	if x != nil {
+		return x.VerificationStatus
+	}
+	return FacilityVerification_FACILITY_VERIFICATION_UNSPECIFIED
+}
+
+func (x *Facility) GetCeilingDiscountFactor() string {
+	if x != nil {
+		return x.CeilingDiscountFactor
+	}
+	return ""
+}
+
+func (x *Facility) GetTrustTier() TrustTier {
+	if x != nil {
+		return x.TrustTier
+	}
+	return TrustTier_TRUST_TIER_UNSPECIFIED
+}
+
+func (x *Facility) GetDeclaredCapacity() string {
+	if x != nil {
+		return x.DeclaredCapacity
+	}
+	return ""
+}
+
+func (x *Facility) GetDeclaredEnergyKwh() string {
+	if x != nil {
+		return x.DeclaredEnergyKwh
+	}
+	return ""
+}
+
+func (x *Facility) GetAttestedCapacity() string {
+	if x != nil {
+		return x.AttestedCapacity
+	}
+	return ""
+}
+
+func (x *Facility) GetAttestedEnergyKwh() string {
+	if x != nil {
+		return x.AttestedEnergyKwh
+	}
+	return ""
+}
+
+func (x *Facility) GetCreatedAt() string {
+	if x != nil {
+		return x.CreatedAt
+	}
+	return ""
+}
+
+type CreateFacilityRequest struct {
+	state             protoimpl.MessageState `protogen:"open.v1"`
+	Name              string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	Address           string                 `protobuf:"bytes,2,opt,name=address,proto3" json:"address,omitempty"`
+	CountryCode       string                 `protobuf:"bytes,3,opt,name=country_code,json=countryCode,proto3" json:"country_code,omitempty"`
+	GridRegion        GridRegion             `protobuf:"varint,4,opt,name=grid_region,json=gridRegion,proto3,enum=carboncircuit.identity.v1.GridRegion" json:"grid_region,omitempty"`
+	Type              FacilityType           `protobuf:"varint,5,opt,name=type,proto3,enum=carboncircuit.identity.v1.FacilityType" json:"type,omitempty"`
+	FacilityReference string                 `protobuf:"bytes,6,opt,name=facility_reference,json=facilityReference,proto3" json:"facility_reference,omitempty"`
+	DeclaredCapacity  string                 `protobuf:"bytes,7,opt,name=declared_capacity,json=declaredCapacity,proto3" json:"declared_capacity,omitempty"`
+	DeclaredEnergyKwh string                 `protobuf:"bytes,8,opt,name=declared_energy_kwh,json=declaredEnergyKwh,proto3" json:"declared_energy_kwh,omitempty"`
+	unknownFields     protoimpl.UnknownFields
+	sizeCache         protoimpl.SizeCache
+}
+
+func (x *CreateFacilityRequest) Reset() {
+	*x = CreateFacilityRequest{}
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[31]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreateFacilityRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateFacilityRequest) ProtoMessage() {}
+
+func (x *CreateFacilityRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[31]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateFacilityRequest.ProtoReflect.Descriptor instead.
+func (*CreateFacilityRequest) Descriptor() ([]byte, []int) {
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{31}
+}
+
+func (x *CreateFacilityRequest) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *CreateFacilityRequest) GetAddress() string {
+	if x != nil {
+		return x.Address
+	}
+	return ""
+}
+
+func (x *CreateFacilityRequest) GetCountryCode() string {
+	if x != nil {
+		return x.CountryCode
+	}
+	return ""
+}
+
+func (x *CreateFacilityRequest) GetGridRegion() GridRegion {
+	if x != nil {
+		return x.GridRegion
+	}
+	return GridRegion_GRID_REGION_UNSPECIFIED
+}
+
+func (x *CreateFacilityRequest) GetType() FacilityType {
+	if x != nil {
+		return x.Type
+	}
+	return FacilityType_FACILITY_TYPE_UNSPECIFIED
+}
+
+func (x *CreateFacilityRequest) GetFacilityReference() string {
+	if x != nil {
+		return x.FacilityReference
+	}
+	return ""
+}
+
+func (x *CreateFacilityRequest) GetDeclaredCapacity() string {
+	if x != nil {
+		return x.DeclaredCapacity
+	}
+	return ""
+}
+
+func (x *CreateFacilityRequest) GetDeclaredEnergyKwh() string {
+	if x != nil {
+		return x.DeclaredEnergyKwh
+	}
+	return ""
+}
+
+type CreateFacilityResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Facility      *Facility              `protobuf:"bytes,1,opt,name=facility,proto3" json:"facility,omitempty"`
+	Replayed      bool                   `protobuf:"varint,2,opt,name=replayed,proto3" json:"replayed,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CreateFacilityResponse) Reset() {
+	*x = CreateFacilityResponse{}
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[32]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreateFacilityResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateFacilityResponse) ProtoMessage() {}
+
+func (x *CreateFacilityResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[32]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateFacilityResponse.ProtoReflect.Descriptor instead.
+func (*CreateFacilityResponse) Descriptor() ([]byte, []int) {
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{32}
+}
+
+func (x *CreateFacilityResponse) GetFacility() *Facility {
+	if x != nil {
+		return x.Facility
+	}
+	return nil
+}
+
+func (x *CreateFacilityResponse) GetReplayed() bool {
+	if x != nil {
+		return x.Replayed
+	}
+	return false
+}
+
+type ListFacilitiesRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListFacilitiesRequest) Reset() {
+	*x = ListFacilitiesRequest{}
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[33]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListFacilitiesRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListFacilitiesRequest) ProtoMessage() {}
+
+func (x *ListFacilitiesRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[33]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListFacilitiesRequest.ProtoReflect.Descriptor instead.
+func (*ListFacilitiesRequest) Descriptor() ([]byte, []int) {
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{33}
+}
+
+type ListFacilitiesResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Facilities    []*Facility            `protobuf:"bytes,1,rep,name=facilities,proto3" json:"facilities,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListFacilitiesResponse) Reset() {
+	*x = ListFacilitiesResponse{}
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[34]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListFacilitiesResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListFacilitiesResponse) ProtoMessage() {}
+
+func (x *ListFacilitiesResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[34]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListFacilitiesResponse.ProtoReflect.Descriptor instead.
+func (*ListFacilitiesResponse) Descriptor() ([]byte, []int) {
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{34}
+}
+
+func (x *ListFacilitiesResponse) GetFacilities() []*Facility {
+	if x != nil {
+		return x.Facilities
+	}
+	return nil
+}
+
+type GetFacilityRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	FacilityId    string                 `protobuf:"bytes,1,opt,name=facility_id,json=facilityId,proto3" json:"facility_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetFacilityRequest) Reset() {
+	*x = GetFacilityRequest{}
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[35]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetFacilityRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetFacilityRequest) ProtoMessage() {}
+
+func (x *GetFacilityRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[35]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetFacilityRequest.ProtoReflect.Descriptor instead.
+func (*GetFacilityRequest) Descriptor() ([]byte, []int) {
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{35}
+}
+
+func (x *GetFacilityRequest) GetFacilityId() string {
+	if x != nil {
+		return x.FacilityId
+	}
+	return ""
+}
+
+type GetFacilityResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Facility      *Facility              `protobuf:"bytes,1,opt,name=facility,proto3" json:"facility,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetFacilityResponse) Reset() {
+	*x = GetFacilityResponse{}
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[36]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetFacilityResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetFacilityResponse) ProtoMessage() {}
+
+func (x *GetFacilityResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[36]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetFacilityResponse.ProtoReflect.Descriptor instead.
+func (*GetFacilityResponse) Descriptor() ([]byte, []int) {
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{36}
+}
+
+func (x *GetFacilityResponse) GetFacility() *Facility {
+	if x != nil {
+		return x.Facility
+	}
+	return nil
+}
+
 var File_carboncircuit_identity_v1_identity_proto protoreflect.FileDescriptor
 
 const file_carboncircuit_identity_v1_identity_proto_rawDesc = "" +
@@ -2360,7 +3100,51 @@ const file_carboncircuit_identity_v1_identity_proto_rawDesc = "" +
 	"\x18AcceptInvitationResponse\x12'\n" +
 	"\x0forganization_id\x18\x01 \x01(\tR\x0eorganizationId\x12+\n" +
 	"\x11organization_name\x18\x02 \x01(\tR\x10organizationName\x12?\n" +
-	"\x04role\x18\x03 \x01(\x0e2+.carboncircuit.identity.v1.OrganizationRoleR\x04role*\xbf\x01\n" +
+	"\x04role\x18\x03 \x01(\x0e2+.carboncircuit.identity.v1.OrganizationRoleR\x04role\"\x80\x06\n" +
+	"\bFacility\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\x12'\n" +
+	"\x0forganization_id\x18\x02 \x01(\tR\x0eorganizationId\x12\x12\n" +
+	"\x04name\x18\x03 \x01(\tR\x04name\x12\x18\n" +
+	"\aaddress\x18\x04 \x01(\tR\aaddress\x12!\n" +
+	"\fcountry_code\x18\x05 \x01(\tR\vcountryCode\x12F\n" +
+	"\vgrid_region\x18\x06 \x01(\x0e2%.carboncircuit.identity.v1.GridRegionR\n" +
+	"gridRegion\x12;\n" +
+	"\x04type\x18\a \x01(\x0e2'.carboncircuit.identity.v1.FacilityTypeR\x04type\x12-\n" +
+	"\x12facility_reference\x18\b \x01(\tR\x11facilityReference\x12`\n" +
+	"\x13verification_status\x18\t \x01(\x0e2/.carboncircuit.identity.v1.FacilityVerificationR\x12verificationStatus\x126\n" +
+	"\x17ceiling_discount_factor\x18\n" +
+	" \x01(\tR\x15ceilingDiscountFactor\x12C\n" +
+	"\n" +
+	"trust_tier\x18\v \x01(\x0e2$.carboncircuit.identity.v1.TrustTierR\ttrustTier\x12+\n" +
+	"\x11declared_capacity\x18\f \x01(\tR\x10declaredCapacity\x12.\n" +
+	"\x13declared_energy_kwh\x18\r \x01(\tR\x11declaredEnergyKwh\x12+\n" +
+	"\x11attested_capacity\x18\x0e \x01(\tR\x10attestedCapacity\x12.\n" +
+	"\x13attested_energy_kwh\x18\x0f \x01(\tR\x11attestedEnergyKwh\x12\x1d\n" +
+	"\n" +
+	"created_at\x18\x10 \x01(\tR\tcreatedAt\"\xf9\x02\n" +
+	"\x15CreateFacilityRequest\x12\x12\n" +
+	"\x04name\x18\x01 \x01(\tR\x04name\x12\x18\n" +
+	"\aaddress\x18\x02 \x01(\tR\aaddress\x12!\n" +
+	"\fcountry_code\x18\x03 \x01(\tR\vcountryCode\x12F\n" +
+	"\vgrid_region\x18\x04 \x01(\x0e2%.carboncircuit.identity.v1.GridRegionR\n" +
+	"gridRegion\x12;\n" +
+	"\x04type\x18\x05 \x01(\x0e2'.carboncircuit.identity.v1.FacilityTypeR\x04type\x12-\n" +
+	"\x12facility_reference\x18\x06 \x01(\tR\x11facilityReference\x12+\n" +
+	"\x11declared_capacity\x18\a \x01(\tR\x10declaredCapacity\x12.\n" +
+	"\x13declared_energy_kwh\x18\b \x01(\tR\x11declaredEnergyKwh\"u\n" +
+	"\x16CreateFacilityResponse\x12?\n" +
+	"\bfacility\x18\x01 \x01(\v2#.carboncircuit.identity.v1.FacilityR\bfacility\x12\x1a\n" +
+	"\breplayed\x18\x02 \x01(\bR\breplayed\"\x17\n" +
+	"\x15ListFacilitiesRequest\"]\n" +
+	"\x16ListFacilitiesResponse\x12C\n" +
+	"\n" +
+	"facilities\x18\x01 \x03(\v2#.carboncircuit.identity.v1.FacilityR\n" +
+	"facilities\"5\n" +
+	"\x12GetFacilityRequest\x12\x1f\n" +
+	"\vfacility_id\x18\x01 \x01(\tR\n" +
+	"facilityId\"V\n" +
+	"\x13GetFacilityResponse\x12?\n" +
+	"\bfacility\x18\x01 \x01(\v2#.carboncircuit.identity.v1.FacilityR\bfacility*\xbf\x01\n" +
 	"\x10OrganizationType\x12!\n" +
 	"\x1dORGANIZATION_TYPE_UNSPECIFIED\x10\x00\x12\"\n" +
 	"\x1eORGANIZATION_TYPE_MANUFACTURER\x10\x01\x12\x1f\n" +
@@ -2403,7 +3187,45 @@ const file_carboncircuit_identity_v1_identity_proto_rawDesc = "" +
 	"\x18INVITATION_STATE_PENDING\x10\x01\x12\x1d\n" +
 	"\x19INVITATION_STATE_ACCEPTED\x10\x02\x12\x1c\n" +
 	"\x18INVITATION_STATE_REVOKED\x10\x03\x12\x1c\n" +
-	"\x18INVITATION_STATE_EXPIRED\x10\x042\xaa\v\n" +
+	"\x18INVITATION_STATE_EXPIRED\x10\x04*\xbd\x01\n" +
+	"\fFacilityType\x12\x1d\n" +
+	"\x19FACILITY_TYPE_UNSPECIFIED\x10\x00\x12)\n" +
+	"%FACILITY_TYPE_RAW_MATERIAL_PROCESSING\x10\x01\x12'\n" +
+	"#FACILITY_TYPE_COMPONENT_FABRICATION\x10\x02\x12\x1a\n" +
+	"\x16FACILITY_TYPE_ASSEMBLY\x10\x03\x12\x1e\n" +
+	"\x1aFACILITY_TYPE_DISTRIBUTION\x10\x04*\xc2\x01\n" +
+	"\x14FacilityVerification\x12%\n" +
+	"!FACILITY_VERIFICATION_UNSPECIFIED\x10\x00\x12*\n" +
+	"&FACILITY_VERIFICATION_FACILITY_MATCHED\x10\x01\x12.\n" +
+	"*FACILITY_VERIFICATION_ORGANIZATION_MATCHED\x10\x02\x12'\n" +
+	"#FACILITY_VERIFICATION_SELF_DECLARED\x10\x03*l\n" +
+	"\tTrustTier\x12\x1a\n" +
+	"\x16TRUST_TIER_UNSPECIFIED\x10\x00\x12\x12\n" +
+	"\x0eTRUST_TIER_NEW\x10\x01\x12\x17\n" +
+	"\x13TRUST_TIER_VERIFIED\x10\x02\x12\x16\n" +
+	"\x12TRUST_TIER_TRUSTED\x10\x03*\xc0\x03\n" +
+	"\n" +
+	"GridRegion\x12\x1b\n" +
+	"\x17GRID_REGION_UNSPECIFIED\x10\x00\x12\x18\n" +
+	"\x14GRID_REGION_US_CAISO\x10\x01\x12\x18\n" +
+	"\x14GRID_REGION_US_ERCOT\x10\x02\x12\x16\n" +
+	"\x12GRID_REGION_US_PJM\x10\x03\x12\x17\n" +
+	"\x13GRID_REGION_US_MISO\x10\x04\x12\x15\n" +
+	"\x11GRID_REGION_EU_DE\x10\x05\x12\x15\n" +
+	"\x11GRID_REGION_EU_FR\x10\x06\x12\x15\n" +
+	"\x11GRID_REGION_EU_PL\x10\a\x12\x12\n" +
+	"\x0eGRID_REGION_UK\x10\b\x12\x17\n" +
+	"\x13GRID_REGION_CN_EAST\x10\t\x12\x18\n" +
+	"\x14GRID_REGION_CN_SOUTH\x10\n" +
+	"\x12\x18\n" +
+	"\x14GRID_REGION_IN_NORTH\x10\v\x12\x12\n" +
+	"\x0eGRID_REGION_JP\x10\f\x12\x12\n" +
+	"\x0eGRID_REGION_KR\x10\r\x12\x12\n" +
+	"\x0eGRID_REGION_TW\x10\x0e\x12\x12\n" +
+	"\x0eGRID_REGION_VN\x10\x0f\x12\x12\n" +
+	"\x0eGRID_REGION_MY\x10\x10\x12\x12\n" +
+	"\x0eGRID_REGION_SG\x10\x11\x12\x12\n" +
+	"\x0eGRID_REGION_TH\x10\x122\x86\x0e\n" +
 	"\x0fIdentityService\x12W\n" +
 	"\x04Ping\x12&.carboncircuit.identity.v1.PingRequest\x1a'.carboncircuit.identity.v1.PingResponse\x12u\n" +
 	"\x0eResolveSession\x120.carboncircuit.identity.v1.ResolveSessionRequest\x1a1.carboncircuit.identity.v1.ResolveSessionResponse\x12\x81\x01\n" +
@@ -2416,7 +3238,10 @@ const file_carboncircuit_identity_v1_identity_proto_rawDesc = "" +
 	"\x10RevokeInvitation\x122.carboncircuit.identity.v1.RevokeInvitationRequest\x1a3.carboncircuit.identity.v1.RevokeInvitationResponse\x12{\n" +
 	"\x10ChangeMemberRole\x122.carboncircuit.identity.v1.ChangeMemberRoleRequest\x1a3.carboncircuit.identity.v1.ChangeMemberRoleResponse\x12o\n" +
 	"\fRevokeMember\x12..carboncircuit.identity.v1.RevokeMemberRequest\x1a/.carboncircuit.identity.v1.RevokeMemberResponse\x12{\n" +
-	"\x10AcceptInvitation\x122.carboncircuit.identity.v1.AcceptInvitationRequest\x1a3.carboncircuit.identity.v1.AcceptInvitationResponseB\xff\x01\n" +
+	"\x10AcceptInvitation\x122.carboncircuit.identity.v1.AcceptInvitationRequest\x1a3.carboncircuit.identity.v1.AcceptInvitationResponse\x12u\n" +
+	"\x0eCreateFacility\x120.carboncircuit.identity.v1.CreateFacilityRequest\x1a1.carboncircuit.identity.v1.CreateFacilityResponse\x12u\n" +
+	"\x0eListFacilities\x120.carboncircuit.identity.v1.ListFacilitiesRequest\x1a1.carboncircuit.identity.v1.ListFacilitiesResponse\x12l\n" +
+	"\vGetFacility\x12-.carboncircuit.identity.v1.GetFacilityRequest\x1a..carboncircuit.identity.v1.GetFacilityResponseB\xff\x01\n" +
 	"\x1dcom.carboncircuit.identity.v1B\rIdentityProtoP\x01ZIgithub.com/carboncircuit/backend/gen/carboncircuit/identity/v1;identityv1\xa2\x02\x03CIX\xaa\x02\x19Carboncircuit.Identity.V1\xca\x02\x19Carboncircuit\\Identity\\V1\xe2\x02%Carboncircuit\\Identity\\V1\\GPBMetadata\xea\x02\x1bCarboncircuit::Identity::V1b\x06proto3"
 
 var (
@@ -2431,8 +3256,8 @@ func file_carboncircuit_identity_v1_identity_proto_rawDescGZIP() []byte {
 	return file_carboncircuit_identity_v1_identity_proto_rawDescData
 }
 
-var file_carboncircuit_identity_v1_identity_proto_enumTypes = make([]protoimpl.EnumInfo, 8)
-var file_carboncircuit_identity_v1_identity_proto_msgTypes = make([]protoimpl.MessageInfo, 30)
+var file_carboncircuit_identity_v1_identity_proto_enumTypes = make([]protoimpl.EnumInfo, 12)
+var file_carboncircuit_identity_v1_identity_proto_msgTypes = make([]protoimpl.MessageInfo, 37)
 var file_carboncircuit_identity_v1_identity_proto_goTypes = []any{
 	(OrganizationType)(0),              // 0: carboncircuit.identity.v1.OrganizationType
 	(OrganizationRole)(0),              // 1: carboncircuit.identity.v1.OrganizationRole
@@ -2442,98 +3267,124 @@ var file_carboncircuit_identity_v1_identity_proto_goTypes = []any{
 	(ProductCategory)(0),               // 5: carboncircuit.identity.v1.ProductCategory
 	(RegistryRejection)(0),             // 6: carboncircuit.identity.v1.RegistryRejection
 	(InvitationState)(0),               // 7: carboncircuit.identity.v1.InvitationState
-	(*PingRequest)(nil),                // 8: carboncircuit.identity.v1.PingRequest
-	(*PingResponse)(nil),               // 9: carboncircuit.identity.v1.PingResponse
-	(*ResolveSessionRequest)(nil),      // 10: carboncircuit.identity.v1.ResolveSessionRequest
-	(*SessionUser)(nil),                // 11: carboncircuit.identity.v1.SessionUser
-	(*SessionOrganization)(nil),        // 12: carboncircuit.identity.v1.SessionOrganization
-	(*ResolveSessionResponse)(nil),     // 13: carboncircuit.identity.v1.ResolveSessionResponse
-	(*CreateOrganizationRequest)(nil),  // 14: carboncircuit.identity.v1.CreateOrganizationRequest
-	(*VerificationOutcome)(nil),        // 15: carboncircuit.identity.v1.VerificationOutcome
-	(*CreateOrganizationResponse)(nil), // 16: carboncircuit.identity.v1.CreateOrganizationResponse
-	(*GetOrganizationRequest)(nil),     // 17: carboncircuit.identity.v1.GetOrganizationRequest
-	(*OrganizationDetail)(nil),         // 18: carboncircuit.identity.v1.OrganizationDetail
-	(*GetOrganizationResponse)(nil),    // 19: carboncircuit.identity.v1.GetOrganizationResponse
-	(*IssueTreasuryNonceRequest)(nil),  // 20: carboncircuit.identity.v1.IssueTreasuryNonceRequest
-	(*IssueTreasuryNonceResponse)(nil), // 21: carboncircuit.identity.v1.IssueTreasuryNonceResponse
-	(*DesignateTreasuryRequest)(nil),   // 22: carboncircuit.identity.v1.DesignateTreasuryRequest
-	(*DesignateTreasuryResponse)(nil),  // 23: carboncircuit.identity.v1.DesignateTreasuryResponse
-	(*Member)(nil),                     // 24: carboncircuit.identity.v1.Member
-	(*Invitation)(nil),                 // 25: carboncircuit.identity.v1.Invitation
-	(*ListMembersRequest)(nil),         // 26: carboncircuit.identity.v1.ListMembersRequest
-	(*ListMembersResponse)(nil),        // 27: carboncircuit.identity.v1.ListMembersResponse
-	(*InviteMemberRequest)(nil),        // 28: carboncircuit.identity.v1.InviteMemberRequest
-	(*InviteMemberResponse)(nil),       // 29: carboncircuit.identity.v1.InviteMemberResponse
-	(*RevokeInvitationRequest)(nil),    // 30: carboncircuit.identity.v1.RevokeInvitationRequest
-	(*RevokeInvitationResponse)(nil),   // 31: carboncircuit.identity.v1.RevokeInvitationResponse
-	(*ChangeMemberRoleRequest)(nil),    // 32: carboncircuit.identity.v1.ChangeMemberRoleRequest
-	(*ChangeMemberRoleResponse)(nil),   // 33: carboncircuit.identity.v1.ChangeMemberRoleResponse
-	(*RevokeMemberRequest)(nil),        // 34: carboncircuit.identity.v1.RevokeMemberRequest
-	(*RevokeMemberResponse)(nil),       // 35: carboncircuit.identity.v1.RevokeMemberResponse
-	(*AcceptInvitationRequest)(nil),    // 36: carboncircuit.identity.v1.AcceptInvitationRequest
-	(*AcceptInvitationResponse)(nil),   // 37: carboncircuit.identity.v1.AcceptInvitationResponse
+	(FacilityType)(0),                  // 8: carboncircuit.identity.v1.FacilityType
+	(FacilityVerification)(0),          // 9: carboncircuit.identity.v1.FacilityVerification
+	(TrustTier)(0),                     // 10: carboncircuit.identity.v1.TrustTier
+	(GridRegion)(0),                    // 11: carboncircuit.identity.v1.GridRegion
+	(*PingRequest)(nil),                // 12: carboncircuit.identity.v1.PingRequest
+	(*PingResponse)(nil),               // 13: carboncircuit.identity.v1.PingResponse
+	(*ResolveSessionRequest)(nil),      // 14: carboncircuit.identity.v1.ResolveSessionRequest
+	(*SessionUser)(nil),                // 15: carboncircuit.identity.v1.SessionUser
+	(*SessionOrganization)(nil),        // 16: carboncircuit.identity.v1.SessionOrganization
+	(*ResolveSessionResponse)(nil),     // 17: carboncircuit.identity.v1.ResolveSessionResponse
+	(*CreateOrganizationRequest)(nil),  // 18: carboncircuit.identity.v1.CreateOrganizationRequest
+	(*VerificationOutcome)(nil),        // 19: carboncircuit.identity.v1.VerificationOutcome
+	(*CreateOrganizationResponse)(nil), // 20: carboncircuit.identity.v1.CreateOrganizationResponse
+	(*GetOrganizationRequest)(nil),     // 21: carboncircuit.identity.v1.GetOrganizationRequest
+	(*OrganizationDetail)(nil),         // 22: carboncircuit.identity.v1.OrganizationDetail
+	(*GetOrganizationResponse)(nil),    // 23: carboncircuit.identity.v1.GetOrganizationResponse
+	(*IssueTreasuryNonceRequest)(nil),  // 24: carboncircuit.identity.v1.IssueTreasuryNonceRequest
+	(*IssueTreasuryNonceResponse)(nil), // 25: carboncircuit.identity.v1.IssueTreasuryNonceResponse
+	(*DesignateTreasuryRequest)(nil),   // 26: carboncircuit.identity.v1.DesignateTreasuryRequest
+	(*DesignateTreasuryResponse)(nil),  // 27: carboncircuit.identity.v1.DesignateTreasuryResponse
+	(*Member)(nil),                     // 28: carboncircuit.identity.v1.Member
+	(*Invitation)(nil),                 // 29: carboncircuit.identity.v1.Invitation
+	(*ListMembersRequest)(nil),         // 30: carboncircuit.identity.v1.ListMembersRequest
+	(*ListMembersResponse)(nil),        // 31: carboncircuit.identity.v1.ListMembersResponse
+	(*InviteMemberRequest)(nil),        // 32: carboncircuit.identity.v1.InviteMemberRequest
+	(*InviteMemberResponse)(nil),       // 33: carboncircuit.identity.v1.InviteMemberResponse
+	(*RevokeInvitationRequest)(nil),    // 34: carboncircuit.identity.v1.RevokeInvitationRequest
+	(*RevokeInvitationResponse)(nil),   // 35: carboncircuit.identity.v1.RevokeInvitationResponse
+	(*ChangeMemberRoleRequest)(nil),    // 36: carboncircuit.identity.v1.ChangeMemberRoleRequest
+	(*ChangeMemberRoleResponse)(nil),   // 37: carboncircuit.identity.v1.ChangeMemberRoleResponse
+	(*RevokeMemberRequest)(nil),        // 38: carboncircuit.identity.v1.RevokeMemberRequest
+	(*RevokeMemberResponse)(nil),       // 39: carboncircuit.identity.v1.RevokeMemberResponse
+	(*AcceptInvitationRequest)(nil),    // 40: carboncircuit.identity.v1.AcceptInvitationRequest
+	(*AcceptInvitationResponse)(nil),   // 41: carboncircuit.identity.v1.AcceptInvitationResponse
+	(*Facility)(nil),                   // 42: carboncircuit.identity.v1.Facility
+	(*CreateFacilityRequest)(nil),      // 43: carboncircuit.identity.v1.CreateFacilityRequest
+	(*CreateFacilityResponse)(nil),     // 44: carboncircuit.identity.v1.CreateFacilityResponse
+	(*ListFacilitiesRequest)(nil),      // 45: carboncircuit.identity.v1.ListFacilitiesRequest
+	(*ListFacilitiesResponse)(nil),     // 46: carboncircuit.identity.v1.ListFacilitiesResponse
+	(*GetFacilityRequest)(nil),         // 47: carboncircuit.identity.v1.GetFacilityRequest
+	(*GetFacilityResponse)(nil),        // 48: carboncircuit.identity.v1.GetFacilityResponse
 }
 var file_carboncircuit_identity_v1_identity_proto_depIdxs = []int32{
 	4,  // 0: carboncircuit.identity.v1.SessionUser.platform_role:type_name -> carboncircuit.identity.v1.PlatformRole
 	0,  // 1: carboncircuit.identity.v1.SessionOrganization.type:type_name -> carboncircuit.identity.v1.OrganizationType
 	2,  // 2: carboncircuit.identity.v1.SessionOrganization.state:type_name -> carboncircuit.identity.v1.OrganizationState
 	3,  // 3: carboncircuit.identity.v1.SessionOrganization.verification_status:type_name -> carboncircuit.identity.v1.VerificationStatus
-	11, // 4: carboncircuit.identity.v1.ResolveSessionResponse.user:type_name -> carboncircuit.identity.v1.SessionUser
-	12, // 5: carboncircuit.identity.v1.ResolveSessionResponse.organization:type_name -> carboncircuit.identity.v1.SessionOrganization
+	15, // 4: carboncircuit.identity.v1.ResolveSessionResponse.user:type_name -> carboncircuit.identity.v1.SessionUser
+	16, // 5: carboncircuit.identity.v1.ResolveSessionResponse.organization:type_name -> carboncircuit.identity.v1.SessionOrganization
 	1,  // 6: carboncircuit.identity.v1.ResolveSessionResponse.role:type_name -> carboncircuit.identity.v1.OrganizationRole
 	0,  // 7: carboncircuit.identity.v1.CreateOrganizationRequest.type:type_name -> carboncircuit.identity.v1.OrganizationType
 	5,  // 8: carboncircuit.identity.v1.CreateOrganizationRequest.product_categories:type_name -> carboncircuit.identity.v1.ProductCategory
 	3,  // 9: carboncircuit.identity.v1.VerificationOutcome.status:type_name -> carboncircuit.identity.v1.VerificationStatus
 	6,  // 10: carboncircuit.identity.v1.VerificationOutcome.rejection:type_name -> carboncircuit.identity.v1.RegistryRejection
-	12, // 11: carboncircuit.identity.v1.CreateOrganizationResponse.organization:type_name -> carboncircuit.identity.v1.SessionOrganization
+	16, // 11: carboncircuit.identity.v1.CreateOrganizationResponse.organization:type_name -> carboncircuit.identity.v1.SessionOrganization
 	1,  // 12: carboncircuit.identity.v1.CreateOrganizationResponse.role:type_name -> carboncircuit.identity.v1.OrganizationRole
-	15, // 13: carboncircuit.identity.v1.CreateOrganizationResponse.outcome:type_name -> carboncircuit.identity.v1.VerificationOutcome
+	19, // 13: carboncircuit.identity.v1.CreateOrganizationResponse.outcome:type_name -> carboncircuit.identity.v1.VerificationOutcome
 	0,  // 14: carboncircuit.identity.v1.OrganizationDetail.type:type_name -> carboncircuit.identity.v1.OrganizationType
 	2,  // 15: carboncircuit.identity.v1.OrganizationDetail.state:type_name -> carboncircuit.identity.v1.OrganizationState
 	3,  // 16: carboncircuit.identity.v1.OrganizationDetail.verification_status:type_name -> carboncircuit.identity.v1.VerificationStatus
 	5,  // 17: carboncircuit.identity.v1.OrganizationDetail.product_categories:type_name -> carboncircuit.identity.v1.ProductCategory
-	18, // 18: carboncircuit.identity.v1.GetOrganizationResponse.organization:type_name -> carboncircuit.identity.v1.OrganizationDetail
+	22, // 18: carboncircuit.identity.v1.GetOrganizationResponse.organization:type_name -> carboncircuit.identity.v1.OrganizationDetail
 	1,  // 19: carboncircuit.identity.v1.GetOrganizationResponse.role:type_name -> carboncircuit.identity.v1.OrganizationRole
-	15, // 20: carboncircuit.identity.v1.GetOrganizationResponse.outcome:type_name -> carboncircuit.identity.v1.VerificationOutcome
+	19, // 20: carboncircuit.identity.v1.GetOrganizationResponse.outcome:type_name -> carboncircuit.identity.v1.VerificationOutcome
 	1,  // 21: carboncircuit.identity.v1.Member.role:type_name -> carboncircuit.identity.v1.OrganizationRole
 	1,  // 22: carboncircuit.identity.v1.Invitation.role:type_name -> carboncircuit.identity.v1.OrganizationRole
 	7,  // 23: carboncircuit.identity.v1.Invitation.state:type_name -> carboncircuit.identity.v1.InvitationState
-	24, // 24: carboncircuit.identity.v1.ListMembersResponse.members:type_name -> carboncircuit.identity.v1.Member
-	25, // 25: carboncircuit.identity.v1.ListMembersResponse.invitations:type_name -> carboncircuit.identity.v1.Invitation
+	28, // 24: carboncircuit.identity.v1.ListMembersResponse.members:type_name -> carboncircuit.identity.v1.Member
+	29, // 25: carboncircuit.identity.v1.ListMembersResponse.invitations:type_name -> carboncircuit.identity.v1.Invitation
 	1,  // 26: carboncircuit.identity.v1.InviteMemberRequest.role:type_name -> carboncircuit.identity.v1.OrganizationRole
-	25, // 27: carboncircuit.identity.v1.InviteMemberResponse.invitation:type_name -> carboncircuit.identity.v1.Invitation
+	29, // 27: carboncircuit.identity.v1.InviteMemberResponse.invitation:type_name -> carboncircuit.identity.v1.Invitation
 	1,  // 28: carboncircuit.identity.v1.ChangeMemberRoleRequest.role:type_name -> carboncircuit.identity.v1.OrganizationRole
-	24, // 29: carboncircuit.identity.v1.ChangeMemberRoleResponse.member:type_name -> carboncircuit.identity.v1.Member
+	28, // 29: carboncircuit.identity.v1.ChangeMemberRoleResponse.member:type_name -> carboncircuit.identity.v1.Member
 	1,  // 30: carboncircuit.identity.v1.AcceptInvitationResponse.role:type_name -> carboncircuit.identity.v1.OrganizationRole
-	8,  // 31: carboncircuit.identity.v1.IdentityService.Ping:input_type -> carboncircuit.identity.v1.PingRequest
-	10, // 32: carboncircuit.identity.v1.IdentityService.ResolveSession:input_type -> carboncircuit.identity.v1.ResolveSessionRequest
-	14, // 33: carboncircuit.identity.v1.IdentityService.CreateOrganization:input_type -> carboncircuit.identity.v1.CreateOrganizationRequest
-	17, // 34: carboncircuit.identity.v1.IdentityService.GetOrganization:input_type -> carboncircuit.identity.v1.GetOrganizationRequest
-	20, // 35: carboncircuit.identity.v1.IdentityService.IssueTreasuryNonce:input_type -> carboncircuit.identity.v1.IssueTreasuryNonceRequest
-	22, // 36: carboncircuit.identity.v1.IdentityService.DesignateTreasury:input_type -> carboncircuit.identity.v1.DesignateTreasuryRequest
-	26, // 37: carboncircuit.identity.v1.IdentityService.ListMembers:input_type -> carboncircuit.identity.v1.ListMembersRequest
-	28, // 38: carboncircuit.identity.v1.IdentityService.InviteMember:input_type -> carboncircuit.identity.v1.InviteMemberRequest
-	30, // 39: carboncircuit.identity.v1.IdentityService.RevokeInvitation:input_type -> carboncircuit.identity.v1.RevokeInvitationRequest
-	32, // 40: carboncircuit.identity.v1.IdentityService.ChangeMemberRole:input_type -> carboncircuit.identity.v1.ChangeMemberRoleRequest
-	34, // 41: carboncircuit.identity.v1.IdentityService.RevokeMember:input_type -> carboncircuit.identity.v1.RevokeMemberRequest
-	36, // 42: carboncircuit.identity.v1.IdentityService.AcceptInvitation:input_type -> carboncircuit.identity.v1.AcceptInvitationRequest
-	9,  // 43: carboncircuit.identity.v1.IdentityService.Ping:output_type -> carboncircuit.identity.v1.PingResponse
-	13, // 44: carboncircuit.identity.v1.IdentityService.ResolveSession:output_type -> carboncircuit.identity.v1.ResolveSessionResponse
-	16, // 45: carboncircuit.identity.v1.IdentityService.CreateOrganization:output_type -> carboncircuit.identity.v1.CreateOrganizationResponse
-	19, // 46: carboncircuit.identity.v1.IdentityService.GetOrganization:output_type -> carboncircuit.identity.v1.GetOrganizationResponse
-	21, // 47: carboncircuit.identity.v1.IdentityService.IssueTreasuryNonce:output_type -> carboncircuit.identity.v1.IssueTreasuryNonceResponse
-	23, // 48: carboncircuit.identity.v1.IdentityService.DesignateTreasury:output_type -> carboncircuit.identity.v1.DesignateTreasuryResponse
-	27, // 49: carboncircuit.identity.v1.IdentityService.ListMembers:output_type -> carboncircuit.identity.v1.ListMembersResponse
-	29, // 50: carboncircuit.identity.v1.IdentityService.InviteMember:output_type -> carboncircuit.identity.v1.InviteMemberResponse
-	31, // 51: carboncircuit.identity.v1.IdentityService.RevokeInvitation:output_type -> carboncircuit.identity.v1.RevokeInvitationResponse
-	33, // 52: carboncircuit.identity.v1.IdentityService.ChangeMemberRole:output_type -> carboncircuit.identity.v1.ChangeMemberRoleResponse
-	35, // 53: carboncircuit.identity.v1.IdentityService.RevokeMember:output_type -> carboncircuit.identity.v1.RevokeMemberResponse
-	37, // 54: carboncircuit.identity.v1.IdentityService.AcceptInvitation:output_type -> carboncircuit.identity.v1.AcceptInvitationResponse
-	43, // [43:55] is the sub-list for method output_type
-	31, // [31:43] is the sub-list for method input_type
-	31, // [31:31] is the sub-list for extension type_name
-	31, // [31:31] is the sub-list for extension extendee
-	0,  // [0:31] is the sub-list for field type_name
+	11, // 31: carboncircuit.identity.v1.Facility.grid_region:type_name -> carboncircuit.identity.v1.GridRegion
+	8,  // 32: carboncircuit.identity.v1.Facility.type:type_name -> carboncircuit.identity.v1.FacilityType
+	9,  // 33: carboncircuit.identity.v1.Facility.verification_status:type_name -> carboncircuit.identity.v1.FacilityVerification
+	10, // 34: carboncircuit.identity.v1.Facility.trust_tier:type_name -> carboncircuit.identity.v1.TrustTier
+	11, // 35: carboncircuit.identity.v1.CreateFacilityRequest.grid_region:type_name -> carboncircuit.identity.v1.GridRegion
+	8,  // 36: carboncircuit.identity.v1.CreateFacilityRequest.type:type_name -> carboncircuit.identity.v1.FacilityType
+	42, // 37: carboncircuit.identity.v1.CreateFacilityResponse.facility:type_name -> carboncircuit.identity.v1.Facility
+	42, // 38: carboncircuit.identity.v1.ListFacilitiesResponse.facilities:type_name -> carboncircuit.identity.v1.Facility
+	42, // 39: carboncircuit.identity.v1.GetFacilityResponse.facility:type_name -> carboncircuit.identity.v1.Facility
+	12, // 40: carboncircuit.identity.v1.IdentityService.Ping:input_type -> carboncircuit.identity.v1.PingRequest
+	14, // 41: carboncircuit.identity.v1.IdentityService.ResolveSession:input_type -> carboncircuit.identity.v1.ResolveSessionRequest
+	18, // 42: carboncircuit.identity.v1.IdentityService.CreateOrganization:input_type -> carboncircuit.identity.v1.CreateOrganizationRequest
+	21, // 43: carboncircuit.identity.v1.IdentityService.GetOrganization:input_type -> carboncircuit.identity.v1.GetOrganizationRequest
+	24, // 44: carboncircuit.identity.v1.IdentityService.IssueTreasuryNonce:input_type -> carboncircuit.identity.v1.IssueTreasuryNonceRequest
+	26, // 45: carboncircuit.identity.v1.IdentityService.DesignateTreasury:input_type -> carboncircuit.identity.v1.DesignateTreasuryRequest
+	30, // 46: carboncircuit.identity.v1.IdentityService.ListMembers:input_type -> carboncircuit.identity.v1.ListMembersRequest
+	32, // 47: carboncircuit.identity.v1.IdentityService.InviteMember:input_type -> carboncircuit.identity.v1.InviteMemberRequest
+	34, // 48: carboncircuit.identity.v1.IdentityService.RevokeInvitation:input_type -> carboncircuit.identity.v1.RevokeInvitationRequest
+	36, // 49: carboncircuit.identity.v1.IdentityService.ChangeMemberRole:input_type -> carboncircuit.identity.v1.ChangeMemberRoleRequest
+	38, // 50: carboncircuit.identity.v1.IdentityService.RevokeMember:input_type -> carboncircuit.identity.v1.RevokeMemberRequest
+	40, // 51: carboncircuit.identity.v1.IdentityService.AcceptInvitation:input_type -> carboncircuit.identity.v1.AcceptInvitationRequest
+	43, // 52: carboncircuit.identity.v1.IdentityService.CreateFacility:input_type -> carboncircuit.identity.v1.CreateFacilityRequest
+	45, // 53: carboncircuit.identity.v1.IdentityService.ListFacilities:input_type -> carboncircuit.identity.v1.ListFacilitiesRequest
+	47, // 54: carboncircuit.identity.v1.IdentityService.GetFacility:input_type -> carboncircuit.identity.v1.GetFacilityRequest
+	13, // 55: carboncircuit.identity.v1.IdentityService.Ping:output_type -> carboncircuit.identity.v1.PingResponse
+	17, // 56: carboncircuit.identity.v1.IdentityService.ResolveSession:output_type -> carboncircuit.identity.v1.ResolveSessionResponse
+	20, // 57: carboncircuit.identity.v1.IdentityService.CreateOrganization:output_type -> carboncircuit.identity.v1.CreateOrganizationResponse
+	23, // 58: carboncircuit.identity.v1.IdentityService.GetOrganization:output_type -> carboncircuit.identity.v1.GetOrganizationResponse
+	25, // 59: carboncircuit.identity.v1.IdentityService.IssueTreasuryNonce:output_type -> carboncircuit.identity.v1.IssueTreasuryNonceResponse
+	27, // 60: carboncircuit.identity.v1.IdentityService.DesignateTreasury:output_type -> carboncircuit.identity.v1.DesignateTreasuryResponse
+	31, // 61: carboncircuit.identity.v1.IdentityService.ListMembers:output_type -> carboncircuit.identity.v1.ListMembersResponse
+	33, // 62: carboncircuit.identity.v1.IdentityService.InviteMember:output_type -> carboncircuit.identity.v1.InviteMemberResponse
+	35, // 63: carboncircuit.identity.v1.IdentityService.RevokeInvitation:output_type -> carboncircuit.identity.v1.RevokeInvitationResponse
+	37, // 64: carboncircuit.identity.v1.IdentityService.ChangeMemberRole:output_type -> carboncircuit.identity.v1.ChangeMemberRoleResponse
+	39, // 65: carboncircuit.identity.v1.IdentityService.RevokeMember:output_type -> carboncircuit.identity.v1.RevokeMemberResponse
+	41, // 66: carboncircuit.identity.v1.IdentityService.AcceptInvitation:output_type -> carboncircuit.identity.v1.AcceptInvitationResponse
+	44, // 67: carboncircuit.identity.v1.IdentityService.CreateFacility:output_type -> carboncircuit.identity.v1.CreateFacilityResponse
+	46, // 68: carboncircuit.identity.v1.IdentityService.ListFacilities:output_type -> carboncircuit.identity.v1.ListFacilitiesResponse
+	48, // 69: carboncircuit.identity.v1.IdentityService.GetFacility:output_type -> carboncircuit.identity.v1.GetFacilityResponse
+	55, // [55:70] is the sub-list for method output_type
+	40, // [40:55] is the sub-list for method input_type
+	40, // [40:40] is the sub-list for extension type_name
+	40, // [40:40] is the sub-list for extension extendee
+	0,  // [0:40] is the sub-list for field type_name
 }
 
 func init() { file_carboncircuit_identity_v1_identity_proto_init() }
@@ -2546,8 +3397,8 @@ func file_carboncircuit_identity_v1_identity_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_carboncircuit_identity_v1_identity_proto_rawDesc), len(file_carboncircuit_identity_v1_identity_proto_rawDesc)),
-			NumEnums:      8,
-			NumMessages:   30,
+			NumEnums:      12,
+			NumMessages:   37,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

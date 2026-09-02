@@ -17,6 +17,9 @@ service IdentityService {
   rpc ChangeMemberRole(ChangeMemberRoleRequest) returns (ChangeMemberRoleResponse);
   rpc RevokeMember(RevokeMemberRequest) returns (RevokeMemberResponse);
   rpc AcceptInvitation(AcceptInvitationRequest) returns (AcceptInvitationResponse);
+  rpc CreateFacility(CreateFacilityRequest) returns (CreateFacilityResponse);
+  rpc ListFacilities(ListFacilitiesRequest) returns (ListFacilitiesResponse);
+  rpc GetFacility(GetFacilityRequest) returns (GetFacilityResponse);
 }
 
 enum OrganizationType {
@@ -251,4 +254,97 @@ message AcceptInvitationResponse {
   string organization_id = 1;
   string organization_name = 2;
   OrganizationRole role = 3;
+}
+
+enum FacilityType {
+  FACILITY_TYPE_UNSPECIFIED = 0;
+  FACILITY_TYPE_RAW_MATERIAL_PROCESSING = 1;
+  FACILITY_TYPE_COMPONENT_FABRICATION = 2;
+  FACILITY_TYPE_ASSEMBLY = 3;
+  FACILITY_TYPE_DISTRIBUTION = 4;
+}
+
+enum FacilityVerification {
+  FACILITY_VERIFICATION_UNSPECIFIED = 0;
+  FACILITY_VERIFICATION_FACILITY_MATCHED = 1;
+  FACILITY_VERIFICATION_ORGANIZATION_MATCHED = 2;
+  FACILITY_VERIFICATION_SELF_DECLARED = 3;
+}
+
+enum TrustTier {
+  TRUST_TIER_UNSPECIFIED = 0;
+  TRUST_TIER_NEW = 1;
+  TRUST_TIER_VERIFIED = 2;
+  TRUST_TIER_TRUSTED = 3;
+}
+
+enum GridRegion {
+  GRID_REGION_UNSPECIFIED = 0;
+  GRID_REGION_US_CAISO = 1;
+  GRID_REGION_US_ERCOT = 2;
+  GRID_REGION_US_PJM = 3;
+  GRID_REGION_US_MISO = 4;
+  GRID_REGION_EU_DE = 5;
+  GRID_REGION_EU_FR = 6;
+  GRID_REGION_EU_PL = 7;
+  GRID_REGION_UK = 8;
+  GRID_REGION_CN_EAST = 9;
+  GRID_REGION_CN_SOUTH = 10;
+  GRID_REGION_IN_NORTH = 11;
+  GRID_REGION_JP = 12;
+  GRID_REGION_KR = 13;
+  GRID_REGION_TW = 14;
+  GRID_REGION_VN = 15;
+  GRID_REGION_MY = 16;
+  GRID_REGION_SG = 17;
+  GRID_REGION_TH = 18;
+}
+
+message Facility {
+  string id = 1;
+  string organization_id = 2;
+  string name = 3;
+  string address = 4;
+  string country_code = 5;
+  GridRegion grid_region = 6;
+  FacilityType type = 7;
+  string facility_reference = 8;
+  FacilityVerification verification_status = 9;
+  string ceiling_discount_factor = 10;
+  TrustTier trust_tier = 11;
+  string declared_capacity = 12;
+  string declared_energy_kwh = 13;
+  string attested_capacity = 14;
+  string attested_energy_kwh = 15;
+  string created_at = 16;
+}
+
+message CreateFacilityRequest {
+  string name = 1;
+  string address = 2;
+  string country_code = 3;
+  GridRegion grid_region = 4;
+  FacilityType type = 5;
+  string facility_reference = 6;
+  string declared_capacity = 7;
+  string declared_energy_kwh = 8;
+}
+
+message CreateFacilityResponse {
+  Facility facility = 1;
+  bool replayed = 2;
+}
+
+message ListFacilitiesRequest {}
+
+message ListFacilitiesResponse {
+  repeated Facility facilities = 1;
+}
+
+message GetFacilityRequest {
+  string facility_id = 1;
+}
+
+message GetFacilityResponse {
+  Facility facility = 1;
 }

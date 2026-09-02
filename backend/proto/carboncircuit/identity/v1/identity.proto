@@ -8,6 +8,7 @@ service IdentityService {
   rpc Ping(PingRequest) returns (PingResponse);
   rpc ResolveSession(ResolveSessionRequest) returns (ResolveSessionResponse);
   rpc CreateOrganization(CreateOrganizationRequest) returns (CreateOrganizationResponse);
+  rpc GetOrganization(GetOrganizationRequest) returns (GetOrganizationResponse);
 }
 
 enum OrganizationType {
@@ -115,10 +116,32 @@ message VerificationOutcome {
   RegistryRejection rejection = 2;
   bool registry_match_found = 3;
   string name_similarity = 4;
+  string registered_legal_name = 5;
 }
 
 message CreateOrganizationResponse {
   SessionOrganization organization = 1;
+  OrganizationRole role = 2;
+  VerificationOutcome outcome = 3;
+}
+
+message GetOrganizationRequest {}
+
+message OrganizationDetail {
+  string id = 1;
+  string name = 2;
+  OrganizationType type = 3;
+  OrganizationState state = 4;
+  VerificationStatus verification_status = 5;
+  string country_of_incorporation = 6;
+  string business_registration_number = 7;
+  repeated ProductCategory product_categories = 8;
+  bool treasury_designated = 9;
+  string created_at = 10;
+}
+
+message GetOrganizationResponse {
+  OrganizationDetail organization = 1;
   OrganizationRole role = 2;
   VerificationOutcome outcome = 3;
 }

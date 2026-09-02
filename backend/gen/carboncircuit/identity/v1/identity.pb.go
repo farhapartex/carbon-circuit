@@ -860,13 +860,14 @@ func (x *CreateOrganizationRequest) GetProductCategories() []ProductCategory {
 }
 
 type VerificationOutcome struct {
-	state              protoimpl.MessageState `protogen:"open.v1"`
-	Status             VerificationStatus     `protobuf:"varint,1,opt,name=status,proto3,enum=carboncircuit.identity.v1.VerificationStatus" json:"status,omitempty"`
-	Rejection          RegistryRejection      `protobuf:"varint,2,opt,name=rejection,proto3,enum=carboncircuit.identity.v1.RegistryRejection" json:"rejection,omitempty"`
-	RegistryMatchFound bool                   `protobuf:"varint,3,opt,name=registry_match_found,json=registryMatchFound,proto3" json:"registry_match_found,omitempty"`
-	NameSimilarity     string                 `protobuf:"bytes,4,opt,name=name_similarity,json=nameSimilarity,proto3" json:"name_similarity,omitempty"`
-	unknownFields      protoimpl.UnknownFields
-	sizeCache          protoimpl.SizeCache
+	state               protoimpl.MessageState `protogen:"open.v1"`
+	Status              VerificationStatus     `protobuf:"varint,1,opt,name=status,proto3,enum=carboncircuit.identity.v1.VerificationStatus" json:"status,omitempty"`
+	Rejection           RegistryRejection      `protobuf:"varint,2,opt,name=rejection,proto3,enum=carboncircuit.identity.v1.RegistryRejection" json:"rejection,omitempty"`
+	RegistryMatchFound  bool                   `protobuf:"varint,3,opt,name=registry_match_found,json=registryMatchFound,proto3" json:"registry_match_found,omitempty"`
+	NameSimilarity      string                 `protobuf:"bytes,4,opt,name=name_similarity,json=nameSimilarity,proto3" json:"name_similarity,omitempty"`
+	RegisteredLegalName string                 `protobuf:"bytes,5,opt,name=registered_legal_name,json=registeredLegalName,proto3" json:"registered_legal_name,omitempty"`
+	unknownFields       protoimpl.UnknownFields
+	sizeCache           protoimpl.SizeCache
 }
 
 func (x *VerificationOutcome) Reset() {
@@ -923,6 +924,13 @@ func (x *VerificationOutcome) GetRegistryMatchFound() bool {
 func (x *VerificationOutcome) GetNameSimilarity() string {
 	if x != nil {
 		return x.NameSimilarity
+	}
+	return ""
+}
+
+func (x *VerificationOutcome) GetRegisteredLegalName() string {
+	if x != nil {
+		return x.RegisteredLegalName
 	}
 	return ""
 }
@@ -987,6 +995,218 @@ func (x *CreateOrganizationResponse) GetOutcome() *VerificationOutcome {
 	return nil
 }
 
+type GetOrganizationRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetOrganizationRequest) Reset() {
+	*x = GetOrganizationRequest{}
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[9]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetOrganizationRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetOrganizationRequest) ProtoMessage() {}
+
+func (x *GetOrganizationRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[9]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetOrganizationRequest.ProtoReflect.Descriptor instead.
+func (*GetOrganizationRequest) Descriptor() ([]byte, []int) {
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{9}
+}
+
+type OrganizationDetail struct {
+	state                      protoimpl.MessageState `protogen:"open.v1"`
+	Id                         string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Name                       string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	Type                       OrganizationType       `protobuf:"varint,3,opt,name=type,proto3,enum=carboncircuit.identity.v1.OrganizationType" json:"type,omitempty"`
+	State                      OrganizationState      `protobuf:"varint,4,opt,name=state,proto3,enum=carboncircuit.identity.v1.OrganizationState" json:"state,omitempty"`
+	VerificationStatus         VerificationStatus     `protobuf:"varint,5,opt,name=verification_status,json=verificationStatus,proto3,enum=carboncircuit.identity.v1.VerificationStatus" json:"verification_status,omitempty"`
+	CountryOfIncorporation     string                 `protobuf:"bytes,6,opt,name=country_of_incorporation,json=countryOfIncorporation,proto3" json:"country_of_incorporation,omitempty"`
+	BusinessRegistrationNumber string                 `protobuf:"bytes,7,opt,name=business_registration_number,json=businessRegistrationNumber,proto3" json:"business_registration_number,omitempty"`
+	ProductCategories          []ProductCategory      `protobuf:"varint,8,rep,packed,name=product_categories,json=productCategories,proto3,enum=carboncircuit.identity.v1.ProductCategory" json:"product_categories,omitempty"`
+	TreasuryDesignated         bool                   `protobuf:"varint,9,opt,name=treasury_designated,json=treasuryDesignated,proto3" json:"treasury_designated,omitempty"`
+	CreatedAt                  string                 `protobuf:"bytes,10,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	unknownFields              protoimpl.UnknownFields
+	sizeCache                  protoimpl.SizeCache
+}
+
+func (x *OrganizationDetail) Reset() {
+	*x = OrganizationDetail{}
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[10]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *OrganizationDetail) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*OrganizationDetail) ProtoMessage() {}
+
+func (x *OrganizationDetail) ProtoReflect() protoreflect.Message {
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[10]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use OrganizationDetail.ProtoReflect.Descriptor instead.
+func (*OrganizationDetail) Descriptor() ([]byte, []int) {
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{10}
+}
+
+func (x *OrganizationDetail) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *OrganizationDetail) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *OrganizationDetail) GetType() OrganizationType {
+	if x != nil {
+		return x.Type
+	}
+	return OrganizationType_ORGANIZATION_TYPE_UNSPECIFIED
+}
+
+func (x *OrganizationDetail) GetState() OrganizationState {
+	if x != nil {
+		return x.State
+	}
+	return OrganizationState_ORGANIZATION_STATE_UNSPECIFIED
+}
+
+func (x *OrganizationDetail) GetVerificationStatus() VerificationStatus {
+	if x != nil {
+		return x.VerificationStatus
+	}
+	return VerificationStatus_VERIFICATION_STATUS_UNSPECIFIED
+}
+
+func (x *OrganizationDetail) GetCountryOfIncorporation() string {
+	if x != nil {
+		return x.CountryOfIncorporation
+	}
+	return ""
+}
+
+func (x *OrganizationDetail) GetBusinessRegistrationNumber() string {
+	if x != nil {
+		return x.BusinessRegistrationNumber
+	}
+	return ""
+}
+
+func (x *OrganizationDetail) GetProductCategories() []ProductCategory {
+	if x != nil {
+		return x.ProductCategories
+	}
+	return nil
+}
+
+func (x *OrganizationDetail) GetTreasuryDesignated() bool {
+	if x != nil {
+		return x.TreasuryDesignated
+	}
+	return false
+}
+
+func (x *OrganizationDetail) GetCreatedAt() string {
+	if x != nil {
+		return x.CreatedAt
+	}
+	return ""
+}
+
+type GetOrganizationResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Organization  *OrganizationDetail    `protobuf:"bytes,1,opt,name=organization,proto3" json:"organization,omitempty"`
+	Role          OrganizationRole       `protobuf:"varint,2,opt,name=role,proto3,enum=carboncircuit.identity.v1.OrganizationRole" json:"role,omitempty"`
+	Outcome       *VerificationOutcome   `protobuf:"bytes,3,opt,name=outcome,proto3" json:"outcome,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetOrganizationResponse) Reset() {
+	*x = GetOrganizationResponse{}
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[11]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetOrganizationResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetOrganizationResponse) ProtoMessage() {}
+
+func (x *GetOrganizationResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[11]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetOrganizationResponse.ProtoReflect.Descriptor instead.
+func (*GetOrganizationResponse) Descriptor() ([]byte, []int) {
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{11}
+}
+
+func (x *GetOrganizationResponse) GetOrganization() *OrganizationDetail {
+	if x != nil {
+		return x.Organization
+	}
+	return nil
+}
+
+func (x *GetOrganizationResponse) GetRole() OrganizationRole {
+	if x != nil {
+		return x.Role
+	}
+	return OrganizationRole_ORGANIZATION_ROLE_UNSPECIFIED
+}
+
+func (x *GetOrganizationResponse) GetOutcome() *VerificationOutcome {
+	if x != nil {
+		return x.Outcome
+	}
+	return nil
+}
+
 var File_carboncircuit_identity_v1_identity_proto protoreflect.FileDescriptor
 
 const file_carboncircuit_identity_v1_identity_proto_rawDesc = "" +
@@ -1025,14 +1245,33 @@ const file_carboncircuit_identity_v1_identity_proto_rawDesc = "" +
 	"\x04type\x18\x03 \x01(\x0e2+.carboncircuit.identity.v1.OrganizationTypeR\x04type\x128\n" +
 	"\x18country_of_incorporation\x18\x04 \x01(\tR\x16countryOfIncorporation\x12@\n" +
 	"\x1cbusiness_registration_number\x18\x05 \x01(\tR\x1abusinessRegistrationNumber\x12Y\n" +
-	"\x12product_categories\x18\x06 \x03(\x0e2*.carboncircuit.identity.v1.ProductCategoryR\x11productCategoriesJ\x04\b\x01\x10\x02R\rauth0_subject\"\x83\x02\n" +
+	"\x12product_categories\x18\x06 \x03(\x0e2*.carboncircuit.identity.v1.ProductCategoryR\x11productCategoriesJ\x04\b\x01\x10\x02R\rauth0_subject\"\xb7\x02\n" +
 	"\x13VerificationOutcome\x12E\n" +
 	"\x06status\x18\x01 \x01(\x0e2-.carboncircuit.identity.v1.VerificationStatusR\x06status\x12J\n" +
 	"\trejection\x18\x02 \x01(\x0e2,.carboncircuit.identity.v1.RegistryRejectionR\trejection\x120\n" +
 	"\x14registry_match_found\x18\x03 \x01(\bR\x12registryMatchFound\x12'\n" +
-	"\x0fname_similarity\x18\x04 \x01(\tR\x0enameSimilarity\"\xfb\x01\n" +
+	"\x0fname_similarity\x18\x04 \x01(\tR\x0enameSimilarity\x122\n" +
+	"\x15registered_legal_name\x18\x05 \x01(\tR\x13registeredLegalName\"\xfb\x01\n" +
 	"\x1aCreateOrganizationResponse\x12R\n" +
 	"\forganization\x18\x01 \x01(\v2..carboncircuit.identity.v1.SessionOrganizationR\forganization\x12?\n" +
+	"\x04role\x18\x02 \x01(\x0e2+.carboncircuit.identity.v1.OrganizationRoleR\x04role\x12H\n" +
+	"\aoutcome\x18\x03 \x01(\v2..carboncircuit.identity.v1.VerificationOutcomeR\aoutcome\"\x18\n" +
+	"\x16GetOrganizationRequest\"\xc4\x04\n" +
+	"\x12OrganizationDetail\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
+	"\x04name\x18\x02 \x01(\tR\x04name\x12?\n" +
+	"\x04type\x18\x03 \x01(\x0e2+.carboncircuit.identity.v1.OrganizationTypeR\x04type\x12B\n" +
+	"\x05state\x18\x04 \x01(\x0e2,.carboncircuit.identity.v1.OrganizationStateR\x05state\x12^\n" +
+	"\x13verification_status\x18\x05 \x01(\x0e2-.carboncircuit.identity.v1.VerificationStatusR\x12verificationStatus\x128\n" +
+	"\x18country_of_incorporation\x18\x06 \x01(\tR\x16countryOfIncorporation\x12@\n" +
+	"\x1cbusiness_registration_number\x18\a \x01(\tR\x1abusinessRegistrationNumber\x12Y\n" +
+	"\x12product_categories\x18\b \x03(\x0e2*.carboncircuit.identity.v1.ProductCategoryR\x11productCategories\x12/\n" +
+	"\x13treasury_designated\x18\t \x01(\bR\x12treasuryDesignated\x12\x1d\n" +
+	"\n" +
+	"created_at\x18\n" +
+	" \x01(\tR\tcreatedAt\"\xf7\x01\n" +
+	"\x17GetOrganizationResponse\x12Q\n" +
+	"\forganization\x18\x01 \x01(\v2-.carboncircuit.identity.v1.OrganizationDetailR\forganization\x12?\n" +
 	"\x04role\x18\x02 \x01(\x0e2+.carboncircuit.identity.v1.OrganizationRoleR\x04role\x12H\n" +
 	"\aoutcome\x18\x03 \x01(\v2..carboncircuit.identity.v1.VerificationOutcomeR\aoutcome*\xbf\x01\n" +
 	"\x10OrganizationType\x12!\n" +
@@ -1071,11 +1310,12 @@ const file_carboncircuit_identity_v1_identity_proto_rawDesc = "" +
 	"\x1eREGISTRY_REJECTION_UNSPECIFIED\x10\x00\x12'\n" +
 	"#REGISTRY_REJECTION_ENTITY_DISSOLVED\x10\x01\x12%\n" +
 	"!REGISTRY_REJECTION_SANCTIONS_FLAG\x10\x02\x12$\n" +
-	" REGISTRY_REJECTION_NAME_MISMATCH\x10\x032\xe5\x02\n" +
+	" REGISTRY_REJECTION_NAME_MISMATCH\x10\x032\xdf\x03\n" +
 	"\x0fIdentityService\x12W\n" +
 	"\x04Ping\x12&.carboncircuit.identity.v1.PingRequest\x1a'.carboncircuit.identity.v1.PingResponse\x12u\n" +
 	"\x0eResolveSession\x120.carboncircuit.identity.v1.ResolveSessionRequest\x1a1.carboncircuit.identity.v1.ResolveSessionResponse\x12\x81\x01\n" +
-	"\x12CreateOrganization\x124.carboncircuit.identity.v1.CreateOrganizationRequest\x1a5.carboncircuit.identity.v1.CreateOrganizationResponseB\xff\x01\n" +
+	"\x12CreateOrganization\x124.carboncircuit.identity.v1.CreateOrganizationRequest\x1a5.carboncircuit.identity.v1.CreateOrganizationResponse\x12x\n" +
+	"\x0fGetOrganization\x121.carboncircuit.identity.v1.GetOrganizationRequest\x1a2.carboncircuit.identity.v1.GetOrganizationResponseB\xff\x01\n" +
 	"\x1dcom.carboncircuit.identity.v1B\rIdentityProtoP\x01ZIgithub.com/carboncircuit/backend/gen/carboncircuit/identity/v1;identityv1\xa2\x02\x03CIX\xaa\x02\x19Carboncircuit.Identity.V1\xca\x02\x19Carboncircuit\\Identity\\V1\xe2\x02%Carboncircuit\\Identity\\V1\\GPBMetadata\xea\x02\x1bCarboncircuit::Identity::V1b\x06proto3"
 
 var (
@@ -1091,7 +1331,7 @@ func file_carboncircuit_identity_v1_identity_proto_rawDescGZIP() []byte {
 }
 
 var file_carboncircuit_identity_v1_identity_proto_enumTypes = make([]protoimpl.EnumInfo, 7)
-var file_carboncircuit_identity_v1_identity_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
+var file_carboncircuit_identity_v1_identity_proto_msgTypes = make([]protoimpl.MessageInfo, 12)
 var file_carboncircuit_identity_v1_identity_proto_goTypes = []any{
 	(OrganizationType)(0),              // 0: carboncircuit.identity.v1.OrganizationType
 	(OrganizationRole)(0),              // 1: carboncircuit.identity.v1.OrganizationRole
@@ -1109,6 +1349,9 @@ var file_carboncircuit_identity_v1_identity_proto_goTypes = []any{
 	(*CreateOrganizationRequest)(nil),  // 13: carboncircuit.identity.v1.CreateOrganizationRequest
 	(*VerificationOutcome)(nil),        // 14: carboncircuit.identity.v1.VerificationOutcome
 	(*CreateOrganizationResponse)(nil), // 15: carboncircuit.identity.v1.CreateOrganizationResponse
+	(*GetOrganizationRequest)(nil),     // 16: carboncircuit.identity.v1.GetOrganizationRequest
+	(*OrganizationDetail)(nil),         // 17: carboncircuit.identity.v1.OrganizationDetail
+	(*GetOrganizationResponse)(nil),    // 18: carboncircuit.identity.v1.GetOrganizationResponse
 }
 var file_carboncircuit_identity_v1_identity_proto_depIdxs = []int32{
 	4,  // 0: carboncircuit.identity.v1.SessionUser.platform_role:type_name -> carboncircuit.identity.v1.PlatformRole
@@ -1125,17 +1368,26 @@ var file_carboncircuit_identity_v1_identity_proto_depIdxs = []int32{
 	11, // 11: carboncircuit.identity.v1.CreateOrganizationResponse.organization:type_name -> carboncircuit.identity.v1.SessionOrganization
 	1,  // 12: carboncircuit.identity.v1.CreateOrganizationResponse.role:type_name -> carboncircuit.identity.v1.OrganizationRole
 	14, // 13: carboncircuit.identity.v1.CreateOrganizationResponse.outcome:type_name -> carboncircuit.identity.v1.VerificationOutcome
-	7,  // 14: carboncircuit.identity.v1.IdentityService.Ping:input_type -> carboncircuit.identity.v1.PingRequest
-	9,  // 15: carboncircuit.identity.v1.IdentityService.ResolveSession:input_type -> carboncircuit.identity.v1.ResolveSessionRequest
-	13, // 16: carboncircuit.identity.v1.IdentityService.CreateOrganization:input_type -> carboncircuit.identity.v1.CreateOrganizationRequest
-	8,  // 17: carboncircuit.identity.v1.IdentityService.Ping:output_type -> carboncircuit.identity.v1.PingResponse
-	12, // 18: carboncircuit.identity.v1.IdentityService.ResolveSession:output_type -> carboncircuit.identity.v1.ResolveSessionResponse
-	15, // 19: carboncircuit.identity.v1.IdentityService.CreateOrganization:output_type -> carboncircuit.identity.v1.CreateOrganizationResponse
-	17, // [17:20] is the sub-list for method output_type
-	14, // [14:17] is the sub-list for method input_type
-	14, // [14:14] is the sub-list for extension type_name
-	14, // [14:14] is the sub-list for extension extendee
-	0,  // [0:14] is the sub-list for field type_name
+	0,  // 14: carboncircuit.identity.v1.OrganizationDetail.type:type_name -> carboncircuit.identity.v1.OrganizationType
+	2,  // 15: carboncircuit.identity.v1.OrganizationDetail.state:type_name -> carboncircuit.identity.v1.OrganizationState
+	3,  // 16: carboncircuit.identity.v1.OrganizationDetail.verification_status:type_name -> carboncircuit.identity.v1.VerificationStatus
+	5,  // 17: carboncircuit.identity.v1.OrganizationDetail.product_categories:type_name -> carboncircuit.identity.v1.ProductCategory
+	17, // 18: carboncircuit.identity.v1.GetOrganizationResponse.organization:type_name -> carboncircuit.identity.v1.OrganizationDetail
+	1,  // 19: carboncircuit.identity.v1.GetOrganizationResponse.role:type_name -> carboncircuit.identity.v1.OrganizationRole
+	14, // 20: carboncircuit.identity.v1.GetOrganizationResponse.outcome:type_name -> carboncircuit.identity.v1.VerificationOutcome
+	7,  // 21: carboncircuit.identity.v1.IdentityService.Ping:input_type -> carboncircuit.identity.v1.PingRequest
+	9,  // 22: carboncircuit.identity.v1.IdentityService.ResolveSession:input_type -> carboncircuit.identity.v1.ResolveSessionRequest
+	13, // 23: carboncircuit.identity.v1.IdentityService.CreateOrganization:input_type -> carboncircuit.identity.v1.CreateOrganizationRequest
+	16, // 24: carboncircuit.identity.v1.IdentityService.GetOrganization:input_type -> carboncircuit.identity.v1.GetOrganizationRequest
+	8,  // 25: carboncircuit.identity.v1.IdentityService.Ping:output_type -> carboncircuit.identity.v1.PingResponse
+	12, // 26: carboncircuit.identity.v1.IdentityService.ResolveSession:output_type -> carboncircuit.identity.v1.ResolveSessionResponse
+	15, // 27: carboncircuit.identity.v1.IdentityService.CreateOrganization:output_type -> carboncircuit.identity.v1.CreateOrganizationResponse
+	18, // 28: carboncircuit.identity.v1.IdentityService.GetOrganization:output_type -> carboncircuit.identity.v1.GetOrganizationResponse
+	25, // [25:29] is the sub-list for method output_type
+	21, // [21:25] is the sub-list for method input_type
+	21, // [21:21] is the sub-list for extension type_name
+	21, // [21:21] is the sub-list for extension extendee
+	0,  // [0:21] is the sub-list for field type_name
 }
 
 func init() { file_carboncircuit_identity_v1_identity_proto_init() }
@@ -1149,7 +1401,7 @@ func file_carboncircuit_identity_v1_identity_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_carboncircuit_identity_v1_identity_proto_rawDesc), len(file_carboncircuit_identity_v1_identity_proto_rawDesc)),
 			NumEnums:      7,
-			NumMessages:   9,
+			NumMessages:   12,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

@@ -75,6 +75,19 @@ func run() error {
 	}
 	defer closeUpstream(logger, "provenance", provenance.Close)
 
+	provenanceReadCreds, err := upstreamCredentials(settings, "provenance-read-service", logger)
+	if err != nil {
+		return err
+	}
+
+	provenanceRead, err := upstream.DialProvenanceRead(
+		settings.ProvenanceReadAddress, settings.UpstreamCallTimeout, provenanceReadCreds,
+	)
+	if err != nil {
+		return err
+	}
+	defer closeUpstream(logger, "provenance-read", provenanceRead.Close)
+
 	cacheClient := cache.New(settings.RedisAddress, settings.RedisPassword, settings.RedisDatabase, logger)
 	defer closeUpstream(logger, "redis", cacheClient.Close)
 
@@ -115,17 +128,18 @@ func run() error {
 	)
 
 	router := handler.NewRouter(handler.RouterOptions{
-		Identity:    identity,
-		Billing:     billing,
-		Provenance:  provenance,
-		Limiter:     limiter,
-		Verifier:    verifier,
-		Denylist:    denylist,
-		Resolver:    resolver,
-		Signer:      signer,
-		Logger:      logger,
-		Environment: settings.Environment,
-		Revision:    revision,
+		Identity:       identity,
+		Billing:        billing,
+		Provenance:     provenance,
+		ProvenanceRead: provenanceRead,
+		Limiter:        limiter,
+		Verifier:       verifier,
+		Denylist:       denylist,
+		Resolver:       resolver,
+		Signer:         signer,
+		Logger:         logger,
+		Environment:    settings.Environment,
+		Revision:       revision,
 	})
 
 	return httpx.Serve(ctx, httpx.ServerOptions{
@@ -146,6 +160,17 @@ func publicRules(settings config.Config) []ratelimit.Rule {
 			Burst:     settings.PublicReadBurst,
 			KeyFunc:   func(request ratelimit.Request) string { return "public:ip:" + request.ClientIP },
 			AppliesTo: func(request ratelimit.Request) bool { return request.CallerClass == "public" },
+		},
+		{
+			Name:      "public_batch_reference",
+			PerMinute: settings.PublicReferencePerMinute,
+			Burst:     settings.PublicReferenceBurst,
+			KeyFunc: func(request ratelimit.Request) string {
+				return "public:reference:" + request.ResourceKey
+			},
+			AppliesTo: func(request ratelimit.Request) bool {
+				return request.ResourceKey != ""
+			},
 		},
 		{
 			Name:      "portal_user",

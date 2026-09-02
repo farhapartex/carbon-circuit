@@ -14,26 +14,28 @@ import (
 )
 
 type Handlers struct {
-	Identity   *upstream.Identity
-	Billing    *upstream.Billing
-	Provenance *upstream.Provenance
-	Resolver   *caller.Resolver
-	Logger     *slog.Logger
-	Revision   string
+	Identity       *upstream.Identity
+	Billing        *upstream.Billing
+	Provenance     *upstream.Provenance
+	ProvenanceRead *upstream.ProvenanceRead
+	Resolver       *caller.Resolver
+	Logger         *slog.Logger
+	Revision       string
 }
 
 type RouterOptions struct {
-	Identity    *upstream.Identity
-	Billing     *upstream.Billing
-	Provenance  *upstream.Provenance
-	Limiter     *ratelimit.Limiter
-	Verifier    httpx.TokenVerifier
-	Denylist    httpx.RevocationChecker
-	Resolver    *caller.Resolver
-	Signer      *servicetoken.Signer
-	Logger      *slog.Logger
-	Environment string
-	Revision    string
+	Identity       *upstream.Identity
+	Billing        *upstream.Billing
+	Provenance     *upstream.Provenance
+	ProvenanceRead *upstream.ProvenanceRead
+	Limiter        *ratelimit.Limiter
+	Verifier       httpx.TokenVerifier
+	Denylist       httpx.RevocationChecker
+	Resolver       *caller.Resolver
+	Signer         *servicetoken.Signer
+	Logger         *slog.Logger
+	Environment    string
+	Revision       string
 }
 
 func errorAttributes(c *gin.Context, err error) []any {
@@ -50,12 +52,13 @@ func NewRouter(options RouterOptions) *gin.Engine {
 	}
 
 	handlers := &Handlers{
-		Identity:   options.Identity,
-		Resolver:   options.Resolver,
-		Billing:    options.Billing,
-		Provenance: options.Provenance,
-		Logger:     options.Logger,
-		Revision:   options.Revision,
+		Identity:       options.Identity,
+		Resolver:       options.Resolver,
+		Billing:        options.Billing,
+		Provenance:     options.Provenance,
+		ProvenanceRead: options.ProvenanceRead,
+		Logger:         options.Logger,
+		Revision:       options.Revision,
 	}
 
 	router := gin.New()
@@ -92,10 +95,12 @@ func NewRouter(options RouterOptions) *gin.Engine {
 	public := router.Group("/v1")
 	public.Use(
 		httpx.EndpointClass("public_read"),
+		httpx.ResourceKey(func(c *gin.Context) string { return c.Param("publicRef") }),
 		httpx.RateLimit(options.Limiter, options.Logger),
 	)
 
 	public.GET("/plans", handlers.ListPlans)
+	public.GET("/track/:publicRef", handlers.TrackBatch)
 	public.GET("/identity/ping", handlers.IdentityPing)
 
 	authenticated := router.Group("/v1")

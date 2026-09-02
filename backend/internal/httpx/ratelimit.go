@@ -11,11 +11,23 @@ import (
 	"github.com/carboncircuit/backend/internal/ratelimit"
 )
 
-const EndpointClassKey = "endpoint_class"
+const (
+	EndpointClassKey = "endpoint_class"
+	ResourceKeyKey   = "resource_key"
+)
 
 func EndpointClass(class string) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		c.Set(EndpointClassKey, class)
+		c.Next()
+	}
+}
+
+func ResourceKey(extract func(*gin.Context) string) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		if key := extract(c); key != "" {
+			c.Set(ResourceKeyKey, key)
+		}
 		c.Next()
 	}
 }
@@ -25,11 +37,15 @@ func RateLimit(limiter *ratelimit.Limiter, logger *slog.Logger) gin.HandlerFunc 
 		endpointClass, _ := c.Get(EndpointClassKey)
 		class, _ := endpointClass.(string)
 
+		resource, _ := c.Get(ResourceKeyKey)
+		resourceKey, _ := resource.(string)
+
 		request := ratelimit.Request{
 			CallerClass:   "public",
 			CallerKey:     c.ClientIP(),
 			EndpointClass: class,
 			ClientIP:      c.ClientIP(),
+			ResourceKey:   resourceKey,
 		}
 
 		if caller, verified := auth.CallerFrom(c.Request.Context()); verified {

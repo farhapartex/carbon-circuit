@@ -24,6 +24,7 @@ type Request struct {
 	EndpointClass  string
 	ClientIP       string
 	OrganizationID string
+	ResourceKey    string
 }
 
 type Decision struct {

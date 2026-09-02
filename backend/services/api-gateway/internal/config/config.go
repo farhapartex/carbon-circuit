@@ -17,18 +17,21 @@ type Config struct {
 	WriteTimeout    time.Duration
 	ShutdownTimeout time.Duration
 
-	IdentityAddress     string
-	BillingAddress      string
-	ProvenanceAddress   string
-	RedisAddress        string
-	RedisPassword       string
-	RedisDatabase       int
-	PublicReadPerMinute int
-	PublicReadBurst     int
-	PortalUserPerMinute int
-	PortalUserBurst     int
-	UpstreamDialTimeout time.Duration
-	UpstreamCallTimeout time.Duration
+	IdentityAddress          string
+	BillingAddress           string
+	ProvenanceAddress        string
+	ProvenanceReadAddress    string
+	RedisAddress             string
+	RedisPassword            string
+	RedisDatabase            int
+	PublicReadPerMinute      int
+	PublicReadBurst          int
+	PublicReferencePerMinute int
+	PublicReferenceBurst     int
+	PortalUserPerMinute      int
+	PortalUserBurst          int
+	UpstreamDialTimeout      time.Duration
+	UpstreamCallTimeout      time.Duration
 
 	Auth0Domain      string
 	Auth0Audience    string
@@ -51,18 +54,21 @@ func Load() (Config, error) {
 		WriteTimeout:    loader.Duration("WRITE_TIMEOUT", 15*time.Second),
 		ShutdownTimeout: loader.Duration("SHUTDOWN_TIMEOUT", 20*time.Second),
 
-		IdentityAddress:     loader.String("IDENTITY_SERVICE_ADDRESS"),
-		BillingAddress:      loader.String("BILLING_SERVICE_ADDRESS"),
-		ProvenanceAddress:   loader.StringDefault("PROVENANCE_SERVICE_ADDRESS", "provenance-service:9093"),
-		RedisAddress:        loader.StringDefault("REDIS_ADDRESS", "redis:6379"),
-		RedisPassword:       loader.StringDefault("REDIS_PASSWORD", ""),
-		RedisDatabase:       loader.Int("REDIS_DATABASE", 0),
-		PublicReadPerMinute: loader.Int("PUBLIC_READ_PER_MINUTE", 60),
-		PublicReadBurst:     loader.Int("PUBLIC_READ_BURST", 20),
-		PortalUserPerMinute: loader.Int("PORTAL_USER_PER_MINUTE", 300),
-		PortalUserBurst:     loader.Int("PORTAL_USER_BURST", 60),
-		UpstreamDialTimeout: loader.Duration("UPSTREAM_DIAL_TIMEOUT", 5*time.Second),
-		UpstreamCallTimeout: loader.Duration("UPSTREAM_CALL_TIMEOUT", 2*time.Second),
+		IdentityAddress:          loader.String("IDENTITY_SERVICE_ADDRESS"),
+		BillingAddress:           loader.String("BILLING_SERVICE_ADDRESS"),
+		ProvenanceAddress:        loader.StringDefault("PROVENANCE_SERVICE_ADDRESS", "provenance-service:9093"),
+		ProvenanceReadAddress:    loader.StringDefault("PROVENANCE_READ_SERVICE_ADDRESS", "provenance-read-service:9094"),
+		RedisAddress:             loader.StringDefault("REDIS_ADDRESS", "redis:6379"),
+		RedisPassword:            loader.StringDefault("REDIS_PASSWORD", ""),
+		RedisDatabase:            loader.Int("REDIS_DATABASE", 0),
+		PublicReadPerMinute:      loader.Int("PUBLIC_READ_PER_MINUTE", 60),
+		PublicReadBurst:          loader.Int("PUBLIC_READ_BURST", 20),
+		PublicReferencePerMinute: loader.Int("PUBLIC_REFERENCE_PER_MINUTE", 600),
+		PublicReferenceBurst:     loader.Int("PUBLIC_REFERENCE_BURST", 120),
+		PortalUserPerMinute:      loader.Int("PORTAL_USER_PER_MINUTE", 300),
+		PortalUserBurst:          loader.Int("PORTAL_USER_BURST", 60),
+		UpstreamDialTimeout:      loader.Duration("UPSTREAM_DIAL_TIMEOUT", 5*time.Second),
+		UpstreamCallTimeout:      loader.Duration("UPSTREAM_CALL_TIMEOUT", 2*time.Second),
 
 		Auth0Domain:      loader.String("AUTH0_DOMAIN"),
 		Auth0Audience:    loader.String("AUTH0_AUDIENCE"),

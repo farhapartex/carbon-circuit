@@ -144,23 +144,33 @@ func (r *BatchRepository) ResolveReference(
 		return uuid.Nil, false, err
 	}
 
-	var resolved *string
+	if err := tx.Session().Exec(
+		"SELECT set_config('app.resolving_reference', ?, true)", declared,
+	).Error; err != nil {
+		return uuid.Nil, false, fmt.Errorf("scope reference resolution: %w", err)
+	}
+
+	var found []domain.Batch
 	err := tx.Session().
-		Raw("SELECT provenance.resolve_public_reference(?)", declared).
-		Scan(&resolved).Error
+		Select("id").
+		Where("public_reference = ? AND deleted_at IS NULL", declared).
+		Limit(1).
+		Find(&found).Error
+
+	if clearErr := tx.Session().Exec(
+		"SELECT set_config('app.resolving_reference', '', true)",
+	).Error; clearErr != nil {
+		return uuid.Nil, false, fmt.Errorf("clear reference resolution: %w", clearErr)
+	}
+
 	if err != nil {
 		return uuid.Nil, false, fmt.Errorf("resolve public reference: %w", err)
 	}
-	if resolved == nil {
+	if len(found) == 0 {
 		return uuid.Nil, false, nil
 	}
 
-	parsed, err := uuid.Parse(*resolved)
-	if err != nil {
-		return uuid.Nil, false, fmt.Errorf("parse resolved reference: %w", err)
-	}
-
-	return parsed, true, nil
+	return found[0].ID, true, nil
 }
 
 func (r *BatchRepository) ListParents(

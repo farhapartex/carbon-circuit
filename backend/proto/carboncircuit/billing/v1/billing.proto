@@ -7,6 +7,7 @@ option go_package = "github.com/carboncircuit/backend/gen/carboncircuit/billing/
 service BillingService {
   rpc ListPlans(ListPlansRequest) returns (ListPlansResponse);
   rpc GetSubscription(GetSubscriptionRequest) returns (GetSubscriptionResponse);
+  rpc CreateSubscription(CreateSubscriptionRequest) returns (CreateSubscriptionResponse);
 }
 
 enum PlanTier {
@@ -88,5 +89,15 @@ message GetSubscriptionRequest {
 }
 
 message GetSubscriptionResponse {
+  Subscription subscription = 1;
+}
+
+message CreateSubscriptionRequest {
+  string organization_id = 1;
+  OrganizationType organization_type = 2;
+  PlanTier plan_tier = 3;
+}
+
+message CreateSubscriptionResponse {
   Subscription subscription = 1;
 }

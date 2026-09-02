@@ -22,6 +22,8 @@ import (
 	"github.com/carboncircuit/backend/services/provenance-service/internal/score"
 )
 
+var emptyScoreComponents = database.JSONDocument("[]")
+
 const (
 	createBatchEndpoint = "POST /v1/batches"
 	batchAggregate      = "batch"
@@ -270,6 +272,7 @@ func (s *BatchService) persist(
 		Unit:                    strings.TrimSpace(declaration.Unit),
 		ProducedAt:              declaration.ProducedAt,
 		ExternalID:              optional(declaration.ExternalID),
+		ScoreComponents:         emptyScoreComponents,
 	}
 	batch.ID = batchID
 

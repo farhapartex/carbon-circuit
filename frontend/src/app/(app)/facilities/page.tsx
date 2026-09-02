@@ -3,12 +3,14 @@ import Link from "next/link";
 import { FacilityTable } from "@/components/features/facilities/FacilityTable";
 import { PageHeader } from "@/components/shared/PageHeader";
 import { Button } from "@/components/ui/button";
-import { listFacilities } from "@/lib/fixtures";
+import { fetchFacilities } from "@/lib/api/facilities";
+import { auth0 } from "@/lib/auth0";
 
 export const metadata: Metadata = { title: "Facilities" };
 
 export default async function FacilitiesPage() {
-  const facilities = await listFacilities();
+  const { token } = await auth0.getAccessToken();
+  const facilities = await fetchFacilities(token);
 
   return (
     <>
@@ -22,7 +24,7 @@ export default async function FacilitiesPage() {
         }
       />
 
-      <FacilityTable facilities={facilities.items} />
+      <FacilityTable facilities={facilities} />
     </>
   );
 }

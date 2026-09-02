@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { discountFactorRationale } from "@/lib/labels";
-import type { Facility } from "@/lib/types";
+import type { FacilityRecord } from "@/lib/api/facilities";
 
 const decimalFormat = new Intl.NumberFormat("en-US", {
   maximumFractionDigits: 0,
@@ -31,7 +31,7 @@ function Figure({ label, declared, attested }: FigureProps) {
   );
 }
 
-export function CapacityCard({ facility }: { facility: Facility }) {
+export function CapacityCard({ facility }: { facility: FacilityRecord }) {
   return (
     <Card>
       <CardHeader>

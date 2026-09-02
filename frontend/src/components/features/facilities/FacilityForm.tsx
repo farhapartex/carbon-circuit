@@ -24,6 +24,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { submitFacility } from "@/lib/actions/facilities";
 import { allCountryOptions } from "@/lib/countries";
 import { facilityTypeLabels, gridRegionLabels } from "@/lib/labels";
 import type { FacilityType, GridRegion } from "@/lib/types";
@@ -60,10 +61,24 @@ const facilitySchema = z.object({
 
 type FacilityValues = z.infer<typeof facilitySchema>;
 
+const failureMessage = (code: string) => {
+  if (code === "FORBIDDEN") {
+    return "Only an owner or admin can add a facility.";
+  }
+  if (code === "VALIDATION_ERROR") {
+    return "Check the figures and the grid region, then try again.";
+  }
+  if (code === "CONFLICT") {
+    return "That request was already submitted. Reload the facilities list.";
+  }
+  return "We could not add this facility. Please try again.";
+};
+
 export function FacilityForm() {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
   const [failure, setFailure] = useState<string | null>(null);
+  const [idempotencyKey] = useState(() => crypto.randomUUID());
 
   const form = useForm<FacilityValues>({
     resolver: zodResolver(facilitySchema),
@@ -79,13 +94,31 @@ export function FacilityForm() {
     },
   });
 
-  const submit = () => {
+  const submit = (values: FacilityValues) => {
     setFailure(null);
-    startTransition(() => {
-      setFailure(
-        "Facilities cannot be created yet — the facility API is not built.",
+    startTransition(async () => {
+      const result = await submitFacility(
+        {
+          name: values.name,
+          address: values.address,
+          countryCode: values.countryCode,
+          gridRegion: values.gridRegion,
+          type: values.type,
+          facilityReference: values.facilityReference ?? "",
+          declaredAnnualProductionCapacity:
+            values.declaredAnnualProductionCapacity,
+          declaredAnnualEnergyConsumptionKwh:
+            values.declaredAnnualEnergyConsumptionKwh,
+        },
+        idempotencyKey,
       );
-      router.refresh();
+
+      if (!result.ok) {
+        setFailure(failureMessage(result.code));
+        return;
+      }
+
+      router.push(`/facilities/${result.facility.id}`);
     });
   };
 
@@ -95,9 +128,9 @@ export function FacilityForm() {
         {failure ? (
           <div
             role="alert"
-            className="rounded-md border border-warning-600 bg-warning-50 px-4 py-3"
+            className="rounded-md border border-danger-600 bg-danger-50 px-4 py-3"
           >
-            <p className="text-helper text-warning-700">{failure}</p>
+            <p className="text-helper text-danger-700">{failure}</p>
           </div>
         ) : null}
 

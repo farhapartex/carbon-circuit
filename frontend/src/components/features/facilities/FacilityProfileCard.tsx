@@ -2,9 +2,13 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { TimestampDisplay } from "@/components/shared/TimestampDisplay";
 import { countryName } from "@/lib/countries";
 import { facilityTypeLabels } from "@/lib/labels";
-import type { Facility } from "@/lib/types";
+import type { FacilityRecord } from "@/lib/api/facilities";
 
-export function FacilityProfileCard({ facility }: { facility: Facility }) {
+export function FacilityProfileCard({
+  facility,
+}: {
+  facility: FacilityRecord;
+}) {
   return (
     <Card>
       <CardHeader>

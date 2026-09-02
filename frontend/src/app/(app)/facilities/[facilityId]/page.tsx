@@ -6,37 +6,44 @@ import {
   FacilityVerificationBadge,
   TrustTierBadge,
 } from "@/components/shared/StatusBadges";
+import { fetchFacility } from "@/lib/api/facilities";
+import { GatewayError } from "@/lib/api/gateway";
+import { auth0 } from "@/lib/auth0";
 import { countryName } from "@/lib/countries";
-import {
-  getCreditPortfolio,
-  getFacility,
-  listBatches,
-  listClaims,
-} from "@/lib/fixtures";
-import { facilityTypeLabels } from "@/lib/labels";
+import { facilityTypeLabels, gridRegionLabels } from "@/lib/labels";
+import type { FacilityRecord } from "@/lib/api/facilities";
 
 export const metadata: Metadata = { title: "Facility" };
+
+const loadFacility = async (
+  token: string,
+  facilityId: string,
+): Promise<FacilityRecord | null> => {
+  try {
+    return await fetchFacility(token, facilityId);
+  } catch (error) {
+    if (error instanceof GatewayError && error.status === 404) {
+      return null;
+    }
+    throw error;
+  }
+};
 
 export default async function FacilityDetailPage({
   params,
 }: PageProps<"/facilities/[facilityId]">) {
   const { facilityId } = await params;
-  const facility = await getFacility(facilityId);
+  const { token } = await auth0.getAccessToken();
+  const facility = await loadFacility(token, facilityId);
 
   if (!facility) notFound();
-
-  const [batches, claims, portfolio] = await Promise.all([
-    listBatches(),
-    listClaims(),
-    getCreditPortfolio(),
-  ]);
 
   return (
     <>
       <PageHeader
         backTo={{ href: "/facilities", label: "Facilities" }}
         title={facility.name}
-        description={`${facilityTypeLabels[facility.type]} in ${countryName(facility.countryCode)}, on the ${facility.gridRegion} grid.`}
+        description={`${facilityTypeLabels[facility.type]} in ${countryName(facility.countryCode)}, on the ${gridRegionLabels[facility.gridRegion]} grid.`}
         meta={
           <>
             <FacilityVerificationBadge status={facility.verificationStatus} />
@@ -45,18 +52,7 @@ export default async function FacilityDetailPage({
         }
       />
 
-      <FacilityTabs
-        facility={facility}
-        batches={batches.items.filter(
-          (batch) => batch.originatingFacilityId === facility.id,
-        )}
-        claims={claims.items.filter(
-          (claim) => claim.facilityId === facility.id,
-        )}
-        balances={portfolio.balances.filter(
-          (balance) => balance.creditClass.facilityId === facility.id,
-        )}
-      />
+      <FacilityTabs facility={facility} />
     </>
   );
 }

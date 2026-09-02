@@ -11,11 +11,9 @@ import {
 import { Button } from "@/components/ui/button";
 import { countryName } from "@/lib/countries";
 import { facilityTypeLabels } from "@/lib/labels";
-import type { Facility } from "@/lib/types";
+import type { FacilityRecord } from "@/lib/api/facilities";
 
-const numberFormat = new Intl.NumberFormat("en-US");
-
-const columns: DataTableColumn<Facility>[] = [
+const columns: DataTableColumn<FacilityRecord>[] = [
   {
     key: "name",
     header: "Facility",
@@ -58,18 +56,21 @@ const columns: DataTableColumn<Facility>[] = [
     render: (facility) => <TrustTierBadge tier={facility.trustTier} />,
   },
   {
-    key: "batches",
-    header: "Batches",
-    alignEnd: true,
-    render: (facility) => (
-      <span className="tabular-nums">
-        {numberFormat.format(facility.batchCount)}
-      </span>
-    ),
+    key: "reference",
+    header: "Registry reference",
+    hideOnCard: true,
+    render: (facility) =>
+      facility.facilityReference ?? (
+        <span className="text-neutral-600">None</span>
+      ),
   },
 ];
 
-export function FacilityTable({ facilities }: { facilities: Facility[] }) {
+export function FacilityTable({
+  facilities,
+}: {
+  facilities: FacilityRecord[];
+}) {
   return (
     <DataTable
       columns={columns}

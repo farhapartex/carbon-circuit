@@ -124,24 +124,30 @@ export function CheckpointForm({
   const submit = (values: CheckpointValues) => {
     setFailure(null);
     startTransition(async () => {
-      const result = await submitCheckpoint(
-        batchId,
-        {
-          type: values.type,
-          locationLabel: values.locationLabel,
-          countryCode: values.countryCode,
-          shippingMethod: values.shippingMethod ?? "",
-          occurredAt: new Date(values.occurredAt).toISOString(),
-        },
-        idempotencyKey,
-      );
+      try {
+        const result = await submitCheckpoint(
+          batchId,
+          {
+            type: values.type,
+            locationLabel: values.locationLabel,
+            countryCode: values.countryCode,
+            shippingMethod: values.shippingMethod ?? "",
+            occurredAt: new Date(values.occurredAt).toISOString(),
+          },
+          idempotencyKey,
+        );
 
-      if (!result.ok) {
-        setFailure(failureMessage(result.code));
-        return;
+        if (!result.ok) {
+          setFailure(failureMessage(result.code));
+          return;
+        }
+
+        router.push(`/batches/${batchId}`);
+      } catch (error) {
+        setFailure(
+          `The request could not be sent: ${error instanceof Error ? error.message : "unknown error"}`,
+        );
       }
-
-      router.push(`/batches/${batchId}`);
     });
   };
 

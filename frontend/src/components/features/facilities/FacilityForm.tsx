@@ -97,28 +97,34 @@ export function FacilityForm() {
   const submit = (values: FacilityValues) => {
     setFailure(null);
     startTransition(async () => {
-      const result = await submitFacility(
-        {
-          name: values.name,
-          address: values.address,
-          countryCode: values.countryCode,
-          gridRegion: values.gridRegion,
-          type: values.type,
-          facilityReference: values.facilityReference ?? "",
-          declaredAnnualProductionCapacity:
-            values.declaredAnnualProductionCapacity,
-          declaredAnnualEnergyConsumptionKwh:
-            values.declaredAnnualEnergyConsumptionKwh,
-        },
-        idempotencyKey,
-      );
+      try {
+        const result = await submitFacility(
+          {
+            name: values.name,
+            address: values.address,
+            countryCode: values.countryCode,
+            gridRegion: values.gridRegion,
+            type: values.type,
+            facilityReference: values.facilityReference ?? "",
+            declaredAnnualProductionCapacity:
+              values.declaredAnnualProductionCapacity,
+            declaredAnnualEnergyConsumptionKwh:
+              values.declaredAnnualEnergyConsumptionKwh,
+          },
+          idempotencyKey,
+        );
 
-      if (!result.ok) {
-        setFailure(failureMessage(result.code));
-        return;
+        if (!result.ok) {
+          setFailure(failureMessage(result.code));
+          return;
+        }
+
+        router.push(`/facilities/${result.facility.id}`);
+      } catch (error) {
+        setFailure(
+          `The request could not be sent: ${error instanceof Error ? error.message : "unknown error"}`,
+        );
       }
-
-      router.push(`/facilities/${result.facility.id}`);
     });
   };
 

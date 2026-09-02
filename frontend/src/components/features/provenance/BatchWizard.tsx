@@ -3,7 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
-import { useForm, useWatch } from "react-hook-form";
+import { useForm, useWatch, type FieldErrors } from "react-hook-form";
 import { BatchDetailsFormStep } from "@/components/features/provenance/BatchDetailsFormStep";
 import { FormNavigationFooter } from "@/components/features/provenance/FormNavigationFooter";
 import { ProductCategorySelector } from "@/components/features/provenance/ProductCategorySelector";
@@ -125,37 +125,67 @@ export function BatchWizard({
   const submit = (values: BatchDraftValues) => {
     setFailure(null);
     startTransition(async () => {
-      const result = await submitBatch(
-        {
-          originatingFacilityId: values.originatingFacilityId,
-          productCategory: values.productCategory,
-          componentType: values.componentType,
-          lotNumber: values.lotNumber ?? "",
-          quantity: values.quantity,
-          unit: values.unit,
-          producedAt: new Date(`${values.producedAt}T00:00:00Z`).toISOString(),
-          externalId: values.externalId ?? "",
-          parentReferences: values.parentReferences
-            .map((parent) => parent.value)
-            .filter((value) => value.length > 0),
-        },
-        idempotencyKey,
-      );
+      try {
+        const result = await submitBatch(
+          {
+            originatingFacilityId: values.originatingFacilityId,
+            productCategory: values.productCategory,
+            componentType: values.componentType,
+            lotNumber: values.lotNumber ?? "",
+            quantity: values.quantity,
+            unit: values.unit,
+            producedAt: new Date(
+              `${values.producedAt}T00:00:00Z`,
+            ).toISOString(),
+            externalId: values.externalId ?? "",
+            parentReferences: values.parentReferences
+              .map((parent) => parent.value)
+              .filter((value) => value.length > 0),
+          },
+          idempotencyKey,
+        );
 
-      if (!result.ok) {
-        setFailure(failureMessage(result.code));
-        return;
+        if (!result.ok) {
+          setFailure(failureMessage(result.code));
+          return;
+        }
+
+        clearDraft("batch");
+        router.push(`/batches/${result.detail.batch.id}`);
+      } catch (error) {
+        setFailure(
+          `The request could not be sent: ${error instanceof Error ? error.message : "unknown error"}`,
+        );
       }
-
-      clearDraft("batch");
-      router.push(`/batches/${result.detail.batch.id}`);
     });
+  };
+
+  const reportInvalid = (invalid: FieldErrors<BatchDraftValues>) => {
+    const offending = Object.keys(invalid) as (keyof BatchDraftValues)[];
+
+    const firstStep = BATCH_STEPS.findIndex((name) =>
+      stepFields[name].some((field) => offending.includes(field)),
+    );
+
+    if (firstStep >= 0) {
+      setStepIndex(firstStep);
+    }
+
+    const messages = offending
+      .map((field) => invalid[field]?.message)
+      .filter((message): message is string => Boolean(message));
+
+    setFailure(
+      messages.length > 0
+        ? messages.join(" ")
+        : "Some details are still missing. Check the highlighted fields.",
+    );
   };
 
   return (
     <Form {...form}>
       <form
-        onSubmit={form.handleSubmit(submit)}
+        onSubmit={form.handleSubmit(submit, reportInvalid)}
         className="max-w-2xl space-y-8"
       >
         <StepIndicator

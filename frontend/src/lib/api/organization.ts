@@ -2,6 +2,7 @@ import "server-only";
 import { gatewayGet } from "@/lib/api/gateway";
 import type { RegistryRejection } from "@/lib/api/organizations";
 import type { VerificationStatus } from "@/lib/status";
+import type { EthereumAddress } from "@/lib/types/common";
 import type {
   OrganizationRole,
   OrganizationState,
@@ -18,6 +19,7 @@ type ApiOrganizationDetail = {
   business_registration_number: string;
   product_categories: string[];
   treasury_designated: boolean;
+  treasury_address: string | null;
   role: OrganizationRole;
   created_at: string;
   outcome: {
@@ -39,6 +41,7 @@ export type OrganizationDetail = {
   businessRegistrationNumber: string;
   productCategories: string[];
   treasuryDesignated: boolean;
+  treasuryAddress: EthereumAddress | null;
   role: OrganizationRole;
   createdAt: string;
   outcome: {
@@ -68,6 +71,7 @@ export const fetchCurrentOrganization = async (
     businessRegistrationNumber: detail.business_registration_number,
     productCategories: detail.product_categories,
     treasuryDesignated: detail.treasury_designated,
+    treasuryAddress: detail.treasury_address as EthereumAddress | null,
     role: detail.role,
     createdAt: detail.created_at,
     outcome: {

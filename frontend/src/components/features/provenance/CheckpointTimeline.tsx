@@ -1,15 +1,8 @@
 import { Link2, MapPin } from "lucide-react";
 import { TimestampDisplay } from "@/components/shared/TimestampDisplay";
 import { Timeline, type TimelineEntry } from "@/components/shared/Timeline";
+import { checkpointTypeLabels } from "@/lib/labels";
 import type { Checkpoint, CheckpointType } from "@/lib/types";
-
-const CHECKPOINT_LABELS: Record<CheckpointType, string> = {
-  production_complete: "Production complete",
-  departed_origin: "Departed origin",
-  customs_export: "Cleared export customs",
-  customs_import: "Cleared import customs",
-  arrived_destination: "Arrived at destination",
-};
 
 const anchorLabel = (checkpoint: Checkpoint) => {
   if (checkpoint.anchor.status === "confirmed") {
@@ -32,7 +25,7 @@ export function CheckpointTimeline({
 }: CheckpointTimelineProps) {
   const entries: TimelineEntry[] = checkpoints.map((checkpoint) => ({
     id: checkpoint.id,
-    title: CHECKPOINT_LABELS[checkpoint.type],
+    title: checkpointTypeLabels[checkpoint.type],
     superseded: Boolean(checkpoint.supersededByCheckpointId),
     variant:
       checkpoint.anchor.status === "confirmed"

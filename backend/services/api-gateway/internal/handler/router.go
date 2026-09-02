@@ -116,6 +116,9 @@ func NewRouter(options RouterOptions) *gin.Engine {
 	authenticated.PATCH("/members/:userId", handlers.ChangeMemberRole)
 	authenticated.DELETE("/members/:userId", handlers.RevokeMember)
 	authenticated.POST("/invitations/accept", handlers.AcceptInvitation)
+	authenticated.GET("/facilities", handlers.ListFacilities)
+	authenticated.POST("/facilities", handlers.CreateFacility)
+	authenticated.GET("/facilities/:facilityId", handlers.GetFacility)
 
 	return router
 }

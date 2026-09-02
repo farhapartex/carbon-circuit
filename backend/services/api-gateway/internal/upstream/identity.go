@@ -190,3 +190,32 @@ func (i *Identity) AcceptInvitation(
 	defer cancel()
 	return i.client.AcceptInvitation(callCtx, &identityv1.AcceptInvitationRequest{Token: token})
 }
+
+func (i *Identity) CreateFacility(
+	ctx context.Context,
+	idempotencyKey string,
+	request *identityv1.CreateFacilityRequest,
+) (*identityv1.CreateFacilityResponse, error) {
+	callCtx, cancel := i.call(ctx, idempotencyKey)
+	defer cancel()
+	return i.client.CreateFacility(callCtx, request)
+}
+
+func (i *Identity) ListFacilities(
+	ctx context.Context,
+) (*identityv1.ListFacilitiesResponse, error) {
+	callCtx, cancel := i.call(ctx, "")
+	defer cancel()
+	return i.client.ListFacilities(callCtx, &identityv1.ListFacilitiesRequest{})
+}
+
+func (i *Identity) GetFacility(
+	ctx context.Context,
+	facilityID string,
+) (*identityv1.GetFacilityResponse, error) {
+	callCtx, cancel := i.call(ctx, "")
+	defer cancel()
+	return i.client.GetFacility(callCtx, &identityv1.GetFacilityRequest{
+		FacilityId: facilityID,
+	})
+}

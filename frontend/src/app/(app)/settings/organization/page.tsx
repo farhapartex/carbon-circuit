@@ -1,27 +1,22 @@
 import type { Metadata } from "next";
+import { ShieldAlert } from "lucide-react";
 import { VerificationStatusBadge } from "@/components/shared/StatusBadges";
 import { StatusPill } from "@/components/shared/StatusPill";
 import { TimestampDisplay } from "@/components/shared/TimestampDisplay";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { getCurrentOrganization } from "@/lib/fixtures";
-import type { OrganizationType, ProductCategory } from "@/lib/types";
+import { fetchCurrentOrganization } from "@/lib/api/organization";
+import { auth0 } from "@/lib/auth0";
+import { countryName } from "@/lib/countries";
+import {
+  organizationStateLabels,
+  organizationTypeLabels,
+  productCategoryLabels,
+  registryRejectionExplanations,
+} from "@/lib/labels";
+import type { ProductCategory } from "@/lib/types";
 
 export const metadata: Metadata = { title: "Organization" };
-
-const TYPE_LABELS: Record<OrganizationType, string> = {
-  manufacturer: "Manufacturer",
-  assembler: "Assembler",
-  logistics: "Logistics partner",
-  credit_buyer: "Credit buyer",
-};
-
-const CATEGORY_LABELS: Record<ProductCategory, string> = {
-  electronics: "Electronics",
-  agriculture: "Agriculture",
-  pharma: "Pharma",
-  textiles: "Textiles",
-};
 
 const GATED_CAPABILITIES = [
   "Submit sustainability claims",
@@ -29,12 +24,33 @@ const GATED_CAPABILITIES = [
   "List credits for sale",
 ];
 
+const percentOf = (similarity: number) => `${Math.round(similarity * 100)}%`;
+
 export default async function SettingsOrganizationPage() {
-  const organization = await getCurrentOrganization();
+  const { token } = await auth0.getAccessToken();
+  const organization = await fetchCurrentOrganization(token);
+
   const verified = organization.verificationStatus === "verified";
+  const { outcome } = organization;
 
   return (
     <>
+      {organization.state === "active" ? null : (
+        <div
+          role="status"
+          className="rounded-md border border-warning-600 bg-warning-50 px-4 py-3"
+        >
+          <p className="flex items-center gap-2 font-medium text-warning-700">
+            <ShieldAlert className="size-4 shrink-0" aria-hidden />
+            This organization is{" "}
+            {organizationStateLabels[organization.state].toLowerCase()}
+          </p>
+          <p className="mt-1 text-caption text-pretty text-warning-700">
+            Some actions are unavailable while the account is in this state.
+          </p>
+        </div>
+      )}
+
       <Card>
         <CardHeader>
           <CardTitle>Organization details</CardTitle>
@@ -47,14 +63,16 @@ export default async function SettingsOrganizationPage() {
             </div>
             <div>
               <dt className="text-caption text-neutral-600">Type</dt>
-              <dd className="font-medium">{TYPE_LABELS[organization.type]}</dd>
+              <dd className="font-medium">
+                {organizationTypeLabels[organization.type]}
+              </dd>
             </div>
             <div>
               <dt className="text-caption text-neutral-600">
                 Country of incorporation
               </dt>
               <dd className="font-medium">
-                {organization.countryOfIncorporation}
+                {countryName(organization.countryOfIncorporation)}
               </dd>
             </div>
             <div>
@@ -64,6 +82,10 @@ export default async function SettingsOrganizationPage() {
               <dd className="font-medium tabular-nums">
                 {organization.businessRegistrationNumber}
               </dd>
+            </div>
+            <div>
+              <dt className="text-caption text-neutral-600">Your role</dt>
+              <dd className="font-medium">{organization.role}</dd>
             </div>
             <div>
               <dt className="text-caption text-neutral-600">Registered</dt>
@@ -84,12 +106,47 @@ export default async function SettingsOrganizationPage() {
           <p className="text-caption text-pretty text-neutral-600">
             {verified
               ? "Your registration number matched an active entity in the business registry, so every capability your plan includes is available."
-              : "Your registration number did not match an active entity in the business registry. You can use the product, but three capabilities are gated until that is resolved."}
+              : outcome.registryMatchFound
+                ? "Your registration number matched a registry entry, but the match was not accepted."
+                : "Your registration number did not match any entity in the business registry. You can use the product, but three capabilities are gated until that is resolved."}
           </p>
+
+          {outcome.rejection ? (
+            <p className="rounded-md border border-danger-600 bg-danger-50 px-4 py-3 text-caption text-pretty text-danger-700">
+              {registryRejectionExplanations[outcome.rejection]}
+            </p>
+          ) : null}
+
+          <dl className="space-y-3 border-t border-neutral-200 pt-4">
+            <div className="flex flex-wrap items-baseline justify-between gap-4">
+              <dt className="text-caption text-neutral-600">Registry match</dt>
+              <dd className="font-medium">
+                {outcome.registryMatchFound ? "Found" : "No match"}
+              </dd>
+            </div>
+            {outcome.registeredLegalName ? (
+              <div className="flex flex-wrap items-baseline justify-between gap-4">
+                <dt className="text-caption text-neutral-600">
+                  Registered legal name
+                </dt>
+                <dd className="font-medium">{outcome.registeredLegalName}</dd>
+              </div>
+            ) : null}
+            {outcome.nameSimilarity === null ? null : (
+              <div className="flex flex-wrap items-baseline justify-between gap-4">
+                <dt className="text-caption text-neutral-600">
+                  Name similarity
+                </dt>
+                <dd className="font-medium tabular-nums">
+                  {percentOf(outcome.nameSimilarity)}
+                </dd>
+              </div>
+            )}
+          </dl>
 
           {verified ? null : (
             <>
-              <ul className="space-y-2">
+              <ul className="space-y-2 border-t border-neutral-200 pt-4">
                 {GATED_CAPABILITIES.map((capability) => (
                   <li key={capability} className="flex items-center gap-2">
                     <StatusPill
@@ -100,13 +157,19 @@ export default async function SettingsOrganizationPage() {
                 ))}
               </ul>
               <div className="flex flex-wrap gap-2">
-                <Button variant="outline" size="sm">
+                <Button variant="outline" size="sm" disabled>
                   Correct the registration number
                 </Button>
-                <Button variant="ghost" size="sm">
+                <Button variant="ghost" size="sm" disabled>
                   Request manual verification
                 </Button>
               </div>
+              <p className="text-caption text-pretty text-neutral-600">
+                Neither route is available yet. Correcting the number re-runs
+                the registry check and can change this account&apos;s state, so
+                it needs its own endpoint; manual verification needs the admin
+                portal.
+              </p>
             </>
           )}
         </CardContent>
@@ -132,7 +195,9 @@ export default async function SettingsOrganizationPage() {
                 <StatusPill
                   key={category}
                   presentation={{
-                    label: CATEGORY_LABELS[category],
+                    label:
+                      productCategoryLabels[category as ProductCategory] ??
+                      category,
                     variant: "primary",
                   }}
                   showDot={false}

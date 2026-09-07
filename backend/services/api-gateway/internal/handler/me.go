@@ -52,11 +52,14 @@ var subscriptionStateName = map[billingv1.SubscriptionState]string{
 }
 
 type sessionUserResponse struct {
-	ID           string  `json:"id"`
-	Email        string  `json:"email"`
-	Name         string  `json:"name"`
-	PlatformRole *string `json:"platform_role"`
-	MFAEnrolled  bool    `json:"mfa_enrolled"`
+	ID                    string  `json:"id"`
+	Email                 string  `json:"email"`
+	Name                  string  `json:"name"`
+	PlatformRole          *string `json:"platform_role"`
+	MFAEnrolled           bool    `json:"mfa_enrolled"`
+	EmailVerified         bool    `json:"email_verified"`
+	CreatedAt             string  `json:"created_at"`
+	PersonalWalletAddress *string `json:"personal_wallet_address"`
 }
 
 type sessionOrganizationResponse struct {
@@ -130,11 +133,14 @@ func toMeResponse(resolved *identityv1.ResolveSessionResponse) meResponse {
 
 	response := meResponse{
 		User: sessionUserResponse{
-			ID:           user.GetId(),
-			Email:        user.GetEmail(),
-			Name:         user.GetName(),
-			PlatformRole: emptyToNil(platformRoleName[user.GetPlatformRole()]),
-			MFAEnrolled:  user.GetMfaEnrolled(),
+			ID:                    user.GetId(),
+			Email:                 user.GetEmail(),
+			Name:                  user.GetName(),
+			PlatformRole:          emptyToNil(platformRoleName[user.GetPlatformRole()]),
+			MFAEnrolled:           user.GetMfaEnrolled(),
+			EmailVerified:         user.GetEmailVerified(),
+			CreatedAt:             user.GetCreatedAt(),
+			PersonalWalletAddress: emptyToNil(user.GetPersonalWalletAddress()),
 		},
 	}
 

@@ -137,18 +137,21 @@ func run() error {
 	)
 
 	router := handler.NewRouter(handler.RouterOptions{
-		Identity:       identity,
-		Billing:        billing,
-		Provenance:     provenance,
-		ProvenanceRead: provenanceRead,
-		Limiter:        limiter,
-		Verifier:       verifier,
-		Denylist:       denylist,
-		Resolver:       resolver,
-		Signer:         signer,
-		Logger:         logger,
-		Environment:    settings.Environment,
-		Revision:       revision,
+		Identity:        identity,
+		Billing:         billing,
+		Provenance:      provenance,
+		ProvenanceRead:  provenanceRead,
+		Limiter:         limiter,
+		Verifier:        verifier,
+		Denylist:        denylist,
+		SessionDenylist: denylist,
+		Cache:           cacheClient,
+		SessionInterval: settings.SessionRecordInterval,
+		Resolver:        resolver,
+		Signer:          signer,
+		Logger:          logger,
+		Environment:     settings.Environment,
+		Revision:        revision,
 	})
 
 	return httpx.Serve(ctx, httpx.ServerOptions{

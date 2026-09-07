@@ -76,3 +76,17 @@ func RequireServiceToken(
 func ForwardServiceToken(ctx context.Context) context.Context {
 	return WithServiceToken(ctx, serviceTokenFrom(ctx))
 }
+
+func ServiceTokenFrom(ctx context.Context) string {
+	outgoing, present := metadata.FromOutgoingContext(ctx)
+	if !present {
+		return ""
+	}
+
+	values := outgoing.Get(ServiceTokenMetadataKey)
+	if len(values) == 0 {
+		return ""
+	}
+
+	return values[0]
+}

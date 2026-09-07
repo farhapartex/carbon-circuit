@@ -6,6 +6,10 @@ import (
 
 	"github.com/gin-gonic/gin"
 
+	"time"
+
+	"github.com/carboncircuit/backend/internal/auth"
+	"github.com/carboncircuit/backend/internal/cache"
 	"github.com/carboncircuit/backend/internal/httpx"
 	"github.com/carboncircuit/backend/internal/ratelimit"
 	"github.com/carboncircuit/backend/internal/servicetoken"
@@ -18,24 +22,28 @@ type Handlers struct {
 	Billing        *upstream.Billing
 	Provenance     *upstream.Provenance
 	ProvenanceRead *upstream.ProvenanceRead
+	Denylist       *auth.Denylist
 	Resolver       *caller.Resolver
 	Logger         *slog.Logger
 	Revision       string
 }
 
 type RouterOptions struct {
-	Identity       *upstream.Identity
-	Billing        *upstream.Billing
-	Provenance     *upstream.Provenance
-	ProvenanceRead *upstream.ProvenanceRead
-	Limiter        *ratelimit.Limiter
-	Verifier       httpx.TokenVerifier
-	Denylist       httpx.RevocationChecker
-	Resolver       *caller.Resolver
-	Signer         *servicetoken.Signer
-	Logger         *slog.Logger
-	Environment    string
-	Revision       string
+	Identity        *upstream.Identity
+	Billing         *upstream.Billing
+	Provenance      *upstream.Provenance
+	ProvenanceRead  *upstream.ProvenanceRead
+	Limiter         *ratelimit.Limiter
+	Verifier        httpx.TokenVerifier
+	Denylist        httpx.RevocationChecker
+	SessionDenylist *auth.Denylist
+	Cache           *cache.Client
+	SessionInterval time.Duration
+	Resolver        *caller.Resolver
+	Signer          *servicetoken.Signer
+	Logger          *slog.Logger
+	Environment     string
+	Revision        string
 }
 
 func errorAttributes(c *gin.Context, err error) []any {
@@ -57,6 +65,7 @@ func NewRouter(options RouterOptions) *gin.Engine {
 		Billing:        options.Billing,
 		Provenance:     options.Provenance,
 		ProvenanceRead: options.ProvenanceRead,
+		Denylist:       options.SessionDenylist,
 		Logger:         options.Logger,
 		Revision:       options.Revision,
 	}
@@ -110,6 +119,9 @@ func NewRouter(options RouterOptions) *gin.Engine {
 		httpx.EndpointClass("authenticated_read"),
 		httpx.RateLimit(options.Limiter, options.Logger),
 		httpx.RequireIdempotencyKey(),
+		caller.RecordSessions(
+			options.Identity, options.Cache, options.SessionInterval, options.Logger,
+		),
 	)
 
 	authenticated.GET("/me", handlers.Me)
@@ -124,6 +136,8 @@ func NewRouter(options RouterOptions) *gin.Engine {
 	authenticated.PATCH("/members/:userId", handlers.ChangeMemberRole)
 	authenticated.DELETE("/members/:userId", handlers.RevokeMember)
 	authenticated.POST("/invitations/accept", handlers.AcceptInvitation)
+	authenticated.GET("/sessions", handlers.ListSessions)
+	authenticated.DELETE("/sessions/:sessionId", handlers.RevokeSession)
 	authenticated.GET("/facilities", handlers.ListFacilities)
 	authenticated.POST("/facilities", handlers.CreateFacility)
 	authenticated.GET("/facilities/:facilityId", handlers.GetFacility)

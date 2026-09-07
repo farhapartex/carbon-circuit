@@ -216,3 +216,35 @@ func (i *Identity) GetFacility(
 		FacilityId: facilityID,
 	})
 }
+
+func (i *Identity) RecordSession(
+	ctx context.Context,
+	userAgent, ipAddress string,
+) error {
+	callCtx, cancel := i.call(ctx, "")
+	defer cancel()
+	_, err := i.client.RecordSession(callCtx, &identityv1.RecordSessionRequest{
+		UserAgent: userAgent,
+		IpAddress: ipAddress,
+	})
+	return err
+}
+
+func (i *Identity) ListSessions(
+	ctx context.Context,
+) (*identityv1.ListSessionsResponse, error) {
+	callCtx, cancel := i.call(ctx, "")
+	defer cancel()
+	return i.client.ListSessions(callCtx, &identityv1.ListSessionsRequest{})
+}
+
+func (i *Identity) RevokeSession(
+	ctx context.Context,
+	auth0SessionID string,
+) (*identityv1.RevokeSessionResponse, error) {
+	callCtx, cancel := i.call(ctx, "")
+	defer cancel()
+	return i.client.RevokeSession(callCtx, &identityv1.RevokeSessionRequest{
+		Auth0SessionId: auth0SessionID,
+	})
+}

@@ -28,6 +28,7 @@ type Config struct {
 	PublicReadBurst          int
 	PublicReferencePerMinute int
 	PublicReferenceBurst     int
+	SessionRecordInterval    time.Duration
 	PortalUserPerMinute      int
 	PortalUserBurst          int
 	UpstreamDialTimeout      time.Duration
@@ -65,6 +66,7 @@ func Load() (Config, error) {
 		PublicReadBurst:          loader.Int("PUBLIC_READ_BURST", 20),
 		PublicReferencePerMinute: loader.Int("PUBLIC_REFERENCE_PER_MINUTE", 600),
 		PublicReferenceBurst:     loader.Int("PUBLIC_REFERENCE_BURST", 120),
+		SessionRecordInterval:    loader.Duration("SESSION_RECORD_INTERVAL", 5*time.Minute),
 		PortalUserPerMinute:      loader.Int("PORTAL_USER_PER_MINUTE", 300),
 		PortalUserBurst:          loader.Int("PORTAL_USER_BURST", 60),
 		UpstreamDialTimeout:      loader.Duration("UPSTREAM_DIAL_TIMEOUT", 5*time.Second),

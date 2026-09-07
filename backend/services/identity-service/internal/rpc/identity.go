@@ -20,6 +20,7 @@ type IdentityServer struct {
 	team          TeamManager
 	facilities    FacilityManager
 	registry      SessionRegistrar
+	apiKeys       APIKeyManager
 	logger        *slog.Logger
 	revision      string
 }
@@ -33,6 +34,7 @@ func NewIdentityServer(
 	team TeamManager,
 	facilities FacilityManager,
 	registry SessionRegistrar,
+	apiKeys APIKeyManager,
 	logger *slog.Logger,
 	revision string,
 ) *IdentityServer {
@@ -45,6 +47,7 @@ func NewIdentityServer(
 		team:          team,
 		facilities:    facilities,
 		registry:      registry,
+		apiKeys:       apiKeys,
 		logger:        logger,
 		revision:      revision,
 	}

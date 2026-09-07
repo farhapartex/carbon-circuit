@@ -12,6 +12,7 @@ const ServiceName = "identity-service"
 
 type Config struct {
 	ServiceTokenPublicKey string
+	APIKeyPepper          string
 	TLS                   grpcx.TLSFiles
 
 	Environment     string
@@ -44,6 +45,7 @@ func Load() (Config, error) {
 
 	config := Config{
 		ServiceTokenPublicKey: loader.String("SERVICE_TOKEN_PUBLIC_KEY"),
+		APIKeyPepper:          loader.String("API_KEY_PEPPER"),
 		TLS: grpcx.TLSFiles{
 			CertificateAuthority: loader.StringDefault("TLS_CA_FILE", ""),
 			Certificate:          loader.StringDefault("TLS_CERT_FILE", ""),

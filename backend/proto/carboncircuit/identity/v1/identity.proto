@@ -23,6 +23,9 @@ service IdentityService {
   rpc RecordSession(RecordSessionRequest) returns (RecordSessionResponse);
   rpc ListSessions(ListSessionsRequest) returns (ListSessionsResponse);
   rpc RevokeSession(RevokeSessionRequest) returns (RevokeSessionResponse);
+  rpc CreateAPIKey(CreateAPIKeyRequest) returns (CreateAPIKeyResponse);
+  rpc ListAPIKeys(ListAPIKeysRequest) returns (ListAPIKeysResponse);
+  rpc RevokeAPIKey(RevokeAPIKeyRequest) returns (RevokeAPIKeyResponse);
 }
 
 enum OrganizationType {
@@ -384,3 +387,33 @@ message RevokeSessionRequest {
 message RevokeSessionResponse {
   string subject = 1;
 }
+
+message APIKey {
+  string id = 1;
+  string name = 2;
+  string prefix = 3;
+  string created_at = 4;
+  string last_used_at = 5;
+  string revoked_at = 6;
+}
+
+message CreateAPIKeyRequest {
+  string name = 1;
+}
+
+message CreateAPIKeyResponse {
+  APIKey key = 1;
+  string presented_key = 2;
+}
+
+message ListAPIKeysRequest {}
+
+message ListAPIKeysResponse {
+  repeated APIKey keys = 1;
+}
+
+message RevokeAPIKeyRequest {
+  string key_id = 1;
+}
+
+message RevokeAPIKeyResponse {}

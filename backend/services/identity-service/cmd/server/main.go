@@ -9,6 +9,7 @@ import (
 	"google.golang.org/grpc/credentials"
 
 	identityv1 "github.com/carboncircuit/backend/gen/carboncircuit/identity/v1"
+	"github.com/carboncircuit/backend/internal/apikey"
 	sharedconfig "github.com/carboncircuit/backend/internal/config"
 	"github.com/carboncircuit/backend/internal/database"
 	"github.com/carboncircuit/backend/internal/grpcx"
@@ -129,9 +130,18 @@ func run() error {
 		store, repository.NewSessionRepository(), logger,
 	)
 
+	keyHasher, err := apikey.NewHasher(settings.APIKeyPepper)
+	if err != nil {
+		return err
+	}
+
+	apiKeys := service.NewAPIKeyService(
+		store, repository.NewAPIKeyRepository(), keyHasher, logger,
+	)
+
 	identityServer := rpc.NewIdentityServer(
 		store, sessions, organizations, describer, treasury, team, facilities,
-		sessionRegistry, logger, revision,
+		sessionRegistry, apiKeys, logger, revision,
 	)
 
 	publicKey, err := sharedconfig.Ed25519PublicKey(settings.ServiceTokenPublicKey)

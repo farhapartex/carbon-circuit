@@ -1,4 +1,9 @@
 import type { FacilityVerificationStatus } from "@/lib/status";
+import type { RegistryRejection } from "@/lib/api/organizations";
+import type {
+  OrganizationState,
+  OrganizationType,
+} from "@/lib/types/organization";
 import type {
   ActivityType,
   GridRegion,
@@ -97,3 +102,27 @@ export const recycledMaterialLabels: Record<RecycledMaterial, string> = {
   rare_earth_magnets: "Rare earth magnets",
   lithium_black_mass: "Lithium black mass",
 };
+
+export const organizationTypeLabels: Record<OrganizationType, string> = {
+  manufacturer: "Manufacturer",
+  assembler: "Assembler",
+  logistics: "Logistics partner",
+  credit_buyer: "Credit buyer",
+};
+
+export const organizationStateLabels: Record<OrganizationState, string> = {
+  active: "Active",
+  restricted: "Restricted",
+  read_only: "Read only",
+  suspended: "Suspended",
+};
+
+export const registryRejectionExplanations: Record<RegistryRejection, string> =
+  {
+    entity_dissolved:
+      "The registry lists this entity as dissolved. We cannot issue credits against a company that no longer legally exists.",
+    sanctions_flag:
+      "The registry carries a sanctions or restricted-party flag against this entity.",
+    name_mismatch:
+      "The name on file does not closely enough match the registered legal name.",
+  };

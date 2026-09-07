@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import type { RegistryRejection } from "@/lib/api/organizations";
+import { registryRejectionExplanations } from "@/lib/labels";
 import type { VerificationStatus } from "@/lib/status";
 
 const NAME_SIMILARITY_THRESHOLD = 0.85;
@@ -12,15 +13,6 @@ const GATED_CAPABILITIES = [
   "Receive credit issuance",
   "List credits for sale",
 ];
-
-const REJECTION_EXPLANATIONS: Record<RegistryRejection, string> = {
-  entity_dissolved:
-    "The registry lists this entity as dissolved. We cannot issue credits against a company that no longer legally exists.",
-  sanctions_flag:
-    "The registry carries a sanctions or restricted-party flag against this entity.",
-  name_mismatch:
-    "The name you entered does not closely enough match the registered legal name.",
-};
 
 type VerificationOutcomeProps = {
   declaredName: string;
@@ -120,7 +112,7 @@ export function VerificationOutcome({
       <CardContent className="space-y-4">
         {rejection ? (
           <p className="text-caption text-pretty text-danger-700">
-            {REJECTION_EXPLANATIONS[rejection]}
+            {registryRejectionExplanations[rejection]}
           </p>
         ) : null}
 

@@ -45,3 +45,10 @@ func (p *ProvenanceRead) TrackBatch(
 		PublicReference: reference,
 	})
 }
+
+func (p *ProvenanceRead) Ping(ctx context.Context) error {
+	callCtx, cancel := callContext(ctx, "", p.callTimeout)
+	defer cancel()
+	_, err := p.client.Ping(callCtx, &provenancereadv1.PingRequest{})
+	return err
+}

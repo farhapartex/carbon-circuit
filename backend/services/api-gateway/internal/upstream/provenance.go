@@ -109,3 +109,10 @@ func (p *Provenance) GetComponentBatch(
 		ComponentBatchId: componentBatchID,
 	})
 }
+
+func (p *Provenance) Ping(ctx context.Context) error {
+	callCtx, cancel := p.call(ctx, "")
+	defer cancel()
+	_, err := p.client.Ping(callCtx, &provenancev1.PingRequest{})
+	return err
+}

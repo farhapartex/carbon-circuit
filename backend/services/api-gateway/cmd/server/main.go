@@ -88,6 +88,15 @@ func run() error {
 	}
 	defer closeUpstream(logger, "provenance-read", provenanceRead.Close)
 
+	warmUpstreams(ctx, logger, map[string]func(context.Context) error{
+		"identity": func(warmCtx context.Context) error {
+			_, err := identity.Ping(warmCtx)
+			return err
+		},
+		"provenance":      provenance.Ping,
+		"provenance-read": provenanceRead.Ping,
+	})
+
 	cacheClient := cache.New(settings.RedisAddress, settings.RedisPassword, settings.RedisDatabase, logger)
 	defer closeUpstream(logger, "redis", cacheClient.Close)
 
@@ -199,4 +208,21 @@ func upstreamCredentials(
 	}
 
 	return grpcx.ClientCredentials(settings.TLS, service)
+}
+
+func warmUpstreams(
+	ctx context.Context,
+	logger *slog.Logger,
+	upstreams map[string]func(context.Context) error,
+) {
+	for name, ping := range upstreams {
+		if err := ping(ctx); err != nil {
+			logger.Warn("upstream did not answer its warm-up ping",
+				slog.String("service", name),
+				slog.Any("error", err),
+			)
+			continue
+		}
+		logger.Info("upstream connection warmed", slog.String("service", name))
+	}
 }

@@ -40,11 +40,13 @@ func RateLimit(limiter *ratelimit.Limiter, logger *slog.Logger) gin.HandlerFunc 
 		resource, _ := c.Get(ResourceKeyKey)
 		resourceKey, _ := resource.(string)
 
+		peer := c.RemoteIP()
+
 		request := ratelimit.Request{
 			CallerClass:   "public",
-			CallerKey:     c.ClientIP(),
+			CallerKey:     peer,
 			EndpointClass: class,
-			ClientIP:      c.ClientIP(),
+			ClientIP:      peer,
 			ResourceKey:   resourceKey,
 		}
 

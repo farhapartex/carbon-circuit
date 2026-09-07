@@ -12,7 +12,10 @@ import (
 	"github.com/carboncircuit/backend/internal/grpcx"
 )
 
-const sightingKeyPrefix = "session:seen:"
+const (
+	sightingKeyPrefix  = "session:seen:"
+	untrackedKeyPrefix = "session:untracked:"
+)
 
 type SessionRecorder interface {
 	RecordSession(ctx context.Context, userAgent, ipAddress string) error
@@ -32,13 +35,26 @@ func RecordSessions(
 		c.Next()
 
 		verified, authenticated := auth.CallerFrom(c.Request.Context())
-		if !authenticated || verified.SessionID == "" {
+		if !authenticated {
+			return
+		}
+
+		if verified.SessionID == "" {
+			reportUntracked(c, client, interval, logger, verified.Subject)
 			return
 		}
 
 		key := sightingKey(verified.Subject, verified.SessionID)
 
-		if _, seen, err := client.GetString(c.Request.Context(), key); err != nil || seen {
+		seenValue, seen, err := client.GetString(c.Request.Context(), key)
+		if err != nil {
+			logger.Warn("could not read the session sighting throttle",
+				slog.Any("error", err),
+			)
+			return
+		}
+		if seen {
+			_ = seenValue
 			return
 		}
 
@@ -62,4 +78,26 @@ func RecordSessions(
 			}
 		}()
 	}
+}
+
+func reportUntracked(
+	c *gin.Context,
+	client *cache.Client,
+	interval time.Duration,
+	logger *slog.Logger,
+	subject string,
+) {
+	key := untrackedKeyPrefix + subject
+
+	if _, reported, err := client.GetString(c.Request.Context(), key); err != nil || reported {
+		return
+	}
+
+	if err := client.SetString(c.Request.Context(), key, "1", interval); err != nil {
+		return
+	}
+
+	logger.Warn("token carries no session id, this device cannot be tracked",
+		slog.String("subject", subject),
+	)
 }

@@ -867,14 +867,17 @@ func (x *ResolveSessionRequest) GetName() string {
 }
 
 type SessionUser struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	Email         string                 `protobuf:"bytes,2,opt,name=email,proto3" json:"email,omitempty"`
-	Name          string                 `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
-	PlatformRole  PlatformRole           `protobuf:"varint,4,opt,name=platform_role,json=platformRole,proto3,enum=carboncircuit.identity.v1.PlatformRole" json:"platform_role,omitempty"`
-	MfaEnrolled   bool                   `protobuf:"varint,5,opt,name=mfa_enrolled,json=mfaEnrolled,proto3" json:"mfa_enrolled,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state                 protoimpl.MessageState `protogen:"open.v1"`
+	Id                    string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Email                 string                 `protobuf:"bytes,2,opt,name=email,proto3" json:"email,omitempty"`
+	Name                  string                 `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
+	PlatformRole          PlatformRole           `protobuf:"varint,4,opt,name=platform_role,json=platformRole,proto3,enum=carboncircuit.identity.v1.PlatformRole" json:"platform_role,omitempty"`
+	MfaEnrolled           bool                   `protobuf:"varint,5,opt,name=mfa_enrolled,json=mfaEnrolled,proto3" json:"mfa_enrolled,omitempty"`
+	EmailVerified         bool                   `protobuf:"varint,6,opt,name=email_verified,json=emailVerified,proto3" json:"email_verified,omitempty"`
+	CreatedAt             string                 `protobuf:"bytes,7,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	PersonalWalletAddress string                 `protobuf:"bytes,8,opt,name=personal_wallet_address,json=personalWalletAddress,proto3" json:"personal_wallet_address,omitempty"`
+	unknownFields         protoimpl.UnknownFields
+	sizeCache             protoimpl.SizeCache
 }
 
 func (x *SessionUser) Reset() {
@@ -940,6 +943,27 @@ func (x *SessionUser) GetMfaEnrolled() bool {
 		return x.MfaEnrolled
 	}
 	return false
+}
+
+func (x *SessionUser) GetEmailVerified() bool {
+	if x != nil {
+		return x.EmailVerified
+	}
+	return false
+}
+
+func (x *SessionUser) GetCreatedAt() string {
+	if x != nil {
+		return x.CreatedAt
+	}
+	return ""
+}
+
+func (x *SessionUser) GetPersonalWalletAddress() string {
+	if x != nil {
+		return x.PersonalWalletAddress
+	}
+	return ""
 }
 
 type SessionOrganization struct {
@@ -2978,6 +3002,338 @@ func (x *GetFacilityResponse) GetFacility() *Facility {
 	return nil
 }
 
+type Session struct {
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	Auth0SessionId string                 `protobuf:"bytes,1,opt,name=auth0_session_id,json=auth0SessionId,proto3" json:"auth0_session_id,omitempty"`
+	UserAgent      string                 `protobuf:"bytes,2,opt,name=user_agent,json=userAgent,proto3" json:"user_agent,omitempty"`
+	IpAddress      string                 `protobuf:"bytes,3,opt,name=ip_address,json=ipAddress,proto3" json:"ip_address,omitempty"`
+	StartedAt      string                 `protobuf:"bytes,4,opt,name=started_at,json=startedAt,proto3" json:"started_at,omitempty"`
+	LastSeenAt     string                 `protobuf:"bytes,5,opt,name=last_seen_at,json=lastSeenAt,proto3" json:"last_seen_at,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
+}
+
+func (x *Session) Reset() {
+	*x = Session{}
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[37]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Session) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Session) ProtoMessage() {}
+
+func (x *Session) ProtoReflect() protoreflect.Message {
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[37]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Session.ProtoReflect.Descriptor instead.
+func (*Session) Descriptor() ([]byte, []int) {
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{37}
+}
+
+func (x *Session) GetAuth0SessionId() string {
+	if x != nil {
+		return x.Auth0SessionId
+	}
+	return ""
+}
+
+func (x *Session) GetUserAgent() string {
+	if x != nil {
+		return x.UserAgent
+	}
+	return ""
+}
+
+func (x *Session) GetIpAddress() string {
+	if x != nil {
+		return x.IpAddress
+	}
+	return ""
+}
+
+func (x *Session) GetStartedAt() string {
+	if x != nil {
+		return x.StartedAt
+	}
+	return ""
+}
+
+func (x *Session) GetLastSeenAt() string {
+	if x != nil {
+		return x.LastSeenAt
+	}
+	return ""
+}
+
+type RecordSessionRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	UserAgent     string                 `protobuf:"bytes,1,opt,name=user_agent,json=userAgent,proto3" json:"user_agent,omitempty"`
+	IpAddress     string                 `protobuf:"bytes,2,opt,name=ip_address,json=ipAddress,proto3" json:"ip_address,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *RecordSessionRequest) Reset() {
+	*x = RecordSessionRequest{}
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[38]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RecordSessionRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RecordSessionRequest) ProtoMessage() {}
+
+func (x *RecordSessionRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[38]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RecordSessionRequest.ProtoReflect.Descriptor instead.
+func (*RecordSessionRequest) Descriptor() ([]byte, []int) {
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{38}
+}
+
+func (x *RecordSessionRequest) GetUserAgent() string {
+	if x != nil {
+		return x.UserAgent
+	}
+	return ""
+}
+
+func (x *RecordSessionRequest) GetIpAddress() string {
+	if x != nil {
+		return x.IpAddress
+	}
+	return ""
+}
+
+type RecordSessionResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *RecordSessionResponse) Reset() {
+	*x = RecordSessionResponse{}
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[39]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RecordSessionResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RecordSessionResponse) ProtoMessage() {}
+
+func (x *RecordSessionResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[39]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RecordSessionResponse.ProtoReflect.Descriptor instead.
+func (*RecordSessionResponse) Descriptor() ([]byte, []int) {
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{39}
+}
+
+type ListSessionsRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListSessionsRequest) Reset() {
+	*x = ListSessionsRequest{}
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[40]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListSessionsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListSessionsRequest) ProtoMessage() {}
+
+func (x *ListSessionsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[40]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListSessionsRequest.ProtoReflect.Descriptor instead.
+func (*ListSessionsRequest) Descriptor() ([]byte, []int) {
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{40}
+}
+
+type ListSessionsResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Sessions      []*Session             `protobuf:"bytes,1,rep,name=sessions,proto3" json:"sessions,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListSessionsResponse) Reset() {
+	*x = ListSessionsResponse{}
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[41]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListSessionsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListSessionsResponse) ProtoMessage() {}
+
+func (x *ListSessionsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[41]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListSessionsResponse.ProtoReflect.Descriptor instead.
+func (*ListSessionsResponse) Descriptor() ([]byte, []int) {
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{41}
+}
+
+func (x *ListSessionsResponse) GetSessions() []*Session {
+	if x != nil {
+		return x.Sessions
+	}
+	return nil
+}
+
+type RevokeSessionRequest struct {
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	Auth0SessionId string                 `protobuf:"bytes,1,opt,name=auth0_session_id,json=auth0SessionId,proto3" json:"auth0_session_id,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
+}
+
+func (x *RevokeSessionRequest) Reset() {
+	*x = RevokeSessionRequest{}
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[42]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RevokeSessionRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RevokeSessionRequest) ProtoMessage() {}
+
+func (x *RevokeSessionRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[42]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RevokeSessionRequest.ProtoReflect.Descriptor instead.
+func (*RevokeSessionRequest) Descriptor() ([]byte, []int) {
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{42}
+}
+
+func (x *RevokeSessionRequest) GetAuth0SessionId() string {
+	if x != nil {
+		return x.Auth0SessionId
+	}
+	return ""
+}
+
+type RevokeSessionResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Subject       string                 `protobuf:"bytes,1,opt,name=subject,proto3" json:"subject,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *RevokeSessionResponse) Reset() {
+	*x = RevokeSessionResponse{}
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[43]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RevokeSessionResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RevokeSessionResponse) ProtoMessage() {}
+
+func (x *RevokeSessionResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[43]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RevokeSessionResponse.ProtoReflect.Descriptor instead.
+func (*RevokeSessionResponse) Descriptor() ([]byte, []int) {
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{43}
+}
+
+func (x *RevokeSessionResponse) GetSubject() string {
+	if x != nil {
+		return x.Subject
+	}
+	return ""
+}
+
 var File_carboncircuit_identity_v1_identity_proto protoreflect.FileDescriptor
 
 const file_carboncircuit_identity_v1_identity_proto_rawDesc = "" +
@@ -2992,13 +3348,17 @@ const file_carboncircuit_identity_v1_identity_proto_rawDesc = "" +
 	"\rauth0_subject\x18\x01 \x01(\tR\fauth0Subject\x12\x14\n" +
 	"\x05email\x18\x02 \x01(\tR\x05email\x12%\n" +
 	"\x0eemail_verified\x18\x03 \x01(\bR\remailVerified\x12\x12\n" +
-	"\x04name\x18\x04 \x01(\tR\x04name\"\xb8\x01\n" +
+	"\x04name\x18\x04 \x01(\tR\x04name\"\xb6\x02\n" +
 	"\vSessionUser\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x14\n" +
 	"\x05email\x18\x02 \x01(\tR\x05email\x12\x12\n" +
 	"\x04name\x18\x03 \x01(\tR\x04name\x12L\n" +
 	"\rplatform_role\x18\x04 \x01(\x0e2'.carboncircuit.identity.v1.PlatformRoleR\fplatformRole\x12!\n" +
-	"\fmfa_enrolled\x18\x05 \x01(\bR\vmfaEnrolled\"\xcf\x02\n" +
+	"\fmfa_enrolled\x18\x05 \x01(\bR\vmfaEnrolled\x12%\n" +
+	"\x0eemail_verified\x18\x06 \x01(\bR\remailVerified\x12\x1d\n" +
+	"\n" +
+	"created_at\x18\a \x01(\tR\tcreatedAt\x126\n" +
+	"\x17personal_wallet_address\x18\b \x01(\tR\x15personalWalletAddress\"\xcf\x02\n" +
 	"\x13SessionOrganization\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12?\n" +
@@ -3153,7 +3513,30 @@ const file_carboncircuit_identity_v1_identity_proto_rawDesc = "" +
 	"\vfacility_id\x18\x01 \x01(\tR\n" +
 	"facilityId\"V\n" +
 	"\x13GetFacilityResponse\x12?\n" +
-	"\bfacility\x18\x01 \x01(\v2#.carboncircuit.identity.v1.FacilityR\bfacility*\xbf\x01\n" +
+	"\bfacility\x18\x01 \x01(\v2#.carboncircuit.identity.v1.FacilityR\bfacility\"\xb2\x01\n" +
+	"\aSession\x12(\n" +
+	"\x10auth0_session_id\x18\x01 \x01(\tR\x0eauth0SessionId\x12\x1d\n" +
+	"\n" +
+	"user_agent\x18\x02 \x01(\tR\tuserAgent\x12\x1d\n" +
+	"\n" +
+	"ip_address\x18\x03 \x01(\tR\tipAddress\x12\x1d\n" +
+	"\n" +
+	"started_at\x18\x04 \x01(\tR\tstartedAt\x12 \n" +
+	"\flast_seen_at\x18\x05 \x01(\tR\n" +
+	"lastSeenAt\"T\n" +
+	"\x14RecordSessionRequest\x12\x1d\n" +
+	"\n" +
+	"user_agent\x18\x01 \x01(\tR\tuserAgent\x12\x1d\n" +
+	"\n" +
+	"ip_address\x18\x02 \x01(\tR\tipAddress\"\x17\n" +
+	"\x15RecordSessionResponse\"\x15\n" +
+	"\x13ListSessionsRequest\"V\n" +
+	"\x14ListSessionsResponse\x12>\n" +
+	"\bsessions\x18\x01 \x03(\v2\".carboncircuit.identity.v1.SessionR\bsessions\"@\n" +
+	"\x14RevokeSessionRequest\x12(\n" +
+	"\x10auth0_session_id\x18\x01 \x01(\tR\x0eauth0SessionId\"1\n" +
+	"\x15RevokeSessionResponse\x12\x18\n" +
+	"\asubject\x18\x01 \x01(\tR\asubject*\xbf\x01\n" +
 	"\x10OrganizationType\x12!\n" +
 	"\x1dORGANIZATION_TYPE_UNSPECIFIED\x10\x00\x12\"\n" +
 	"\x1eORGANIZATION_TYPE_MANUFACTURER\x10\x01\x12\x1f\n" +
@@ -3234,7 +3617,7 @@ const file_carboncircuit_identity_v1_identity_proto_rawDesc = "" +
 	"\x0eGRID_REGION_VN\x10\x0f\x12\x12\n" +
 	"\x0eGRID_REGION_MY\x10\x10\x12\x12\n" +
 	"\x0eGRID_REGION_SG\x10\x11\x12\x12\n" +
-	"\x0eGRID_REGION_TH\x10\x122\x86\x0e\n" +
+	"\x0eGRID_REGION_TH\x10\x122\xdf\x10\n" +
 	"\x0fIdentityService\x12W\n" +
 	"\x04Ping\x12&.carboncircuit.identity.v1.PingRequest\x1a'.carboncircuit.identity.v1.PingResponse\x12u\n" +
 	"\x0eResolveSession\x120.carboncircuit.identity.v1.ResolveSessionRequest\x1a1.carboncircuit.identity.v1.ResolveSessionResponse\x12\x81\x01\n" +
@@ -3250,7 +3633,10 @@ const file_carboncircuit_identity_v1_identity_proto_rawDesc = "" +
 	"\x10AcceptInvitation\x122.carboncircuit.identity.v1.AcceptInvitationRequest\x1a3.carboncircuit.identity.v1.AcceptInvitationResponse\x12u\n" +
 	"\x0eCreateFacility\x120.carboncircuit.identity.v1.CreateFacilityRequest\x1a1.carboncircuit.identity.v1.CreateFacilityResponse\x12u\n" +
 	"\x0eListFacilities\x120.carboncircuit.identity.v1.ListFacilitiesRequest\x1a1.carboncircuit.identity.v1.ListFacilitiesResponse\x12l\n" +
-	"\vGetFacility\x12-.carboncircuit.identity.v1.GetFacilityRequest\x1a..carboncircuit.identity.v1.GetFacilityResponseB\xff\x01\n" +
+	"\vGetFacility\x12-.carboncircuit.identity.v1.GetFacilityRequest\x1a..carboncircuit.identity.v1.GetFacilityResponse\x12r\n" +
+	"\rRecordSession\x12/.carboncircuit.identity.v1.RecordSessionRequest\x1a0.carboncircuit.identity.v1.RecordSessionResponse\x12o\n" +
+	"\fListSessions\x12..carboncircuit.identity.v1.ListSessionsRequest\x1a/.carboncircuit.identity.v1.ListSessionsResponse\x12r\n" +
+	"\rRevokeSession\x12/.carboncircuit.identity.v1.RevokeSessionRequest\x1a0.carboncircuit.identity.v1.RevokeSessionResponseB\xff\x01\n" +
 	"\x1dcom.carboncircuit.identity.v1B\rIdentityProtoP\x01ZIgithub.com/carboncircuit/backend/gen/carboncircuit/identity/v1;identityv1\xa2\x02\x03CIX\xaa\x02\x19Carboncircuit.Identity.V1\xca\x02\x19Carboncircuit\\Identity\\V1\xe2\x02%Carboncircuit\\Identity\\V1\\GPBMetadata\xea\x02\x1bCarboncircuit::Identity::V1b\x06proto3"
 
 var (
@@ -3266,7 +3652,7 @@ func file_carboncircuit_identity_v1_identity_proto_rawDescGZIP() []byte {
 }
 
 var file_carboncircuit_identity_v1_identity_proto_enumTypes = make([]protoimpl.EnumInfo, 12)
-var file_carboncircuit_identity_v1_identity_proto_msgTypes = make([]protoimpl.MessageInfo, 37)
+var file_carboncircuit_identity_v1_identity_proto_msgTypes = make([]protoimpl.MessageInfo, 44)
 var file_carboncircuit_identity_v1_identity_proto_goTypes = []any{
 	(OrganizationType)(0),              // 0: carboncircuit.identity.v1.OrganizationType
 	(OrganizationRole)(0),              // 1: carboncircuit.identity.v1.OrganizationRole
@@ -3317,6 +3703,13 @@ var file_carboncircuit_identity_v1_identity_proto_goTypes = []any{
 	(*ListFacilitiesResponse)(nil),     // 46: carboncircuit.identity.v1.ListFacilitiesResponse
 	(*GetFacilityRequest)(nil),         // 47: carboncircuit.identity.v1.GetFacilityRequest
 	(*GetFacilityResponse)(nil),        // 48: carboncircuit.identity.v1.GetFacilityResponse
+	(*Session)(nil),                    // 49: carboncircuit.identity.v1.Session
+	(*RecordSessionRequest)(nil),       // 50: carboncircuit.identity.v1.RecordSessionRequest
+	(*RecordSessionResponse)(nil),      // 51: carboncircuit.identity.v1.RecordSessionResponse
+	(*ListSessionsRequest)(nil),        // 52: carboncircuit.identity.v1.ListSessionsRequest
+	(*ListSessionsResponse)(nil),       // 53: carboncircuit.identity.v1.ListSessionsResponse
+	(*RevokeSessionRequest)(nil),       // 54: carboncircuit.identity.v1.RevokeSessionRequest
+	(*RevokeSessionResponse)(nil),      // 55: carboncircuit.identity.v1.RevokeSessionResponse
 }
 var file_carboncircuit_identity_v1_identity_proto_depIdxs = []int32{
 	4,  // 0: carboncircuit.identity.v1.SessionUser.platform_role:type_name -> carboncircuit.identity.v1.PlatformRole
@@ -3359,41 +3752,48 @@ var file_carboncircuit_identity_v1_identity_proto_depIdxs = []int32{
 	42, // 37: carboncircuit.identity.v1.CreateFacilityResponse.facility:type_name -> carboncircuit.identity.v1.Facility
 	42, // 38: carboncircuit.identity.v1.ListFacilitiesResponse.facilities:type_name -> carboncircuit.identity.v1.Facility
 	42, // 39: carboncircuit.identity.v1.GetFacilityResponse.facility:type_name -> carboncircuit.identity.v1.Facility
-	12, // 40: carboncircuit.identity.v1.IdentityService.Ping:input_type -> carboncircuit.identity.v1.PingRequest
-	14, // 41: carboncircuit.identity.v1.IdentityService.ResolveSession:input_type -> carboncircuit.identity.v1.ResolveSessionRequest
-	18, // 42: carboncircuit.identity.v1.IdentityService.CreateOrganization:input_type -> carboncircuit.identity.v1.CreateOrganizationRequest
-	21, // 43: carboncircuit.identity.v1.IdentityService.GetOrganization:input_type -> carboncircuit.identity.v1.GetOrganizationRequest
-	24, // 44: carboncircuit.identity.v1.IdentityService.IssueTreasuryNonce:input_type -> carboncircuit.identity.v1.IssueTreasuryNonceRequest
-	26, // 45: carboncircuit.identity.v1.IdentityService.DesignateTreasury:input_type -> carboncircuit.identity.v1.DesignateTreasuryRequest
-	30, // 46: carboncircuit.identity.v1.IdentityService.ListMembers:input_type -> carboncircuit.identity.v1.ListMembersRequest
-	32, // 47: carboncircuit.identity.v1.IdentityService.InviteMember:input_type -> carboncircuit.identity.v1.InviteMemberRequest
-	34, // 48: carboncircuit.identity.v1.IdentityService.RevokeInvitation:input_type -> carboncircuit.identity.v1.RevokeInvitationRequest
-	36, // 49: carboncircuit.identity.v1.IdentityService.ChangeMemberRole:input_type -> carboncircuit.identity.v1.ChangeMemberRoleRequest
-	38, // 50: carboncircuit.identity.v1.IdentityService.RevokeMember:input_type -> carboncircuit.identity.v1.RevokeMemberRequest
-	40, // 51: carboncircuit.identity.v1.IdentityService.AcceptInvitation:input_type -> carboncircuit.identity.v1.AcceptInvitationRequest
-	43, // 52: carboncircuit.identity.v1.IdentityService.CreateFacility:input_type -> carboncircuit.identity.v1.CreateFacilityRequest
-	45, // 53: carboncircuit.identity.v1.IdentityService.ListFacilities:input_type -> carboncircuit.identity.v1.ListFacilitiesRequest
-	47, // 54: carboncircuit.identity.v1.IdentityService.GetFacility:input_type -> carboncircuit.identity.v1.GetFacilityRequest
-	13, // 55: carboncircuit.identity.v1.IdentityService.Ping:output_type -> carboncircuit.identity.v1.PingResponse
-	17, // 56: carboncircuit.identity.v1.IdentityService.ResolveSession:output_type -> carboncircuit.identity.v1.ResolveSessionResponse
-	20, // 57: carboncircuit.identity.v1.IdentityService.CreateOrganization:output_type -> carboncircuit.identity.v1.CreateOrganizationResponse
-	23, // 58: carboncircuit.identity.v1.IdentityService.GetOrganization:output_type -> carboncircuit.identity.v1.GetOrganizationResponse
-	25, // 59: carboncircuit.identity.v1.IdentityService.IssueTreasuryNonce:output_type -> carboncircuit.identity.v1.IssueTreasuryNonceResponse
-	27, // 60: carboncircuit.identity.v1.IdentityService.DesignateTreasury:output_type -> carboncircuit.identity.v1.DesignateTreasuryResponse
-	31, // 61: carboncircuit.identity.v1.IdentityService.ListMembers:output_type -> carboncircuit.identity.v1.ListMembersResponse
-	33, // 62: carboncircuit.identity.v1.IdentityService.InviteMember:output_type -> carboncircuit.identity.v1.InviteMemberResponse
-	35, // 63: carboncircuit.identity.v1.IdentityService.RevokeInvitation:output_type -> carboncircuit.identity.v1.RevokeInvitationResponse
-	37, // 64: carboncircuit.identity.v1.IdentityService.ChangeMemberRole:output_type -> carboncircuit.identity.v1.ChangeMemberRoleResponse
-	39, // 65: carboncircuit.identity.v1.IdentityService.RevokeMember:output_type -> carboncircuit.identity.v1.RevokeMemberResponse
-	41, // 66: carboncircuit.identity.v1.IdentityService.AcceptInvitation:output_type -> carboncircuit.identity.v1.AcceptInvitationResponse
-	44, // 67: carboncircuit.identity.v1.IdentityService.CreateFacility:output_type -> carboncircuit.identity.v1.CreateFacilityResponse
-	46, // 68: carboncircuit.identity.v1.IdentityService.ListFacilities:output_type -> carboncircuit.identity.v1.ListFacilitiesResponse
-	48, // 69: carboncircuit.identity.v1.IdentityService.GetFacility:output_type -> carboncircuit.identity.v1.GetFacilityResponse
-	55, // [55:70] is the sub-list for method output_type
-	40, // [40:55] is the sub-list for method input_type
-	40, // [40:40] is the sub-list for extension type_name
-	40, // [40:40] is the sub-list for extension extendee
-	0,  // [0:40] is the sub-list for field type_name
+	49, // 40: carboncircuit.identity.v1.ListSessionsResponse.sessions:type_name -> carboncircuit.identity.v1.Session
+	12, // 41: carboncircuit.identity.v1.IdentityService.Ping:input_type -> carboncircuit.identity.v1.PingRequest
+	14, // 42: carboncircuit.identity.v1.IdentityService.ResolveSession:input_type -> carboncircuit.identity.v1.ResolveSessionRequest
+	18, // 43: carboncircuit.identity.v1.IdentityService.CreateOrganization:input_type -> carboncircuit.identity.v1.CreateOrganizationRequest
+	21, // 44: carboncircuit.identity.v1.IdentityService.GetOrganization:input_type -> carboncircuit.identity.v1.GetOrganizationRequest
+	24, // 45: carboncircuit.identity.v1.IdentityService.IssueTreasuryNonce:input_type -> carboncircuit.identity.v1.IssueTreasuryNonceRequest
+	26, // 46: carboncircuit.identity.v1.IdentityService.DesignateTreasury:input_type -> carboncircuit.identity.v1.DesignateTreasuryRequest
+	30, // 47: carboncircuit.identity.v1.IdentityService.ListMembers:input_type -> carboncircuit.identity.v1.ListMembersRequest
+	32, // 48: carboncircuit.identity.v1.IdentityService.InviteMember:input_type -> carboncircuit.identity.v1.InviteMemberRequest
+	34, // 49: carboncircuit.identity.v1.IdentityService.RevokeInvitation:input_type -> carboncircuit.identity.v1.RevokeInvitationRequest
+	36, // 50: carboncircuit.identity.v1.IdentityService.ChangeMemberRole:input_type -> carboncircuit.identity.v1.ChangeMemberRoleRequest
+	38, // 51: carboncircuit.identity.v1.IdentityService.RevokeMember:input_type -> carboncircuit.identity.v1.RevokeMemberRequest
+	40, // 52: carboncircuit.identity.v1.IdentityService.AcceptInvitation:input_type -> carboncircuit.identity.v1.AcceptInvitationRequest
+	43, // 53: carboncircuit.identity.v1.IdentityService.CreateFacility:input_type -> carboncircuit.identity.v1.CreateFacilityRequest
+	45, // 54: carboncircuit.identity.v1.IdentityService.ListFacilities:input_type -> carboncircuit.identity.v1.ListFacilitiesRequest
+	47, // 55: carboncircuit.identity.v1.IdentityService.GetFacility:input_type -> carboncircuit.identity.v1.GetFacilityRequest
+	50, // 56: carboncircuit.identity.v1.IdentityService.RecordSession:input_type -> carboncircuit.identity.v1.RecordSessionRequest
+	52, // 57: carboncircuit.identity.v1.IdentityService.ListSessions:input_type -> carboncircuit.identity.v1.ListSessionsRequest
+	54, // 58: carboncircuit.identity.v1.IdentityService.RevokeSession:input_type -> carboncircuit.identity.v1.RevokeSessionRequest
+	13, // 59: carboncircuit.identity.v1.IdentityService.Ping:output_type -> carboncircuit.identity.v1.PingResponse
+	17, // 60: carboncircuit.identity.v1.IdentityService.ResolveSession:output_type -> carboncircuit.identity.v1.ResolveSessionResponse
+	20, // 61: carboncircuit.identity.v1.IdentityService.CreateOrganization:output_type -> carboncircuit.identity.v1.CreateOrganizationResponse
+	23, // 62: carboncircuit.identity.v1.IdentityService.GetOrganization:output_type -> carboncircuit.identity.v1.GetOrganizationResponse
+	25, // 63: carboncircuit.identity.v1.IdentityService.IssueTreasuryNonce:output_type -> carboncircuit.identity.v1.IssueTreasuryNonceResponse
+	27, // 64: carboncircuit.identity.v1.IdentityService.DesignateTreasury:output_type -> carboncircuit.identity.v1.DesignateTreasuryResponse
+	31, // 65: carboncircuit.identity.v1.IdentityService.ListMembers:output_type -> carboncircuit.identity.v1.ListMembersResponse
+	33, // 66: carboncircuit.identity.v1.IdentityService.InviteMember:output_type -> carboncircuit.identity.v1.InviteMemberResponse
+	35, // 67: carboncircuit.identity.v1.IdentityService.RevokeInvitation:output_type -> carboncircuit.identity.v1.RevokeInvitationResponse
+	37, // 68: carboncircuit.identity.v1.IdentityService.ChangeMemberRole:output_type -> carboncircuit.identity.v1.ChangeMemberRoleResponse
+	39, // 69: carboncircuit.identity.v1.IdentityService.RevokeMember:output_type -> carboncircuit.identity.v1.RevokeMemberResponse
+	41, // 70: carboncircuit.identity.v1.IdentityService.AcceptInvitation:output_type -> carboncircuit.identity.v1.AcceptInvitationResponse
+	44, // 71: carboncircuit.identity.v1.IdentityService.CreateFacility:output_type -> carboncircuit.identity.v1.CreateFacilityResponse
+	46, // 72: carboncircuit.identity.v1.IdentityService.ListFacilities:output_type -> carboncircuit.identity.v1.ListFacilitiesResponse
+	48, // 73: carboncircuit.identity.v1.IdentityService.GetFacility:output_type -> carboncircuit.identity.v1.GetFacilityResponse
+	51, // 74: carboncircuit.identity.v1.IdentityService.RecordSession:output_type -> carboncircuit.identity.v1.RecordSessionResponse
+	53, // 75: carboncircuit.identity.v1.IdentityService.ListSessions:output_type -> carboncircuit.identity.v1.ListSessionsResponse
+	55, // 76: carboncircuit.identity.v1.IdentityService.RevokeSession:output_type -> carboncircuit.identity.v1.RevokeSessionResponse
+	59, // [59:77] is the sub-list for method output_type
+	41, // [41:59] is the sub-list for method input_type
+	41, // [41:41] is the sub-list for extension type_name
+	41, // [41:41] is the sub-list for extension extendee
+	0,  // [0:41] is the sub-list for field type_name
 }
 
 func init() { file_carboncircuit_identity_v1_identity_proto_init() }
@@ -3407,7 +3807,7 @@ func file_carboncircuit_identity_v1_identity_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_carboncircuit_identity_v1_identity_proto_rawDesc), len(file_carboncircuit_identity_v1_identity_proto_rawDesc)),
 			NumEnums:      12,
-			NumMessages:   37,
+			NumMessages:   44,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

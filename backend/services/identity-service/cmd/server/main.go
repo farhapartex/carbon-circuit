@@ -125,9 +125,13 @@ func run() error {
 		logger,
 	)
 
+	sessionRegistry := service.NewSessionRegistry(
+		store, repository.NewSessionRepository(), logger,
+	)
+
 	identityServer := rpc.NewIdentityServer(
 		store, sessions, organizations, describer, treasury, team, facilities,
-		logger, revision,
+		sessionRegistry, logger, revision,
 	)
 
 	publicKey, err := sharedconfig.Ed25519PublicKey(settings.ServiceTokenPublicKey)

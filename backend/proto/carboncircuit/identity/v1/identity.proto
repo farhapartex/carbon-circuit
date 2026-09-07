@@ -20,6 +20,9 @@ service IdentityService {
   rpc CreateFacility(CreateFacilityRequest) returns (CreateFacilityResponse);
   rpc ListFacilities(ListFacilitiesRequest) returns (ListFacilitiesResponse);
   rpc GetFacility(GetFacilityRequest) returns (GetFacilityResponse);
+  rpc RecordSession(RecordSessionRequest) returns (RecordSessionResponse);
+  rpc ListSessions(ListSessionsRequest) returns (ListSessionsResponse);
+  rpc RevokeSession(RevokeSessionRequest) returns (RevokeSessionResponse);
 }
 
 enum OrganizationType {
@@ -79,6 +82,9 @@ message SessionUser {
   string name = 3;
   PlatformRole platform_role = 4;
   bool mfa_enrolled = 5;
+  bool email_verified = 6;
+  string created_at = 7;
+  string personal_wallet_address = 8;
 }
 
 message SessionOrganization {
@@ -348,4 +354,33 @@ message GetFacilityRequest {
 
 message GetFacilityResponse {
   Facility facility = 1;
+}
+
+message Session {
+  string auth0_session_id = 1;
+  string user_agent = 2;
+  string ip_address = 3;
+  string started_at = 4;
+  string last_seen_at = 5;
+}
+
+message RecordSessionRequest {
+  string user_agent = 1;
+  string ip_address = 2;
+}
+
+message RecordSessionResponse {}
+
+message ListSessionsRequest {}
+
+message ListSessionsResponse {
+  repeated Session sessions = 1;
+}
+
+message RevokeSessionRequest {
+  string auth0_session_id = 1;
+}
+
+message RevokeSessionResponse {
+  string subject = 1;
 }

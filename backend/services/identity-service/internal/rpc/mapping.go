@@ -1,6 +1,8 @@
 package rpc
 
 import (
+	"time"
+
 	identityv1 "github.com/carboncircuit/backend/gen/carboncircuit/identity/v1"
 	"github.com/carboncircuit/backend/services/identity-service/internal/domain"
 )
@@ -44,12 +46,20 @@ func platformRoleToProto(role *domain.PlatformRole) identityv1.PlatformRole {
 }
 
 func userToProto(user domain.User) *identityv1.SessionUser {
+	wallet := ""
+	if user.PersonalWalletAddress != nil {
+		wallet = *user.PersonalWalletAddress
+	}
+
 	return &identityv1.SessionUser{
-		Id:           user.ID.String(),
-		Email:        user.Email,
-		Name:         user.Name,
-		PlatformRole: platformRoleToProto(user.PlatformRole),
-		MfaEnrolled:  user.MFAEnrolled(),
+		Id:                    user.ID.String(),
+		Email:                 user.Email,
+		Name:                  user.Name,
+		PlatformRole:          platformRoleToProto(user.PlatformRole),
+		MfaEnrolled:           user.MFAEnrolled(),
+		EmailVerified:         user.EmailVerified,
+		CreatedAt:             user.CreatedAt.UTC().Format(time.RFC3339),
+		PersonalWalletAddress: wallet,
 	}
 }
 

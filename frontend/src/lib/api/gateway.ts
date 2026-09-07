@@ -1,4 +1,5 @@
 import "server-only";
+import { headers } from "next/headers";
 import { serverConfig } from "@/lib/config/server";
 
 export class GatewayError extends Error {
@@ -19,12 +20,30 @@ const errorCodeFrom = async (response: Response): Promise<string> => {
   }
 };
 
+const deviceHeaders = async (): Promise<Record<string, string>> => {
+  const incoming = await headers();
+
+  const forwarded: Record<string, string> = {};
+
+  const userAgent = incoming.get("user-agent");
+  if (userAgent) forwarded["User-Agent"] = userAgent;
+
+  const address = incoming.get("x-forwarded-for") ?? incoming.get("x-real-ip");
+  if (address) forwarded["X-Forwarded-For"] = address;
+
+  return forwarded;
+};
+
 export const gatewayGet = async <T>(
   path: string,
   token: string,
 ): Promise<T> => {
   const response = await fetch(new URL(path, serverConfig.apiGatewayUrl), {
-    headers: { Accept: "application/json", Authorization: `Bearer ${token}` },
+    headers: {
+      Accept: "application/json",
+      Authorization: `Bearer ${token}`,
+      ...(await deviceHeaders()),
+    },
     cache: "no-store",
   });
 
@@ -49,6 +68,7 @@ export const gatewayPost = async <T>(
       "Content-Type": "application/json",
       "Idempotency-Key": idempotencyKey,
       Authorization: `Bearer ${token}`,
+      ...(await deviceHeaders()),
     },
     body: JSON.stringify(body),
     cache: "no-store",
@@ -69,19 +89,20 @@ const mutate = async (
   body: unknown,
   idempotencyKey: string,
 ): Promise<Response> => {
-  const headers: Record<string, string> = {
+  const requestHeaders: Record<string, string> = {
     Accept: "application/json",
     "Idempotency-Key": idempotencyKey,
     Authorization: `Bearer ${token}`,
+    ...(await deviceHeaders()),
   };
 
   if (body !== undefined) {
-    headers["Content-Type"] = "application/json";
+    requestHeaders["Content-Type"] = "application/json";
   }
 
   const response = await fetch(new URL(path, serverConfig.apiGatewayUrl), {
     method,
-    headers,
+    headers: requestHeaders,
     ...(body === undefined ? {} : { body: JSON.stringify(body) }),
     cache: "no-store",
   });

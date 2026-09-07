@@ -134,7 +134,9 @@ func run() error {
 
 	return grpcx.Serve(ctx, grpcx.ServerOptions{
 		Interceptors: []grpc.UnaryServerInterceptor{
-			grpcx.RequireServiceToken(servicetoken.NewVerifier(publicKey), nil),
+			grpcx.RequireServiceToken(servicetoken.NewVerifier(publicKey), map[string]bool{
+				"/carboncircuit.provenance.v1.ProvenanceService/Ping": true,
+			}),
 		},
 		TransportCreds:  transport,
 		Address:         settings.GRPCAddress,

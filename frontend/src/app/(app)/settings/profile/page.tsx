@@ -1,16 +1,16 @@
 import type { Metadata } from "next";
 import { MailCheck, MailWarning } from "lucide-react";
+import { ActiveSessionList } from "@/components/features/settings/ActiveSessionList";
 import { MfaSettingsCard } from "@/components/features/settings/MfaSettingsCard";
 import { AddressDisplay } from "@/components/shared/AddressDisplay";
 import { StatusPill } from "@/components/shared/StatusPill";
 import { TimestampDisplay } from "@/components/shared/TimestampDisplay";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  getMfaSettings,
-  getSignedInUser,
-  listActiveSessions,
-} from "@/lib/fixtures";
+import { fetchMe } from "@/lib/api/me";
+import { fetchSessions } from "@/lib/api/sessions";
+import { auth0 } from "@/lib/auth0";
+import { getMfaSettings } from "@/lib/fixtures";
 
 export const metadata: Metadata = { title: "Profile" };
 
@@ -21,9 +21,15 @@ const ROLE_LABELS = {
 } as const;
 
 export default async function SettingsProfilePage() {
-  const user = await getSignedInUser();
-  const mfa = await getMfaSettings();
-  const sessions = await listActiveSessions();
+  const { token } = await auth0.getAccessToken();
+
+  const [session, sessions, mfa] = await Promise.all([
+    fetchMe(token),
+    fetchSessions(token),
+    getMfaSettings(),
+  ]);
+
+  const { user, organization } = session;
 
   return (
     <>
@@ -57,14 +63,19 @@ export default async function SettingsProfilePage() {
             <div>
               <dt className="text-caption text-neutral-600">Role</dt>
               <dd>
-                {user.role ? (
+                {organization ? (
                   <StatusPill
                     presentation={{
-                      label: ROLE_LABELS[user.role],
-                      variant: user.role === "owner" ? "primary" : "neutral",
+                      label: ROLE_LABELS[organization.role],
+                      variant:
+                        organization.role === "owner" ? "primary" : "neutral",
                     }}
                   />
-                ) : null}
+                ) : (
+                  <span className="text-caption text-neutral-600">
+                    No organization yet
+                  </span>
+                )}
               </dd>
             </div>
             <div>
@@ -93,56 +104,26 @@ export default async function SettingsProfilePage() {
           {user.personalWalletAddress ? (
             <div className="flex flex-wrap items-center gap-3">
               <AddressDisplay address={user.personalWalletAddress} />
-              <Button variant="outline" size="sm">
+              <Button variant="outline" size="sm" disabled>
                 Disconnect
               </Button>
             </div>
           ) : (
-            <Button variant="outline" size="sm">
-              Connect a personal wallet
-            </Button>
+            <>
+              <Button variant="outline" size="sm" disabled>
+                Connect a personal wallet
+              </Button>
+              <p className="text-caption text-pretty text-neutral-600">
+                Not available yet. Binding a personal wallet needs a signed
+                proof of ownership, the same as the Treasury Address does, and
+                that flow is not built.
+              </p>
+            </>
           )}
         </CardContent>
       </Card>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Active sessions</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <ul className="divide-y divide-neutral-200">
-            {sessions.map((session) => (
-              <li
-                key={session.id}
-                className="flex flex-wrap items-center gap-3 py-3 first:pt-0 last:pb-0"
-              >
-                <span className="min-w-0">
-                  <span className="flex flex-wrap items-center gap-2 font-medium">
-                    {session.userAgent}
-                    {session.current ? (
-                      <StatusPill
-                        presentation={{
-                          label: "This device",
-                          variant: "success",
-                        }}
-                      />
-                    ) : null}
-                  </span>
-                  <span className="block text-caption text-neutral-600">
-                    {session.ipAddress} · last seen{" "}
-                    <TimestampDisplay value={session.lastSeenAt} />
-                  </span>
-                </span>
-                {session.current ? null : (
-                  <Button variant="outline" size="sm" className="ml-auto">
-                    Revoke
-                  </Button>
-                )}
-              </li>
-            ))}
-          </ul>
-        </CardContent>
-      </Card>
+      <ActiveSessionList sessions={sessions} />
     </>
   );
 }

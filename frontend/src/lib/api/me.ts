@@ -1,5 +1,6 @@
 import "server-only";
 import { gatewayGet } from "@/lib/api/gateway";
+import type { EthereumAddress } from "@/lib/types/common";
 import type { VerificationStatus } from "@/lib/status";
 import type { PlanTier } from "@/lib/types/billing";
 import type {
@@ -19,6 +20,9 @@ type ApiMe = {
     name: string;
     platform_role: PlatformRole | null;
     mfa_enrolled: boolean;
+    email_verified: boolean;
+    created_at: string;
+    personal_wallet_address: string | null;
   };
   organization: {
     id: string;
@@ -43,6 +47,9 @@ export type CurrentUser = {
   name: string;
   platformRole: PlatformRole | null;
   mfaEnrolled: boolean;
+  emailVerified: boolean;
+  createdAt: string;
+  personalWalletAddress: EthereumAddress | null;
 };
 
 export type CurrentOrganization = {
@@ -78,6 +85,10 @@ export const fetchMe = async (token: string): Promise<CurrentSession> => {
       name: me.user.name,
       platformRole: me.user.platform_role,
       mfaEnrolled: me.user.mfa_enrolled,
+      emailVerified: me.user.email_verified,
+      createdAt: me.user.created_at,
+      personalWalletAddress: me.user
+        .personal_wallet_address as EthereumAddress | null,
     },
     organization: me.organization
       ? {

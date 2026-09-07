@@ -7,6 +7,7 @@ import (
 
 type Caller struct {
 	Subject       string
+	SessionID     string
 	Email         string
 	EmailVerified bool
 	Name          string

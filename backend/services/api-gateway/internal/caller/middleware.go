@@ -46,6 +46,8 @@ func Stamp(
 			return
 		}
 
+		resolved.SessionID = verified.SessionID
+
 		token, err := signer.Issue(resolved)
 		if err != nil {
 			logger.Error("could not issue service token",

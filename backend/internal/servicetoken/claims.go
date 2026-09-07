@@ -10,6 +10,7 @@ const (
 type Caller struct {
 	Subject            string `json:"sub"`
 	UserID             string `json:"uid"`
+	SessionID          string `json:"sid,omitempty"`
 	OrganizationID     string `json:"org,omitempty"`
 	OrganizationName   string `json:"oname,omitempty"`
 	OrganizationType   string `json:"otype,omitempty"`

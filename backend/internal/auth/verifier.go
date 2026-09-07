@@ -82,6 +82,7 @@ func (v *Verifier) Verify(ctx context.Context, token string) (Caller, error) {
 		caller.Email = profile.Email
 		caller.EmailVerified = profile.EmailVerified
 		caller.Name = profile.Name
+		caller.SessionID = profile.SessionID
 	}
 
 	return caller, nil

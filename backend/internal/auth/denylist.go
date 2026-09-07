@@ -9,7 +9,10 @@ import (
 	"github.com/carboncircuit/backend/internal/cache"
 )
 
-const revocationKeyPrefix = "auth:revoked:subject:"
+const (
+	revocationKeyPrefix = "auth:revoked:subject:"
+	sessionKeyPrefix    = "auth:revoked:session:"
+)
 
 type Denylist struct {
 	cache  *cache.Client
@@ -25,13 +28,39 @@ func revocationKey(subject string) string {
 	return revocationKeyPrefix + subject
 }
 
+func sessionKey(subject, sessionID string) string {
+	return sessionKeyPrefix + subject + ":" + sessionID
+}
+
 func (d *Denylist) Revoke(ctx context.Context, subject string) error {
 	revokedAt := strconv.FormatInt(time.Now().Unix(), 10)
 	return d.cache.SetString(ctx, revocationKey(subject), revokedAt, d.window)
 }
 
+func (d *Denylist) RevokeSession(
+	ctx context.Context,
+	subject, sessionID string,
+) error {
+	if sessionID == "" {
+		return nil
+	}
+	revokedAt := strconv.FormatInt(time.Now().Unix(), 10)
+	return d.cache.SetString(ctx, sessionKey(subject, sessionID), revokedAt, d.window)
+}
+
 func (d *Denylist) Revoked(ctx context.Context, caller Caller) bool {
-	raw, found, err := d.cache.GetString(ctx, revocationKey(caller.Subject))
+	if d.revokedAt(ctx, sessionKey(caller.Subject, caller.SessionID), caller) {
+		return true
+	}
+	return d.revokedAt(ctx, revocationKey(caller.Subject), caller)
+}
+
+func (d *Denylist) revokedAt(ctx context.Context, key string, caller Caller) bool {
+	if caller.SessionID == "" && key != revocationKey(caller.Subject) {
+		return false
+	}
+
+	raw, found, err := d.cache.GetString(ctx, key)
 	if err != nil {
 		d.logger.Error("revocation denylist unreachable, admitting caller",
 			slog.String("subject", caller.Subject),

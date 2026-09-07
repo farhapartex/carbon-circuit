@@ -284,3 +284,69 @@ func TestVerifyReportsUnreachableKeysDistinctly(t *testing.T) {
 		t.Fatalf("expected ErrKeysUnavailable, got %v", err)
 	}
 }
+
+func TestVerifyExtractsTheSessionIdentifier(t *testing.T) {
+	source := newIssuer(t)
+	defer source.close()
+
+	signer, err := jose.NewSigner(
+		jose.SigningKey{Algorithm: jose.RS256, Key: source.privateKey},
+		(&jose.SignerOptions{}).WithType("JWT").WithHeader("kid", testKeyID),
+	)
+	if err != nil {
+		t.Fatalf("build signer: %v", err)
+	}
+
+	profile := map[string]any{
+		ClaimNamespace + "/email": "nazmul@example.test",
+		ClaimNamespace + "/name":  "Nazmul",
+		ClaimNamespace + "/sid":   "sess-from-auth0",
+	}
+
+	token, err := jwt.Signed(signer).
+		Claims(source.claimsFrom(claimOverrides{})).
+		Claims(profile).
+		CompactSerialize()
+	if err != nil {
+		t.Fatalf("sign token: %v", err)
+	}
+
+	caller, err := source.verifier(t).Verify(context.Background(), token)
+	if err != nil {
+		t.Fatalf("verify: %v", err)
+	}
+
+	if caller.SessionID != "sess-from-auth0" {
+		t.Fatalf("expected the session id to be extracted, got %q", caller.SessionID)
+	}
+}
+
+func TestVerifyToleratesATokenWithoutASessionIdentifier(t *testing.T) {
+	source := newIssuer(t)
+	defer source.close()
+
+	signer, err := jose.NewSigner(
+		jose.SigningKey{Algorithm: jose.RS256, Key: source.privateKey},
+		(&jose.SignerOptions{}).WithType("JWT").WithHeader("kid", testKeyID),
+	)
+	if err != nil {
+		t.Fatalf("build signer: %v", err)
+	}
+
+	token, err := jwt.Signed(signer).
+		Claims(source.claimsFrom(claimOverrides{})).
+		Claims(map[string]any{ClaimNamespace + "/email": "nazmul@example.test"}).
+		CompactSerialize()
+	if err != nil {
+		t.Fatalf("sign token: %v", err)
+	}
+
+	caller, err := source.verifier(t).Verify(context.Background(), token)
+	if err != nil {
+		t.Fatalf("verify: %v", err)
+	}
+
+	if caller.SessionID != "" {
+		t.Fatalf("expected no session id, got %q", caller.SessionID)
+	}
+}

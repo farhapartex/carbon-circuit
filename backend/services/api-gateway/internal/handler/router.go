@@ -118,7 +118,7 @@ func NewRouter(options RouterOptions) *gin.Engine {
 	public.Use(
 		httpx.EndpointClass("public_read"),
 		httpx.ResourceKey(func(c *gin.Context) string { return c.Param("publicRef") }),
-		httpx.RateLimit(options.Limiter, options.Logger),
+		httpx.RateLimit(options.Limiter, options.Logger, nil),
 	)
 
 	public.GET("/plans", handlers.ListPlans)
@@ -130,7 +130,8 @@ func NewRouter(options RouterOptions) *gin.Engine {
 		httpx.Authenticate(options.Verifier, options.Denylist, options.Logger),
 		caller.Stamp(options.Resolver, options.Signer, options.Logger),
 		httpx.EndpointClass("authenticated_read"),
-		httpx.RateLimit(options.Limiter, options.Logger),
+		httpx.EndpointClassFor(endpointClassOf),
+		httpx.RateLimit(options.Limiter, options.Logger, organizationOf),
 		httpx.RequireIdempotencyKey(),
 		caller.RecordSessions(
 			options.Identity, options.Cache, options.SessionInterval, options.Logger,
@@ -151,6 +152,9 @@ func NewRouter(options RouterOptions) *gin.Engine {
 	authenticated.POST("/invitations/accept", handlers.AcceptInvitation)
 	authenticated.GET("/sessions", handlers.ListSessions)
 	authenticated.DELETE("/sessions/:sessionId", handlers.RevokeSession)
+	authenticated.GET("/api-keys", handlers.ListAPIKeys)
+	authenticated.DELETE("/api-keys/:keyId", handlers.RevokeAPIKey)
+	authenticated.POST("/api-keys", handlers.CreateAPIKey)
 	authenticated.GET("/facilities", handlers.ListFacilities)
 	authenticated.POST("/facilities", handlers.CreateFacility)
 	authenticated.GET("/facilities/:facilityId", handlers.GetFacility)
@@ -180,4 +184,19 @@ func (h *Handlers) IdentityPing(c *gin.Context) {
 		"revision":           response.GetRevision(),
 		"database_reachable": response.GetDatabaseReachable(),
 	})
+}
+
+func endpointClassOf(c *gin.Context) string {
+	if c.Request.Method == http.MethodPost && c.FullPath() == "/v1/api-keys" {
+		return "api_key_creation"
+	}
+	return ""
+}
+
+func organizationOf(c *gin.Context) string {
+	resolved, present := caller.ContextFrom(c.Request.Context())
+	if !present {
+		return ""
+	}
+	return resolved.OrganizationID
 }

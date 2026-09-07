@@ -248,3 +248,30 @@ func (i *Identity) RevokeSession(
 		Auth0SessionId: auth0SessionID,
 	})
 }
+
+func (i *Identity) CreateAPIKey(
+	ctx context.Context,
+	idempotencyKey, name string,
+) (*identityv1.CreateAPIKeyResponse, error) {
+	callCtx, cancel := i.call(ctx, idempotencyKey)
+	defer cancel()
+	return i.client.CreateAPIKey(callCtx, &identityv1.CreateAPIKeyRequest{Name: name})
+}
+
+func (i *Identity) ListAPIKeys(
+	ctx context.Context,
+) (*identityv1.ListAPIKeysResponse, error) {
+	callCtx, cancel := i.call(ctx, "")
+	defer cancel()
+	return i.client.ListAPIKeys(callCtx, &identityv1.ListAPIKeysRequest{})
+}
+
+func (i *Identity) RevokeAPIKey(
+	ctx context.Context,
+	idempotencyKey, keyID string,
+) error {
+	callCtx, cancel := i.call(ctx, idempotencyKey)
+	defer cancel()
+	_, err := i.client.RevokeAPIKey(callCtx, &identityv1.RevokeAPIKeyRequest{KeyId: keyID})
+	return err
+}

@@ -13,6 +13,7 @@ import (
 type Rule struct {
 	Name      string
 	PerMinute int
+	PerDay    int
 	Burst     int
 	KeyFunc   func(Request) string
 	AppliesTo func(Request) bool
@@ -49,10 +50,12 @@ func New(client *redis.Client, keyPrefix string, rules []Rule) (*Limiter, error)
 
 	limiters := make(map[string]*throttled.GCRARateLimiterCtx, len(rules))
 	for _, rule := range rules {
-		quota := throttled.RateQuota{
-			MaxRate:  throttled.PerMin(rule.PerMinute),
-			MaxBurst: rule.Burst,
+		rate := throttled.PerMin(rule.PerMinute)
+		if rule.PerDay > 0 {
+			rate = throttled.PerDay(rule.PerDay)
 		}
+
+		quota := throttled.RateQuota{MaxRate: rate, MaxBurst: rule.Burst}
 		limiter, limiterErr := throttled.NewGCRARateLimiterCtx(store, quota)
 		if limiterErr != nil {
 			return nil, fmt.Errorf("create limiter %q: %w", rule.Name, limiterErr)

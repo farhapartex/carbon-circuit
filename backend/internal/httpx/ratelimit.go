@@ -32,7 +32,20 @@ func ResourceKey(extract func(*gin.Context) string) gin.HandlerFunc {
 	}
 }
 
-func RateLimit(limiter *ratelimit.Limiter, logger *slog.Logger) gin.HandlerFunc {
+func EndpointClassFor(classify func(*gin.Context) string) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		if class := classify(c); class != "" {
+			c.Set(EndpointClassKey, class)
+		}
+		c.Next()
+	}
+}
+
+func RateLimit(
+	limiter *ratelimit.Limiter,
+	logger *slog.Logger,
+	organizationOf func(*gin.Context) string,
+) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		endpointClass, _ := c.Get(EndpointClassKey)
 		class, _ := endpointClass.(string)
@@ -42,12 +55,18 @@ func RateLimit(limiter *ratelimit.Limiter, logger *slog.Logger) gin.HandlerFunc 
 
 		peer := c.RemoteIP()
 
+		organization := ""
+		if organizationOf != nil {
+			organization = organizationOf(c)
+		}
+
 		request := ratelimit.Request{
-			CallerClass:   "public",
-			CallerKey:     peer,
-			EndpointClass: class,
-			ClientIP:      peer,
-			ResourceKey:   resourceKey,
+			CallerClass:    "public",
+			CallerKey:      peer,
+			EndpointClass:  class,
+			ClientIP:       peer,
+			OrganizationID: organization,
+			ResourceKey:    resourceKey,
 		}
 
 		if caller, verified := auth.CallerFrom(c.Request.Context()); verified {

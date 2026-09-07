@@ -42,7 +42,7 @@ func limitedRouter(t *testing.T, trustProxies []string) *gin.Engine {
 		t.Fatalf("set trusted proxies: %v", err)
 	}
 
-	router.Use(Correlate(), EndpointClass("public_read"), RateLimit(limiter, logger))
+	router.Use(Correlate(), EndpointClass("public_read"), RateLimit(limiter, logger, nil))
 	router.GET("/thing", func(c *gin.Context) {
 		Data(c, http.StatusOK, gin.H{"ok": true})
 	})

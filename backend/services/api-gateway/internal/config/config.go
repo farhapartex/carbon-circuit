@@ -31,6 +31,7 @@ type Config struct {
 	PublicReferenceBurst     int
 	SessionRecordInterval    time.Duration
 	TrustedProxies           []string
+	APIKeyCreationPerDay     int
 	PortalUserPerMinute      int
 	PortalUserBurst          int
 	UpstreamDialTimeout      time.Duration
@@ -69,6 +70,7 @@ func Load() (Config, error) {
 		PublicReferencePerMinute: loader.Int("PUBLIC_REFERENCE_PER_MINUTE", 600),
 		PublicReferenceBurst:     loader.Int("PUBLIC_REFERENCE_BURST", 120),
 		SessionRecordInterval:    loader.Duration("SESSION_RECORD_INTERVAL", 5*time.Minute),
+		APIKeyCreationPerDay:     loader.Int("API_KEY_CREATION_PER_DAY", 10),
 		TrustedProxies: trustedProxiesFrom(
 			loader.StringDefault("TRUSTED_PROXIES", ""),
 		),

@@ -175,6 +175,18 @@ func publicRules(settings config.Config) []ratelimit.Rule {
 			AppliesTo: func(request ratelimit.Request) bool { return request.CallerClass == "public" },
 		},
 		{
+			Name:   "api_key_creation",
+			PerDay: settings.APIKeyCreationPerDay,
+			Burst:  1,
+			KeyFunc: func(request ratelimit.Request) string {
+				return "apikey:org:" + request.OrganizationID
+			},
+			AppliesTo: func(request ratelimit.Request) bool {
+				return request.EndpointClass == "api_key_creation" &&
+					request.OrganizationID != ""
+			},
+		},
+		{
 			Name:      "public_batch_reference",
 			PerMinute: settings.PublicReferencePerMinute,
 			Burst:     settings.PublicReferenceBurst,

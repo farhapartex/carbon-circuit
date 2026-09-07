@@ -39,6 +39,7 @@ type RouterOptions struct {
 	SessionDenylist *auth.Denylist
 	Cache           *cache.Client
 	SessionInterval time.Duration
+	TrustedProxies  []string
 	Resolver        *caller.Resolver
 	Signer          *servicetoken.Signer
 	Logger          *slog.Logger
@@ -71,6 +72,18 @@ func NewRouter(options RouterOptions) *gin.Engine {
 	}
 
 	router := gin.New()
+
+	if err := router.SetTrustedProxies(options.TrustedProxies); err != nil {
+		options.Logger.Error("trusted proxy list rejected, no forwarded header will be honoured",
+			slog.Any("error", err),
+		)
+		_ = router.SetTrustedProxies(nil)
+	}
+
+	if len(options.TrustedProxies) == 0 {
+		options.Logger.Warn("no trusted proxies configured, client ip comes from the peer address only")
+	}
+
 	router.Use(
 		httpx.Correlate(),
 		httpx.RecoverPanics(options.Logger),

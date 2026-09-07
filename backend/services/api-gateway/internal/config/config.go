@@ -1,6 +1,7 @@
 package config
 
 import (
+	"strings"
 	"time"
 
 	sharedconfig "github.com/carboncircuit/backend/internal/config"
@@ -29,6 +30,7 @@ type Config struct {
 	PublicReferencePerMinute int
 	PublicReferenceBurst     int
 	SessionRecordInterval    time.Duration
+	TrustedProxies           []string
 	PortalUserPerMinute      int
 	PortalUserBurst          int
 	UpstreamDialTimeout      time.Duration
@@ -67,10 +69,13 @@ func Load() (Config, error) {
 		PublicReferencePerMinute: loader.Int("PUBLIC_REFERENCE_PER_MINUTE", 600),
 		PublicReferenceBurst:     loader.Int("PUBLIC_REFERENCE_BURST", 120),
 		SessionRecordInterval:    loader.Duration("SESSION_RECORD_INTERVAL", 5*time.Minute),
-		PortalUserPerMinute:      loader.Int("PORTAL_USER_PER_MINUTE", 300),
-		PortalUserBurst:          loader.Int("PORTAL_USER_BURST", 60),
-		UpstreamDialTimeout:      loader.Duration("UPSTREAM_DIAL_TIMEOUT", 5*time.Second),
-		UpstreamCallTimeout:      loader.Duration("UPSTREAM_CALL_TIMEOUT", 2*time.Second),
+		TrustedProxies: trustedProxiesFrom(
+			loader.StringDefault("TRUSTED_PROXIES", ""),
+		),
+		PortalUserPerMinute: loader.Int("PORTAL_USER_PER_MINUTE", 300),
+		PortalUserBurst:     loader.Int("PORTAL_USER_BURST", 60),
+		UpstreamDialTimeout: loader.Duration("UPSTREAM_DIAL_TIMEOUT", 5*time.Second),
+		UpstreamCallTimeout: loader.Duration("UPSTREAM_CALL_TIMEOUT", 2*time.Second),
 
 		Auth0Domain:      loader.String("AUTH0_DOMAIN"),
 		Auth0Audience:    loader.String("AUTH0_AUDIENCE"),
@@ -87,4 +92,19 @@ func Load() (Config, error) {
 	}
 
 	return config, loader.Err()
+}
+
+func trustedProxiesFrom(raw string) []string {
+	if strings.TrimSpace(raw) == "" {
+		return nil
+	}
+
+	proxies := make([]string, 0)
+	for _, entry := range strings.Split(raw, ",") {
+		if trimmed := strings.TrimSpace(entry); trimmed != "" {
+			proxies = append(proxies, trimmed)
+		}
+	}
+
+	return proxies
 }

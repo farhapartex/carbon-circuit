@@ -147,6 +147,7 @@ func run() error {
 		SessionDenylist: denylist,
 		Cache:           cacheClient,
 		SessionInterval: settings.SessionRecordInterval,
+		TrustedProxies:  settings.TrustedProxies,
 		Resolver:        resolver,
 		Signer:          signer,
 		Logger:          logger,

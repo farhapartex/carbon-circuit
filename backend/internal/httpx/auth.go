@@ -30,8 +30,18 @@ func bearerToken(header string) (string, bool) {
 	return token, token != ""
 }
 
-func Authenticate(verifier TokenVerifier, denylist RevocationChecker, logger *slog.Logger) gin.HandlerFunc {
+func Authenticate(
+	verifier TokenVerifier,
+	denylist RevocationChecker,
+	logger *slog.Logger,
+	alreadyAuthenticated func(*gin.Context) bool,
+) gin.HandlerFunc {
 	return func(c *gin.Context) {
+		if alreadyAuthenticated != nil && alreadyAuthenticated(c) {
+			c.Next()
+			return
+		}
+
 		token, present := bearerToken(c.GetHeader("Authorization"))
 		if !present {
 			Fail(c, CodeUnauthenticated)

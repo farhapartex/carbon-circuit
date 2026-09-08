@@ -36,7 +36,7 @@ func protectedRouter(verifier TokenVerifier, denylist RevocationChecker) *gin.En
 	router := gin.New()
 	router.Use(Correlate())
 	router.GET("/protected",
-		Authenticate(verifier, denylist, slog.New(slog.NewTextHandler(io.Discard, nil))),
+		Authenticate(verifier, denylist, slog.New(slog.NewTextHandler(io.Discard, nil)), nil),
 		func(c *gin.Context) {
 			caller, verified := auth.CallerFrom(c.Request.Context())
 			if !verified {

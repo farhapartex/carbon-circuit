@@ -29,6 +29,11 @@ func Stamp(
 	logger *slog.Logger,
 ) gin.HandlerFunc {
 	return func(c *gin.Context) {
+		if _, stamped := ContextFrom(c.Request.Context()); stamped {
+			c.Next()
+			return
+		}
+
 		verified, authenticated := auth.CallerFrom(c.Request.Context())
 		if !authenticated {
 			c.Next()
@@ -47,6 +52,7 @@ func Stamp(
 		}
 
 		resolved.SessionID = verified.SessionID
+		resolved.Credential = servicetoken.CredentialPortal
 
 		token, err := signer.Issue(resolved)
 		if err != nil {

@@ -11,6 +11,7 @@ type Caller struct {
 	Subject            string `json:"sub"`
 	UserID             string `json:"uid"`
 	SessionID          string `json:"sid,omitempty"`
+	Credential         string `json:"cred,omitempty"`
 	OrganizationID     string `json:"org,omitempty"`
 	OrganizationName   string `json:"oname,omitempty"`
 	OrganizationType   string `json:"otype,omitempty"`
@@ -21,7 +22,14 @@ type Caller struct {
 	OrganizationState  string `json:"ost,omitempty"`
 }
 
+const (
+	CredentialPortal = "portal"
+	CredentialAPIKey = "api_key"
+)
+
 func (c Caller) HasOrganization() bool { return c.OrganizationID != "" }
+
+func (c Caller) FromAPIKey() bool { return c.Credential == CredentialAPIKey }
 
 type envelope struct {
 	Caller

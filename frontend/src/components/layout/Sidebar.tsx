@@ -107,7 +107,7 @@ export function Sidebar({
         aria-label="Primary"
         data-collapsed={collapsed}
         className={cn(
-          "flex shrink-0 flex-col gap-6 border-r border-neutral-200 bg-white py-4 transition-[width]",
+          "flex h-full shrink-0 flex-col gap-6 overflow-y-auto border-r border-neutral-200 bg-white py-4 transition-[width]",
           collapsed ? "w-16 px-2" : "w-64 px-3",
         )}
       >

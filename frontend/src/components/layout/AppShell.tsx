@@ -34,7 +34,7 @@ export function AppShell({
 }: AppShellProps) {
   return (
     <WalletProvider>
-      <div className="flex min-h-screen">
+      <div className="flex h-screen overflow-hidden">
         <Sidebar
           organizationType={organizationType}
           organizationName={organizationName}
@@ -52,7 +52,7 @@ export function AppShell({
             verificationStatus={verificationStatus}
             treasuryDesignated={treasuryDesignated}
           />
-          <main className="flex-1 px-6 py-8">
+          <main className="flex-1 overflow-y-auto px-6 py-8">
             <div className="mx-auto max-w-6xl space-y-8">{children}</div>
           </main>
         </div>

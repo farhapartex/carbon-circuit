@@ -80,7 +80,10 @@ export function SettingsNav() {
   const pathname = usePathname();
 
   return (
-    <nav aria-label="Settings" className="flex shrink-0 flex-col gap-6 lg:w-56">
+    <nav
+      aria-label="Settings"
+      className="flex shrink-0 flex-col gap-6 lg:sticky lg:top-0 lg:w-56 lg:self-start"
+    >
       {groups.map((group) => (
         <div key={group.label} className="space-y-1">
           <p className="px-3 text-caption font-medium tracking-wide text-neutral-400 uppercase">

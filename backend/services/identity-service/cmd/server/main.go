@@ -136,7 +136,7 @@ func run() error {
 	}
 
 	apiKeys := service.NewAPIKeyService(
-		store, repository.NewAPIKeyRepository(), keyHasher, logger,
+		store, repository.NewAPIKeyRepository(), organizationStore, keyHasher, logger,
 	)
 
 	identityServer := rpc.NewIdentityServer(

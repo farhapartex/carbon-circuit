@@ -29,23 +29,26 @@ type IssuedAPIKey struct {
 }
 
 type APIKeyService struct {
-	database *gorm.DB
-	keys     repository.APIKeyStore
-	hasher   *apikey.Hasher
-	logger   *slog.Logger
+	database      *gorm.DB
+	keys          repository.APIKeyStore
+	organizations repository.OrganizationReader
+	hasher        *apikey.Hasher
+	logger        *slog.Logger
 }
 
 func NewAPIKeyService(
 	handle *gorm.DB,
 	keys repository.APIKeyStore,
+	organizations repository.OrganizationReader,
 	hasher *apikey.Hasher,
 	logger *slog.Logger,
 ) *APIKeyService {
 	return &APIKeyService{
-		database: handle,
-		keys:     keys,
-		hasher:   hasher,
-		logger:   logger,
+		database:      handle,
+		keys:          keys,
+		organizations: organizations,
+		hasher:        hasher,
+		logger:        logger,
 	}
 }
 

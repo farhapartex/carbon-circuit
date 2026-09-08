@@ -26,6 +26,7 @@ service IdentityService {
   rpc CreateAPIKey(CreateAPIKeyRequest) returns (CreateAPIKeyResponse);
   rpc ListAPIKeys(ListAPIKeysRequest) returns (ListAPIKeysResponse);
   rpc RevokeAPIKey(RevokeAPIKeyRequest) returns (RevokeAPIKeyResponse);
+  rpc ValidateAPIKey(ValidateAPIKeyRequest) returns (ValidateAPIKeyResponse);
 }
 
 enum OrganizationType {
@@ -417,3 +418,18 @@ message RevokeAPIKeyRequest {
 }
 
 message RevokeAPIKeyResponse {}
+
+message ValidateAPIKeyRequest {
+  string presented_key = 1;
+}
+
+message ValidateAPIKeyResponse {
+  string key_id = 1;
+  string prefix = 2;
+  string organization_id = 3;
+  string organization_name = 4;
+  OrganizationType organization_type = 5;
+  OrganizationState organization_state = 6;
+  VerificationStatus verification_status = 7;
+  string acting_user_id = 8;
+}

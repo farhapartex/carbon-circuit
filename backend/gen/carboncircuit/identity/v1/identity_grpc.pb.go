@@ -40,6 +40,7 @@ const (
 	IdentityService_CreateAPIKey_FullMethodName       = "/carboncircuit.identity.v1.IdentityService/CreateAPIKey"
 	IdentityService_ListAPIKeys_FullMethodName        = "/carboncircuit.identity.v1.IdentityService/ListAPIKeys"
 	IdentityService_RevokeAPIKey_FullMethodName       = "/carboncircuit.identity.v1.IdentityService/RevokeAPIKey"
+	IdentityService_ValidateAPIKey_FullMethodName     = "/carboncircuit.identity.v1.IdentityService/ValidateAPIKey"
 )
 
 // IdentityServiceClient is the client API for IdentityService service.
@@ -67,6 +68,7 @@ type IdentityServiceClient interface {
 	CreateAPIKey(ctx context.Context, in *CreateAPIKeyRequest, opts ...grpc.CallOption) (*CreateAPIKeyResponse, error)
 	ListAPIKeys(ctx context.Context, in *ListAPIKeysRequest, opts ...grpc.CallOption) (*ListAPIKeysResponse, error)
 	RevokeAPIKey(ctx context.Context, in *RevokeAPIKeyRequest, opts ...grpc.CallOption) (*RevokeAPIKeyResponse, error)
+	ValidateAPIKey(ctx context.Context, in *ValidateAPIKeyRequest, opts ...grpc.CallOption) (*ValidateAPIKeyResponse, error)
 }
 
 type identityServiceClient struct {
@@ -287,6 +289,16 @@ func (c *identityServiceClient) RevokeAPIKey(ctx context.Context, in *RevokeAPIK
 	return out, nil
 }
 
+func (c *identityServiceClient) ValidateAPIKey(ctx context.Context, in *ValidateAPIKeyRequest, opts ...grpc.CallOption) (*ValidateAPIKeyResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ValidateAPIKeyResponse)
+	err := c.cc.Invoke(ctx, IdentityService_ValidateAPIKey_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // IdentityServiceServer is the server API for IdentityService service.
 // All implementations must embed UnimplementedIdentityServiceServer
 // for forward compatibility.
@@ -312,6 +324,7 @@ type IdentityServiceServer interface {
 	CreateAPIKey(context.Context, *CreateAPIKeyRequest) (*CreateAPIKeyResponse, error)
 	ListAPIKeys(context.Context, *ListAPIKeysRequest) (*ListAPIKeysResponse, error)
 	RevokeAPIKey(context.Context, *RevokeAPIKeyRequest) (*RevokeAPIKeyResponse, error)
+	ValidateAPIKey(context.Context, *ValidateAPIKeyRequest) (*ValidateAPIKeyResponse, error)
 	mustEmbedUnimplementedIdentityServiceServer()
 }
 
@@ -384,6 +397,9 @@ func (UnimplementedIdentityServiceServer) ListAPIKeys(context.Context, *ListAPIK
 }
 func (UnimplementedIdentityServiceServer) RevokeAPIKey(context.Context, *RevokeAPIKeyRequest) (*RevokeAPIKeyResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method RevokeAPIKey not implemented")
+}
+func (UnimplementedIdentityServiceServer) ValidateAPIKey(context.Context, *ValidateAPIKeyRequest) (*ValidateAPIKeyResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ValidateAPIKey not implemented")
 }
 func (UnimplementedIdentityServiceServer) mustEmbedUnimplementedIdentityServiceServer() {}
 func (UnimplementedIdentityServiceServer) testEmbeddedByValue()                         {}
@@ -784,6 +800,24 @@ func _IdentityService_RevokeAPIKey_Handler(srv interface{}, ctx context.Context,
 	return interceptor(ctx, in, info, handler)
 }
 
+func _IdentityService_ValidateAPIKey_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ValidateAPIKeyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(IdentityServiceServer).ValidateAPIKey(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: IdentityService_ValidateAPIKey_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IdentityServiceServer).ValidateAPIKey(ctx, req.(*ValidateAPIKeyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // IdentityService_ServiceDesc is the grpc.ServiceDesc for IdentityService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -874,6 +908,10 @@ var IdentityService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "RevokeAPIKey",
 			Handler:    _IdentityService_RevokeAPIKey_Handler,
+		},
+		{
+			MethodName: "ValidateAPIKey",
+			Handler:    _IdentityService_ValidateAPIKey_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -16,6 +16,7 @@ import (
 
 type APIKeyManager interface {
 	Create(ctx context.Context, actor service.Actor, name string) (service.IssuedAPIKey, error)
+	Validate(ctx context.Context, presented string) (service.ValidatedAPIKey, error)
 	List(ctx context.Context, actor service.Actor) ([]domain.APIKey, error)
 	Revoke(ctx context.Context, actor service.Actor, keyID uuid.UUID) error
 }
@@ -112,4 +113,29 @@ func apiKeyFailure(err error) error {
 	default:
 		return status.Error(codes.Internal, err.Error())
 	}
+}
+
+func (s *IdentityServer) ValidateAPIKey(
+	ctx context.Context,
+	request *identityv1.ValidateAPIKeyRequest,
+) (*identityv1.ValidateAPIKeyResponse, error) {
+	validated, err := s.apiKeys.Validate(ctx, request.GetPresentedKey())
+	if err != nil {
+		if errors.Is(err, service.ErrAPIKeyRejected) ||
+			errors.Is(err, service.ErrAPIKeyRevoked) {
+			return nil, status.Error(codes.Unauthenticated, "api key is not valid")
+		}
+		return nil, status.Error(codes.Internal, err.Error())
+	}
+
+	return &identityv1.ValidateAPIKeyResponse{
+		KeyId:              validated.KeyID.String(),
+		Prefix:             validated.Prefix,
+		OrganizationId:     validated.OrganizationID.String(),
+		OrganizationName:   validated.OrganizationName,
+		OrganizationType:   organizationTypes[validated.OrganizationType],
+		OrganizationState:  organizationStates[validated.OrganizationState],
+		VerificationStatus: verificationStatuses[validated.VerificationStatus],
+		ActingUserId:       validated.ActingUserID.String(),
+	}, nil
 }

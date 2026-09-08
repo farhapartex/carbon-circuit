@@ -3674,6 +3674,150 @@ func (*RevokeAPIKeyResponse) Descriptor() ([]byte, []int) {
 	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{50}
 }
 
+type ValidateAPIKeyRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	PresentedKey  string                 `protobuf:"bytes,1,opt,name=presented_key,json=presentedKey,proto3" json:"presented_key,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ValidateAPIKeyRequest) Reset() {
+	*x = ValidateAPIKeyRequest{}
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[51]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ValidateAPIKeyRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ValidateAPIKeyRequest) ProtoMessage() {}
+
+func (x *ValidateAPIKeyRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[51]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ValidateAPIKeyRequest.ProtoReflect.Descriptor instead.
+func (*ValidateAPIKeyRequest) Descriptor() ([]byte, []int) {
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{51}
+}
+
+func (x *ValidateAPIKeyRequest) GetPresentedKey() string {
+	if x != nil {
+		return x.PresentedKey
+	}
+	return ""
+}
+
+type ValidateAPIKeyResponse struct {
+	state              protoimpl.MessageState `protogen:"open.v1"`
+	KeyId              string                 `protobuf:"bytes,1,opt,name=key_id,json=keyId,proto3" json:"key_id,omitempty"`
+	Prefix             string                 `protobuf:"bytes,2,opt,name=prefix,proto3" json:"prefix,omitempty"`
+	OrganizationId     string                 `protobuf:"bytes,3,opt,name=organization_id,json=organizationId,proto3" json:"organization_id,omitempty"`
+	OrganizationName   string                 `protobuf:"bytes,4,opt,name=organization_name,json=organizationName,proto3" json:"organization_name,omitempty"`
+	OrganizationType   OrganizationType       `protobuf:"varint,5,opt,name=organization_type,json=organizationType,proto3,enum=carboncircuit.identity.v1.OrganizationType" json:"organization_type,omitempty"`
+	OrganizationState  OrganizationState      `protobuf:"varint,6,opt,name=organization_state,json=organizationState,proto3,enum=carboncircuit.identity.v1.OrganizationState" json:"organization_state,omitempty"`
+	VerificationStatus VerificationStatus     `protobuf:"varint,7,opt,name=verification_status,json=verificationStatus,proto3,enum=carboncircuit.identity.v1.VerificationStatus" json:"verification_status,omitempty"`
+	ActingUserId       string                 `protobuf:"bytes,8,opt,name=acting_user_id,json=actingUserId,proto3" json:"acting_user_id,omitempty"`
+	unknownFields      protoimpl.UnknownFields
+	sizeCache          protoimpl.SizeCache
+}
+
+func (x *ValidateAPIKeyResponse) Reset() {
+	*x = ValidateAPIKeyResponse{}
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[52]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ValidateAPIKeyResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ValidateAPIKeyResponse) ProtoMessage() {}
+
+func (x *ValidateAPIKeyResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[52]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ValidateAPIKeyResponse.ProtoReflect.Descriptor instead.
+func (*ValidateAPIKeyResponse) Descriptor() ([]byte, []int) {
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{52}
+}
+
+func (x *ValidateAPIKeyResponse) GetKeyId() string {
+	if x != nil {
+		return x.KeyId
+	}
+	return ""
+}
+
+func (x *ValidateAPIKeyResponse) GetPrefix() string {
+	if x != nil {
+		return x.Prefix
+	}
+	return ""
+}
+
+func (x *ValidateAPIKeyResponse) GetOrganizationId() string {
+	if x != nil {
+		return x.OrganizationId
+	}
+	return ""
+}
+
+func (x *ValidateAPIKeyResponse) GetOrganizationName() string {
+	if x != nil {
+		return x.OrganizationName
+	}
+	return ""
+}
+
+func (x *ValidateAPIKeyResponse) GetOrganizationType() OrganizationType {
+	if x != nil {
+		return x.OrganizationType
+	}
+	return OrganizationType_ORGANIZATION_TYPE_UNSPECIFIED
+}
+
+func (x *ValidateAPIKeyResponse) GetOrganizationState() OrganizationState {
+	if x != nil {
+		return x.OrganizationState
+	}
+	return OrganizationState_ORGANIZATION_STATE_UNSPECIFIED
+}
+
+func (x *ValidateAPIKeyResponse) GetVerificationStatus() VerificationStatus {
+	if x != nil {
+		return x.VerificationStatus
+	}
+	return VerificationStatus_VERIFICATION_STATUS_UNSPECIFIED
+}
+
+func (x *ValidateAPIKeyResponse) GetActingUserId() string {
+	if x != nil {
+		return x.ActingUserId
+	}
+	return ""
+}
+
 var File_carboncircuit_identity_v1_identity_proto protoreflect.FileDescriptor
 
 const file_carboncircuit_identity_v1_identity_proto_rawDesc = "" +
@@ -3897,7 +4041,18 @@ const file_carboncircuit_identity_v1_identity_proto_rawDesc = "" +
 	"\x04keys\x18\x01 \x03(\v2!.carboncircuit.identity.v1.APIKeyR\x04keys\",\n" +
 	"\x13RevokeAPIKeyRequest\x12\x15\n" +
 	"\x06key_id\x18\x01 \x01(\tR\x05keyId\"\x16\n" +
-	"\x14RevokeAPIKeyResponse*\xbf\x01\n" +
+	"\x14RevokeAPIKeyResponse\"<\n" +
+	"\x15ValidateAPIKeyRequest\x12#\n" +
+	"\rpresented_key\x18\x01 \x01(\tR\fpresentedKey\"\xda\x03\n" +
+	"\x16ValidateAPIKeyResponse\x12\x15\n" +
+	"\x06key_id\x18\x01 \x01(\tR\x05keyId\x12\x16\n" +
+	"\x06prefix\x18\x02 \x01(\tR\x06prefix\x12'\n" +
+	"\x0forganization_id\x18\x03 \x01(\tR\x0eorganizationId\x12+\n" +
+	"\x11organization_name\x18\x04 \x01(\tR\x10organizationName\x12X\n" +
+	"\x11organization_type\x18\x05 \x01(\x0e2+.carboncircuit.identity.v1.OrganizationTypeR\x10organizationType\x12[\n" +
+	"\x12organization_state\x18\x06 \x01(\x0e2,.carboncircuit.identity.v1.OrganizationStateR\x11organizationState\x12^\n" +
+	"\x13verification_status\x18\a \x01(\x0e2-.carboncircuit.identity.v1.VerificationStatusR\x12verificationStatus\x12$\n" +
+	"\x0eacting_user_id\x18\b \x01(\tR\factingUserId*\xbf\x01\n" +
 	"\x10OrganizationType\x12!\n" +
 	"\x1dORGANIZATION_TYPE_UNSPECIFIED\x10\x00\x12\"\n" +
 	"\x1eORGANIZATION_TYPE_MANUFACTURER\x10\x01\x12\x1f\n" +
@@ -3978,7 +4133,7 @@ const file_carboncircuit_identity_v1_identity_proto_rawDesc = "" +
 	"\x0eGRID_REGION_VN\x10\x0f\x12\x12\n" +
 	"\x0eGRID_REGION_MY\x10\x10\x12\x12\n" +
 	"\x0eGRID_REGION_SG\x10\x11\x12\x12\n" +
-	"\x0eGRID_REGION_TH\x10\x122\xaf\x13\n" +
+	"\x0eGRID_REGION_TH\x10\x122\xa6\x14\n" +
 	"\x0fIdentityService\x12W\n" +
 	"\x04Ping\x12&.carboncircuit.identity.v1.PingRequest\x1a'.carboncircuit.identity.v1.PingResponse\x12u\n" +
 	"\x0eResolveSession\x120.carboncircuit.identity.v1.ResolveSessionRequest\x1a1.carboncircuit.identity.v1.ResolveSessionResponse\x12\x81\x01\n" +
@@ -4000,7 +4155,8 @@ const file_carboncircuit_identity_v1_identity_proto_rawDesc = "" +
 	"\rRevokeSession\x12/.carboncircuit.identity.v1.RevokeSessionRequest\x1a0.carboncircuit.identity.v1.RevokeSessionResponse\x12o\n" +
 	"\fCreateAPIKey\x12..carboncircuit.identity.v1.CreateAPIKeyRequest\x1a/.carboncircuit.identity.v1.CreateAPIKeyResponse\x12l\n" +
 	"\vListAPIKeys\x12-.carboncircuit.identity.v1.ListAPIKeysRequest\x1a..carboncircuit.identity.v1.ListAPIKeysResponse\x12o\n" +
-	"\fRevokeAPIKey\x12..carboncircuit.identity.v1.RevokeAPIKeyRequest\x1a/.carboncircuit.identity.v1.RevokeAPIKeyResponseB\xff\x01\n" +
+	"\fRevokeAPIKey\x12..carboncircuit.identity.v1.RevokeAPIKeyRequest\x1a/.carboncircuit.identity.v1.RevokeAPIKeyResponse\x12u\n" +
+	"\x0eValidateAPIKey\x120.carboncircuit.identity.v1.ValidateAPIKeyRequest\x1a1.carboncircuit.identity.v1.ValidateAPIKeyResponseB\xff\x01\n" +
 	"\x1dcom.carboncircuit.identity.v1B\rIdentityProtoP\x01ZIgithub.com/carboncircuit/backend/gen/carboncircuit/identity/v1;identityv1\xa2\x02\x03CIX\xaa\x02\x19Carboncircuit.Identity.V1\xca\x02\x19Carboncircuit\\Identity\\V1\xe2\x02%Carboncircuit\\Identity\\V1\\GPBMetadata\xea\x02\x1bCarboncircuit::Identity::V1b\x06proto3"
 
 var (
@@ -4016,7 +4172,7 @@ func file_carboncircuit_identity_v1_identity_proto_rawDescGZIP() []byte {
 }
 
 var file_carboncircuit_identity_v1_identity_proto_enumTypes = make([]protoimpl.EnumInfo, 12)
-var file_carboncircuit_identity_v1_identity_proto_msgTypes = make([]protoimpl.MessageInfo, 51)
+var file_carboncircuit_identity_v1_identity_proto_msgTypes = make([]protoimpl.MessageInfo, 53)
 var file_carboncircuit_identity_v1_identity_proto_goTypes = []any{
 	(OrganizationType)(0),              // 0: carboncircuit.identity.v1.OrganizationType
 	(OrganizationRole)(0),              // 1: carboncircuit.identity.v1.OrganizationRole
@@ -4081,6 +4237,8 @@ var file_carboncircuit_identity_v1_identity_proto_goTypes = []any{
 	(*ListAPIKeysResponse)(nil),        // 60: carboncircuit.identity.v1.ListAPIKeysResponse
 	(*RevokeAPIKeyRequest)(nil),        // 61: carboncircuit.identity.v1.RevokeAPIKeyRequest
 	(*RevokeAPIKeyResponse)(nil),       // 62: carboncircuit.identity.v1.RevokeAPIKeyResponse
+	(*ValidateAPIKeyRequest)(nil),      // 63: carboncircuit.identity.v1.ValidateAPIKeyRequest
+	(*ValidateAPIKeyResponse)(nil),     // 64: carboncircuit.identity.v1.ValidateAPIKeyResponse
 }
 var file_carboncircuit_identity_v1_identity_proto_depIdxs = []int32{
 	4,  // 0: carboncircuit.identity.v1.SessionUser.platform_role:type_name -> carboncircuit.identity.v1.PlatformRole
@@ -4126,53 +4284,58 @@ var file_carboncircuit_identity_v1_identity_proto_depIdxs = []int32{
 	49, // 40: carboncircuit.identity.v1.ListSessionsResponse.sessions:type_name -> carboncircuit.identity.v1.Session
 	56, // 41: carboncircuit.identity.v1.CreateAPIKeyResponse.key:type_name -> carboncircuit.identity.v1.APIKey
 	56, // 42: carboncircuit.identity.v1.ListAPIKeysResponse.keys:type_name -> carboncircuit.identity.v1.APIKey
-	12, // 43: carboncircuit.identity.v1.IdentityService.Ping:input_type -> carboncircuit.identity.v1.PingRequest
-	14, // 44: carboncircuit.identity.v1.IdentityService.ResolveSession:input_type -> carboncircuit.identity.v1.ResolveSessionRequest
-	18, // 45: carboncircuit.identity.v1.IdentityService.CreateOrganization:input_type -> carboncircuit.identity.v1.CreateOrganizationRequest
-	21, // 46: carboncircuit.identity.v1.IdentityService.GetOrganization:input_type -> carboncircuit.identity.v1.GetOrganizationRequest
-	24, // 47: carboncircuit.identity.v1.IdentityService.IssueTreasuryNonce:input_type -> carboncircuit.identity.v1.IssueTreasuryNonceRequest
-	26, // 48: carboncircuit.identity.v1.IdentityService.DesignateTreasury:input_type -> carboncircuit.identity.v1.DesignateTreasuryRequest
-	30, // 49: carboncircuit.identity.v1.IdentityService.ListMembers:input_type -> carboncircuit.identity.v1.ListMembersRequest
-	32, // 50: carboncircuit.identity.v1.IdentityService.InviteMember:input_type -> carboncircuit.identity.v1.InviteMemberRequest
-	34, // 51: carboncircuit.identity.v1.IdentityService.RevokeInvitation:input_type -> carboncircuit.identity.v1.RevokeInvitationRequest
-	36, // 52: carboncircuit.identity.v1.IdentityService.ChangeMemberRole:input_type -> carboncircuit.identity.v1.ChangeMemberRoleRequest
-	38, // 53: carboncircuit.identity.v1.IdentityService.RevokeMember:input_type -> carboncircuit.identity.v1.RevokeMemberRequest
-	40, // 54: carboncircuit.identity.v1.IdentityService.AcceptInvitation:input_type -> carboncircuit.identity.v1.AcceptInvitationRequest
-	43, // 55: carboncircuit.identity.v1.IdentityService.CreateFacility:input_type -> carboncircuit.identity.v1.CreateFacilityRequest
-	45, // 56: carboncircuit.identity.v1.IdentityService.ListFacilities:input_type -> carboncircuit.identity.v1.ListFacilitiesRequest
-	47, // 57: carboncircuit.identity.v1.IdentityService.GetFacility:input_type -> carboncircuit.identity.v1.GetFacilityRequest
-	50, // 58: carboncircuit.identity.v1.IdentityService.RecordSession:input_type -> carboncircuit.identity.v1.RecordSessionRequest
-	52, // 59: carboncircuit.identity.v1.IdentityService.ListSessions:input_type -> carboncircuit.identity.v1.ListSessionsRequest
-	54, // 60: carboncircuit.identity.v1.IdentityService.RevokeSession:input_type -> carboncircuit.identity.v1.RevokeSessionRequest
-	57, // 61: carboncircuit.identity.v1.IdentityService.CreateAPIKey:input_type -> carboncircuit.identity.v1.CreateAPIKeyRequest
-	59, // 62: carboncircuit.identity.v1.IdentityService.ListAPIKeys:input_type -> carboncircuit.identity.v1.ListAPIKeysRequest
-	61, // 63: carboncircuit.identity.v1.IdentityService.RevokeAPIKey:input_type -> carboncircuit.identity.v1.RevokeAPIKeyRequest
-	13, // 64: carboncircuit.identity.v1.IdentityService.Ping:output_type -> carboncircuit.identity.v1.PingResponse
-	17, // 65: carboncircuit.identity.v1.IdentityService.ResolveSession:output_type -> carboncircuit.identity.v1.ResolveSessionResponse
-	20, // 66: carboncircuit.identity.v1.IdentityService.CreateOrganization:output_type -> carboncircuit.identity.v1.CreateOrganizationResponse
-	23, // 67: carboncircuit.identity.v1.IdentityService.GetOrganization:output_type -> carboncircuit.identity.v1.GetOrganizationResponse
-	25, // 68: carboncircuit.identity.v1.IdentityService.IssueTreasuryNonce:output_type -> carboncircuit.identity.v1.IssueTreasuryNonceResponse
-	27, // 69: carboncircuit.identity.v1.IdentityService.DesignateTreasury:output_type -> carboncircuit.identity.v1.DesignateTreasuryResponse
-	31, // 70: carboncircuit.identity.v1.IdentityService.ListMembers:output_type -> carboncircuit.identity.v1.ListMembersResponse
-	33, // 71: carboncircuit.identity.v1.IdentityService.InviteMember:output_type -> carboncircuit.identity.v1.InviteMemberResponse
-	35, // 72: carboncircuit.identity.v1.IdentityService.RevokeInvitation:output_type -> carboncircuit.identity.v1.RevokeInvitationResponse
-	37, // 73: carboncircuit.identity.v1.IdentityService.ChangeMemberRole:output_type -> carboncircuit.identity.v1.ChangeMemberRoleResponse
-	39, // 74: carboncircuit.identity.v1.IdentityService.RevokeMember:output_type -> carboncircuit.identity.v1.RevokeMemberResponse
-	41, // 75: carboncircuit.identity.v1.IdentityService.AcceptInvitation:output_type -> carboncircuit.identity.v1.AcceptInvitationResponse
-	44, // 76: carboncircuit.identity.v1.IdentityService.CreateFacility:output_type -> carboncircuit.identity.v1.CreateFacilityResponse
-	46, // 77: carboncircuit.identity.v1.IdentityService.ListFacilities:output_type -> carboncircuit.identity.v1.ListFacilitiesResponse
-	48, // 78: carboncircuit.identity.v1.IdentityService.GetFacility:output_type -> carboncircuit.identity.v1.GetFacilityResponse
-	51, // 79: carboncircuit.identity.v1.IdentityService.RecordSession:output_type -> carboncircuit.identity.v1.RecordSessionResponse
-	53, // 80: carboncircuit.identity.v1.IdentityService.ListSessions:output_type -> carboncircuit.identity.v1.ListSessionsResponse
-	55, // 81: carboncircuit.identity.v1.IdentityService.RevokeSession:output_type -> carboncircuit.identity.v1.RevokeSessionResponse
-	58, // 82: carboncircuit.identity.v1.IdentityService.CreateAPIKey:output_type -> carboncircuit.identity.v1.CreateAPIKeyResponse
-	60, // 83: carboncircuit.identity.v1.IdentityService.ListAPIKeys:output_type -> carboncircuit.identity.v1.ListAPIKeysResponse
-	62, // 84: carboncircuit.identity.v1.IdentityService.RevokeAPIKey:output_type -> carboncircuit.identity.v1.RevokeAPIKeyResponse
-	64, // [64:85] is the sub-list for method output_type
-	43, // [43:64] is the sub-list for method input_type
-	43, // [43:43] is the sub-list for extension type_name
-	43, // [43:43] is the sub-list for extension extendee
-	0,  // [0:43] is the sub-list for field type_name
+	0,  // 43: carboncircuit.identity.v1.ValidateAPIKeyResponse.organization_type:type_name -> carboncircuit.identity.v1.OrganizationType
+	2,  // 44: carboncircuit.identity.v1.ValidateAPIKeyResponse.organization_state:type_name -> carboncircuit.identity.v1.OrganizationState
+	3,  // 45: carboncircuit.identity.v1.ValidateAPIKeyResponse.verification_status:type_name -> carboncircuit.identity.v1.VerificationStatus
+	12, // 46: carboncircuit.identity.v1.IdentityService.Ping:input_type -> carboncircuit.identity.v1.PingRequest
+	14, // 47: carboncircuit.identity.v1.IdentityService.ResolveSession:input_type -> carboncircuit.identity.v1.ResolveSessionRequest
+	18, // 48: carboncircuit.identity.v1.IdentityService.CreateOrganization:input_type -> carboncircuit.identity.v1.CreateOrganizationRequest
+	21, // 49: carboncircuit.identity.v1.IdentityService.GetOrganization:input_type -> carboncircuit.identity.v1.GetOrganizationRequest
+	24, // 50: carboncircuit.identity.v1.IdentityService.IssueTreasuryNonce:input_type -> carboncircuit.identity.v1.IssueTreasuryNonceRequest
+	26, // 51: carboncircuit.identity.v1.IdentityService.DesignateTreasury:input_type -> carboncircuit.identity.v1.DesignateTreasuryRequest
+	30, // 52: carboncircuit.identity.v1.IdentityService.ListMembers:input_type -> carboncircuit.identity.v1.ListMembersRequest
+	32, // 53: carboncircuit.identity.v1.IdentityService.InviteMember:input_type -> carboncircuit.identity.v1.InviteMemberRequest
+	34, // 54: carboncircuit.identity.v1.IdentityService.RevokeInvitation:input_type -> carboncircuit.identity.v1.RevokeInvitationRequest
+	36, // 55: carboncircuit.identity.v1.IdentityService.ChangeMemberRole:input_type -> carboncircuit.identity.v1.ChangeMemberRoleRequest
+	38, // 56: carboncircuit.identity.v1.IdentityService.RevokeMember:input_type -> carboncircuit.identity.v1.RevokeMemberRequest
+	40, // 57: carboncircuit.identity.v1.IdentityService.AcceptInvitation:input_type -> carboncircuit.identity.v1.AcceptInvitationRequest
+	43, // 58: carboncircuit.identity.v1.IdentityService.CreateFacility:input_type -> carboncircuit.identity.v1.CreateFacilityRequest
+	45, // 59: carboncircuit.identity.v1.IdentityService.ListFacilities:input_type -> carboncircuit.identity.v1.ListFacilitiesRequest
+	47, // 60: carboncircuit.identity.v1.IdentityService.GetFacility:input_type -> carboncircuit.identity.v1.GetFacilityRequest
+	50, // 61: carboncircuit.identity.v1.IdentityService.RecordSession:input_type -> carboncircuit.identity.v1.RecordSessionRequest
+	52, // 62: carboncircuit.identity.v1.IdentityService.ListSessions:input_type -> carboncircuit.identity.v1.ListSessionsRequest
+	54, // 63: carboncircuit.identity.v1.IdentityService.RevokeSession:input_type -> carboncircuit.identity.v1.RevokeSessionRequest
+	57, // 64: carboncircuit.identity.v1.IdentityService.CreateAPIKey:input_type -> carboncircuit.identity.v1.CreateAPIKeyRequest
+	59, // 65: carboncircuit.identity.v1.IdentityService.ListAPIKeys:input_type -> carboncircuit.identity.v1.ListAPIKeysRequest
+	61, // 66: carboncircuit.identity.v1.IdentityService.RevokeAPIKey:input_type -> carboncircuit.identity.v1.RevokeAPIKeyRequest
+	63, // 67: carboncircuit.identity.v1.IdentityService.ValidateAPIKey:input_type -> carboncircuit.identity.v1.ValidateAPIKeyRequest
+	13, // 68: carboncircuit.identity.v1.IdentityService.Ping:output_type -> carboncircuit.identity.v1.PingResponse
+	17, // 69: carboncircuit.identity.v1.IdentityService.ResolveSession:output_type -> carboncircuit.identity.v1.ResolveSessionResponse
+	20, // 70: carboncircuit.identity.v1.IdentityService.CreateOrganization:output_type -> carboncircuit.identity.v1.CreateOrganizationResponse
+	23, // 71: carboncircuit.identity.v1.IdentityService.GetOrganization:output_type -> carboncircuit.identity.v1.GetOrganizationResponse
+	25, // 72: carboncircuit.identity.v1.IdentityService.IssueTreasuryNonce:output_type -> carboncircuit.identity.v1.IssueTreasuryNonceResponse
+	27, // 73: carboncircuit.identity.v1.IdentityService.DesignateTreasury:output_type -> carboncircuit.identity.v1.DesignateTreasuryResponse
+	31, // 74: carboncircuit.identity.v1.IdentityService.ListMembers:output_type -> carboncircuit.identity.v1.ListMembersResponse
+	33, // 75: carboncircuit.identity.v1.IdentityService.InviteMember:output_type -> carboncircuit.identity.v1.InviteMemberResponse
+	35, // 76: carboncircuit.identity.v1.IdentityService.RevokeInvitation:output_type -> carboncircuit.identity.v1.RevokeInvitationResponse
+	37, // 77: carboncircuit.identity.v1.IdentityService.ChangeMemberRole:output_type -> carboncircuit.identity.v1.ChangeMemberRoleResponse
+	39, // 78: carboncircuit.identity.v1.IdentityService.RevokeMember:output_type -> carboncircuit.identity.v1.RevokeMemberResponse
+	41, // 79: carboncircuit.identity.v1.IdentityService.AcceptInvitation:output_type -> carboncircuit.identity.v1.AcceptInvitationResponse
+	44, // 80: carboncircuit.identity.v1.IdentityService.CreateFacility:output_type -> carboncircuit.identity.v1.CreateFacilityResponse
+	46, // 81: carboncircuit.identity.v1.IdentityService.ListFacilities:output_type -> carboncircuit.identity.v1.ListFacilitiesResponse
+	48, // 82: carboncircuit.identity.v1.IdentityService.GetFacility:output_type -> carboncircuit.identity.v1.GetFacilityResponse
+	51, // 83: carboncircuit.identity.v1.IdentityService.RecordSession:output_type -> carboncircuit.identity.v1.RecordSessionResponse
+	53, // 84: carboncircuit.identity.v1.IdentityService.ListSessions:output_type -> carboncircuit.identity.v1.ListSessionsResponse
+	55, // 85: carboncircuit.identity.v1.IdentityService.RevokeSession:output_type -> carboncircuit.identity.v1.RevokeSessionResponse
+	58, // 86: carboncircuit.identity.v1.IdentityService.CreateAPIKey:output_type -> carboncircuit.identity.v1.CreateAPIKeyResponse
+	60, // 87: carboncircuit.identity.v1.IdentityService.ListAPIKeys:output_type -> carboncircuit.identity.v1.ListAPIKeysResponse
+	62, // 88: carboncircuit.identity.v1.IdentityService.RevokeAPIKey:output_type -> carboncircuit.identity.v1.RevokeAPIKeyResponse
+	64, // 89: carboncircuit.identity.v1.IdentityService.ValidateAPIKey:output_type -> carboncircuit.identity.v1.ValidateAPIKeyResponse
+	68, // [68:90] is the sub-list for method output_type
+	46, // [46:68] is the sub-list for method input_type
+	46, // [46:46] is the sub-list for extension type_name
+	46, // [46:46] is the sub-list for extension extendee
+	0,  // [0:46] is the sub-list for field type_name
 }
 
 func init() { file_carboncircuit_identity_v1_identity_proto_init() }
@@ -4186,7 +4349,7 @@ func file_carboncircuit_identity_v1_identity_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_carboncircuit_identity_v1_identity_proto_rawDesc), len(file_carboncircuit_identity_v1_identity_proto_rawDesc)),
 			NumEnums:      12,
-			NumMessages:   51,
+			NumMessages:   53,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

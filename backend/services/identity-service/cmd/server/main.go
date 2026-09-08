@@ -150,6 +150,7 @@ func run() error {
 	}
 
 	exempt := map[string]bool{
+		"/carboncircuit.identity.v1.IdentityService/ValidateAPIKey": true,
 		"/carboncircuit.identity.v1.IdentityService/ResolveSession": true,
 		"/carboncircuit.identity.v1.IdentityService/Ping":           true,
 	}

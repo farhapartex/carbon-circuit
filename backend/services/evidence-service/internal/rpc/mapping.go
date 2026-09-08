@@ -92,6 +92,7 @@ func resolvedMessage(resolution service.Resolution) *evidencev1.ResolvedDocument
 	message.PageCount = int32(pages)
 	message.MediaType = resolution.Document.DetectedMediaType
 	message.ByteSize = resolution.Document.ByteSize
+	message.FileName = resolution.Document.FileName
 
 	return message
 }

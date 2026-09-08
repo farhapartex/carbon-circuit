@@ -1032,6 +1032,7 @@ type ResolvedDocument struct {
 	PageCount     int32                  `protobuf:"varint,5,opt,name=page_count,json=pageCount,proto3" json:"page_count,omitempty"`
 	MediaType     string                 `protobuf:"bytes,6,opt,name=media_type,json=mediaType,proto3" json:"media_type,omitempty"`
 	ByteSize      int64                  `protobuf:"varint,7,opt,name=byte_size,json=byteSize,proto3" json:"byte_size,omitempty"`
+	FileName      string                 `protobuf:"bytes,8,opt,name=file_name,json=fileName,proto3" json:"file_name,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1113,6 +1114,13 @@ func (x *ResolvedDocument) GetByteSize() int64 {
 		return x.ByteSize
 	}
 	return 0
+}
+
+func (x *ResolvedDocument) GetFileName() string {
+	if x != nil {
+		return x.FileName
+	}
+	return ""
 }
 
 type ResolveDocumentsResponse struct {
@@ -1231,7 +1239,7 @@ const file_carboncircuit_evidence_v1_evidence_proto_rawDesc = "" +
 	"media_type\x18\x04 \x01(\tR\tmediaType\"\x82\x01\n" +
 	"\x17ResolveDocumentsRequest\x12!\n" +
 	"\fdocument_ids\x18\x01 \x03(\tR\vdocumentIds\x12D\n" +
-	"\apurpose\x18\x02 \x01(\x0e2*.carboncircuit.evidence.v1.DocumentPurposeR\apurpose\"\xe3\x01\n" +
+	"\apurpose\x18\x02 \x01(\x0e2*.carboncircuit.evidence.v1.DocumentPurposeR\apurpose\"\x80\x02\n" +
 	"\x10ResolvedDocument\x12\x1f\n" +
 	"\vdocument_id\x18\x01 \x01(\tR\n" +
 	"documentId\x12\x16\n" +
@@ -1242,7 +1250,8 @@ const file_carboncircuit_evidence_v1_evidence_proto_rawDesc = "" +
 	"page_count\x18\x05 \x01(\x05R\tpageCount\x12\x1d\n" +
 	"\n" +
 	"media_type\x18\x06 \x01(\tR\tmediaType\x12\x1b\n" +
-	"\tbyte_size\x18\a \x01(\x03R\bbyteSize\"e\n" +
+	"\tbyte_size\x18\a \x01(\x03R\bbyteSize\x12\x1b\n" +
+	"\tfile_name\x18\b \x01(\tR\bfileName\"e\n" +
 	"\x18ResolveDocumentsResponse\x12I\n" +
 	"\tdocuments\x18\x01 \x03(\v2+.carboncircuit.evidence.v1.ResolvedDocumentR\tdocuments*\x82\x01\n" +
 	"\x0fDocumentPurpose\x12 \n" +

@@ -1,0 +1,135 @@
+syntax = "proto3";
+
+package carboncircuit.sustainability.v1;
+
+option go_package = "github.com/carboncircuit/backend/gen/carboncircuit/sustainability/v1;sustainabilityv1";
+
+service SustainabilityService {
+  rpc Ping(PingRequest) returns (PingResponse);
+  rpc SubmitClaim(SubmitClaimRequest) returns (SubmitClaimResponse);
+  rpc ListClaims(ListClaimsRequest) returns (ListClaimsResponse);
+  rpc GetClaim(GetClaimRequest) returns (GetClaimResponse);
+  rpc PreviewCeiling(PreviewCeilingRequest) returns (PreviewCeilingResponse);
+}
+
+enum ActivityType {
+  ACTIVITY_TYPE_UNSPECIFIED = 0;
+  ACTIVITY_TYPE_RENEWABLE_ENERGY = 1;
+  ACTIVITY_TYPE_REDUCED_EMISSION_LOGISTICS = 2;
+  ACTIVITY_TYPE_RESPONSIBLE_SOURCING = 3;
+}
+
+enum ClaimStatus {
+  CLAIM_STATUS_UNSPECIFIED = 0;
+  CLAIM_STATUS_SUBMITTED = 1;
+  CLAIM_STATUS_AI_REVIEW = 2;
+  CLAIM_STATUS_HUMAN_REVIEW = 3;
+  CLAIM_STATUS_APPROVED = 4;
+  CLAIM_STATUS_REJECTED = 5;
+  CLAIM_STATUS_MORE_INFORMATION_REQUESTED = 6;
+}
+
+enum QueuePriority {
+  QUEUE_PRIORITY_UNSPECIFIED = 0;
+  QUEUE_PRIORITY_NORMAL = 1;
+  QUEUE_PRIORITY_HIGH = 2;
+  QUEUE_PRIORITY_CRITICAL = 3;
+}
+
+message PingRequest {}
+
+message PingResponse {
+  string service = 1;
+  string revision = 2;
+  bool database_reachable = 3;
+  int32 reference_factor_count = 4;
+}
+
+message ClaimEvidence {
+  string evidence_id = 1;
+  string file_name = 2;
+  string media_type = 3;
+  string content_hash = 4;
+  int32 page_count = 5;
+}
+
+message Claim {
+  string id = 1;
+  string organization_id = 2;
+  string facility_id = 3;
+  string facility_name = 4;
+  ActivityType activity_type = 5;
+  int32 vintage_year = 6;
+  string period_start = 7;
+  string period_end = 8;
+  map<string, string> declared_figures = 9;
+  string requested_amount = 10;
+  string computed_ceiling = 11;
+  string capacity_basis = 12;
+  string capacity_source = 13;
+  string discount_factor = 14;
+  string reference_factor_value = 15;
+  ClaimStatus status = 16;
+  QueuePriority priority = 17;
+  bool requires_dual_approval = 18;
+  string exclusivity_attested_at = 19;
+  string issued_amount = 20;
+  string created_at = 21;
+  repeated ClaimEvidence evidence = 22;
+}
+
+message SubmitClaimRequest {
+  string facility_id = 1;
+  ActivityType activity_type = 2;
+  int32 vintage_year = 3;
+  string period_start = 4;
+  string period_end = 5;
+  map<string, string> declared_figures = 6;
+  string requested_amount = 7;
+  repeated string evidence_ids = 8;
+  bool exclusivity_attested = 9;
+  string idempotency_key = 10;
+}
+
+message SubmitClaimResponse {
+  Claim claim = 1;
+  bool already_submitted = 2;
+}
+
+message ListClaimsRequest {
+  ClaimStatus status = 1;
+  string after = 2;
+  int32 limit = 3;
+}
+
+message ListClaimsResponse {
+  repeated Claim claims = 1;
+  string next_cursor = 2;
+}
+
+message GetClaimRequest {
+  string claim_id = 1;
+}
+
+message GetClaimResponse {
+  Claim claim = 1;
+}
+
+message PreviewCeilingRequest {
+  string facility_id = 1;
+  ActivityType activity_type = 2;
+  int32 vintage_year = 3;
+  string period_start = 4;
+  string period_end = 5;
+}
+
+message PreviewCeilingResponse {
+  string ceiling = 1;
+  string capacity_basis = 2;
+  string capacity_source = 3;
+  string discount_factor = 4;
+  string reference_value = 5;
+  string grid_region = 6;
+  int32 period_days = 7;
+  int32 vintage_days = 8;
+}

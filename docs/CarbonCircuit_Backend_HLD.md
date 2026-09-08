@@ -302,6 +302,9 @@ These apply on top of the caller-class limit, because some endpoints are far mor
 | Per-IP connection cap | 100 concurrent | Reject new connections |
 | Request body size | 1 MB (25 MB on evidence upload) | Return 413 |
 | Request timeout at Gateway | 10 seconds | Return 504 |
+| Request timeout, evidence upload | 120 seconds | Return 504 |
+
+The evidence-upload timeout is an exception to the 10-second rule rather than a relaxation of it. A 25 MB body cannot arrive within 10 seconds on a connection below roughly 20 Mbps, so the documented size allowance would otherwise be unreachable for exactly the submitters most likely to need it — a facility uploading a scanned audit report. The longer window applies to the request-body read on `POST /v1/evidence` alone; every other route keeps 10 seconds, and the 30 uploads-per-minute-per-organization limit in Section 6.2 continues to bound how many of these windows an organization can hold open at once.
 
 ### 6.4 On-Chain Rate Limiting
 

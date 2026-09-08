@@ -27,27 +27,32 @@ type Handlers struct {
 	Resolver       *caller.Resolver
 	Logger         *slog.Logger
 	Revision       string
+
+	EvidenceUploadWindow  time.Duration
+	EvidenceUploadTimeout time.Duration
 }
 
 type RouterOptions struct {
-	Identity         *upstream.Identity
-	Billing          *upstream.Billing
-	Provenance       *upstream.Provenance
-	ProvenanceRead   *upstream.ProvenanceRead
-	Evidence         *upstream.Evidence
-	Limiter          *ratelimit.Limiter
-	Verifier         httpx.TokenVerifier
-	Denylist         httpx.RevocationChecker
-	SessionDenylist  *auth.Denylist
-	Cache            *cache.Client
-	SessionInterval  time.Duration
-	APIKeyContextTTL time.Duration
-	TrustedProxies   []string
-	Resolver         *caller.Resolver
-	Signer           *servicetoken.Signer
-	Logger           *slog.Logger
-	Environment      string
-	Revision         string
+	Identity              *upstream.Identity
+	Billing               *upstream.Billing
+	Provenance            *upstream.Provenance
+	ProvenanceRead        *upstream.ProvenanceRead
+	Evidence              *upstream.Evidence
+	EvidenceUploadWindow  time.Duration
+	EvidenceUploadTimeout time.Duration
+	Limiter               *ratelimit.Limiter
+	Verifier              httpx.TokenVerifier
+	Denylist              httpx.RevocationChecker
+	SessionDenylist       *auth.Denylist
+	Cache                 *cache.Client
+	SessionInterval       time.Duration
+	APIKeyContextTTL      time.Duration
+	TrustedProxies        []string
+	Resolver              *caller.Resolver
+	Signer                *servicetoken.Signer
+	Logger                *slog.Logger
+	Environment           string
+	Revision              string
 }
 
 func errorAttributes(c *gin.Context, err error) []any {
@@ -64,15 +69,17 @@ func NewRouter(options RouterOptions) *gin.Engine {
 	}
 
 	handlers := &Handlers{
-		Identity:       options.Identity,
-		Resolver:       options.Resolver,
-		Billing:        options.Billing,
-		Provenance:     options.Provenance,
-		ProvenanceRead: options.ProvenanceRead,
-		Evidence:       options.Evidence,
-		Denylist:       options.SessionDenylist,
-		Logger:         options.Logger,
-		Revision:       options.Revision,
+		Identity:              options.Identity,
+		Resolver:              options.Resolver,
+		Billing:               options.Billing,
+		Provenance:            options.Provenance,
+		ProvenanceRead:        options.ProvenanceRead,
+		Evidence:              options.Evidence,
+		Denylist:              options.SessionDenylist,
+		EvidenceUploadWindow:  options.EvidenceUploadWindow,
+		EvidenceUploadTimeout: options.EvidenceUploadTimeout,
+		Logger:                options.Logger,
+		Revision:              options.Revision,
 	}
 
 	router := gin.New()

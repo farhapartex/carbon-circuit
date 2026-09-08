@@ -1,9 +1,11 @@
 package handler
 
 import (
+	"fmt"
 	"mime/multipart"
 	"net/http"
 	"strconv"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
@@ -98,6 +100,11 @@ func (h *Handlers) UploadEvidence(c *gin.Context) {
 		return
 	}
 
+	if err := h.widenUploadWindow(c); err != nil {
+		h.Logger.Warn("upload window could not be widened, a large file may time out",
+			errorAttributes(c, err)...)
+	}
+
 	c.Request.Body = http.MaxBytesReader(c.Writer, c.Request.Body, EvidenceBodyLimit)
 
 	if err := c.Request.ParseMultipartForm(multipartSpillSize); err != nil {
@@ -152,6 +159,29 @@ func (h *Handlers) UploadEvidence(c *gin.Context) {
 	}
 
 	httpx.Data(c, statusCode, toDocumentResponse(uploaded.GetDocument()))
+}
+
+func (h *Handlers) EvidenceResponseWindow() time.Duration {
+	return h.EvidenceUploadWindow + h.EvidenceUploadTimeout
+}
+
+func (h *Handlers) widenUploadWindow(c *gin.Context) error {
+	if h.EvidenceUploadWindow <= 0 {
+		return nil
+	}
+
+	controller := http.NewResponseController(c.Writer)
+	started := time.Now()
+
+	if err := controller.SetReadDeadline(started.Add(h.EvidenceUploadWindow)); err != nil {
+		return fmt.Errorf("set read deadline: %w", err)
+	}
+
+	if err := controller.SetWriteDeadline(started.Add(h.EvidenceResponseWindow())); err != nil {
+		return fmt.Errorf("set write deadline: %w", err)
+	}
+
+	return nil
 }
 
 func singleUpload(c *gin.Context) (*multipart.FileHeader, error) {

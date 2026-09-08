@@ -40,6 +40,7 @@ type Config struct {
 	UpstreamDialTimeout      time.Duration
 	UpstreamCallTimeout      time.Duration
 	EvidenceUploadTimeout    time.Duration
+	EvidenceUploadWindow     time.Duration
 
 	Auth0Domain      string
 	Auth0Audience    string
@@ -85,7 +86,8 @@ func Load() (Config, error) {
 		PortalUserBurst:       loader.Int("PORTAL_USER_BURST", 60),
 		UpstreamDialTimeout:   loader.Duration("UPSTREAM_DIAL_TIMEOUT", 5*time.Second),
 		UpstreamCallTimeout:   loader.Duration("UPSTREAM_CALL_TIMEOUT", 2*time.Second),
-		EvidenceUploadTimeout: loader.Duration("EVIDENCE_UPLOAD_TIMEOUT", 30*time.Second),
+		EvidenceUploadTimeout: loader.Duration("EVIDENCE_UPLOAD_TIMEOUT", 60*time.Second),
+		EvidenceUploadWindow:  loader.Duration("EVIDENCE_UPLOAD_WINDOW", 120*time.Second),
 
 		Auth0Domain:      loader.String("AUTH0_DOMAIN"),
 		Auth0Audience:    loader.String("AUTH0_AUDIENCE"),

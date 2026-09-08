@@ -16,15 +16,16 @@ import (
 )
 
 type ServerOptions struct {
-	Address         string
-	Logger          *slog.Logger
-	ShutdownTimeout time.Duration
-	Register        func(*grpc.Server)
-	ReportHealth    func(context.Context) bool
-	HealthInterval  time.Duration
-	ServiceName     string
-	Interceptors    []grpc.UnaryServerInterceptor
-	TransportCreds  credentials.TransportCredentials
+	Address            string
+	Logger             *slog.Logger
+	ShutdownTimeout    time.Duration
+	Register           func(*grpc.Server)
+	ReportHealth       func(context.Context) bool
+	HealthInterval     time.Duration
+	ServiceName        string
+	Interceptors       []grpc.UnaryServerInterceptor
+	StreamInterceptors []grpc.StreamServerInterceptor
+	TransportCreds     credentials.TransportCredentials
 }
 
 func Serve(ctx context.Context, options ServerOptions) error {
@@ -39,7 +40,16 @@ func Serve(ctx context.Context, options ServerOptions) error {
 		LogUnary(options.Logger),
 	}, options.Interceptors...)
 
-	settings := []grpc.ServerOption{grpc.ChainUnaryInterceptor(interceptors...)}
+	streamInterceptors := append([]grpc.StreamServerInterceptor{
+		CorrelateStream(),
+		RecoverStream(options.Logger),
+		LogStream(options.Logger),
+	}, options.StreamInterceptors...)
+
+	settings := []grpc.ServerOption{
+		grpc.ChainUnaryInterceptor(interceptors...),
+		grpc.ChainStreamInterceptor(streamInterceptors...),
+	}
 	if options.TransportCreds != nil {
 		settings = append(settings, grpc.Creds(options.TransportCreds))
 	}

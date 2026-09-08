@@ -2,21 +2,42 @@ import "server-only";
 import { headers } from "next/headers";
 import { serverConfig } from "@/lib/config/server";
 
+export type GatewayFieldError = {
+  field: string;
+  code: string;
+};
+
 export class GatewayError extends Error {
   constructor(
     readonly status: number,
     readonly code: string,
+    readonly details: GatewayFieldError[] = [],
   ) {
     super(`Gateway responded ${status} ${code}`);
   }
+
+  codeForField(field: string): string | null {
+    return this.details.find((detail) => detail.field === field)?.code ?? null;
+  }
 }
 
-const errorCodeFrom = async (response: Response): Promise<string> => {
+type ErrorEnvelope = {
+  error?: {
+    code?: string;
+    details?: GatewayFieldError[];
+  };
+};
+
+const failureFrom = async (response: Response): Promise<GatewayError> => {
   try {
-    const body = (await response.json()) as { error?: { code?: string } };
-    return body.error?.code ?? "UNKNOWN";
+    const body = (await response.json()) as ErrorEnvelope;
+    return new GatewayError(
+      response.status,
+      body.error?.code ?? "UNKNOWN",
+      body.error?.details ?? [],
+    );
   } catch {
-    return "UNPARSEABLE";
+    return new GatewayError(response.status, "UNPARSEABLE");
   }
 };
 
@@ -48,7 +69,7 @@ export const gatewayGet = async <T>(
   });
 
   if (!response.ok) {
-    throw new GatewayError(response.status, await errorCodeFrom(response));
+    throw await failureFrom(response);
   }
 
   const body = (await response.json()) as { data: T };
@@ -75,7 +96,33 @@ export const gatewayPost = async <T>(
   });
 
   if (!response.ok) {
-    throw new GatewayError(response.status, await errorCodeFrom(response));
+    throw await failureFrom(response);
+  }
+
+  const payload = (await response.json()) as { data: T };
+  return payload.data;
+};
+
+export const gatewayUpload = async <T>(
+  path: string,
+  token: string,
+  form: FormData,
+  idempotencyKey: string,
+): Promise<T> => {
+  const response = await fetch(new URL(path, serverConfig.apiGatewayUrl), {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Idempotency-Key": idempotencyKey,
+      Authorization: `Bearer ${token}`,
+      ...(await deviceHeaders()),
+    },
+    body: form,
+    cache: "no-store",
+  });
+
+  if (!response.ok) {
+    throw await failureFrom(response);
   }
 
   const payload = (await response.json()) as { data: T };
@@ -108,7 +155,7 @@ const mutate = async (
   });
 
   if (!response.ok) {
-    throw new GatewayError(response.status, await errorCodeFrom(response));
+    throw await failureFrom(response);
   }
 
   return response;

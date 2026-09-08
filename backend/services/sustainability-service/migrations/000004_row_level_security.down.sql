@@ -1,0 +1,11 @@
+DROP POLICY IF EXISTS tenant_isolation ON sustainability.idempotency_records;
+ALTER TABLE sustainability.idempotency_records NO FORCE ROW LEVEL SECURITY;
+ALTER TABLE sustainability.idempotency_records DISABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS tenant_isolation ON sustainability.claim_evidence;
+ALTER TABLE sustainability.claim_evidence NO FORCE ROW LEVEL SECURITY;
+ALTER TABLE sustainability.claim_evidence DISABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS tenant_isolation ON sustainability.claims;
+ALTER TABLE sustainability.claims NO FORCE ROW LEVEL SECURITY;
+ALTER TABLE sustainability.claims DISABLE ROW LEVEL SECURITY;
+DROP FUNCTION IF EXISTS sustainability.current_user_id();
+DROP FUNCTION IF EXISTS sustainability.current_organization_id();

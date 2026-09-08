@@ -1,0 +1,9 @@
+DROP TABLE IF EXISTS sustainability.inbox_events;
+DROP TABLE IF EXISTS sustainability.outbox_events;
+DROP TABLE IF EXISTS sustainability.idempotency_records;
+DROP TABLE IF EXISTS sustainability.claim_evidence;
+DROP TABLE IF EXISTS sustainability.claims;
+DROP TYPE IF EXISTS sustainability.idempotency_state;
+DROP TYPE IF EXISTS sustainability.queue_priority;
+DROP TYPE IF EXISTS sustainability.claim_status;
+DROP TYPE IF EXISTS sustainability.activity_type;

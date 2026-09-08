@@ -50,9 +50,17 @@ func New(client *redis.Client, keyPrefix string, rules []Rule) (*Limiter, error)
 
 	limiters := make(map[string]*throttled.GCRARateLimiterCtx, len(rules))
 	for _, rule := range rules {
-		rate := throttled.PerMin(rule.PerMinute)
+		if rule.PerDay <= 0 && rule.PerMinute <= 0 {
+			return nil, fmt.Errorf(
+				"rule %q sets neither a per-minute nor a per-day rate", rule.Name,
+			)
+		}
+
+		var rate throttled.Rate
 		if rule.PerDay > 0 {
 			rate = throttled.PerDay(rule.PerDay)
+		} else {
+			rate = throttled.PerMin(rule.PerMinute)
 		}
 
 		quota := throttled.RateQuota{MaxRate: rate, MaxBurst: rule.Burst}

@@ -23,6 +23,7 @@ type Handlers struct {
 	Provenance     *upstream.Provenance
 	ProvenanceRead *upstream.ProvenanceRead
 	Evidence       *upstream.Evidence
+	Sustainability *upstream.Sustainability
 	Denylist       *auth.Denylist
 	Resolver       *caller.Resolver
 	Logger         *slog.Logger
@@ -38,6 +39,7 @@ type RouterOptions struct {
 	Provenance            *upstream.Provenance
 	ProvenanceRead        *upstream.ProvenanceRead
 	Evidence              *upstream.Evidence
+	Sustainability        *upstream.Sustainability
 	EvidenceUploadWindow  time.Duration
 	EvidenceUploadTimeout time.Duration
 	Limiter               *ratelimit.Limiter
@@ -188,6 +190,10 @@ func NewRouter(options RouterOptions) *gin.Engine {
 	authenticated.POST("/evidence", handlers.UploadEvidence)
 	authenticated.GET("/evidence/:documentId", handlers.GetEvidence)
 	authenticated.POST("/evidence/:documentId/download", handlers.CreateEvidenceDownloadLink)
+	authenticated.GET("/claims", handlers.ListClaims)
+	authenticated.POST("/claims", handlers.SubmitClaim)
+	authenticated.GET("/claims/:claimId", handlers.GetClaim)
+	authenticated.POST("/claims/ceiling-preview", handlers.PreviewClaimCeiling)
 
 	return router
 }
@@ -217,6 +223,8 @@ func endpointClassOf(c *gin.Context) string {
 		return "api_key_creation"
 	case "/v1/evidence":
 		return "evidence_upload"
+	case "/v1/claims":
+		return "claim_submission"
 	default:
 		return ""
 	}

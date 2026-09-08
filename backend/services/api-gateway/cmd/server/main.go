@@ -104,6 +104,19 @@ func run() error {
 	}
 	defer closeUpstream(logger, "evidence", evidence.Close)
 
+	sustainabilityCreds, err := upstreamCredentials(settings, "sustainability-service", logger)
+	if err != nil {
+		return err
+	}
+
+	sustainability, err := upstream.DialSustainability(
+		settings.SustainabilityAddress, settings.UpstreamCallTimeout, sustainabilityCreds,
+	)
+	if err != nil {
+		return err
+	}
+	defer closeUpstream(logger, "sustainability", sustainability.Close)
+
 	warmUpstreams(ctx, logger, map[string]func(context.Context) error{
 		"identity": func(warmCtx context.Context) error {
 			_, err := identity.Ping(warmCtx)
@@ -113,6 +126,10 @@ func run() error {
 		"provenance-read": provenanceRead.Ping,
 		"evidence": func(warmCtx context.Context) error {
 			_, err := evidence.Ping(warmCtx)
+			return err
+		},
+		"sustainability": func(warmCtx context.Context) error {
+			_, err := sustainability.Ping(warmCtx)
 			return err
 		},
 	})
@@ -197,6 +214,18 @@ func publicRules(settings config.Config) []ratelimit.Rule {
 			Burst:     settings.PublicReadBurst,
 			KeyFunc:   func(request ratelimit.Request) string { return "public:ip:" + request.ClientIP },
 			AppliesTo: func(request ratelimit.Request) bool { return request.CallerClass == "public" },
+		},
+		{
+			Name:    "claim_submission",
+			PerHour: settings.ClaimSubmissionPerHour,
+			Burst:   settings.ClaimSubmissionPerHour,
+			KeyFunc: func(request ratelimit.Request) string {
+				return "claim:org:" + request.OrganizationID
+			},
+			AppliesTo: func(request ratelimit.Request) bool {
+				return request.EndpointClass == "claim_submission" &&
+					request.OrganizationID != ""
+			},
 		},
 		{
 			Name:      "evidence_upload",

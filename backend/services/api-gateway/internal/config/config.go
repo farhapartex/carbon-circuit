@@ -23,6 +23,7 @@ type Config struct {
 	ProvenanceAddress        string
 	ProvenanceReadAddress    string
 	EvidenceAddress          string
+	SustainabilityAddress    string
 	RedisAddress             string
 	RedisPassword            string
 	RedisDatabase            int
@@ -34,6 +35,7 @@ type Config struct {
 	TrustedProxies           []string
 	APIKeyCreationPerDay     int
 	EvidenceUploadPerMinute  int
+	ClaimSubmissionPerHour   int
 	APIKeyContextTTL         time.Duration
 	PortalUserPerMinute      int
 	PortalUserBurst          int
@@ -68,6 +70,7 @@ func Load() (Config, error) {
 		ProvenanceAddress:        loader.StringDefault("PROVENANCE_SERVICE_ADDRESS", "provenance-service:9093"),
 		ProvenanceReadAddress:    loader.StringDefault("PROVENANCE_READ_SERVICE_ADDRESS", "provenance-read-service:9094"),
 		EvidenceAddress:          loader.StringDefault("EVIDENCE_SERVICE_ADDRESS", "evidence-service:9095"),
+		SustainabilityAddress:    loader.StringDefault("SUSTAINABILITY_SERVICE_ADDRESS", "sustainability-service:9096"),
 		RedisAddress:             loader.StringDefault("REDIS_ADDRESS", "redis:6379"),
 		RedisPassword:            loader.StringDefault("REDIS_PASSWORD", ""),
 		RedisDatabase:            loader.Int("REDIS_DATABASE", 0),
@@ -78,6 +81,7 @@ func Load() (Config, error) {
 		SessionRecordInterval:    loader.Duration("SESSION_RECORD_INTERVAL", 5*time.Minute),
 		APIKeyCreationPerDay:     loader.Int("API_KEY_CREATION_PER_DAY", 10),
 		EvidenceUploadPerMinute:  loader.Int("EVIDENCE_UPLOAD_PER_MINUTE", 30),
+		ClaimSubmissionPerHour:   loader.Int("CLAIM_SUBMISSION_PER_HOUR", 20),
 		APIKeyContextTTL:         loader.Duration("API_KEY_CONTEXT_TTL", 60*time.Second),
 		TrustedProxies: trustedProxiesFrom(
 			loader.StringDefault("TRUSTED_PROXIES", ""),

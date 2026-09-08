@@ -10,11 +10,13 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+	"google.golang.org/genproto/googleapis/rpc/errdetails"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"gorm.io/gorm"
 
 	sustainabilityv1 "github.com/carboncircuit/backend/gen/carboncircuit/sustainability/v1"
+	"github.com/carboncircuit/backend/internal/events"
 	"github.com/carboncircuit/backend/internal/grpcx"
 	"github.com/carboncircuit/backend/internal/servicetoken"
 	"github.com/carboncircuit/backend/services/sustainability-service/internal/ceiling"
@@ -310,7 +312,43 @@ func actorFrom(verified servicetoken.Caller) (service.Actor, error) {
 	}, nil
 }
 
+var refusalReasons = []struct {
+	sentinel error
+	reason   string
+}{
+	{service.ErrActivityUnsupported, "ACTIVITY_UNSUPPORTED"},
+	{service.ErrEvidenceRequired, "EVIDENCE_REQUIRED"},
+	{service.ErrTooMuchEvidence, "TOO_MUCH_EVIDENCE"},
+	{service.ErrEvidenceUnusable, "EVIDENCE_UNUSABLE"},
+	{service.ErrAttestationRequired, "ATTESTATION_REQUIRED"},
+	{ceiling.ErrCapacityUnknown, "CAPACITY_UNKNOWN"},
+	{ceiling.ErrPeriodOutsideVintage, "PERIOD_OUTSIDE_VINTAGE"},
+	{ceiling.ErrPeriodEmpty, "PERIOD_EMPTY"},
+	{ceiling.ErrFactorUnknown, "FACTOR_UNKNOWN"},
+	{ceiling.ErrDiscountUnknown, "DISCOUNT_UNKNOWN"},
+}
+
+func refused(err error, reason string) error {
+	reported := status.New(codes.FailedPrecondition, err.Error())
+
+	detailed, attachErr := reported.WithDetails(&errdetails.ErrorInfo{
+		Reason: reason,
+		Domain: events.ClaimRefusalDomain,
+	})
+	if attachErr != nil {
+		return reported.Err()
+	}
+
+	return detailed.Err()
+}
+
 func translate(err error) error {
+	for _, candidate := range refusalReasons {
+		if errors.Is(err, candidate.sentinel) {
+			return refused(err, candidate.reason)
+		}
+	}
+
 	switch {
 	case errors.Is(err, service.ErrClaimNotFound):
 		return status.Error(codes.NotFound, err.Error())
@@ -322,17 +360,6 @@ func translate(err error) error {
 		return status.Error(codes.Aborted, err.Error())
 	case errors.Is(err, service.ErrIdempotencyConflict):
 		return status.Error(codes.AlreadyExists, err.Error())
-	case errors.Is(err, service.ErrActivityUnsupported),
-		errors.Is(err, service.ErrEvidenceRequired),
-		errors.Is(err, service.ErrTooMuchEvidence),
-		errors.Is(err, service.ErrEvidenceUnusable),
-		errors.Is(err, service.ErrAttestationRequired),
-		errors.Is(err, ceiling.ErrCapacityUnknown),
-		errors.Is(err, ceiling.ErrPeriodOutsideVintage),
-		errors.Is(err, ceiling.ErrPeriodEmpty),
-		errors.Is(err, ceiling.ErrFactorUnknown),
-		errors.Is(err, ceiling.ErrDiscountUnknown):
-		return status.Error(codes.FailedPrecondition, err.Error())
 	default:
 		return status.Error(codes.Internal, err.Error())
 	}

@@ -4,6 +4,8 @@ const (
 	TopicClaimSubmitted         = "claim.submitted"
 	TopicClaimAIReviewRequested = "claim.ai_review.requested"
 	TopicClaimDecisionRecorded  = "claim.decision.recorded"
+
+	ClaimRefusalDomain = "sustainability-service"
 )
 
 type ClaimSubmitted struct {

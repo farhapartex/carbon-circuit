@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  BookOpen,
   Building2,
   CreditCard,
   KeyRound,
@@ -55,6 +56,12 @@ const organizationItems: SettingsNavItem[] = [
     description: "Keys your systems use to submit data",
     href: "/settings/api-keys",
     icon: KeyRound,
+  },
+  {
+    label: "API documentation",
+    description: "Endpoints your systems can call, with payloads",
+    href: "/settings/api-docs",
+    icon: BookOpen,
   },
   {
     label: "Billing",

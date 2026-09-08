@@ -10,7 +10,10 @@ import {
   ClaimStatusPill,
   PriorityBadge,
 } from "@/components/shared/StatusBadges";
-import { getClaim } from "@/lib/fixtures";
+import { fetchClaim } from "@/lib/api/claims";
+import { toSustainabilityClaim } from "@/lib/api/claimView";
+import { auth0 } from "@/lib/auth0";
+import { GatewayError } from "@/lib/api/gateway";
 import { activityTypeLabels } from "@/lib/labels";
 
 export const metadata: Metadata = { title: "Claim" };
@@ -19,9 +22,16 @@ export default async function ClaimDetailPage({
   params,
 }: PageProps<"/claims/[claimId]">) {
   const { claimId } = await params;
-  const claim = await getClaim(claimId);
+  const { token } = await auth0.getAccessToken();
 
-  if (!claim) notFound();
+  const record = await fetchClaim(token, claimId).catch((error: unknown) => {
+    if (error instanceof GatewayError && error.status === 404) return null;
+    throw error;
+  });
+
+  if (!record) notFound();
+
+  const claim = toSustainabilityClaim(record);
 
   const awaitingResubmission = claim.status === "more_information_requested";
 
@@ -51,8 +61,8 @@ export default async function ClaimDetailPage({
           </p>
           <p className="mt-1 text-caption text-pretty text-info-700">
             Read what they asked for below. Resubmission is not available yet —
-            the sustainability service does not exist, and the sitemap defines
-            no resubmit route.
+            the sitemap defines no resubmit route, so a new claim is the way to
+            respond.
           </p>
         </div>
       ) : null}

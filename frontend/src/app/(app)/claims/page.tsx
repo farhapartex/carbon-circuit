@@ -3,12 +3,16 @@ import Link from "next/link";
 import { ClaimsTable } from "@/components/features/claims/ClaimsTable";
 import { PageHeader } from "@/components/shared/PageHeader";
 import { Button } from "@/components/ui/button";
-import { listClaims } from "@/lib/fixtures";
+import { fetchClaims } from "@/lib/api/claims";
+import { toSustainabilityClaim } from "@/lib/api/claimView";
+import { auth0 } from "@/lib/auth0";
 
 export const metadata: Metadata = { title: "Claims" };
 
 export default async function ClaimsPage() {
-  const claims = await listClaims();
+  const { token } = await auth0.getAccessToken();
+  const page = await fetchClaims(token);
+  const claims = page.claims.map(toSustainabilityClaim);
 
   return (
     <>
@@ -22,7 +26,7 @@ export default async function ClaimsPage() {
         }
       />
 
-      <ClaimsTable claims={claims.items} />
+      <ClaimsTable claims={claims} />
     </>
   );
 }

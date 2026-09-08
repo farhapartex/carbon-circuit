@@ -88,6 +88,22 @@ func run() error {
 	}
 	defer closeUpstream(logger, "provenance-read", provenanceRead.Close)
 
+	evidenceCreds, err := upstreamCredentials(settings, "evidence-service", logger)
+	if err != nil {
+		return err
+	}
+
+	evidence, err := upstream.DialEvidence(
+		settings.EvidenceAddress,
+		settings.UpstreamCallTimeout,
+		settings.EvidenceUploadTimeout,
+		evidenceCreds,
+	)
+	if err != nil {
+		return err
+	}
+	defer closeUpstream(logger, "evidence", evidence.Close)
+
 	warmUpstreams(ctx, logger, map[string]func(context.Context) error{
 		"identity": func(warmCtx context.Context) error {
 			_, err := identity.Ping(warmCtx)
@@ -95,6 +111,10 @@ func run() error {
 		},
 		"provenance":      provenance.Ping,
 		"provenance-read": provenanceRead.Ping,
+		"evidence": func(warmCtx context.Context) error {
+			_, err := evidence.Ping(warmCtx)
+			return err
+		},
 	})
 
 	cacheClient := cache.New(settings.RedisAddress, settings.RedisPassword, settings.RedisDatabase, logger)
@@ -141,6 +161,7 @@ func run() error {
 		Billing:          billing,
 		Provenance:       provenance,
 		ProvenanceRead:   provenanceRead,
+		Evidence:         evidence,
 		Limiter:          limiter,
 		Verifier:         verifier,
 		Denylist:         denylist,
@@ -174,6 +195,18 @@ func publicRules(settings config.Config) []ratelimit.Rule {
 			Burst:     settings.PublicReadBurst,
 			KeyFunc:   func(request ratelimit.Request) string { return "public:ip:" + request.ClientIP },
 			AppliesTo: func(request ratelimit.Request) bool { return request.CallerClass == "public" },
+		},
+		{
+			Name:      "evidence_upload",
+			PerMinute: settings.EvidenceUploadPerMinute,
+			Burst:     settings.EvidenceUploadPerMinute,
+			KeyFunc: func(request ratelimit.Request) string {
+				return "evidence:org:" + request.OrganizationID
+			},
+			AppliesTo: func(request ratelimit.Request) bool {
+				return request.EndpointClass == "evidence_upload" &&
+					request.OrganizationID != ""
+			},
 		},
 		{
 			Name:   "api_key_creation",

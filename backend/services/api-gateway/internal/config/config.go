@@ -22,6 +22,7 @@ type Config struct {
 	BillingAddress           string
 	ProvenanceAddress        string
 	ProvenanceReadAddress    string
+	EvidenceAddress          string
 	RedisAddress             string
 	RedisPassword            string
 	RedisDatabase            int
@@ -32,11 +33,13 @@ type Config struct {
 	SessionRecordInterval    time.Duration
 	TrustedProxies           []string
 	APIKeyCreationPerDay     int
+	EvidenceUploadPerMinute  int
 	APIKeyContextTTL         time.Duration
 	PortalUserPerMinute      int
 	PortalUserBurst          int
 	UpstreamDialTimeout      time.Duration
 	UpstreamCallTimeout      time.Duration
+	EvidenceUploadTimeout    time.Duration
 
 	Auth0Domain      string
 	Auth0Audience    string
@@ -63,6 +66,7 @@ func Load() (Config, error) {
 		BillingAddress:           loader.String("BILLING_SERVICE_ADDRESS"),
 		ProvenanceAddress:        loader.StringDefault("PROVENANCE_SERVICE_ADDRESS", "provenance-service:9093"),
 		ProvenanceReadAddress:    loader.StringDefault("PROVENANCE_READ_SERVICE_ADDRESS", "provenance-read-service:9094"),
+		EvidenceAddress:          loader.StringDefault("EVIDENCE_SERVICE_ADDRESS", "evidence-service:9095"),
 		RedisAddress:             loader.StringDefault("REDIS_ADDRESS", "redis:6379"),
 		RedisPassword:            loader.StringDefault("REDIS_PASSWORD", ""),
 		RedisDatabase:            loader.Int("REDIS_DATABASE", 0),
@@ -72,14 +76,16 @@ func Load() (Config, error) {
 		PublicReferenceBurst:     loader.Int("PUBLIC_REFERENCE_BURST", 120),
 		SessionRecordInterval:    loader.Duration("SESSION_RECORD_INTERVAL", 5*time.Minute),
 		APIKeyCreationPerDay:     loader.Int("API_KEY_CREATION_PER_DAY", 10),
+		EvidenceUploadPerMinute:  loader.Int("EVIDENCE_UPLOAD_PER_MINUTE", 30),
 		APIKeyContextTTL:         loader.Duration("API_KEY_CONTEXT_TTL", 60*time.Second),
 		TrustedProxies: trustedProxiesFrom(
 			loader.StringDefault("TRUSTED_PROXIES", ""),
 		),
-		PortalUserPerMinute: loader.Int("PORTAL_USER_PER_MINUTE", 300),
-		PortalUserBurst:     loader.Int("PORTAL_USER_BURST", 60),
-		UpstreamDialTimeout: loader.Duration("UPSTREAM_DIAL_TIMEOUT", 5*time.Second),
-		UpstreamCallTimeout: loader.Duration("UPSTREAM_CALL_TIMEOUT", 2*time.Second),
+		PortalUserPerMinute:   loader.Int("PORTAL_USER_PER_MINUTE", 300),
+		PortalUserBurst:       loader.Int("PORTAL_USER_BURST", 60),
+		UpstreamDialTimeout:   loader.Duration("UPSTREAM_DIAL_TIMEOUT", 5*time.Second),
+		UpstreamCallTimeout:   loader.Duration("UPSTREAM_CALL_TIMEOUT", 2*time.Second),
+		EvidenceUploadTimeout: loader.Duration("EVIDENCE_UPLOAD_TIMEOUT", 30*time.Second),
 
 		Auth0Domain:      loader.String("AUTH0_DOMAIN"),
 		Auth0Audience:    loader.String("AUTH0_AUDIENCE"),

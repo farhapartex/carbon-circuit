@@ -22,6 +22,7 @@ type Handlers struct {
 	Billing        *upstream.Billing
 	Provenance     *upstream.Provenance
 	ProvenanceRead *upstream.ProvenanceRead
+	Evidence       *upstream.Evidence
 	Denylist       *auth.Denylist
 	Resolver       *caller.Resolver
 	Logger         *slog.Logger
@@ -33,6 +34,7 @@ type RouterOptions struct {
 	Billing          *upstream.Billing
 	Provenance       *upstream.Provenance
 	ProvenanceRead   *upstream.ProvenanceRead
+	Evidence         *upstream.Evidence
 	Limiter          *ratelimit.Limiter
 	Verifier         httpx.TokenVerifier
 	Denylist         httpx.RevocationChecker
@@ -67,6 +69,7 @@ func NewRouter(options RouterOptions) *gin.Engine {
 		Billing:        options.Billing,
 		Provenance:     options.Provenance,
 		ProvenanceRead: options.ProvenanceRead,
+		Evidence:       options.Evidence,
 		Denylist:       options.SessionDenylist,
 		Logger:         options.Logger,
 		Revision:       options.Revision,
@@ -174,6 +177,10 @@ func NewRouter(options RouterOptions) *gin.Engine {
 		"/batches/:batchId/components/:componentBatchId",
 		handlers.GetComponentBatch,
 	)
+	authenticated.GET("/evidence", handlers.ListEvidence)
+	authenticated.POST("/evidence", handlers.UploadEvidence)
+	authenticated.GET("/evidence/:documentId", handlers.GetEvidence)
+	authenticated.POST("/evidence/:documentId/download", handlers.CreateEvidenceDownloadLink)
 
 	return router
 }
@@ -194,10 +201,18 @@ func (h *Handlers) IdentityPing(c *gin.Context) {
 }
 
 func endpointClassOf(c *gin.Context) string {
-	if c.Request.Method == http.MethodPost && c.FullPath() == "/v1/api-keys" {
-		return "api_key_creation"
+	if c.Request.Method != http.MethodPost {
+		return ""
 	}
-	return ""
+
+	switch c.FullPath() {
+	case "/v1/api-keys":
+		return "api_key_creation"
+	case "/v1/evidence":
+		return "evidence_upload"
+	default:
+		return ""
+	}
 }
 
 func organizationOf(c *gin.Context) string {

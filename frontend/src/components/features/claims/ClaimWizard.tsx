@@ -62,6 +62,7 @@ export function ClaimWizard({
   const [freshlyUploaded, setFreshlyUploaded] = useState<EvidenceDocument[]>(
     [],
   );
+  const [evidenceBusy, setEvidenceBusy] = useState(false);
   const [failure, setFailure] = useState<string | null>(null);
   const [pending, startTransition] = useTransition();
 
@@ -151,6 +152,8 @@ export function ClaimWizard({
   };
 
   const advance = async () => {
+    if (evidenceBusy) return;
+
     const valid = await form.trigger(claimStepFields[step]);
     if (!valid) return;
 
@@ -287,6 +290,7 @@ export function ClaimWizard({
           <EvidenceUploadStep
             documents={evidence}
             onDocumentsChange={changeEvidence}
+            onBusyChange={setEvidenceBusy}
           />
         ) : null}
 
@@ -324,6 +328,11 @@ export function ClaimWizard({
           isFinalStep={step === "review"}
           nextLabel={step === "review" ? "Submit claim" : "Continue"}
           submitting={pending}
+          blockedReason={
+            evidenceBusy
+              ? "Every document has to finish scanning before you can move on."
+              : undefined
+          }
         />
       </form>
     </Form>

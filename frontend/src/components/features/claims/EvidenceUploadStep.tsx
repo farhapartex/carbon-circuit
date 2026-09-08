@@ -42,11 +42,13 @@ type Refusal = {
 type EvidenceUploadStepProps = {
   documents: EvidenceDocument[];
   onDocumentsChange: (documents: EvidenceDocument[]) => void;
+  onBusyChange: (busy: boolean) => void;
 };
 
 export function EvidenceUploadStep({
   documents,
   onDocumentsChange,
+  onBusyChange,
 }: EvidenceUploadStepProps) {
   const [pending, startTransition] = useTransition();
   const [uploading, setUploading] = useState<string[]>([]);
@@ -59,6 +61,7 @@ export function EvidenceUploadStep({
   const send = (files: File[]) => {
     setRefusals([]);
     setUploading(files.map((file) => file.name));
+    onBusyChange(true);
 
     startTransition(async () => {
       const accepted: EvidenceDocument[] = [];
@@ -91,6 +94,7 @@ export function EvidenceUploadStep({
         onDocumentsChange([...documents, ...accepted]);
       }
       setRefusals(refused);
+      onBusyChange(false);
     });
   };
 

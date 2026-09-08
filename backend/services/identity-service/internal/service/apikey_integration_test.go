@@ -28,6 +28,7 @@ func apiKeyService(t *testing.T, handle *gorm.DB) *service.APIKeyService {
 	return service.NewAPIKeyService(
 		handle,
 		repository.NewAPIKeyRepository(),
+		repository.NewOrganizationRepository(),
 		hasher,
 		slog.New(slog.NewTextHandler(io.Discard, nil)),
 	)
@@ -239,5 +240,110 @@ func TestKeyNeedsAName(t *testing.T) {
 		); !errors.Is(err, service.ErrAPIKeyNameEmpty) {
 			t.Fatalf("expected ErrAPIKeyNameEmpty for %q, got %v", name, err)
 		}
+	}
+}
+
+func TestValidateAcceptsTheIssuedKeyAndReturnsItsOrganization(t *testing.T) {
+	handle := store(t)
+	actor := seedKeyOrganization(t, handle)
+	keys := apiKeyService(t, handle)
+
+	issued, err := keys.Create(context.Background(), actor, "ERP ingest")
+	if err != nil {
+		t.Fatalf("create key: %v", err)
+	}
+
+	validated, err := keys.Validate(context.Background(), issued.Presented)
+	if err != nil {
+		t.Fatalf("validate: %v", err)
+	}
+
+	if validated.OrganizationID != actor.OrganizationID {
+		t.Fatalf("expected the owning organization, got %s", validated.OrganizationID)
+	}
+	if validated.ActingUserID != actor.UserID {
+		t.Fatalf("expected the key to act as its creator, got %s", validated.ActingUserID)
+	}
+	if validated.Prefix != issued.Key.Prefix {
+		t.Fatalf("expected the prefix to round trip, got %q", validated.Prefix)
+	}
+}
+
+func TestValidateRefusesTamperedAndUnknownKeys(t *testing.T) {
+	handle := store(t)
+	actor := seedKeyOrganization(t, handle)
+	keys := apiKeyService(t, handle)
+
+	issued, err := keys.Create(context.Background(), actor, "ERP ingest")
+	if err != nil {
+		t.Fatalf("create key: %v", err)
+	}
+
+	cases := map[string]string{
+		"empty":          "",
+		"not a key":      "hello",
+		"unknown prefix": "cc_live_zzzzzzzz_" + strings.Repeat("a", 43),
+		"secret mutated": issued.Presented + "x",
+		"prefix mutated": strings.Replace(issued.Presented, issued.Key.Prefix, "aaaaaaaa", 1),
+	}
+
+	for name, candidate := range cases {
+		t.Run(name, func(t *testing.T) {
+			if _, err := keys.Validate(context.Background(), candidate); err == nil {
+				t.Fatalf("expected %s to be refused", name)
+			}
+		})
+	}
+}
+
+func TestValidateRefusesARevokedKey(t *testing.T) {
+	handle := store(t)
+	actor := seedKeyOrganization(t, handle)
+	keys := apiKeyService(t, handle)
+
+	issued, err := keys.Create(context.Background(), actor, "Legacy bridge")
+	if err != nil {
+		t.Fatalf("create key: %v", err)
+	}
+
+	if err := keys.Revoke(context.Background(), actor, issued.Key.ID); err != nil {
+		t.Fatalf("revoke: %v", err)
+	}
+
+	if _, err := keys.Validate(
+		context.Background(), issued.Presented,
+	); !errors.Is(err, service.ErrAPIKeyRevoked) {
+		t.Fatalf("expected ErrAPIKeyRevoked, got %v", err)
+	}
+}
+
+func TestValidateRecordsThatTheKeyWasUsed(t *testing.T) {
+	handle := store(t)
+	actor := seedKeyOrganization(t, handle)
+	keys := apiKeyService(t, handle)
+
+	issued, err := keys.Create(context.Background(), actor, "ERP ingest")
+	if err != nil {
+		t.Fatalf("create key: %v", err)
+	}
+
+	before, err := keys.List(context.Background(), actor)
+	if err != nil {
+		t.Fatalf("list before: %v", err)
+	}
+	if before[0].LastUsedAt != nil {
+		t.Fatal("a new key should not report use")
+	}
+
+	if _, err := keys.Validate(context.Background(), issued.Presented); err != nil {
+		t.Fatalf("validate: %v", err)
+	}
+
+	after, err := keys.List(context.Background(), actor)
+	if err != nil {
+		t.Fatalf("list after: %v", err)
+	}
+	if after[0].LastUsedAt == nil {
+		t.Fatal("expected the key to record when it was used")
 	}
 }

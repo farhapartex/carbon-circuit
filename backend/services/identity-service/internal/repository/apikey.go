@@ -20,6 +20,8 @@ type APIKeyStore interface {
 		tx database.Tx,
 		organizationID, keyID, revokedBy uuid.UUID,
 	) (bool, error)
+	FindByPrefix(tx database.Tx, prefix string) (domain.APIKey, bool, error)
+	TouchLastUsed(tx database.Tx, keyID uuid.UUID, at time.Time) error
 }
 
 type APIKeyRepository struct{}
@@ -109,3 +111,61 @@ func (r *APIKeyRepository) Revoke(
 }
 
 var ErrPrefixTaken = errors.New("api key prefix already exists")
+
+func (r *APIKeyRepository) FindByPrefix(
+	tx database.Tx,
+	prefix string,
+) (domain.APIKey, bool, error) {
+	if err := tx.Bound(); err != nil {
+		return domain.APIKey{}, false, err
+	}
+
+	if err := tx.Session().Exec(
+		"SELECT set_config('app.validating_api_key_prefix', ?, true)", prefix,
+	).Error; err != nil {
+		return domain.APIKey{}, false, fmt.Errorf("scope prefix validation: %w", err)
+	}
+
+	var found []domain.APIKey
+	err := tx.Session().
+		Where("prefix = ? AND deleted_at IS NULL", prefix).
+		Limit(1).
+		Find(&found).Error
+
+	if clearErr := tx.Session().Exec(
+		"SELECT set_config('app.validating_api_key_prefix', '', true)",
+	).Error; clearErr != nil {
+		return domain.APIKey{}, false, fmt.Errorf("clear prefix validation: %w", clearErr)
+	}
+
+	if err != nil {
+		return domain.APIKey{}, false, fmt.Errorf("find api key by prefix: %w", err)
+	}
+	if len(found) == 0 {
+		return domain.APIKey{}, false, nil
+	}
+
+	return found[0], true, nil
+}
+
+func (r *APIKeyRepository) TouchLastUsed(
+	tx database.Tx,
+	keyID uuid.UUID,
+	at time.Time,
+) error {
+	if err := tx.Bound(); err != nil {
+		return err
+	}
+
+	err := tx.Session().Model(&domain.APIKey{}).
+		Where("id = ?", keyID).
+		Updates(map[string]any{
+			"last_used_at": at,
+			"updated_at":   gorm.Expr("now()"),
+		}).Error
+	if err != nil {
+		return fmt.Errorf("touch api key: %w", err)
+	}
+
+	return nil
+}

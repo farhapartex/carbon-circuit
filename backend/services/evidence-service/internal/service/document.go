@@ -91,7 +91,7 @@ func (s Submission) validate() error {
 type ObjectStore interface {
 	Put(ctx context.Context, key string, content []byte, mediaType string) error
 	Remove(ctx context.Context, key string) error
-	SignedLink(ctx context.Context, key, fileName, mediaType string) (Link, error)
+	SignedLink(ctx context.Context, key, fileName, mediaType string) (string, time.Time, error)
 	Reachable(ctx context.Context) bool
 }
 

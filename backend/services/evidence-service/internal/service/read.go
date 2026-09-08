@@ -92,12 +92,14 @@ func (s *DocumentService) DownloadLink(
 			ErrNotDownloadable, document.ScanVerdict)
 	}
 
-	link, err := s.objects.SignedLink(ctx, *document.StorageKey, document.FileName, document.DetectedMediaType)
+	url, expiresAt, err := s.objects.SignedLink(
+		ctx, *document.StorageKey, document.FileName, document.DetectedMediaType,
+	)
 	if err != nil {
 		return Link{}, domain.Document{}, err
 	}
 
-	return link, document, nil
+	return Link{URL: url, ExpiresAt: expiresAt}, document, nil
 }
 
 type Resolution struct {

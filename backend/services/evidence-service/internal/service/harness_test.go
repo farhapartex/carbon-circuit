@@ -60,18 +60,19 @@ func (m *memoryObjects) Remove(_ context.Context, key string) error {
 	return nil
 }
 
-func (m *memoryObjects) SignedLink(_ context.Context, key, fileName, _ string) (service.Link, error) {
+func (m *memoryObjects) SignedLink(
+	_ context.Context,
+	key, fileName, _ string,
+) (string, time.Time, error) {
 	m.mutex.Lock()
 	defer m.mutex.Unlock()
 
 	if _, present := m.objects[key]; !present {
-		return service.Link{}, fmt.Errorf("no object at %s", key)
+		return "", time.Time{}, fmt.Errorf("no object at %s", key)
 	}
 
-	return service.Link{
-		URL:       "https://storage.invalid/" + key + "?filename=" + fileName,
-		ExpiresAt: time.Now().UTC().Add(5 * time.Minute),
-	}, nil
+	return "https://storage.invalid/" + key + "?filename=" + fileName,
+		time.Now().UTC().Add(5 * time.Minute), nil
 }
 
 func (m *memoryObjects) Reachable(context.Context) bool { return true }

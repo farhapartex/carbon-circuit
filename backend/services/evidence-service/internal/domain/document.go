@@ -65,6 +65,7 @@ type Document struct {
 	ByteSize              int64       `gorm:"column:byte_size"`
 	PageCount             *int        `gorm:"column:page_count"`
 	ContentHash           string      `gorm:"column:content_hash;type:char(64)"`
+	StoredHash            *string     `gorm:"column:stored_hash;type:char(64)"`
 	StorageKey            *string     `gorm:"column:storage_key"`
 	ScanStatus            ScanStatus  `gorm:"column:scan_status"`
 	ScanVerdict           ScanVerdict `gorm:"column:scan_verdict"`

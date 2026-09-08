@@ -1,6 +1,10 @@
 package events
 
-const TopicEvidenceScanned = "evidence.scanned"
+const (
+	TopicEvidenceScanned = "evidence.scanned"
+
+	EvidenceRefusalDomain = "evidence-service"
+)
 
 type EvidenceScanned struct {
 	EvidenceID       string `json:"evidence_id"`

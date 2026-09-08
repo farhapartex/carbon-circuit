@@ -104,12 +104,10 @@ func (s *Store) Remove(ctx context.Context, key string) error {
 	return nil
 }
 
-type Link struct {
-	URL       string
-	ExpiresAt time.Time
-}
-
-func (s *Store) SignedLink(ctx context.Context, key, fileName, mediaType string) (Link, error) {
+func (s *Store) SignedLink(
+	ctx context.Context,
+	key, fileName, mediaType string,
+) (string, time.Time, error) {
 	parameters := url.Values{}
 	parameters.Set("response-content-disposition",
 		fmt.Sprintf("attachment; filename=%q", fileName))
@@ -117,10 +115,10 @@ func (s *Store) SignedLink(ctx context.Context, key, fileName, mediaType string)
 
 	signed, err := s.client.PresignedGetObject(ctx, s.bucket, key, s.linkTTL, parameters)
 	if err != nil {
-		return Link{}, fmt.Errorf("sign download link for %s: %w", key, err)
+		return "", time.Time{}, fmt.Errorf("sign download link for %s: %w", key, err)
 	}
 
-	return Link{URL: signed.String(), ExpiresAt: time.Now().UTC().Add(s.linkTTL)}, nil
+	return signed.String(), time.Now().UTC().Add(s.linkTTL), nil
 }
 
 func (s *Store) Reachable(ctx context.Context) bool {

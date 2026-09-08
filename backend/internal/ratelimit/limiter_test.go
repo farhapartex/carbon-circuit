@@ -110,3 +110,39 @@ func TestMinuteAndDayRulesCoexist(t *testing.T) {
 		t.Fatalf("check: %v", err)
 	}
 }
+
+func TestEachRateUnitIsHonoured(t *testing.T) {
+	cases := []struct {
+		name string
+		rule ratelimit.Rule
+	}{
+		{"per minute", ratelimit.Rule{Name: "minute", PerMinute: 30, Burst: 1}},
+		{"per hour", ratelimit.Rule{Name: "hour", PerHour: 20, Burst: 1}},
+		{"per day", ratelimit.Rule{Name: "day", PerDay: 10, Burst: 1}},
+	}
+
+	for _, testCase := range cases {
+		t.Run(testCase.name, func(t *testing.T) {
+			testCase.rule.KeyFunc = func(ratelimit.Request) string { return "probe" }
+			testCase.rule.AppliesTo = func(ratelimit.Request) bool { return true }
+
+			if _, err := ratelimit.New(redisClient(t), "probe:"+testCase.rule.Name,
+				[]ratelimit.Rule{testCase.rule}); err != nil {
+				t.Fatalf("a rule with only a %s rate must be accepted: %v", testCase.name, err)
+			}
+		})
+	}
+}
+
+func TestARuleWithNoRateAtAllIsRefused(t *testing.T) {
+	rule := ratelimit.Rule{
+		Name:      "rateless",
+		Burst:     1,
+		KeyFunc:   func(ratelimit.Request) string { return "probe" },
+		AppliesTo: func(ratelimit.Request) bool { return true },
+	}
+
+	if _, err := ratelimit.New(redisClient(t), "probe:rateless", []ratelimit.Rule{rule}); err == nil {
+		t.Fatal("a rule setting no rate at all must be refused rather than dividing by zero")
+	}
+}

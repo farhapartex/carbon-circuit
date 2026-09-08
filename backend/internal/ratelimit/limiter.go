@@ -13,6 +13,7 @@ import (
 type Rule struct {
 	Name      string
 	PerMinute int
+	PerHour   int
 	PerDay    int
 	Burst     int
 	KeyFunc   func(Request) string
@@ -42,6 +43,21 @@ type Limiter struct {
 	rules    []Rule
 }
 
+func rateFor(rule Rule) (throttled.Rate, error) {
+	switch {
+	case rule.PerDay > 0:
+		return throttled.PerDay(rule.PerDay), nil
+	case rule.PerHour > 0:
+		return throttled.PerHour(rule.PerHour), nil
+	case rule.PerMinute > 0:
+		return throttled.PerMin(rule.PerMinute), nil
+	default:
+		return throttled.Rate{}, fmt.Errorf(
+			"rule %q sets no per-minute, per-hour or per-day rate", rule.Name,
+		)
+	}
+}
+
 func New(client *redis.Client, keyPrefix string, rules []Rule) (*Limiter, error) {
 	store, err := goredisstore.NewCtx(client, keyPrefix)
 	if err != nil {
@@ -50,17 +66,9 @@ func New(client *redis.Client, keyPrefix string, rules []Rule) (*Limiter, error)
 
 	limiters := make(map[string]*throttled.GCRARateLimiterCtx, len(rules))
 	for _, rule := range rules {
-		if rule.PerDay <= 0 && rule.PerMinute <= 0 {
-			return nil, fmt.Errorf(
-				"rule %q sets neither a per-minute nor a per-day rate", rule.Name,
-			)
-		}
-
-		var rate throttled.Rate
-		if rule.PerDay > 0 {
-			rate = throttled.PerDay(rule.PerDay)
-		} else {
-			rate = throttled.PerMin(rule.PerMinute)
+		rate, err := rateFor(rule)
+		if err != nil {
+			return nil, err
 		}
 
 		quota := throttled.RateQuota{MaxRate: rate, MaxBurst: rule.Burst}

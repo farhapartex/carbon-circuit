@@ -275,3 +275,14 @@ func (i *Identity) RevokeAPIKey(
 	_, err := i.client.RevokeAPIKey(callCtx, &identityv1.RevokeAPIKeyRequest{KeyId: keyID})
 	return err
 }
+
+func (i *Identity) ValidateAPIKey(
+	ctx context.Context,
+	presented string,
+) (*identityv1.ValidateAPIKeyResponse, error) {
+	callCtx, cancel := i.call(ctx, "")
+	defer cancel()
+	return i.client.ValidateAPIKey(callCtx, &identityv1.ValidateAPIKeyRequest{
+		PresentedKey: presented,
+	})
+}

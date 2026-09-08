@@ -29,22 +29,23 @@ type Handlers struct {
 }
 
 type RouterOptions struct {
-	Identity        *upstream.Identity
-	Billing         *upstream.Billing
-	Provenance      *upstream.Provenance
-	ProvenanceRead  *upstream.ProvenanceRead
-	Limiter         *ratelimit.Limiter
-	Verifier        httpx.TokenVerifier
-	Denylist        httpx.RevocationChecker
-	SessionDenylist *auth.Denylist
-	Cache           *cache.Client
-	SessionInterval time.Duration
-	TrustedProxies  []string
-	Resolver        *caller.Resolver
-	Signer          *servicetoken.Signer
-	Logger          *slog.Logger
-	Environment     string
-	Revision        string
+	Identity         *upstream.Identity
+	Billing          *upstream.Billing
+	Provenance       *upstream.Provenance
+	ProvenanceRead   *upstream.ProvenanceRead
+	Limiter          *ratelimit.Limiter
+	Verifier         httpx.TokenVerifier
+	Denylist         httpx.RevocationChecker
+	SessionDenylist  *auth.Denylist
+	Cache            *cache.Client
+	SessionInterval  time.Duration
+	APIKeyContextTTL time.Duration
+	TrustedProxies   []string
+	Resolver         *caller.Resolver
+	Signer           *servicetoken.Signer
+	Logger           *slog.Logger
+	Environment      string
+	Revision         string
 }
 
 func errorAttributes(c *gin.Context, err error) []any {
@@ -127,7 +128,13 @@ func NewRouter(options RouterOptions) *gin.Engine {
 
 	authenticated := router.Group("/v1")
 	authenticated.Use(
-		httpx.Authenticate(options.Verifier, options.Denylist, options.Logger),
+		caller.StampAPIKey(
+			options.Identity, options.Cache, options.Signer,
+			options.APIKeyContextTTL, options.Logger,
+		),
+		httpx.Authenticate(
+			options.Verifier, options.Denylist, options.Logger, alreadyStamped,
+		),
 		caller.Stamp(options.Resolver, options.Signer, options.Logger),
 		httpx.EndpointClass("authenticated_read"),
 		httpx.EndpointClassFor(endpointClassOf),
@@ -199,4 +206,9 @@ func organizationOf(c *gin.Context) string {
 		return ""
 	}
 	return resolved.OrganizationID
+}
+
+func alreadyStamped(c *gin.Context) bool {
+	_, stamped := caller.ContextFrom(c.Request.Context())
+	return stamped
 }

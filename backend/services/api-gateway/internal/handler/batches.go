@@ -3,6 +3,7 @@ package handler
 import (
 	"net/http"
 	"strconv"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 	"google.golang.org/grpc/codes"
@@ -264,7 +265,8 @@ func (h *Handlers) ListBatches(c *gin.Context) {
 }
 
 func (h *Handlers) CreateBatch(c *gin.Context) {
-	if _, resolved := caller.ContextFrom(c.Request.Context()); !resolved {
+	who, resolved := caller.ContextFrom(c.Request.Context())
+	if !resolved {
 		httpx.Fail(c, httpx.CodeUnauthenticated)
 		return
 	}
@@ -272,6 +274,13 @@ func (h *Handlers) CreateBatch(c *gin.Context) {
 	var body createBatchRequest
 	if err := c.ShouldBindJSON(&body); err != nil {
 		httpx.Fail(c, httpx.CodeValidation)
+		return
+	}
+
+	if who.FromAPIKey() && strings.TrimSpace(body.ExternalID) == "" {
+		httpx.Fail(c, httpx.CodeValidation, httpx.FieldError{
+			Field: "external_id", Code: "REQUIRED_FOR_API_SUBMISSION",
+		})
 		return
 	}
 
@@ -355,7 +364,8 @@ func (h *Handlers) ListCheckpoints(c *gin.Context) {
 }
 
 func (h *Handlers) LogCheckpoint(c *gin.Context) {
-	if _, resolved := caller.ContextFrom(c.Request.Context()); !resolved {
+	who, resolved := caller.ContextFrom(c.Request.Context())
+	if !resolved {
 		httpx.Fail(c, httpx.CodeUnauthenticated)
 		return
 	}
@@ -363,6 +373,13 @@ func (h *Handlers) LogCheckpoint(c *gin.Context) {
 	var body logCheckpointRequest
 	if err := c.ShouldBindJSON(&body); err != nil {
 		httpx.Fail(c, httpx.CodeValidation)
+		return
+	}
+
+	if who.FromAPIKey() && strings.TrimSpace(body.ExternalID) == "" {
+		httpx.Fail(c, httpx.CodeValidation, httpx.FieldError{
+			Field: "external_id", Code: "REQUIRED_FOR_API_SUBMISSION",
+		})
 		return
 	}
 

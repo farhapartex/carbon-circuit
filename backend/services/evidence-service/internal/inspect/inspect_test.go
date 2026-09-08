@@ -218,3 +218,29 @@ func TestUppercaseDeclarationIsTolerated(t *testing.T) {
 		t.Fatal("a declaration differing only in case must still be recognised")
 	}
 }
+
+func TestABenignPDFIsStoredByteForByte(t *testing.T) {
+	source := pdfWithPages(t, 3, "")
+
+	result, err := inspect.Inspect(inspect.PDF, source, standardLimits)
+	if err != nil {
+		t.Fatalf("inspect: %v", err)
+	}
+
+	if !bytes.Equal(result.Content, source) {
+		t.Fatal("a document with nothing to strip must be stored exactly as submitted")
+	}
+}
+
+func TestASanitizedPDFIsNotStoredByteForByte(t *testing.T) {
+	source := pdfWithPages(t, 1, " /OpenAction << /S /JavaScript /JS (app.alert\\('x'\\);) >>")
+
+	result, err := inspect.Inspect(inspect.PDF, source, standardLimits)
+	if err != nil {
+		t.Fatalf("inspect: %v", err)
+	}
+
+	if bytes.Equal(result.Content, source) {
+		t.Fatal("a document carrying active content must not be stored verbatim")
+	}
+}

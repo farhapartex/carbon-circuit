@@ -53,6 +53,10 @@ func inspectPDF(raw []byte, maximumPages int) (Result, error) {
 		return Result{}, fmt.Errorf("%w: %v", ErrActiveContent, err)
 	}
 
+	if !stripped {
+		return Result{MediaType: PDF, PageCount: &pages, Content: raw}, nil
+	}
+
 	var sanitized bytes.Buffer
 	if err := api.WriteContext(context, &sanitized); err != nil {
 		return Result{}, fmt.Errorf("%w: rewriting the document failed: %v", ErrActiveContent, err)
@@ -62,7 +66,7 @@ func inspectPDF(raw []byte, maximumPages int) (Result, error) {
 		MediaType:             PDF,
 		PageCount:             &pages,
 		Content:               sanitized.Bytes(),
-		ActiveContentStripped: stripped,
+		ActiveContentStripped: true,
 	}, nil
 }
 

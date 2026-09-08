@@ -179,6 +179,7 @@ func run() error {
 		Provenance:            provenance,
 		ProvenanceRead:        provenanceRead,
 		Evidence:              evidence,
+		Sustainability:        sustainability,
 		EvidenceUploadWindow:  settings.EvidenceUploadWindow,
 		EvidenceUploadTimeout: settings.EvidenceUploadTimeout,
 		Limiter:               limiter,

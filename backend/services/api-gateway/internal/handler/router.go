@@ -65,24 +65,29 @@ func errorAttributes(c *gin.Context, err error) []any {
 	}
 }
 
-func NewRouter(options RouterOptions) *gin.Engine {
-	if options.Environment != "development" {
-		gin.SetMode(gin.ReleaseMode)
-	}
-
-	handlers := &Handlers{
+func handlersFrom(options RouterOptions) *Handlers {
+	return &Handlers{
 		Identity:              options.Identity,
 		Resolver:              options.Resolver,
 		Billing:               options.Billing,
 		Provenance:            options.Provenance,
 		ProvenanceRead:        options.ProvenanceRead,
 		Evidence:              options.Evidence,
+		Sustainability:        options.Sustainability,
 		Denylist:              options.SessionDenylist,
 		EvidenceUploadWindow:  options.EvidenceUploadWindow,
 		EvidenceUploadTimeout: options.EvidenceUploadTimeout,
 		Logger:                options.Logger,
 		Revision:              options.Revision,
 	}
+}
+
+func NewRouter(options RouterOptions) *gin.Engine {
+	if options.Environment != "development" {
+		gin.SetMode(gin.ReleaseMode)
+	}
+
+	handlers := handlersFrom(options)
 
 	router := gin.New()
 

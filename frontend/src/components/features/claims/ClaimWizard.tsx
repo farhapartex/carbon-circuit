@@ -2,7 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import { useState, useTransition } from "react";
+import { useMemo, useState, useTransition } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { ActivityTypeSelector } from "@/components/features/claims/ActivityTypeSelector";
 import { ClaimFiguresFormStep } from "@/components/features/claims/ClaimFiguresFormStep";
@@ -34,24 +34,56 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import type { EvidenceDocument } from "@/lib/api/evidence";
 import type { FacilityRecord } from "@/lib/api/facilities";
 import { useFormDraftStore } from "@/stores/form-drafts";
 
 type ClaimWizardProps = {
   facilities: FacilityRecord[];
   userName: string;
+  uploadedEvidence: EvidenceDocument[];
 };
 
 const today = () => new Date().toISOString().slice(0, 10);
 
-export function ClaimWizard({ facilities, userName }: ClaimWizardProps) {
+export function ClaimWizard({
+  facilities,
+  userName,
+  uploadedEvidence,
+}: ClaimWizardProps) {
   const router = useRouter();
   const saveDraft = useFormDraftStore((state) => state.saveDraft);
   const draft = useFormDraftStore((state) => state.drafts.claim);
 
   const [stepIndex, setStepIndex] = useState(draft?.step ?? 0);
+  const [attachedIds, setAttachedIds] = useState<string[]>(
+    draft?.evidenceIds ?? [],
+  );
+  const [freshlyUploaded, setFreshlyUploaded] = useState<EvidenceDocument[]>(
+    [],
+  );
   const [failure, setFailure] = useState<string | null>(null);
   const [pending, startTransition] = useTransition();
+
+  const knownEvidence = useMemo(
+    () =>
+      new Map(
+        [...uploadedEvidence, ...freshlyUploaded].map((document) => [
+          document.id,
+          document,
+        ]),
+      ),
+    [uploadedEvidence, freshlyUploaded],
+  );
+
+  const evidence = useMemo(
+    () =>
+      attachedIds.flatMap((id) => {
+        const document = knownEvidence.get(id);
+        return document ? [document] : [];
+      }),
+    [attachedIds, knownEvidence],
+  );
 
   const form = useForm<ClaimDraftValues>({
     resolver: zodResolver(claimDraftSchema),
@@ -90,7 +122,7 @@ export function ClaimWizard({ facilities, userName }: ClaimWizardProps) {
     name: "exclusivityAttested",
   });
 
-  const persist = (nextStep: number) => {
+  const persist = (nextStep: number, documents = evidence) => {
     const current = form.getValues();
     saveDraft("claim", {
       step: nextStep,
@@ -102,8 +134,20 @@ export function ClaimWizard({ facilities, userName }: ClaimWizardProps) {
         periodEnd: current.periodEnd,
         requestedAmount: current.requestedAmount,
       },
-      evidenceIds: [],
+      evidenceIds: documents.map((document) => document.id),
     });
+  };
+
+  const changeEvidence = (documents: EvidenceDocument[]) => {
+    setFreshlyUploaded((existing) => {
+      const seen = new Set(existing.map((document) => document.id));
+      return [
+        ...existing,
+        ...documents.filter((document) => !seen.has(document.id)),
+      ];
+    });
+    setAttachedIds(documents.map((document) => document.id));
+    persist(stepIndex, documents);
   };
 
   const advance = async () => {
@@ -125,7 +169,7 @@ export function ClaimWizard({ facilities, userName }: ClaimWizardProps) {
     setFailure(null);
     startTransition(() => {
       setFailure(
-        "Claims cannot be submitted yet — the sustainability and evidence services are not built.",
+        "Claims cannot be submitted yet — the sustainability service is not built. Evidence you attached has been uploaded and scanned, and will still be here when it is.",
       );
       router.refresh();
     });
@@ -239,7 +283,12 @@ export function ClaimWizard({ facilities, userName }: ClaimWizardProps) {
           />
         ) : null}
 
-        {step === "evidence" ? <EvidenceUploadStep /> : null}
+        {step === "evidence" ? (
+          <EvidenceUploadStep
+            documents={evidence}
+            onDocumentsChange={changeEvidence}
+          />
+        ) : null}
 
         {step === "attestation" ? (
           <FormField

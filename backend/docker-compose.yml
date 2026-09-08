@@ -241,6 +241,40 @@ services:
     expose:
       - "9095"
 
+  sustainability-migrate:
+    build:
+      context: .
+      dockerfile: services/sustainability-service/Dockerfile
+    entrypoint: ["/sustainability-migrate"]
+    command: ["up"]
+    environment:
+      DATABASE_MIGRATION_DSN: postgres://sustainability_service:sustainability_service@postgres:5432/carboncircuit?sslmode=disable
+      DATABASE_SCHEMA: sustainability
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: "no"
+
+  sustainability-service:
+    build:
+      context: .
+      dockerfile: services/sustainability-service/Dockerfile
+    volumes:
+      - certs:/certs:ro
+    env_file:
+      - services/sustainability-service/.env
+    depends_on:
+      pgbouncer:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+      evidence-service:
+        condition: service_started
+      sustainability-migrate:
+        condition: service_completed_successfully
+    expose:
+      - "9096"
+
   identity-service:
     build:
       context: .
@@ -271,6 +305,7 @@ services:
       - provenance-service
       - provenance-read-service
       - evidence-service
+      - sustainability-service
       - redis
     ports:
       - "8080:8080"

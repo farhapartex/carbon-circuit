@@ -1,0 +1,135 @@
+syntax = "proto3";
+
+package carboncircuit.evidence.v1;
+
+option go_package = "github.com/carboncircuit/backend/gen/carboncircuit/evidence/v1;evidencev1";
+
+service EvidenceService {
+  rpc Ping(PingRequest) returns (PingResponse);
+  rpc UploadDocument(stream UploadDocumentRequest) returns (UploadDocumentResponse);
+  rpc GetDocument(GetDocumentRequest) returns (GetDocumentResponse);
+  rpc ListDocuments(ListDocumentsRequest) returns (ListDocumentsResponse);
+  rpc CreateDownloadLink(CreateDownloadLinkRequest) returns (CreateDownloadLinkResponse);
+  rpc ResolveDocuments(ResolveDocumentsRequest) returns (ResolveDocumentsResponse);
+}
+
+enum DocumentPurpose {
+  DOCUMENT_PURPOSE_UNSPECIFIED = 0;
+  DOCUMENT_PURPOSE_CLAIM_EVIDENCE = 1;
+  DOCUMENT_PURPOSE_BATCH_CERTIFICATION = 2;
+}
+
+enum ScanStatus {
+  SCAN_STATUS_UNSPECIFIED = 0;
+  SCAN_STATUS_PENDING = 1;
+  SCAN_STATUS_CLEAN = 2;
+  SCAN_STATUS_FAILED = 3;
+}
+
+enum ScanVerdict {
+  SCAN_VERDICT_UNSPECIFIED = 0;
+  SCAN_VERDICT_ACCEPTED = 1;
+  SCAN_VERDICT_REJECTED_MEDIA_TYPE = 2;
+  SCAN_VERDICT_REJECTED_CONTENT_MISMATCH = 3;
+  SCAN_VERDICT_REJECTED_TOO_LARGE = 4;
+  SCAN_VERDICT_REJECTED_PAGE_COUNT = 5;
+  SCAN_VERDICT_REJECTED_ACTIVE_CONTENT = 6;
+  SCAN_VERDICT_REJECTED_MALWARE = 7;
+  SCAN_VERDICT_REJECTED_UNREADABLE = 8;
+}
+
+message PingRequest {}
+
+message PingResponse {
+  string service = 1;
+  string revision = 2;
+  bool database_reachable = 3;
+  bool storage_reachable = 4;
+  string scanner = 5;
+}
+
+message Document {
+  string id = 1;
+  string organization_id = 2;
+  string uploaded_by_user_id = 3;
+  DocumentPurpose purpose = 4;
+  string file_name = 5;
+  string media_type = 6;
+  int64 byte_size = 7;
+  int32 page_count = 8;
+  string content_hash = 9;
+  ScanStatus scan_status = 10;
+  ScanVerdict scan_verdict = 11;
+  string scanned_by = 12;
+  string scanned_at = 13;
+  bool active_content_stripped = 14;
+  string created_at = 15;
+}
+
+message UploadMetadata {
+  DocumentPurpose purpose = 1;
+  string file_name = 2;
+  string declared_media_type = 3;
+  string idempotency_key = 4;
+}
+
+message UploadDocumentRequest {
+  oneof part {
+    UploadMetadata metadata = 1;
+    bytes chunk = 2;
+  }
+}
+
+message UploadDocumentResponse {
+  Document document = 1;
+  bool already_uploaded = 2;
+}
+
+message GetDocumentRequest {
+  string document_id = 1;
+}
+
+message GetDocumentResponse {
+  Document document = 1;
+}
+
+message ListDocumentsRequest {
+  DocumentPurpose purpose = 1;
+  string after = 2;
+  int32 limit = 3;
+}
+
+message ListDocumentsResponse {
+  repeated Document documents = 1;
+  string next_cursor = 2;
+}
+
+message CreateDownloadLinkRequest {
+  string document_id = 1;
+}
+
+message CreateDownloadLinkResponse {
+  string url = 1;
+  string expires_at = 2;
+  string file_name = 3;
+  string media_type = 4;
+}
+
+message ResolveDocumentsRequest {
+  repeated string document_ids = 1;
+  DocumentPurpose purpose = 2;
+}
+
+message ResolvedDocument {
+  string document_id = 1;
+  bool usable = 2;
+  string refusal = 3;
+  string content_hash = 4;
+  int32 page_count = 5;
+  string media_type = 6;
+  int64 byte_size = 7;
+}
+
+message ResolveDocumentsResponse {
+  repeated ResolvedDocument documents = 1;
+}

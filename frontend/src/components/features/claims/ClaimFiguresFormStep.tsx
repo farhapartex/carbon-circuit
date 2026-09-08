@@ -28,11 +28,19 @@ const materials = Object.keys(recycledMaterialLabels) as RecycledMaterial[];
 type ClaimFiguresFormStepProps = {
   control: Control<ClaimDraftValues>;
   activityType: ActivityType;
+  facilityId: string;
+  vintageYear: string;
+  periodStart: string;
+  periodEnd: string;
 };
 
 export function ClaimFiguresFormStep({
   control,
   activityType,
+  facilityId,
+  vintageYear,
+  periodStart,
+  periodEnd,
 }: ClaimFiguresFormStepProps) {
   return (
     <div className="space-y-6">
@@ -237,7 +245,13 @@ export function ClaimFiguresFormStep({
         )}
       />
 
-      <CalculatedCeilingPreview />
+      <CalculatedCeilingPreview
+        facilityId={facilityId}
+        activityType={activityType}
+        vintageYear={vintageYear}
+        periodStart={periodStart}
+        periodEnd={periodEnd}
+      />
     </div>
   );
 }

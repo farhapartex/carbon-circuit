@@ -34,6 +34,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { submitSustainabilityClaim } from "@/lib/actions/claims";
 import type { EvidenceDocument } from "@/lib/api/evidence";
 import type { FacilityRecord } from "@/lib/api/facilities";
 import { useFormDraftStore } from "@/stores/form-drafts";
@@ -46,6 +47,28 @@ type ClaimWizardProps = {
 
 const today = () => new Date().toISOString().slice(0, 10);
 
+const declaredFiguresOf = (draft: ClaimDraftValues): Record<string, string> => {
+  if (draft.activityType === "reduced_emission_logistics") {
+    return {
+      tonne_kilometres: draft.tonneKilometres ?? "",
+      actual_factor_kg_per_tonne_km: draft.actualFactorKgPerTonneKm ?? "",
+    };
+  }
+
+  if (draft.activityType === "responsible_sourcing") {
+    return {
+      material: draft.material ?? "",
+      verified_quantity: draft.verifiedQuantity ?? "",
+      quantity_unit: draft.quantityUnit ?? "tonne",
+    };
+  }
+
+  return {
+    verified_kwh: draft.verifiedKwh ?? "",
+    grid_region: draft.gridRegion ?? "",
+  };
+};
+
 export function ClaimWizard({
   facilities,
   userName,
@@ -53,6 +76,7 @@ export function ClaimWizard({
 }: ClaimWizardProps) {
   const router = useRouter();
   const saveDraft = useFormDraftStore((state) => state.saveDraft);
+  const clearDraft = useFormDraftStore((state) => state.clearDraft);
   const draft = useFormDraftStore((state) => state.drafts.claim);
 
   const [stepIndex, setStepIndex] = useState(draft?.step ?? 0);
@@ -65,6 +89,7 @@ export function ClaimWizard({
   const [evidenceBusy, setEvidenceBusy] = useState(false);
   const [failure, setFailure] = useState<string | null>(null);
   const [pending, startTransition] = useTransition();
+  const [idempotencyKey] = useState(() => crypto.randomUUID());
 
   const knownEvidence = useMemo(
     () =>
@@ -168,13 +193,45 @@ export function ClaimWizard({
     setStepIndex(previous);
   };
 
-  const submit = () => {
+  const submit = (draft: ClaimDraftValues) => {
     setFailure(null);
-    startTransition(() => {
+
+    if (evidence.length === 0) {
       setFailure(
-        "Claims cannot be submitted yet — the sustainability service is not built. Evidence you attached has been uploaded and scanned, and will still be here when it is.",
+        "A claim needs at least one supporting document. Go back to Evidence and attach one.",
       );
-      router.refresh();
+      return;
+    }
+
+    startTransition(async () => {
+      try {
+        const result = await submitSustainabilityClaim(
+          {
+            facilityId: draft.facilityId,
+            activityType: draft.activityType,
+            vintageYear: Number(draft.vintageYear),
+            periodStart: draft.periodStart,
+            periodEnd: draft.periodEnd,
+            declaredFigures: declaredFiguresOf(draft),
+            requestedAmount: draft.requestedAmount,
+            evidenceIds: evidence.map((document) => document.id),
+            exclusivityAttested: draft.exclusivityAttested,
+          },
+          idempotencyKey,
+        );
+
+        if (!result.ok) {
+          setFailure(result.message);
+          return;
+        }
+
+        clearDraft("claim");
+        router.push(`/claims/${result.claim.id}`);
+      } catch (error) {
+        setFailure(
+          `The claim could not be sent: ${error instanceof Error ? error.message : "unknown error"}`,
+        );
+      }
     });
   };
 
@@ -283,6 +340,10 @@ export function ClaimWizard({
           <ClaimFiguresFormStep
             control={form.control}
             activityType={activityType}
+            facilityId={String(values.facilityId ?? "")}
+            vintageYear={String(values.vintageYear ?? "")}
+            periodStart={String(values.periodStart ?? "")}
+            periodEnd={String(values.periodEnd ?? "")}
           />
         ) : null}
 
@@ -331,7 +392,9 @@ export function ClaimWizard({
           blockedReason={
             evidenceBusy
               ? "Every document has to finish scanning before you can move on."
-              : undefined
+              : step === "review" && evidence.length === 0
+                ? "Attach at least one supporting document before submitting."
+                : undefined
           }
         />
       </form>

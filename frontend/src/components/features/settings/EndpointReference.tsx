@@ -1,6 +1,10 @@
 import { CopyButton } from "@/components/shared/CopyButton";
 import { StatusPill } from "@/components/shared/StatusPill";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import type {
   DocumentedEndpoint,
   DocumentedField,
@@ -100,9 +104,9 @@ export function EndpointReference({
   endpoint: DocumentedEndpoint;
 }) {
   return (
-    <Card id={endpoint.id}>
-      <CardHeader className="space-y-2">
-        <div className="flex flex-wrap items-center gap-3">
+    <AccordionItem value={endpoint.id} id={endpoint.id}>
+      <AccordionTrigger>
+        <span className="flex flex-wrap items-center gap-3">
           <StatusPill
             presentation={{
               label: endpoint.method,
@@ -113,14 +117,15 @@ export function EndpointReference({
           <code className="font-mono text-helper break-all">
             {endpoint.path}
           </code>
-        </div>
-        <CardTitle>{endpoint.summary}</CardTitle>
+        </span>
+        <span className="mt-1 block font-medium">{endpoint.summary}</span>
+      </AccordionTrigger>
+
+      <AccordionContent className="space-y-6">
         <p className="text-caption text-pretty text-neutral-600">
           {endpoint.detail}
         </p>
-      </CardHeader>
 
-      <CardContent className="space-y-6">
         <dl className="grid gap-3 sm:grid-cols-2">
           <div>
             <dt className="text-caption text-neutral-600">Success</dt>
@@ -169,7 +174,7 @@ export function EndpointReference({
             ))}
           </ul>
         </div>
-      </CardContent>
-    </Card>
+      </AccordionContent>
+    </AccordionItem>
   );
 }

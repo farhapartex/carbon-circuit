@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { EndpointReference } from "@/components/features/settings/EndpointReference";
 import { CopyButton } from "@/components/shared/CopyButton";
+import { Accordion } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { apiDocGroups } from "@/lib/apiDocs/endpoints";
@@ -122,9 +123,11 @@ export default function SettingsApiDocsPage() {
               {group.detail}
             </p>
           </div>
-          {group.endpoints.map((endpoint) => (
-            <EndpointReference key={endpoint.id} endpoint={endpoint} />
-          ))}
+          <Accordion type="multiple">
+            {group.endpoints.map((endpoint) => (
+              <EndpointReference key={endpoint.id} endpoint={endpoint} />
+            ))}
+          </Accordion>
         </section>
       ))}
 

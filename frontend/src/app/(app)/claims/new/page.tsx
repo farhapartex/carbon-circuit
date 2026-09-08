@@ -12,7 +12,7 @@ export default async function NewClaimPage() {
   const { token } = await auth0.getAccessToken();
   const [facilities, uploadedEvidence] = await Promise.all([
     fetchFacilities(token),
-    fetchEvidenceDocuments(token, "claim_evidence"),
+    fetchEvidenceDocuments(token, "claim_evidence").catch(() => []),
   ]);
 
   return (

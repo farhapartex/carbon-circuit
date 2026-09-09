@@ -86,6 +86,8 @@ type claimResponse struct {
 	ReferenceFactorValue  string                  `json:"reference_factor_value"`
 	ReferenceFactorID     string                  `json:"reference_factor_id"`
 	ReferenceLookupKey    string                  `json:"reference_lookup_key"`
+	VintageCeiling        string                  `json:"vintage_ceiling"`
+	ConsumedAtSubmission  string                  `json:"consumed_at_submission"`
 	Status                string                  `json:"status"`
 	Priority              string                  `json:"priority"`
 	RequiresDualApproval  bool                    `json:"requires_dual_approval"`
@@ -130,6 +132,8 @@ func toClaimResponse(claim *sustainabilityv1.Claim) claimResponse {
 		ReferenceFactorValue:  claim.GetReferenceFactorValue(),
 		ReferenceFactorID:     claim.GetReferenceFactorId(),
 		ReferenceLookupKey:    claim.GetReferenceLookupKey(),
+		VintageCeiling:        claim.GetVintageCeiling(),
+		ConsumedAtSubmission:  claim.GetConsumedAtSubmission(),
 		Status:                claimStatusName[claim.GetStatus()],
 		Priority:              priorityName[claim.GetPriority()],
 		RequiresDualApproval:  claim.GetRequiresDualApproval(),
@@ -289,6 +293,10 @@ func (h *Handlers) PreviewClaimCeiling(c *gin.Context) {
 
 	httpx.Data(c, http.StatusOK, map[string]any{
 		"ceiling":         preview.GetCeiling(),
+		"vintage_ceiling": preview.GetVintageCeiling(),
+		"consumed":        preview.GetConsumed(),
+		"remaining":       preview.GetRemaining(),
+		"period_ceiling":  preview.GetPeriodCeiling(),
 		"capacity_basis":  preview.GetCapacityBasis(),
 		"capacity_source": preview.GetCapacitySource(),
 		"discount_factor": preview.GetDiscountFactor(),

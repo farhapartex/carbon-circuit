@@ -108,5 +108,7 @@ func claimMessage(view service.ClaimView) *sustainabilityv1.Claim {
 		Evidence:              evidence,
 		ReferenceFactorId:     claim.ReferenceFactorID.String(),
 		ReferenceLookupKey:    claim.ReferenceLookupKey,
+		VintageCeiling:        claim.VintageCeiling,
+		ConsumedAtSubmission:  claim.ConsumedAtSubmission,
 	}
 }

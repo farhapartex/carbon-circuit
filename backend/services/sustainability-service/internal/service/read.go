@@ -6,6 +6,7 @@ import (
 	"github.com/google/uuid"
 
 	"github.com/carboncircuit/backend/internal/database"
+	"github.com/carboncircuit/backend/services/sustainability-service/internal/ceiling"
 	"github.com/carboncircuit/backend/services/sustainability-service/internal/domain"
 )
 
@@ -84,6 +85,10 @@ func (s *ClaimService) List(
 
 type CeilingPreview struct {
 	Ceiling        string
+	VintageCeiling string
+	Consumed       string
+	Remaining      string
+	PeriodCeiling  string
 	CapacityBasis  string
 	CapacitySource string
 	DiscountFactor string
@@ -113,20 +118,24 @@ func (s *ClaimService) PreviewCeiling(
 	var preview CeilingPreview
 
 	err = database.WithinTenant(ctx, s.database, tenancy(actor), func(tx database.Tx) error {
-		computed, err := s.computeCeiling(tx, facility, submission)
+		computed, err := s.computeCeiling(tx, actor, facility, submission)
 		if err != nil {
 			return err
 		}
 
 		preview = CeilingPreview{
-			Ceiling:        computed.Result.Ceiling.StringFixed(6),
+			Ceiling:        computed.Allowance.Effective.StringFixed(ceiling.Places),
+			VintageCeiling: computed.Allowance.VintageCeiling.StringFixed(ceiling.Places),
+			Consumed:       computed.Allowance.Consumed.StringFixed(ceiling.Places),
+			Remaining:      computed.Allowance.Remaining.StringFixed(ceiling.Places),
+			PeriodCeiling:  computed.Allowance.PeriodCeiling.StringFixed(ceiling.Places),
 			CapacityBasis:  computed.Capacity.Value.String(),
 			CapacitySource: computed.Capacity.Source,
 			DiscountFactor: computed.Discount.StringFixed(2),
 			ReferenceValue: computed.Factor.Factor,
 			GridRegion:     facility.GridRegion,
-			PeriodDays:     computed.Result.PeriodDays,
-			VintageDays:    computed.Result.VintageDays,
+			PeriodDays:     computed.Allowance.PeriodDays,
+			VintageDays:    computed.Allowance.VintageDays,
 		}
 		return nil
 	})

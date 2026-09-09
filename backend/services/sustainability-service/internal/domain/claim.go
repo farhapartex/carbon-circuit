@@ -62,6 +62,8 @@ type Claim struct {
 	DeclaredFigures       database.JSONDocument `gorm:"column:declared_figures;type:jsonb"`
 	RequestedAmount       string                `gorm:"column:requested_amount;type:numeric(28,6)"`
 	ComputedCeiling       string                `gorm:"column:computed_ceiling;type:numeric(28,6)"`
+	VintageCeiling        string                `gorm:"column:vintage_ceiling;type:numeric(28,6)"`
+	ConsumedAtSubmission  string                `gorm:"column:consumed_at_submission;type:numeric(28,6)"`
 	CapacityBasis         string                `gorm:"column:capacity_basis;type:numeric(28,6)"`
 	CapacitySource        string                `gorm:"column:capacity_source"`
 	DiscountFactor        string                `gorm:"column:discount_factor;type:numeric(3,2)"`

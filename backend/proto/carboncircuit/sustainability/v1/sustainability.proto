@@ -79,6 +79,8 @@ message Claim {
   repeated ClaimEvidence evidence = 22;
   string reference_factor_id = 23;
   string reference_lookup_key = 24;
+  string vintage_ceiling = 25;
+  string consumed_at_submission = 26;
 }
 
 message SubmitClaimRequest {
@@ -128,6 +130,10 @@ message PreviewCeilingRequest {
 
 message PreviewCeilingResponse {
   string ceiling = 1;
+  string vintage_ceiling = 9;
+  string consumed = 10;
+  string remaining = 11;
+  string period_ceiling = 12;
   string capacity_basis = 2;
   string capacity_source = 3;
   string discount_factor = 4;

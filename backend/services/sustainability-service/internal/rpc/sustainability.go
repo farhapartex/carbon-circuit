@@ -274,6 +274,10 @@ func (s *SustainabilityServer) PreviewCeiling(
 
 	return &sustainabilityv1.PreviewCeilingResponse{
 		Ceiling:        preview.Ceiling,
+		VintageCeiling: preview.VintageCeiling,
+		Consumed:       preview.Consumed,
+		Remaining:      preview.Remaining,
+		PeriodCeiling:  preview.PeriodCeiling,
 		CapacityBasis:  preview.CapacityBasis,
 		CapacitySource: preview.CapacitySource,
 		DiscountFactor: preview.DiscountFactor,
@@ -321,6 +325,8 @@ var refusalReasons = []struct {
 	{service.ErrTooMuchEvidence, "TOO_MUCH_EVIDENCE"},
 	{service.ErrEvidenceUnusable, "EVIDENCE_UNUSABLE"},
 	{service.ErrAttestationRequired, "ATTESTATION_REQUIRED"},
+	{service.ErrVintageCapacityLeft, "VINTAGE_CAPACITY_EXHAUSTED"},
+	{ceiling.ErrVintageExhausted, "VINTAGE_CAPACITY_EXHAUSTED"},
 	{ceiling.ErrCapacityUnknown, "CAPACITY_UNKNOWN"},
 	{ceiling.ErrPeriodOutsideVintage, "PERIOD_OUTSIDE_VINTAGE"},
 	{ceiling.ErrPeriodEmpty, "PERIOD_EMPTY"},

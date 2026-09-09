@@ -18,7 +18,7 @@ type ClaimStore interface {
 	Find(tx database.Tx, organizationID, claimID uuid.UUID) (domain.Claim, bool, error)
 	List(tx database.Tx, organizationID uuid.UUID, status domain.ClaimStatus, after string, limit int) ([]domain.Claim, error)
 	Evidence(tx database.Tx, organizationID, claimID uuid.UUID) ([]domain.ClaimEvidence, error)
-	IssuedForVintage(tx database.Tx, organizationID, facilityID uuid.UUID, vintageYear int, activity domain.ActivityType) (string, error)
+	ConsumedForVintage(tx database.Tx, organizationID, facilityID uuid.UUID, vintageYear int, activity domain.ActivityType) (string, error)
 }
 
 type ReferenceStore interface {
@@ -134,7 +134,7 @@ func (r *ClaimRepository) Evidence(
 	return attachments, nil
 }
 
-func (r *ClaimRepository) IssuedForVintage(
+func (r *ClaimRepository) ConsumedForVintage(
 	tx database.Tx,
 	organizationID, facilityID uuid.UUID,
 	vintageYear int,
@@ -148,13 +148,19 @@ func (r *ClaimRepository) IssuedForVintage(
 
 	err := tx.Session().
 		Model(&domain.Claim{}).
-		Select("sum(issued_amount)::text").
+		Select(`coalesce(sum(
+			CASE
+				WHEN status = 'approved' THEN coalesce(issued_amount, 0)
+				ELSE least(requested_amount, computed_ceiling)
+			END
+		), 0)::text`).
 		Where("organization_id = ? AND facility_id = ? AND vintage_year = ? AND activity_type = ?",
 			organizationID, facilityID, vintageYear, activity).
-		Where("status = ?", domain.Approved).
+		Where("status <> ?", domain.Rejected).
+		Where("deleted_at IS NULL").
 		Scan(&total).Error
 	if err != nil {
-		return "0", fmt.Errorf("sum issued credits: %w", err)
+		return "0", fmt.Errorf("sum consumed ceiling: %w", err)
 	}
 
 	if total == nil {

@@ -400,6 +400,8 @@ type Claim struct {
 	Evidence              []*ClaimEvidence       `protobuf:"bytes,22,rep,name=evidence,proto3" json:"evidence,omitempty"`
 	ReferenceFactorId     string                 `protobuf:"bytes,23,opt,name=reference_factor_id,json=referenceFactorId,proto3" json:"reference_factor_id,omitempty"`
 	ReferenceLookupKey    string                 `protobuf:"bytes,24,opt,name=reference_lookup_key,json=referenceLookupKey,proto3" json:"reference_lookup_key,omitempty"`
+	VintageCeiling        string                 `protobuf:"bytes,25,opt,name=vintage_ceiling,json=vintageCeiling,proto3" json:"vintage_ceiling,omitempty"`
+	ConsumedAtSubmission  string                 `protobuf:"bytes,26,opt,name=consumed_at_submission,json=consumedAtSubmission,proto3" json:"consumed_at_submission,omitempty"`
 	unknownFields         protoimpl.UnknownFields
 	sizeCache             protoimpl.SizeCache
 }
@@ -598,6 +600,20 @@ func (x *Claim) GetReferenceFactorId() string {
 func (x *Claim) GetReferenceLookupKey() string {
 	if x != nil {
 		return x.ReferenceLookupKey
+	}
+	return ""
+}
+
+func (x *Claim) GetVintageCeiling() string {
+	if x != nil {
+		return x.VintageCeiling
+	}
+	return ""
+}
+
+func (x *Claim) GetConsumedAtSubmission() string {
+	if x != nil {
+		return x.ConsumedAtSubmission
 	}
 	return ""
 }
@@ -1049,6 +1065,10 @@ func (x *PreviewCeilingRequest) GetPeriodEnd() string {
 type PreviewCeilingResponse struct {
 	state          protoimpl.MessageState `protogen:"open.v1"`
 	Ceiling        string                 `protobuf:"bytes,1,opt,name=ceiling,proto3" json:"ceiling,omitempty"`
+	VintageCeiling string                 `protobuf:"bytes,9,opt,name=vintage_ceiling,json=vintageCeiling,proto3" json:"vintage_ceiling,omitempty"`
+	Consumed       string                 `protobuf:"bytes,10,opt,name=consumed,proto3" json:"consumed,omitempty"`
+	Remaining      string                 `protobuf:"bytes,11,opt,name=remaining,proto3" json:"remaining,omitempty"`
+	PeriodCeiling  string                 `protobuf:"bytes,12,opt,name=period_ceiling,json=periodCeiling,proto3" json:"period_ceiling,omitempty"`
 	CapacityBasis  string                 `protobuf:"bytes,2,opt,name=capacity_basis,json=capacityBasis,proto3" json:"capacity_basis,omitempty"`
 	CapacitySource string                 `protobuf:"bytes,3,opt,name=capacity_source,json=capacitySource,proto3" json:"capacity_source,omitempty"`
 	DiscountFactor string                 `protobuf:"bytes,4,opt,name=discount_factor,json=discountFactor,proto3" json:"discount_factor,omitempty"`
@@ -1093,6 +1113,34 @@ func (*PreviewCeilingResponse) Descriptor() ([]byte, []int) {
 func (x *PreviewCeilingResponse) GetCeiling() string {
 	if x != nil {
 		return x.Ceiling
+	}
+	return ""
+}
+
+func (x *PreviewCeilingResponse) GetVintageCeiling() string {
+	if x != nil {
+		return x.VintageCeiling
+	}
+	return ""
+}
+
+func (x *PreviewCeilingResponse) GetConsumed() string {
+	if x != nil {
+		return x.Consumed
+	}
+	return ""
+}
+
+func (x *PreviewCeilingResponse) GetRemaining() string {
+	if x != nil {
+		return x.Remaining
+	}
+	return ""
+}
+
+func (x *PreviewCeilingResponse) GetPeriodCeiling() string {
+	if x != nil {
+		return x.PeriodCeiling
 	}
 	return ""
 }
@@ -1166,7 +1214,8 @@ const file_carboncircuit_sustainability_v1_sustainability_proto_rawDesc = "" +
 	"\fcontent_hash\x18\x04 \x01(\tR\vcontentHash\x12\x1d\n" +
 	"\n" +
 	"page_count\x18\x05 \x01(\x05R\tpageCount\x12\x1b\n" +
-	"\tbyte_size\x18\x06 \x01(\x03R\bbyteSize\"\xe2\t\n" +
+	"\tbyte_size\x18\x06 \x01(\x03R\bbyteSize\"\xc1\n" +
+	"\n" +
 	"\x05Claim\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12'\n" +
 	"\x0forganization_id\x18\x02 \x01(\tR\x0eorganizationId\x12\x1f\n" +
@@ -1195,7 +1244,9 @@ const file_carboncircuit_sustainability_v1_sustainability_proto_rawDesc = "" +
 	"created_at\x18\x15 \x01(\tR\tcreatedAt\x12J\n" +
 	"\bevidence\x18\x16 \x03(\v2..carboncircuit.sustainability.v1.ClaimEvidenceR\bevidence\x12.\n" +
 	"\x13reference_factor_id\x18\x17 \x01(\tR\x11referenceFactorId\x120\n" +
-	"\x14reference_lookup_key\x18\x18 \x01(\tR\x12referenceLookupKey\x1aB\n" +
+	"\x14reference_lookup_key\x18\x18 \x01(\tR\x12referenceLookupKey\x12'\n" +
+	"\x0fvintage_ceiling\x18\x19 \x01(\tR\x0evintageCeiling\x124\n" +
+	"\x16consumed_at_submission\x18\x1a \x01(\tR\x14consumedAtSubmission\x1aB\n" +
 	"\x14DeclaredFiguresEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
 	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\xd1\x04\n" +
@@ -1238,9 +1289,14 @@ const file_carboncircuit_sustainability_v1_sustainability_proto_rawDesc = "" +
 	"\fvintage_year\x18\x03 \x01(\x05R\vvintageYear\x12!\n" +
 	"\fperiod_start\x18\x04 \x01(\tR\vperiodStart\x12\x1d\n" +
 	"\n" +
-	"period_end\x18\x05 \x01(\tR\tperiodEnd\"\xb9\x02\n" +
+	"period_end\x18\x05 \x01(\tR\tperiodEnd\"\xc3\x03\n" +
 	"\x16PreviewCeilingResponse\x12\x18\n" +
-	"\aceiling\x18\x01 \x01(\tR\aceiling\x12%\n" +
+	"\aceiling\x18\x01 \x01(\tR\aceiling\x12'\n" +
+	"\x0fvintage_ceiling\x18\t \x01(\tR\x0evintageCeiling\x12\x1a\n" +
+	"\bconsumed\x18\n" +
+	" \x01(\tR\bconsumed\x12\x1c\n" +
+	"\tremaining\x18\v \x01(\tR\tremaining\x12%\n" +
+	"\x0eperiod_ceiling\x18\f \x01(\tR\rperiodCeiling\x12%\n" +
 	"\x0ecapacity_basis\x18\x02 \x01(\tR\rcapacityBasis\x12'\n" +
 	"\x0fcapacity_source\x18\x03 \x01(\tR\x0ecapacitySource\x12'\n" +
 	"\x0fdiscount_factor\x18\x04 \x01(\tR\x0ediscountFactor\x12'\n" +

@@ -39,7 +39,7 @@ var (
 	ErrTooMuchEvidence      = errors.New("a claim may carry at most 25 supporting documents")
 	ErrEvidenceUnusable     = errors.New("one or more documents did not pass scanning")
 	ErrAttestationRequired  = errors.New("the exclusivity attestation is required")
-	ErrCeilingExhausted     = errors.New("this facility's ceiling for that vintage is already used")
+	ErrVintageCapacityLeft  = errors.New("more was requested than remains for this facility and vintage")
 )
 
 type Actor struct {
@@ -204,8 +204,12 @@ func (s *ClaimService) Submit(
 	var view ClaimView
 
 	err = database.WithinTenant(ctx, s.database, tenancy(actor), func(tx database.Tx) error {
-		computed, err := s.computeCeiling(tx, facility, submission)
+		computed, err := s.computeCeiling(tx, actor, facility, submission)
 		if err != nil {
+			return err
+		}
+
+		if err := withinRemaining(submission, computed.Allowance); err != nil {
 			return err
 		}
 
@@ -228,14 +232,15 @@ func (s *ClaimService) Submit(
 }
 
 type computedCeiling struct {
-	Result   ceiling.Result
-	Capacity ceiling.Capacity
-	Factor   domain.ReferenceFactor
-	Discount decimal.Decimal
+	Allowance ceiling.Allowance
+	Capacity  ceiling.Capacity
+	Factor    domain.ReferenceFactor
+	Discount  decimal.Decimal
 }
 
 func (s *ClaimService) computeCeiling(
 	tx database.Tx,
+	actor Actor,
 	facility Facility,
 	submission Submission,
 ) (computedCeiling, error) {
@@ -265,22 +270,34 @@ func (s *ClaimService) computeCeiling(
 		return computedCeiling{}, ceiling.ErrDiscountUnknown
 	}
 
-	result, err := ceiling.ForRenewableEnergy(ceiling.Inputs{
+	spent, err := s.claims.ConsumedForVintage(
+		tx, actor.OrganizationID, facility.ID, submission.VintageYear, submission.ActivityType,
+	)
+	if err != nil {
+		return computedCeiling{}, err
+	}
+
+	consumed, err := decimal.NewFromString(spent)
+	if err != nil {
+		return computedCeiling{}, fmt.Errorf("consumed ceiling %q is unusable", spent)
+	}
+
+	allowance, err := ceiling.Allow(ceiling.Inputs{
 		VintageYear:    submission.VintageYear,
 		Period:         ceiling.Period{Start: submission.PeriodStart, End: submission.PeriodEnd},
 		Capacity:       capacity,
 		ReferenceValue: factorValue,
 		DiscountFactor: discount,
-	})
+	}, consumed)
 	if err != nil {
 		return computedCeiling{}, err
 	}
 
 	return computedCeiling{
-		Result:   result,
-		Capacity: capacity,
-		Factor:   factor,
-		Discount: discount,
+		Allowance: allowance,
+		Capacity:  capacity,
+		Factor:    factor,
+		Discount:  discount,
 	}, nil
 }
 
@@ -364,7 +381,9 @@ func (s *ClaimService) persist(
 		PeriodEnd:             submission.PeriodEnd,
 		DeclaredFigures:       database.JSONDocument(figures),
 		RequestedAmount:       requested.StringFixed(ceiling.Places),
-		ComputedCeiling:       computed.Result.Ceiling.StringFixed(ceiling.Places),
+		ComputedCeiling:       computed.Allowance.Effective.StringFixed(ceiling.Places),
+		VintageCeiling:        computed.Allowance.VintageCeiling.StringFixed(ceiling.Places),
+		ConsumedAtSubmission:  computed.Allowance.Consumed.StringFixed(ceiling.Places),
 		CapacityBasis:         computed.Capacity.Value.StringFixed(ceiling.Places),
 		CapacitySource:        computed.Capacity.Source,
 		DiscountFactor:        computed.Discount.StringFixed(2),
@@ -372,8 +391,8 @@ func (s *ClaimService) persist(
 		ReferenceFactorValue:  computed.Factor.Factor,
 		ReferenceLookupKey:    computed.Factor.LookupKey,
 		Status:                domain.Submitted,
-		Priority:              PriorityFor(requested, computed.Result.Ceiling, facility.CeilingDiscountFactor),
-		RequiresDualApproval:  RequiresDualApproval(requested, computed.Result.Ceiling),
+		Priority:              PriorityFor(requested, computed.Allowance.Effective, facility.CeilingDiscountFactor),
+		RequiresDualApproval:  RequiresDualApproval(requested, computed.Allowance.Effective),
 		ExclusivityAttestedAt: now,
 		ExclusivityAttestedBy: actor.UserID,
 	}
@@ -445,6 +464,23 @@ func (s *ClaimService) persist(
 	}
 
 	return view, false, nil
+}
+
+func withinRemaining(submission Submission, allowance ceiling.Allowance) error {
+	requested, err := decimal.NewFromString(submission.RequestedAmount)
+	if err != nil {
+		return fmt.Errorf("requested amount is unusable")
+	}
+
+	if requested.GreaterThan(allowance.Remaining) {
+		return fmt.Errorf("%w: %s of %s remains for this facility and vintage, and %s was requested",
+			ErrVintageCapacityLeft,
+			allowance.Remaining.StringFixed(ceiling.Places),
+			allowance.VintageCeiling.StringFixed(ceiling.Places),
+			requested.StringFixed(ceiling.Places))
+	}
+
+	return nil
 }
 
 func tenancy(actor Actor) database.TenantContext {

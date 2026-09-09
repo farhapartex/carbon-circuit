@@ -325,3 +325,111 @@ func TestEveryGridFactorProducesAPositiveCeiling(t *testing.T) {
 		}
 	}
 }
+
+func TestAFreshVintageOffersItsWholeCeiling(t *testing.T) {
+	allowance, err := ceiling.Allow(taiwanInputs(t), decimal.Zero)
+	if err != nil {
+		t.Fatalf("allow: %v", err)
+	}
+
+	if got := allowance.Effective.String(); got != "6125.6" {
+		t.Fatalf("expected the full ceiling, got %s", got)
+	}
+	if !allowance.Remaining.Equal(allowance.VintageCeiling) {
+		t.Fatal("nothing consumed, so remaining should equal the vintage ceiling")
+	}
+}
+
+func TestEarlierClaimsReduceWhatIsLeft(t *testing.T) {
+	allowance, err := ceiling.Allow(taiwanInputs(t), amount(t, "4000"))
+	if err != nil {
+		t.Fatalf("allow: %v", err)
+	}
+
+	if got := allowance.Remaining.String(); got != "2125.6" {
+		t.Fatalf("expected 6125.6 less 4000, got %s", got)
+	}
+	if got := allowance.Effective.String(); got != "2125.6" {
+		t.Fatalf("the effective ceiling must fall to what remains, got %s", got)
+	}
+}
+
+func TestAnExhaustedVintageIsRefused(t *testing.T) {
+	_, err := ceiling.Allow(taiwanInputs(t), amount(t, "6125.6"))
+	if !errors.Is(err, ceiling.ErrVintageExhausted) {
+		t.Fatalf("expected ErrVintageExhausted, got %v", err)
+	}
+}
+
+func TestOverConsumptionCannotProduceANegativeAllowance(t *testing.T) {
+	allowance, err := ceiling.Allow(taiwanInputs(t), amount(t, "99999"))
+	if !errors.Is(err, ceiling.ErrVintageExhausted) {
+		t.Fatalf("expected ErrVintageExhausted, got %v", err)
+	}
+	if allowance.Remaining.IsNegative() || allowance.Effective.IsNegative() {
+		t.Fatalf("an over-consumed vintage must clamp at zero, got remaining %s effective %s",
+			allowance.Remaining, allowance.Effective)
+	}
+}
+
+func TestAShortPeriodStillCannotExceedItsOwnShare(t *testing.T) {
+	inputs := taiwanInputs(t)
+	inputs.Period = ceiling.Period{Start: day(t, "2026-01-01"), End: day(t, "2026-03-31")}
+
+	allowance, err := ceiling.Allow(inputs, decimal.Zero)
+	if err != nil {
+		t.Fatalf("allow: %v", err)
+	}
+
+	if !allowance.Effective.Equal(allowance.PeriodCeiling) {
+		t.Fatal("with the whole vintage free, a quarter should earn exactly its pro-rated share")
+	}
+	if !allowance.Effective.LessThan(allowance.VintageCeiling) {
+		t.Fatal("a quarterly claim must not reach the annual ceiling")
+	}
+}
+
+func TestFourQuartersConsumeTheVintageExactlyOnce(t *testing.T) {
+	quarters := []ceiling.Period{
+		{Start: day(t, "2026-01-01"), End: day(t, "2026-03-31")},
+		{Start: day(t, "2026-04-01"), End: day(t, "2026-06-30")},
+		{Start: day(t, "2026-07-01"), End: day(t, "2026-09-30")},
+		{Start: day(t, "2026-10-01"), End: day(t, "2026-12-31")},
+	}
+
+	consumed := decimal.Zero
+
+	for index, quarter := range quarters {
+		inputs := taiwanInputs(t)
+		inputs.Period = quarter
+
+		allowance, err := ceiling.Allow(inputs, consumed)
+		if err != nil {
+			t.Fatalf("quarter %d: %v", index+1, err)
+		}
+
+		consumed = consumed.Add(allowance.Effective)
+	}
+
+	annual, err := ceiling.Allow(taiwanInputs(t), decimal.Zero)
+	if err != nil {
+		t.Fatalf("annual: %v", err)
+	}
+
+	if consumed.GreaterThan(annual.VintageCeiling) {
+		t.Fatalf("four quarters consumed %s against a vintage ceiling of %s",
+			consumed, annual.VintageCeiling)
+	}
+}
+
+func TestASecondFullYearClaimGetsNothing(t *testing.T) {
+	first, err := ceiling.Allow(taiwanInputs(t), decimal.Zero)
+	if err != nil {
+		t.Fatalf("first: %v", err)
+	}
+
+	_, err = ceiling.Allow(taiwanInputs(t), first.Effective)
+	if !errors.Is(err, ceiling.ErrVintageExhausted) {
+		t.Fatalf("a facility cannot claim its whole year twice, got %v", err)
+	}
+}

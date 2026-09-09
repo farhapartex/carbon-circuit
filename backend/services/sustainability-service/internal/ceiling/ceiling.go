@@ -117,3 +117,69 @@ func ForRenewableEnergy(inputs Inputs) (Result, error) {
 		CapacityUsed: inputs.Capacity.Value,
 	}, nil
 }
+
+var ErrVintageExhausted = errors.New("no capacity remains for this facility and vintage")
+
+type Allowance struct {
+	VintageCeiling decimal.Decimal
+	Consumed       decimal.Decimal
+	Remaining      decimal.Decimal
+	PeriodCeiling  decimal.Decimal
+	Effective      decimal.Decimal
+	PeriodDays     int
+	VintageDays    int
+}
+
+func FullVintage(year int) Period {
+	return Period{
+		Start: time.Date(year, time.January, 1, 0, 0, 0, 0, time.UTC),
+		End:   time.Date(year, time.December, 31, 0, 0, 0, 0, time.UTC),
+	}
+}
+
+func Allow(inputs Inputs, consumed decimal.Decimal) (Allowance, error) {
+	period, err := ForRenewableEnergy(inputs)
+	if err != nil {
+		return Allowance{}, err
+	}
+
+	annual := inputs
+	annual.Period = FullVintage(inputs.VintageYear)
+
+	vintage, err := ForRenewableEnergy(annual)
+	if err != nil {
+		return Allowance{}, err
+	}
+
+	if consumed.LessThan(decimal.Zero) {
+		consumed = decimal.Zero
+	}
+
+	remaining := vintage.Ceiling.Sub(consumed)
+	if remaining.LessThanOrEqual(decimal.Zero) {
+		return Allowance{
+			VintageCeiling: vintage.Ceiling,
+			Consumed:       consumed,
+			Remaining:      decimal.Zero,
+			PeriodCeiling:  period.Ceiling,
+			Effective:      decimal.Zero,
+			PeriodDays:     period.PeriodDays,
+			VintageDays:    period.VintageDays,
+		}, ErrVintageExhausted
+	}
+
+	effective := period.Ceiling
+	if remaining.LessThan(effective) {
+		effective = remaining
+	}
+
+	return Allowance{
+		VintageCeiling: vintage.Ceiling,
+		Consumed:       consumed,
+		Remaining:      remaining,
+		PeriodCeiling:  period.Ceiling,
+		Effective:      effective,
+		PeriodDays:     period.PeriodDays,
+		VintageDays:    period.VintageDays,
+	}, nil
+}

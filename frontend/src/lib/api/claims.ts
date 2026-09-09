@@ -176,6 +176,9 @@ const toClaim = (claim: ApiClaim): ClaimRecord => ({
   evidence: (claim.evidence ?? []).map(toEvidence),
 });
 
+export const fetchClaimsFromPayload = (claims: unknown[]): ClaimRecord[] =>
+  (claims as ApiClaim[]).map(toClaim);
+
 export const fetchClaims = async (
   token: string,
   status?: ClaimStatus,

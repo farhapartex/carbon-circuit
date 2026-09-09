@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 type EmptyStateProps = {
   title: string;
   description: string;
-  action: ReactNode;
+  action?: ReactNode | undefined;
   icon?: LucideIcon | undefined;
   className?: string | undefined;
 };
@@ -35,7 +35,7 @@ export function EmptyState({
           {description}
         </p>
       </div>
-      {action}
+      {action ?? null}
     </div>
   );
 }

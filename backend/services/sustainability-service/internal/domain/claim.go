@@ -67,6 +67,7 @@ type Claim struct {
 	DiscountFactor        string                `gorm:"column:discount_factor;type:numeric(3,2)"`
 	ReferenceFactorID     uuid.UUID             `gorm:"column:reference_factor_id;type:uuid"`
 	ReferenceFactorValue  string                `gorm:"column:reference_factor_value;type:numeric(20,6)"`
+	ReferenceLookupKey    string                `gorm:"column:reference_lookup_key"`
 	Status                ClaimStatus           `gorm:"column:status"`
 	Priority              QueuePriority         `gorm:"column:priority"`
 	RequiresDualApproval  bool                  `gorm:"column:requires_dual_approval"`
@@ -85,6 +86,7 @@ type ClaimEvidence struct {
 	ContentHash    string    `gorm:"column:content_hash;type:char(64)"`
 	FileName       string    `gorm:"column:file_name"`
 	MediaType      string    `gorm:"column:media_type"`
+	ByteSize       int64     `gorm:"column:byte_size"`
 	PageCount      *int      `gorm:"column:page_count"`
 }
 

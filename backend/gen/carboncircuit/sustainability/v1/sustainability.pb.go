@@ -297,6 +297,7 @@ type ClaimEvidence struct {
 	MediaType     string                 `protobuf:"bytes,3,opt,name=media_type,json=mediaType,proto3" json:"media_type,omitempty"`
 	ContentHash   string                 `protobuf:"bytes,4,opt,name=content_hash,json=contentHash,proto3" json:"content_hash,omitempty"`
 	PageCount     int32                  `protobuf:"varint,5,opt,name=page_count,json=pageCount,proto3" json:"page_count,omitempty"`
+	ByteSize      int64                  `protobuf:"varint,6,opt,name=byte_size,json=byteSize,proto3" json:"byte_size,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -366,6 +367,13 @@ func (x *ClaimEvidence) GetPageCount() int32 {
 	return 0
 }
 
+func (x *ClaimEvidence) GetByteSize() int64 {
+	if x != nil {
+		return x.ByteSize
+	}
+	return 0
+}
+
 type Claim struct {
 	state                 protoimpl.MessageState `protogen:"open.v1"`
 	Id                    string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
@@ -390,6 +398,8 @@ type Claim struct {
 	IssuedAmount          string                 `protobuf:"bytes,20,opt,name=issued_amount,json=issuedAmount,proto3" json:"issued_amount,omitempty"`
 	CreatedAt             string                 `protobuf:"bytes,21,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
 	Evidence              []*ClaimEvidence       `protobuf:"bytes,22,rep,name=evidence,proto3" json:"evidence,omitempty"`
+	ReferenceFactorId     string                 `protobuf:"bytes,23,opt,name=reference_factor_id,json=referenceFactorId,proto3" json:"reference_factor_id,omitempty"`
+	ReferenceLookupKey    string                 `protobuf:"bytes,24,opt,name=reference_lookup_key,json=referenceLookupKey,proto3" json:"reference_lookup_key,omitempty"`
 	unknownFields         protoimpl.UnknownFields
 	sizeCache             protoimpl.SizeCache
 }
@@ -576,6 +586,20 @@ func (x *Claim) GetEvidence() []*ClaimEvidence {
 		return x.Evidence
 	}
 	return nil
+}
+
+func (x *Claim) GetReferenceFactorId() string {
+	if x != nil {
+		return x.ReferenceFactorId
+	}
+	return ""
+}
+
+func (x *Claim) GetReferenceLookupKey() string {
+	if x != nil {
+		return x.ReferenceLookupKey
+	}
+	return ""
 }
 
 type SubmitClaimRequest struct {
@@ -1132,7 +1156,7 @@ const file_carboncircuit_sustainability_v1_sustainability_proto_rawDesc = "" +
 	"\aservice\x18\x01 \x01(\tR\aservice\x12\x1a\n" +
 	"\brevision\x18\x02 \x01(\tR\brevision\x12-\n" +
 	"\x12database_reachable\x18\x03 \x01(\bR\x11databaseReachable\x124\n" +
-	"\x16reference_factor_count\x18\x04 \x01(\x05R\x14referenceFactorCount\"\xae\x01\n" +
+	"\x16reference_factor_count\x18\x04 \x01(\x05R\x14referenceFactorCount\"\xcb\x01\n" +
 	"\rClaimEvidence\x12\x1f\n" +
 	"\vevidence_id\x18\x01 \x01(\tR\n" +
 	"evidenceId\x12\x1b\n" +
@@ -1141,7 +1165,8 @@ const file_carboncircuit_sustainability_v1_sustainability_proto_rawDesc = "" +
 	"media_type\x18\x03 \x01(\tR\tmediaType\x12!\n" +
 	"\fcontent_hash\x18\x04 \x01(\tR\vcontentHash\x12\x1d\n" +
 	"\n" +
-	"page_count\x18\x05 \x01(\x05R\tpageCount\"\x80\t\n" +
+	"page_count\x18\x05 \x01(\x05R\tpageCount\x12\x1b\n" +
+	"\tbyte_size\x18\x06 \x01(\x03R\bbyteSize\"\xe2\t\n" +
 	"\x05Claim\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12'\n" +
 	"\x0forganization_id\x18\x02 \x01(\tR\x0eorganizationId\x12\x1f\n" +
@@ -1168,7 +1193,9 @@ const file_carboncircuit_sustainability_v1_sustainability_proto_rawDesc = "" +
 	"\rissued_amount\x18\x14 \x01(\tR\fissuedAmount\x12\x1d\n" +
 	"\n" +
 	"created_at\x18\x15 \x01(\tR\tcreatedAt\x12J\n" +
-	"\bevidence\x18\x16 \x03(\v2..carboncircuit.sustainability.v1.ClaimEvidenceR\bevidence\x1aB\n" +
+	"\bevidence\x18\x16 \x03(\v2..carboncircuit.sustainability.v1.ClaimEvidenceR\bevidence\x12.\n" +
+	"\x13reference_factor_id\x18\x17 \x01(\tR\x11referenceFactorId\x120\n" +
+	"\x14reference_lookup_key\x18\x18 \x01(\tR\x12referenceLookupKey\x1aB\n" +
 	"\x14DeclaredFiguresEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
 	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\xd1\x04\n" +

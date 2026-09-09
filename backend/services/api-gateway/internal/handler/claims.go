@@ -66,6 +66,7 @@ type claimEvidenceResponse struct {
 	MediaType   string `json:"media_type"`
 	ContentHash string `json:"content_hash"`
 	PageCount   *int32 `json:"page_count"`
+	ByteSize    int64  `json:"byte_size"`
 }
 
 type claimResponse struct {
@@ -83,6 +84,8 @@ type claimResponse struct {
 	CapacitySource        string                  `json:"capacity_source"`
 	DiscountFactor        string                  `json:"discount_factor"`
 	ReferenceFactorValue  string                  `json:"reference_factor_value"`
+	ReferenceFactorID     string                  `json:"reference_factor_id"`
+	ReferenceLookupKey    string                  `json:"reference_lookup_key"`
 	Status                string                  `json:"status"`
 	Priority              string                  `json:"priority"`
 	RequiresDualApproval  bool                    `json:"requires_dual_approval"`
@@ -106,6 +109,7 @@ func toClaimResponse(claim *sustainabilityv1.Claim) claimResponse {
 			MediaType:   attachment.GetMediaType(),
 			ContentHash: attachment.GetContentHash(),
 			PageCount:   pages,
+			ByteSize:    attachment.GetByteSize(),
 		})
 	}
 
@@ -124,6 +128,8 @@ func toClaimResponse(claim *sustainabilityv1.Claim) claimResponse {
 		CapacitySource:        claim.GetCapacitySource(),
 		DiscountFactor:        claim.GetDiscountFactor(),
 		ReferenceFactorValue:  claim.GetReferenceFactorValue(),
+		ReferenceFactorID:     claim.GetReferenceFactorId(),
+		ReferenceLookupKey:    claim.GetReferenceLookupKey(),
 		Status:                claimStatusName[claim.GetStatus()],
 		Priority:              priorityName[claim.GetPriority()],
 		RequiresDualApproval:  claim.GetRequiresDualApproval(),

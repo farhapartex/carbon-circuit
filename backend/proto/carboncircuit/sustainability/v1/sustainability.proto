@@ -51,6 +51,7 @@ message ClaimEvidence {
   string media_type = 3;
   string content_hash = 4;
   int32 page_count = 5;
+  int64 byte_size = 6;
 }
 
 message Claim {
@@ -76,6 +77,8 @@ message Claim {
   string issued_amount = 20;
   string created_at = 21;
   repeated ClaimEvidence evidence = 22;
+  string reference_factor_id = 23;
+  string reference_lookup_key = 24;
 }
 
 message SubmitClaimRequest {

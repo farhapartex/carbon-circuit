@@ -96,6 +96,7 @@ type ResolvedEvidence struct {
 	ContentHash string
 	FileName    string
 	MediaType   string
+	ByteSize    int64
 	PageCount   *int
 }
 
@@ -338,7 +339,13 @@ func (s *ClaimService) persist(
 		return replayed, true, nil
 	}
 
-	figures, err := json.Marshal(submission.DeclaredFigures)
+	declared := map[string]string{}
+	for name, value := range submission.DeclaredFigures {
+		declared[name] = value
+	}
+	declared["grid_region"] = facility.GridRegion
+
+	figures, err := json.Marshal(declared)
 	if err != nil {
 		return ClaimView{}, false, fmt.Errorf("encode declared figures: %w", err)
 	}
@@ -363,6 +370,7 @@ func (s *ClaimService) persist(
 		DiscountFactor:        computed.Discount.StringFixed(2),
 		ReferenceFactorID:     computed.Factor.ID,
 		ReferenceFactorValue:  computed.Factor.Factor,
+		ReferenceLookupKey:    computed.Factor.LookupKey,
 		Status:                domain.Submitted,
 		Priority:              PriorityFor(requested, computed.Result.Ceiling, facility.CeilingDiscountFactor),
 		RequiresDualApproval:  RequiresDualApproval(computed.Result.Ceiling),
@@ -384,6 +392,7 @@ func (s *ClaimService) persist(
 			ContentHash:    attachment.ContentHash,
 			FileName:       attachment.FileName,
 			MediaType:      attachment.MediaType,
+			ByteSize:       attachment.ByteSize,
 			PageCount:      attachment.PageCount,
 		})
 	}

@@ -82,6 +82,7 @@ func (e *Evidence) Resolve(
 			ContentHash: document.GetContentHash(),
 			FileName:    document.GetFileName(),
 			MediaType:   document.GetMediaType(),
+			ByteSize:    document.GetByteSize(),
 			PageCount:   pages,
 		})
 	}

@@ -74,6 +74,7 @@ func claimMessage(view service.ClaimView) *sustainabilityv1.Claim {
 			MediaType:   attachment.MediaType,
 			ContentHash: attachment.ContentHash,
 			PageCount:   int32(pages),
+			ByteSize:    attachment.ByteSize,
 		})
 	}
 
@@ -105,5 +106,7 @@ func claimMessage(view service.ClaimView) *sustainabilityv1.Claim {
 		IssuedAmount:          issued,
 		CreatedAt:             claim.CreatedAt.UTC().Format(time.RFC3339),
 		Evidence:              evidence,
+		ReferenceFactorId:     claim.ReferenceFactorID.String(),
+		ReferenceLookupKey:    claim.ReferenceLookupKey,
 	}
 }

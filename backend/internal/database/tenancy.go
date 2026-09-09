@@ -94,3 +94,22 @@ func Within(
 		return work(Tx{session: session})
 	})
 }
+
+func AdoptTenant(tx Tx, tenant TenantContext) error {
+	if err := tx.Bound(); err != nil {
+		return err
+	}
+
+	settings, err := tenant.settings()
+	if err != nil {
+		return err
+	}
+
+	for setting, value := range settings {
+		if err := applyLocalSetting(tx.session, setting, value); err != nil {
+			return err
+		}
+	}
+
+	return nil
+}

@@ -55,6 +55,7 @@ func contextFrom(
 	context := servicetoken.Caller{
 		Subject:      verified.Subject,
 		UserID:       resolved.GetUser().GetId(),
+		Name:         resolved.GetUser().GetName(),
 		PlatformRole: platformRoleName[resolved.GetUser().GetPlatformRole()],
 	}
 

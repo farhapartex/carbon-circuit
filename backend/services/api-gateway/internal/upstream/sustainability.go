@@ -77,3 +77,31 @@ func (s *Sustainability) Ping(ctx context.Context) (*sustainabilityv1.PingRespon
 	defer cancel()
 	return s.client.Ping(callCtx, &sustainabilityv1.PingRequest{})
 }
+
+func (s *Sustainability) ReviewQueue(
+	ctx context.Context,
+	request *sustainabilityv1.ReviewQueueRequest,
+) (*sustainabilityv1.ReviewQueueResponse, error) {
+	callCtx, cancel := callContext(ctx, "", s.callTimeout)
+	defer cancel()
+	return s.client.ReviewQueue(callCtx, request)
+}
+
+func (s *Sustainability) ReviewClaim(
+	ctx context.Context,
+	claimID string,
+) (*sustainabilityv1.ReviewClaimResponse, error) {
+	callCtx, cancel := callContext(ctx, "", s.callTimeout)
+	defer cancel()
+	return s.client.ReviewClaim(callCtx, &sustainabilityv1.ReviewClaimRequest{ClaimId: claimID})
+}
+
+func (s *Sustainability) DecideClaim(
+	ctx context.Context,
+	idempotencyKey string,
+	request *sustainabilityv1.DecideClaimRequest,
+) (*sustainabilityv1.DecideClaimResponse, error) {
+	callCtx, cancel := callContext(ctx, idempotencyKey, s.callTimeout)
+	defer cancel()
+	return s.client.DecideClaim(callCtx, request)
+}

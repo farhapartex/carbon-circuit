@@ -199,6 +199,9 @@ func NewRouter(options RouterOptions) *gin.Engine {
 	authenticated.POST("/claims", handlers.SubmitClaim)
 	authenticated.GET("/claims/:claimId", handlers.GetClaim)
 	authenticated.POST("/claims/ceiling-preview", handlers.PreviewClaimCeiling)
+	authenticated.GET("/verifier/queue", handlers.ReviewQueue)
+	authenticated.GET("/verifier/claims/:claimId", handlers.ReviewClaim)
+	authenticated.POST("/verifier/claims/:claimId/decision", handlers.DecideClaim)
 
 	return router
 }

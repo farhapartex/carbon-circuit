@@ -21,6 +21,58 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+type DecisionOutcome int32
+
+const (
+	DecisionOutcome_DECISION_OUTCOME_UNSPECIFIED                DecisionOutcome = 0
+	DecisionOutcome_DECISION_OUTCOME_APPROVED                   DecisionOutcome = 1
+	DecisionOutcome_DECISION_OUTCOME_REJECTED                   DecisionOutcome = 2
+	DecisionOutcome_DECISION_OUTCOME_MORE_INFORMATION_REQUESTED DecisionOutcome = 3
+)
+
+// Enum value maps for DecisionOutcome.
+var (
+	DecisionOutcome_name = map[int32]string{
+		0: "DECISION_OUTCOME_UNSPECIFIED",
+		1: "DECISION_OUTCOME_APPROVED",
+		2: "DECISION_OUTCOME_REJECTED",
+		3: "DECISION_OUTCOME_MORE_INFORMATION_REQUESTED",
+	}
+	DecisionOutcome_value = map[string]int32{
+		"DECISION_OUTCOME_UNSPECIFIED":                0,
+		"DECISION_OUTCOME_APPROVED":                   1,
+		"DECISION_OUTCOME_REJECTED":                   2,
+		"DECISION_OUTCOME_MORE_INFORMATION_REQUESTED": 3,
+	}
+)
+
+func (x DecisionOutcome) Enum() *DecisionOutcome {
+	p := new(DecisionOutcome)
+	*p = x
+	return p
+}
+
+func (x DecisionOutcome) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (DecisionOutcome) Descriptor() protoreflect.EnumDescriptor {
+	return file_carboncircuit_sustainability_v1_sustainability_proto_enumTypes[0].Descriptor()
+}
+
+func (DecisionOutcome) Type() protoreflect.EnumType {
+	return &file_carboncircuit_sustainability_v1_sustainability_proto_enumTypes[0]
+}
+
+func (x DecisionOutcome) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use DecisionOutcome.Descriptor instead.
+func (DecisionOutcome) EnumDescriptor() ([]byte, []int) {
+	return file_carboncircuit_sustainability_v1_sustainability_proto_rawDescGZIP(), []int{0}
+}
+
 type ActivityType int32
 
 const (
@@ -57,11 +109,11 @@ func (x ActivityType) String() string {
 }
 
 func (ActivityType) Descriptor() protoreflect.EnumDescriptor {
-	return file_carboncircuit_sustainability_v1_sustainability_proto_enumTypes[0].Descriptor()
+	return file_carboncircuit_sustainability_v1_sustainability_proto_enumTypes[1].Descriptor()
 }
 
 func (ActivityType) Type() protoreflect.EnumType {
-	return &file_carboncircuit_sustainability_v1_sustainability_proto_enumTypes[0]
+	return &file_carboncircuit_sustainability_v1_sustainability_proto_enumTypes[1]
 }
 
 func (x ActivityType) Number() protoreflect.EnumNumber {
@@ -70,7 +122,7 @@ func (x ActivityType) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use ActivityType.Descriptor instead.
 func (ActivityType) EnumDescriptor() ([]byte, []int) {
-	return file_carboncircuit_sustainability_v1_sustainability_proto_rawDescGZIP(), []int{0}
+	return file_carboncircuit_sustainability_v1_sustainability_proto_rawDescGZIP(), []int{1}
 }
 
 type ClaimStatus int32
@@ -118,11 +170,11 @@ func (x ClaimStatus) String() string {
 }
 
 func (ClaimStatus) Descriptor() protoreflect.EnumDescriptor {
-	return file_carboncircuit_sustainability_v1_sustainability_proto_enumTypes[1].Descriptor()
+	return file_carboncircuit_sustainability_v1_sustainability_proto_enumTypes[2].Descriptor()
 }
 
 func (ClaimStatus) Type() protoreflect.EnumType {
-	return &file_carboncircuit_sustainability_v1_sustainability_proto_enumTypes[1]
+	return &file_carboncircuit_sustainability_v1_sustainability_proto_enumTypes[2]
 }
 
 func (x ClaimStatus) Number() protoreflect.EnumNumber {
@@ -131,7 +183,7 @@ func (x ClaimStatus) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use ClaimStatus.Descriptor instead.
 func (ClaimStatus) EnumDescriptor() ([]byte, []int) {
-	return file_carboncircuit_sustainability_v1_sustainability_proto_rawDescGZIP(), []int{1}
+	return file_carboncircuit_sustainability_v1_sustainability_proto_rawDescGZIP(), []int{2}
 }
 
 type QueuePriority int32
@@ -170,11 +222,11 @@ func (x QueuePriority) String() string {
 }
 
 func (QueuePriority) Descriptor() protoreflect.EnumDescriptor {
-	return file_carboncircuit_sustainability_v1_sustainability_proto_enumTypes[2].Descriptor()
+	return file_carboncircuit_sustainability_v1_sustainability_proto_enumTypes[3].Descriptor()
 }
 
 func (QueuePriority) Type() protoreflect.EnumType {
-	return &file_carboncircuit_sustainability_v1_sustainability_proto_enumTypes[2]
+	return &file_carboncircuit_sustainability_v1_sustainability_proto_enumTypes[3]
 }
 
 func (x QueuePriority) Number() protoreflect.EnumNumber {
@@ -183,7 +235,527 @@ func (x QueuePriority) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use QueuePriority.Descriptor instead.
 func (QueuePriority) EnumDescriptor() ([]byte, []int) {
+	return file_carboncircuit_sustainability_v1_sustainability_proto_rawDescGZIP(), []int{3}
+}
+
+type AIReview struct {
+	state            protoimpl.MessageState `protogen:"open.v1"`
+	Assessment       string                 `protobuf:"bytes,1,opt,name=assessment,proto3" json:"assessment,omitempty"`
+	Confidence       string                 `protobuf:"bytes,2,opt,name=confidence,proto3" json:"confidence,omitempty"`
+	ExtractedFigures map[string]string      `protobuf:"bytes,3,rep,name=extracted_figures,json=extractedFigures,proto3" json:"extracted_figures,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	Flags            []string               `protobuf:"bytes,4,rep,name=flags,proto3" json:"flags,omitempty"`
+	Narrative        string                 `protobuf:"bytes,5,opt,name=narrative,proto3" json:"narrative,omitempty"`
+	AssessedBy       string                 `protobuf:"bytes,6,opt,name=assessed_by,json=assessedBy,proto3" json:"assessed_by,omitempty"`
+	AssessedAt       string                 `protobuf:"bytes,7,opt,name=assessed_at,json=assessedAt,proto3" json:"assessed_at,omitempty"`
+	unknownFields    protoimpl.UnknownFields
+	sizeCache        protoimpl.SizeCache
+}
+
+func (x *AIReview) Reset() {
+	*x = AIReview{}
+	mi := &file_carboncircuit_sustainability_v1_sustainability_proto_msgTypes[0]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AIReview) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AIReview) ProtoMessage() {}
+
+func (x *AIReview) ProtoReflect() protoreflect.Message {
+	mi := &file_carboncircuit_sustainability_v1_sustainability_proto_msgTypes[0]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AIReview.ProtoReflect.Descriptor instead.
+func (*AIReview) Descriptor() ([]byte, []int) {
+	return file_carboncircuit_sustainability_v1_sustainability_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *AIReview) GetAssessment() string {
+	if x != nil {
+		return x.Assessment
+	}
+	return ""
+}
+
+func (x *AIReview) GetConfidence() string {
+	if x != nil {
+		return x.Confidence
+	}
+	return ""
+}
+
+func (x *AIReview) GetExtractedFigures() map[string]string {
+	if x != nil {
+		return x.ExtractedFigures
+	}
+	return nil
+}
+
+func (x *AIReview) GetFlags() []string {
+	if x != nil {
+		return x.Flags
+	}
+	return nil
+}
+
+func (x *AIReview) GetNarrative() string {
+	if x != nil {
+		return x.Narrative
+	}
+	return ""
+}
+
+func (x *AIReview) GetAssessedBy() string {
+	if x != nil {
+		return x.AssessedBy
+	}
+	return ""
+}
+
+func (x *AIReview) GetAssessedAt() string {
+	if x != nil {
+		return x.AssessedAt
+	}
+	return ""
+}
+
+type ClaimDecision struct {
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	Id             string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	VerifierUserId string                 `protobuf:"bytes,2,opt,name=verifier_user_id,json=verifierUserId,proto3" json:"verifier_user_id,omitempty"`
+	VerifierName   string                 `protobuf:"bytes,3,opt,name=verifier_name,json=verifierName,proto3" json:"verifier_name,omitempty"`
+	Outcome        DecisionOutcome        `protobuf:"varint,4,opt,name=outcome,proto3,enum=carboncircuit.sustainability.v1.DecisionOutcome" json:"outcome,omitempty"`
+	ApprovedAmount string                 `protobuf:"bytes,5,opt,name=approved_amount,json=approvedAmount,proto3" json:"approved_amount,omitempty"`
+	Reason         string                 `protobuf:"bytes,6,opt,name=reason,proto3" json:"reason,omitempty"`
+	DecidedAt      string                 `protobuf:"bytes,7,opt,name=decided_at,json=decidedAt,proto3" json:"decided_at,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
+}
+
+func (x *ClaimDecision) Reset() {
+	*x = ClaimDecision{}
+	mi := &file_carboncircuit_sustainability_v1_sustainability_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ClaimDecision) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ClaimDecision) ProtoMessage() {}
+
+func (x *ClaimDecision) ProtoReflect() protoreflect.Message {
+	mi := &file_carboncircuit_sustainability_v1_sustainability_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ClaimDecision.ProtoReflect.Descriptor instead.
+func (*ClaimDecision) Descriptor() ([]byte, []int) {
+	return file_carboncircuit_sustainability_v1_sustainability_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *ClaimDecision) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *ClaimDecision) GetVerifierUserId() string {
+	if x != nil {
+		return x.VerifierUserId
+	}
+	return ""
+}
+
+func (x *ClaimDecision) GetVerifierName() string {
+	if x != nil {
+		return x.VerifierName
+	}
+	return ""
+}
+
+func (x *ClaimDecision) GetOutcome() DecisionOutcome {
+	if x != nil {
+		return x.Outcome
+	}
+	return DecisionOutcome_DECISION_OUTCOME_UNSPECIFIED
+}
+
+func (x *ClaimDecision) GetApprovedAmount() string {
+	if x != nil {
+		return x.ApprovedAmount
+	}
+	return ""
+}
+
+func (x *ClaimDecision) GetReason() string {
+	if x != nil {
+		return x.Reason
+	}
+	return ""
+}
+
+func (x *ClaimDecision) GetDecidedAt() string {
+	if x != nil {
+		return x.DecidedAt
+	}
+	return ""
+}
+
+type ReviewQueueRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	After         string                 `protobuf:"bytes,1,opt,name=after,proto3" json:"after,omitempty"`
+	Limit         int32                  `protobuf:"varint,2,opt,name=limit,proto3" json:"limit,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ReviewQueueRequest) Reset() {
+	*x = ReviewQueueRequest{}
+	mi := &file_carboncircuit_sustainability_v1_sustainability_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ReviewQueueRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ReviewQueueRequest) ProtoMessage() {}
+
+func (x *ReviewQueueRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_carboncircuit_sustainability_v1_sustainability_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ReviewQueueRequest.ProtoReflect.Descriptor instead.
+func (*ReviewQueueRequest) Descriptor() ([]byte, []int) {
 	return file_carboncircuit_sustainability_v1_sustainability_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *ReviewQueueRequest) GetAfter() string {
+	if x != nil {
+		return x.After
+	}
+	return ""
+}
+
+func (x *ReviewQueueRequest) GetLimit() int32 {
+	if x != nil {
+		return x.Limit
+	}
+	return 0
+}
+
+type ReviewQueueResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Claims        []*Claim               `protobuf:"bytes,1,rep,name=claims,proto3" json:"claims,omitempty"`
+	NextCursor    string                 `protobuf:"bytes,2,opt,name=next_cursor,json=nextCursor,proto3" json:"next_cursor,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ReviewQueueResponse) Reset() {
+	*x = ReviewQueueResponse{}
+	mi := &file_carboncircuit_sustainability_v1_sustainability_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ReviewQueueResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ReviewQueueResponse) ProtoMessage() {}
+
+func (x *ReviewQueueResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_carboncircuit_sustainability_v1_sustainability_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ReviewQueueResponse.ProtoReflect.Descriptor instead.
+func (*ReviewQueueResponse) Descriptor() ([]byte, []int) {
+	return file_carboncircuit_sustainability_v1_sustainability_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *ReviewQueueResponse) GetClaims() []*Claim {
+	if x != nil {
+		return x.Claims
+	}
+	return nil
+}
+
+func (x *ReviewQueueResponse) GetNextCursor() string {
+	if x != nil {
+		return x.NextCursor
+	}
+	return ""
+}
+
+type ReviewClaimRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ClaimId       string                 `protobuf:"bytes,1,opt,name=claim_id,json=claimId,proto3" json:"claim_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ReviewClaimRequest) Reset() {
+	*x = ReviewClaimRequest{}
+	mi := &file_carboncircuit_sustainability_v1_sustainability_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ReviewClaimRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ReviewClaimRequest) ProtoMessage() {}
+
+func (x *ReviewClaimRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_carboncircuit_sustainability_v1_sustainability_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ReviewClaimRequest.ProtoReflect.Descriptor instead.
+func (*ReviewClaimRequest) Descriptor() ([]byte, []int) {
+	return file_carboncircuit_sustainability_v1_sustainability_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *ReviewClaimRequest) GetClaimId() string {
+	if x != nil {
+		return x.ClaimId
+	}
+	return ""
+}
+
+type ReviewClaimResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Claim         *Claim                 `protobuf:"bytes,1,opt,name=claim,proto3" json:"claim,omitempty"`
+	AiReview      *AIReview              `protobuf:"bytes,2,opt,name=ai_review,json=aiReview,proto3" json:"ai_review,omitempty"`
+	Decisions     []*ClaimDecision       `protobuf:"bytes,3,rep,name=decisions,proto3" json:"decisions,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ReviewClaimResponse) Reset() {
+	*x = ReviewClaimResponse{}
+	mi := &file_carboncircuit_sustainability_v1_sustainability_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ReviewClaimResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ReviewClaimResponse) ProtoMessage() {}
+
+func (x *ReviewClaimResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_carboncircuit_sustainability_v1_sustainability_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ReviewClaimResponse.ProtoReflect.Descriptor instead.
+func (*ReviewClaimResponse) Descriptor() ([]byte, []int) {
+	return file_carboncircuit_sustainability_v1_sustainability_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *ReviewClaimResponse) GetClaim() *Claim {
+	if x != nil {
+		return x.Claim
+	}
+	return nil
+}
+
+func (x *ReviewClaimResponse) GetAiReview() *AIReview {
+	if x != nil {
+		return x.AiReview
+	}
+	return nil
+}
+
+func (x *ReviewClaimResponse) GetDecisions() []*ClaimDecision {
+	if x != nil {
+		return x.Decisions
+	}
+	return nil
+}
+
+type DecideClaimRequest struct {
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	ClaimId        string                 `protobuf:"bytes,1,opt,name=claim_id,json=claimId,proto3" json:"claim_id,omitempty"`
+	Outcome        DecisionOutcome        `protobuf:"varint,2,opt,name=outcome,proto3,enum=carboncircuit.sustainability.v1.DecisionOutcome" json:"outcome,omitempty"`
+	ApprovedAmount string                 `protobuf:"bytes,3,opt,name=approved_amount,json=approvedAmount,proto3" json:"approved_amount,omitempty"`
+	Reason         string                 `protobuf:"bytes,4,opt,name=reason,proto3" json:"reason,omitempty"`
+	IdempotencyKey string                 `protobuf:"bytes,5,opt,name=idempotency_key,json=idempotencyKey,proto3" json:"idempotency_key,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
+}
+
+func (x *DecideClaimRequest) Reset() {
+	*x = DecideClaimRequest{}
+	mi := &file_carboncircuit_sustainability_v1_sustainability_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DecideClaimRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DecideClaimRequest) ProtoMessage() {}
+
+func (x *DecideClaimRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_carboncircuit_sustainability_v1_sustainability_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DecideClaimRequest.ProtoReflect.Descriptor instead.
+func (*DecideClaimRequest) Descriptor() ([]byte, []int) {
+	return file_carboncircuit_sustainability_v1_sustainability_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *DecideClaimRequest) GetClaimId() string {
+	if x != nil {
+		return x.ClaimId
+	}
+	return ""
+}
+
+func (x *DecideClaimRequest) GetOutcome() DecisionOutcome {
+	if x != nil {
+		return x.Outcome
+	}
+	return DecisionOutcome_DECISION_OUTCOME_UNSPECIFIED
+}
+
+func (x *DecideClaimRequest) GetApprovedAmount() string {
+	if x != nil {
+		return x.ApprovedAmount
+	}
+	return ""
+}
+
+func (x *DecideClaimRequest) GetReason() string {
+	if x != nil {
+		return x.Reason
+	}
+	return ""
+}
+
+func (x *DecideClaimRequest) GetIdempotencyKey() string {
+	if x != nil {
+		return x.IdempotencyKey
+	}
+	return ""
+}
+
+type DecideClaimResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Claim         *Claim                 `protobuf:"bytes,1,opt,name=claim,proto3" json:"claim,omitempty"`
+	Decisions     []*ClaimDecision       `protobuf:"bytes,2,rep,name=decisions,proto3" json:"decisions,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DecideClaimResponse) Reset() {
+	*x = DecideClaimResponse{}
+	mi := &file_carboncircuit_sustainability_v1_sustainability_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DecideClaimResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DecideClaimResponse) ProtoMessage() {}
+
+func (x *DecideClaimResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_carboncircuit_sustainability_v1_sustainability_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DecideClaimResponse.ProtoReflect.Descriptor instead.
+func (*DecideClaimResponse) Descriptor() ([]byte, []int) {
+	return file_carboncircuit_sustainability_v1_sustainability_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *DecideClaimResponse) GetClaim() *Claim {
+	if x != nil {
+		return x.Claim
+	}
+	return nil
+}
+
+func (x *DecideClaimResponse) GetDecisions() []*ClaimDecision {
+	if x != nil {
+		return x.Decisions
+	}
+	return nil
 }
 
 type PingRequest struct {
@@ -194,7 +766,7 @@ type PingRequest struct {
 
 func (x *PingRequest) Reset() {
 	*x = PingRequest{}
-	mi := &file_carboncircuit_sustainability_v1_sustainability_proto_msgTypes[0]
+	mi := &file_carboncircuit_sustainability_v1_sustainability_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -206,7 +778,7 @@ func (x *PingRequest) String() string {
 func (*PingRequest) ProtoMessage() {}
 
 func (x *PingRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_carboncircuit_sustainability_v1_sustainability_proto_msgTypes[0]
+	mi := &file_carboncircuit_sustainability_v1_sustainability_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -219,7 +791,7 @@ func (x *PingRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PingRequest.ProtoReflect.Descriptor instead.
 func (*PingRequest) Descriptor() ([]byte, []int) {
-	return file_carboncircuit_sustainability_v1_sustainability_proto_rawDescGZIP(), []int{0}
+	return file_carboncircuit_sustainability_v1_sustainability_proto_rawDescGZIP(), []int{8}
 }
 
 type PingResponse struct {
@@ -234,7 +806,7 @@ type PingResponse struct {
 
 func (x *PingResponse) Reset() {
 	*x = PingResponse{}
-	mi := &file_carboncircuit_sustainability_v1_sustainability_proto_msgTypes[1]
+	mi := &file_carboncircuit_sustainability_v1_sustainability_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -246,7 +818,7 @@ func (x *PingResponse) String() string {
 func (*PingResponse) ProtoMessage() {}
 
 func (x *PingResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_carboncircuit_sustainability_v1_sustainability_proto_msgTypes[1]
+	mi := &file_carboncircuit_sustainability_v1_sustainability_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -259,7 +831,7 @@ func (x *PingResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PingResponse.ProtoReflect.Descriptor instead.
 func (*PingResponse) Descriptor() ([]byte, []int) {
-	return file_carboncircuit_sustainability_v1_sustainability_proto_rawDescGZIP(), []int{1}
+	return file_carboncircuit_sustainability_v1_sustainability_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *PingResponse) GetService() string {
@@ -304,7 +876,7 @@ type ClaimEvidence struct {
 
 func (x *ClaimEvidence) Reset() {
 	*x = ClaimEvidence{}
-	mi := &file_carboncircuit_sustainability_v1_sustainability_proto_msgTypes[2]
+	mi := &file_carboncircuit_sustainability_v1_sustainability_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -316,7 +888,7 @@ func (x *ClaimEvidence) String() string {
 func (*ClaimEvidence) ProtoMessage() {}
 
 func (x *ClaimEvidence) ProtoReflect() protoreflect.Message {
-	mi := &file_carboncircuit_sustainability_v1_sustainability_proto_msgTypes[2]
+	mi := &file_carboncircuit_sustainability_v1_sustainability_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -329,7 +901,7 @@ func (x *ClaimEvidence) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ClaimEvidence.ProtoReflect.Descriptor instead.
 func (*ClaimEvidence) Descriptor() ([]byte, []int) {
-	return file_carboncircuit_sustainability_v1_sustainability_proto_rawDescGZIP(), []int{2}
+	return file_carboncircuit_sustainability_v1_sustainability_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *ClaimEvidence) GetEvidenceId() string {
@@ -408,7 +980,7 @@ type Claim struct {
 
 func (x *Claim) Reset() {
 	*x = Claim{}
-	mi := &file_carboncircuit_sustainability_v1_sustainability_proto_msgTypes[3]
+	mi := &file_carboncircuit_sustainability_v1_sustainability_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -420,7 +992,7 @@ func (x *Claim) String() string {
 func (*Claim) ProtoMessage() {}
 
 func (x *Claim) ProtoReflect() protoreflect.Message {
-	mi := &file_carboncircuit_sustainability_v1_sustainability_proto_msgTypes[3]
+	mi := &file_carboncircuit_sustainability_v1_sustainability_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -433,7 +1005,7 @@ func (x *Claim) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Claim.ProtoReflect.Descriptor instead.
 func (*Claim) Descriptor() ([]byte, []int) {
-	return file_carboncircuit_sustainability_v1_sustainability_proto_rawDescGZIP(), []int{3}
+	return file_carboncircuit_sustainability_v1_sustainability_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *Claim) GetId() string {
@@ -636,7 +1208,7 @@ type SubmitClaimRequest struct {
 
 func (x *SubmitClaimRequest) Reset() {
 	*x = SubmitClaimRequest{}
-	mi := &file_carboncircuit_sustainability_v1_sustainability_proto_msgTypes[4]
+	mi := &file_carboncircuit_sustainability_v1_sustainability_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -648,7 +1220,7 @@ func (x *SubmitClaimRequest) String() string {
 func (*SubmitClaimRequest) ProtoMessage() {}
 
 func (x *SubmitClaimRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_carboncircuit_sustainability_v1_sustainability_proto_msgTypes[4]
+	mi := &file_carboncircuit_sustainability_v1_sustainability_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -661,7 +1233,7 @@ func (x *SubmitClaimRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SubmitClaimRequest.ProtoReflect.Descriptor instead.
 func (*SubmitClaimRequest) Descriptor() ([]byte, []int) {
-	return file_carboncircuit_sustainability_v1_sustainability_proto_rawDescGZIP(), []int{4}
+	return file_carboncircuit_sustainability_v1_sustainability_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *SubmitClaimRequest) GetFacilityId() string {
@@ -744,7 +1316,7 @@ type SubmitClaimResponse struct {
 
 func (x *SubmitClaimResponse) Reset() {
 	*x = SubmitClaimResponse{}
-	mi := &file_carboncircuit_sustainability_v1_sustainability_proto_msgTypes[5]
+	mi := &file_carboncircuit_sustainability_v1_sustainability_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -756,7 +1328,7 @@ func (x *SubmitClaimResponse) String() string {
 func (*SubmitClaimResponse) ProtoMessage() {}
 
 func (x *SubmitClaimResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_carboncircuit_sustainability_v1_sustainability_proto_msgTypes[5]
+	mi := &file_carboncircuit_sustainability_v1_sustainability_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -769,7 +1341,7 @@ func (x *SubmitClaimResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SubmitClaimResponse.ProtoReflect.Descriptor instead.
 func (*SubmitClaimResponse) Descriptor() ([]byte, []int) {
-	return file_carboncircuit_sustainability_v1_sustainability_proto_rawDescGZIP(), []int{5}
+	return file_carboncircuit_sustainability_v1_sustainability_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *SubmitClaimResponse) GetClaim() *Claim {
@@ -797,7 +1369,7 @@ type ListClaimsRequest struct {
 
 func (x *ListClaimsRequest) Reset() {
 	*x = ListClaimsRequest{}
-	mi := &file_carboncircuit_sustainability_v1_sustainability_proto_msgTypes[6]
+	mi := &file_carboncircuit_sustainability_v1_sustainability_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -809,7 +1381,7 @@ func (x *ListClaimsRequest) String() string {
 func (*ListClaimsRequest) ProtoMessage() {}
 
 func (x *ListClaimsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_carboncircuit_sustainability_v1_sustainability_proto_msgTypes[6]
+	mi := &file_carboncircuit_sustainability_v1_sustainability_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -822,7 +1394,7 @@ func (x *ListClaimsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListClaimsRequest.ProtoReflect.Descriptor instead.
 func (*ListClaimsRequest) Descriptor() ([]byte, []int) {
-	return file_carboncircuit_sustainability_v1_sustainability_proto_rawDescGZIP(), []int{6}
+	return file_carboncircuit_sustainability_v1_sustainability_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *ListClaimsRequest) GetStatus() ClaimStatus {
@@ -856,7 +1428,7 @@ type ListClaimsResponse struct {
 
 func (x *ListClaimsResponse) Reset() {
 	*x = ListClaimsResponse{}
-	mi := &file_carboncircuit_sustainability_v1_sustainability_proto_msgTypes[7]
+	mi := &file_carboncircuit_sustainability_v1_sustainability_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -868,7 +1440,7 @@ func (x *ListClaimsResponse) String() string {
 func (*ListClaimsResponse) ProtoMessage() {}
 
 func (x *ListClaimsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_carboncircuit_sustainability_v1_sustainability_proto_msgTypes[7]
+	mi := &file_carboncircuit_sustainability_v1_sustainability_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -881,7 +1453,7 @@ func (x *ListClaimsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListClaimsResponse.ProtoReflect.Descriptor instead.
 func (*ListClaimsResponse) Descriptor() ([]byte, []int) {
-	return file_carboncircuit_sustainability_v1_sustainability_proto_rawDescGZIP(), []int{7}
+	return file_carboncircuit_sustainability_v1_sustainability_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *ListClaimsResponse) GetClaims() []*Claim {
@@ -907,7 +1479,7 @@ type GetClaimRequest struct {
 
 func (x *GetClaimRequest) Reset() {
 	*x = GetClaimRequest{}
-	mi := &file_carboncircuit_sustainability_v1_sustainability_proto_msgTypes[8]
+	mi := &file_carboncircuit_sustainability_v1_sustainability_proto_msgTypes[16]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -919,7 +1491,7 @@ func (x *GetClaimRequest) String() string {
 func (*GetClaimRequest) ProtoMessage() {}
 
 func (x *GetClaimRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_carboncircuit_sustainability_v1_sustainability_proto_msgTypes[8]
+	mi := &file_carboncircuit_sustainability_v1_sustainability_proto_msgTypes[16]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -932,7 +1504,7 @@ func (x *GetClaimRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetClaimRequest.ProtoReflect.Descriptor instead.
 func (*GetClaimRequest) Descriptor() ([]byte, []int) {
-	return file_carboncircuit_sustainability_v1_sustainability_proto_rawDescGZIP(), []int{8}
+	return file_carboncircuit_sustainability_v1_sustainability_proto_rawDescGZIP(), []int{16}
 }
 
 func (x *GetClaimRequest) GetClaimId() string {
@@ -951,7 +1523,7 @@ type GetClaimResponse struct {
 
 func (x *GetClaimResponse) Reset() {
 	*x = GetClaimResponse{}
-	mi := &file_carboncircuit_sustainability_v1_sustainability_proto_msgTypes[9]
+	mi := &file_carboncircuit_sustainability_v1_sustainability_proto_msgTypes[17]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -963,7 +1535,7 @@ func (x *GetClaimResponse) String() string {
 func (*GetClaimResponse) ProtoMessage() {}
 
 func (x *GetClaimResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_carboncircuit_sustainability_v1_sustainability_proto_msgTypes[9]
+	mi := &file_carboncircuit_sustainability_v1_sustainability_proto_msgTypes[17]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -976,7 +1548,7 @@ func (x *GetClaimResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetClaimResponse.ProtoReflect.Descriptor instead.
 func (*GetClaimResponse) Descriptor() ([]byte, []int) {
-	return file_carboncircuit_sustainability_v1_sustainability_proto_rawDescGZIP(), []int{9}
+	return file_carboncircuit_sustainability_v1_sustainability_proto_rawDescGZIP(), []int{17}
 }
 
 func (x *GetClaimResponse) GetClaim() *Claim {
@@ -999,7 +1571,7 @@ type PreviewCeilingRequest struct {
 
 func (x *PreviewCeilingRequest) Reset() {
 	*x = PreviewCeilingRequest{}
-	mi := &file_carboncircuit_sustainability_v1_sustainability_proto_msgTypes[10]
+	mi := &file_carboncircuit_sustainability_v1_sustainability_proto_msgTypes[18]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1011,7 +1583,7 @@ func (x *PreviewCeilingRequest) String() string {
 func (*PreviewCeilingRequest) ProtoMessage() {}
 
 func (x *PreviewCeilingRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_carboncircuit_sustainability_v1_sustainability_proto_msgTypes[10]
+	mi := &file_carboncircuit_sustainability_v1_sustainability_proto_msgTypes[18]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1024,7 +1596,7 @@ func (x *PreviewCeilingRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PreviewCeilingRequest.ProtoReflect.Descriptor instead.
 func (*PreviewCeilingRequest) Descriptor() ([]byte, []int) {
-	return file_carboncircuit_sustainability_v1_sustainability_proto_rawDescGZIP(), []int{10}
+	return file_carboncircuit_sustainability_v1_sustainability_proto_rawDescGZIP(), []int{18}
 }
 
 func (x *PreviewCeilingRequest) GetFacilityId() string {
@@ -1082,7 +1654,7 @@ type PreviewCeilingResponse struct {
 
 func (x *PreviewCeilingResponse) Reset() {
 	*x = PreviewCeilingResponse{}
-	mi := &file_carboncircuit_sustainability_v1_sustainability_proto_msgTypes[11]
+	mi := &file_carboncircuit_sustainability_v1_sustainability_proto_msgTypes[19]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1094,7 +1666,7 @@ func (x *PreviewCeilingResponse) String() string {
 func (*PreviewCeilingResponse) ProtoMessage() {}
 
 func (x *PreviewCeilingResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_carboncircuit_sustainability_v1_sustainability_proto_msgTypes[11]
+	mi := &file_carboncircuit_sustainability_v1_sustainability_proto_msgTypes[19]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1107,7 +1679,7 @@ func (x *PreviewCeilingResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PreviewCeilingResponse.ProtoReflect.Descriptor instead.
 func (*PreviewCeilingResponse) Descriptor() ([]byte, []int) {
-	return file_carboncircuit_sustainability_v1_sustainability_proto_rawDescGZIP(), []int{11}
+	return file_carboncircuit_sustainability_v1_sustainability_proto_rawDescGZIP(), []int{19}
 }
 
 func (x *PreviewCeilingResponse) GetCeiling() string {
@@ -1198,7 +1770,55 @@ var File_carboncircuit_sustainability_v1_sustainability_proto protoreflect.FileD
 
 const file_carboncircuit_sustainability_v1_sustainability_proto_rawDesc = "" +
 	"\n" +
-	"4carboncircuit/sustainability/v1/sustainability.proto\x12\x1fcarboncircuit.sustainability.v1\"\r\n" +
+	"4carboncircuit/sustainability/v1/sustainability.proto\x12\x1fcarboncircuit.sustainability.v1\"\xf3\x02\n" +
+	"\bAIReview\x12\x1e\n" +
+	"\n" +
+	"assessment\x18\x01 \x01(\tR\n" +
+	"assessment\x12\x1e\n" +
+	"\n" +
+	"confidence\x18\x02 \x01(\tR\n" +
+	"confidence\x12l\n" +
+	"\x11extracted_figures\x18\x03 \x03(\v2?.carboncircuit.sustainability.v1.AIReview.ExtractedFiguresEntryR\x10extractedFigures\x12\x14\n" +
+	"\x05flags\x18\x04 \x03(\tR\x05flags\x12\x1c\n" +
+	"\tnarrative\x18\x05 \x01(\tR\tnarrative\x12\x1f\n" +
+	"\vassessed_by\x18\x06 \x01(\tR\n" +
+	"assessedBy\x12\x1f\n" +
+	"\vassessed_at\x18\a \x01(\tR\n" +
+	"assessedAt\x1aC\n" +
+	"\x15ExtractedFiguresEntry\x12\x10\n" +
+	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\x9a\x02\n" +
+	"\rClaimDecision\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\x12(\n" +
+	"\x10verifier_user_id\x18\x02 \x01(\tR\x0everifierUserId\x12#\n" +
+	"\rverifier_name\x18\x03 \x01(\tR\fverifierName\x12J\n" +
+	"\aoutcome\x18\x04 \x01(\x0e20.carboncircuit.sustainability.v1.DecisionOutcomeR\aoutcome\x12'\n" +
+	"\x0fapproved_amount\x18\x05 \x01(\tR\x0eapprovedAmount\x12\x16\n" +
+	"\x06reason\x18\x06 \x01(\tR\x06reason\x12\x1d\n" +
+	"\n" +
+	"decided_at\x18\a \x01(\tR\tdecidedAt\"@\n" +
+	"\x12ReviewQueueRequest\x12\x14\n" +
+	"\x05after\x18\x01 \x01(\tR\x05after\x12\x14\n" +
+	"\x05limit\x18\x02 \x01(\x05R\x05limit\"v\n" +
+	"\x13ReviewQueueResponse\x12>\n" +
+	"\x06claims\x18\x01 \x03(\v2&.carboncircuit.sustainability.v1.ClaimR\x06claims\x12\x1f\n" +
+	"\vnext_cursor\x18\x02 \x01(\tR\n" +
+	"nextCursor\"/\n" +
+	"\x12ReviewClaimRequest\x12\x19\n" +
+	"\bclaim_id\x18\x01 \x01(\tR\aclaimId\"\xe9\x01\n" +
+	"\x13ReviewClaimResponse\x12<\n" +
+	"\x05claim\x18\x01 \x01(\v2&.carboncircuit.sustainability.v1.ClaimR\x05claim\x12F\n" +
+	"\tai_review\x18\x02 \x01(\v2).carboncircuit.sustainability.v1.AIReviewR\baiReview\x12L\n" +
+	"\tdecisions\x18\x03 \x03(\v2..carboncircuit.sustainability.v1.ClaimDecisionR\tdecisions\"\xe5\x01\n" +
+	"\x12DecideClaimRequest\x12\x19\n" +
+	"\bclaim_id\x18\x01 \x01(\tR\aclaimId\x12J\n" +
+	"\aoutcome\x18\x02 \x01(\x0e20.carboncircuit.sustainability.v1.DecisionOutcomeR\aoutcome\x12'\n" +
+	"\x0fapproved_amount\x18\x03 \x01(\tR\x0eapprovedAmount\x12\x16\n" +
+	"\x06reason\x18\x04 \x01(\tR\x06reason\x12'\n" +
+	"\x0fidempotency_key\x18\x05 \x01(\tR\x0eidempotencyKey\"\xa1\x01\n" +
+	"\x13DecideClaimResponse\x12<\n" +
+	"\x05claim\x18\x01 \x01(\v2&.carboncircuit.sustainability.v1.ClaimR\x05claim\x12L\n" +
+	"\tdecisions\x18\x02 \x03(\v2..carboncircuit.sustainability.v1.ClaimDecisionR\tdecisions\"\r\n" +
 	"\vPingRequest\"\xa9\x01\n" +
 	"\fPingResponse\x12\x18\n" +
 	"\aservice\x18\x01 \x01(\tR\aservice\x12\x1a\n" +
@@ -1305,7 +1925,12 @@ const file_carboncircuit_sustainability_v1_sustainability_proto_rawDesc = "" +
 	"gridRegion\x12\x1f\n" +
 	"\vperiod_days\x18\a \x01(\x05R\n" +
 	"periodDays\x12!\n" +
-	"\fvintage_days\x18\b \x01(\x05R\vvintageDays*\xa7\x01\n" +
+	"\fvintage_days\x18\b \x01(\x05R\vvintageDays*\xa2\x01\n" +
+	"\x0fDecisionOutcome\x12 \n" +
+	"\x1cDECISION_OUTCOME_UNSPECIFIED\x10\x00\x12\x1d\n" +
+	"\x19DECISION_OUTCOME_APPROVED\x10\x01\x12\x1d\n" +
+	"\x19DECISION_OUTCOME_REJECTED\x10\x02\x12/\n" +
+	"+DECISION_OUTCOME_MORE_INFORMATION_REQUESTED\x10\x03*\xa7\x01\n" +
 	"\fActivityType\x12\x1d\n" +
 	"\x19ACTIVITY_TYPE_UNSPECIFIED\x10\x00\x12\"\n" +
 	"\x1eACTIVITY_TYPE_RENEWABLE_ENERGY\x10\x01\x12,\n" +
@@ -1323,14 +1948,17 @@ const file_carboncircuit_sustainability_v1_sustainability_proto_rawDesc = "" +
 	"\x1aQUEUE_PRIORITY_UNSPECIFIED\x10\x00\x12\x19\n" +
 	"\x15QUEUE_PRIORITY_NORMAL\x10\x01\x12\x17\n" +
 	"\x13QUEUE_PRIORITY_HIGH\x10\x02\x12\x1b\n" +
-	"\x17QUEUE_PRIORITY_CRITICAL\x10\x032\xe2\x04\n" +
+	"\x17QUEUE_PRIORITY_CRITICAL\x10\x032\xd0\a\n" +
 	"\x15SustainabilityService\x12c\n" +
 	"\x04Ping\x12,.carboncircuit.sustainability.v1.PingRequest\x1a-.carboncircuit.sustainability.v1.PingResponse\x12x\n" +
 	"\vSubmitClaim\x123.carboncircuit.sustainability.v1.SubmitClaimRequest\x1a4.carboncircuit.sustainability.v1.SubmitClaimResponse\x12u\n" +
 	"\n" +
 	"ListClaims\x122.carboncircuit.sustainability.v1.ListClaimsRequest\x1a3.carboncircuit.sustainability.v1.ListClaimsResponse\x12o\n" +
 	"\bGetClaim\x120.carboncircuit.sustainability.v1.GetClaimRequest\x1a1.carboncircuit.sustainability.v1.GetClaimResponse\x12\x81\x01\n" +
-	"\x0ePreviewCeiling\x126.carboncircuit.sustainability.v1.PreviewCeilingRequest\x1a7.carboncircuit.sustainability.v1.PreviewCeilingResponseB\xaf\x02\n" +
+	"\x0ePreviewCeiling\x126.carboncircuit.sustainability.v1.PreviewCeilingRequest\x1a7.carboncircuit.sustainability.v1.PreviewCeilingResponse\x12x\n" +
+	"\vReviewQueue\x123.carboncircuit.sustainability.v1.ReviewQueueRequest\x1a4.carboncircuit.sustainability.v1.ReviewQueueResponse\x12x\n" +
+	"\vReviewClaim\x123.carboncircuit.sustainability.v1.ReviewClaimRequest\x1a4.carboncircuit.sustainability.v1.ReviewClaimResponse\x12x\n" +
+	"\vDecideClaim\x123.carboncircuit.sustainability.v1.DecideClaimRequest\x1a4.carboncircuit.sustainability.v1.DecideClaimResponseB\xaf\x02\n" +
 	"#com.carboncircuit.sustainability.v1B\x13SustainabilityProtoP\x01ZUgithub.com/carboncircuit/backend/gen/carboncircuit/sustainability/v1;sustainabilityv1\xa2\x02\x03CSX\xaa\x02\x1fCarboncircuit.Sustainability.V1\xca\x02\x1fCarboncircuit\\Sustainability\\V1\xe2\x02+Carboncircuit\\Sustainability\\V1\\GPBMetadata\xea\x02!Carboncircuit::Sustainability::V1b\x06proto3"
 
 var (
@@ -1345,55 +1973,80 @@ func file_carboncircuit_sustainability_v1_sustainability_proto_rawDescGZIP() []b
 	return file_carboncircuit_sustainability_v1_sustainability_proto_rawDescData
 }
 
-var file_carboncircuit_sustainability_v1_sustainability_proto_enumTypes = make([]protoimpl.EnumInfo, 3)
-var file_carboncircuit_sustainability_v1_sustainability_proto_msgTypes = make([]protoimpl.MessageInfo, 14)
+var file_carboncircuit_sustainability_v1_sustainability_proto_enumTypes = make([]protoimpl.EnumInfo, 4)
+var file_carboncircuit_sustainability_v1_sustainability_proto_msgTypes = make([]protoimpl.MessageInfo, 23)
 var file_carboncircuit_sustainability_v1_sustainability_proto_goTypes = []any{
-	(ActivityType)(0),              // 0: carboncircuit.sustainability.v1.ActivityType
-	(ClaimStatus)(0),               // 1: carboncircuit.sustainability.v1.ClaimStatus
-	(QueuePriority)(0),             // 2: carboncircuit.sustainability.v1.QueuePriority
-	(*PingRequest)(nil),            // 3: carboncircuit.sustainability.v1.PingRequest
-	(*PingResponse)(nil),           // 4: carboncircuit.sustainability.v1.PingResponse
-	(*ClaimEvidence)(nil),          // 5: carboncircuit.sustainability.v1.ClaimEvidence
-	(*Claim)(nil),                  // 6: carboncircuit.sustainability.v1.Claim
-	(*SubmitClaimRequest)(nil),     // 7: carboncircuit.sustainability.v1.SubmitClaimRequest
-	(*SubmitClaimResponse)(nil),    // 8: carboncircuit.sustainability.v1.SubmitClaimResponse
-	(*ListClaimsRequest)(nil),      // 9: carboncircuit.sustainability.v1.ListClaimsRequest
-	(*ListClaimsResponse)(nil),     // 10: carboncircuit.sustainability.v1.ListClaimsResponse
-	(*GetClaimRequest)(nil),        // 11: carboncircuit.sustainability.v1.GetClaimRequest
-	(*GetClaimResponse)(nil),       // 12: carboncircuit.sustainability.v1.GetClaimResponse
-	(*PreviewCeilingRequest)(nil),  // 13: carboncircuit.sustainability.v1.PreviewCeilingRequest
-	(*PreviewCeilingResponse)(nil), // 14: carboncircuit.sustainability.v1.PreviewCeilingResponse
-	nil,                            // 15: carboncircuit.sustainability.v1.Claim.DeclaredFiguresEntry
-	nil,                            // 16: carboncircuit.sustainability.v1.SubmitClaimRequest.DeclaredFiguresEntry
+	(DecisionOutcome)(0),           // 0: carboncircuit.sustainability.v1.DecisionOutcome
+	(ActivityType)(0),              // 1: carboncircuit.sustainability.v1.ActivityType
+	(ClaimStatus)(0),               // 2: carboncircuit.sustainability.v1.ClaimStatus
+	(QueuePriority)(0),             // 3: carboncircuit.sustainability.v1.QueuePriority
+	(*AIReview)(nil),               // 4: carboncircuit.sustainability.v1.AIReview
+	(*ClaimDecision)(nil),          // 5: carboncircuit.sustainability.v1.ClaimDecision
+	(*ReviewQueueRequest)(nil),     // 6: carboncircuit.sustainability.v1.ReviewQueueRequest
+	(*ReviewQueueResponse)(nil),    // 7: carboncircuit.sustainability.v1.ReviewQueueResponse
+	(*ReviewClaimRequest)(nil),     // 8: carboncircuit.sustainability.v1.ReviewClaimRequest
+	(*ReviewClaimResponse)(nil),    // 9: carboncircuit.sustainability.v1.ReviewClaimResponse
+	(*DecideClaimRequest)(nil),     // 10: carboncircuit.sustainability.v1.DecideClaimRequest
+	(*DecideClaimResponse)(nil),    // 11: carboncircuit.sustainability.v1.DecideClaimResponse
+	(*PingRequest)(nil),            // 12: carboncircuit.sustainability.v1.PingRequest
+	(*PingResponse)(nil),           // 13: carboncircuit.sustainability.v1.PingResponse
+	(*ClaimEvidence)(nil),          // 14: carboncircuit.sustainability.v1.ClaimEvidence
+	(*Claim)(nil),                  // 15: carboncircuit.sustainability.v1.Claim
+	(*SubmitClaimRequest)(nil),     // 16: carboncircuit.sustainability.v1.SubmitClaimRequest
+	(*SubmitClaimResponse)(nil),    // 17: carboncircuit.sustainability.v1.SubmitClaimResponse
+	(*ListClaimsRequest)(nil),      // 18: carboncircuit.sustainability.v1.ListClaimsRequest
+	(*ListClaimsResponse)(nil),     // 19: carboncircuit.sustainability.v1.ListClaimsResponse
+	(*GetClaimRequest)(nil),        // 20: carboncircuit.sustainability.v1.GetClaimRequest
+	(*GetClaimResponse)(nil),       // 21: carboncircuit.sustainability.v1.GetClaimResponse
+	(*PreviewCeilingRequest)(nil),  // 22: carboncircuit.sustainability.v1.PreviewCeilingRequest
+	(*PreviewCeilingResponse)(nil), // 23: carboncircuit.sustainability.v1.PreviewCeilingResponse
+	nil,                            // 24: carboncircuit.sustainability.v1.AIReview.ExtractedFiguresEntry
+	nil,                            // 25: carboncircuit.sustainability.v1.Claim.DeclaredFiguresEntry
+	nil,                            // 26: carboncircuit.sustainability.v1.SubmitClaimRequest.DeclaredFiguresEntry
 }
 var file_carboncircuit_sustainability_v1_sustainability_proto_depIdxs = []int32{
-	0,  // 0: carboncircuit.sustainability.v1.Claim.activity_type:type_name -> carboncircuit.sustainability.v1.ActivityType
-	15, // 1: carboncircuit.sustainability.v1.Claim.declared_figures:type_name -> carboncircuit.sustainability.v1.Claim.DeclaredFiguresEntry
-	1,  // 2: carboncircuit.sustainability.v1.Claim.status:type_name -> carboncircuit.sustainability.v1.ClaimStatus
-	2,  // 3: carboncircuit.sustainability.v1.Claim.priority:type_name -> carboncircuit.sustainability.v1.QueuePriority
-	5,  // 4: carboncircuit.sustainability.v1.Claim.evidence:type_name -> carboncircuit.sustainability.v1.ClaimEvidence
-	0,  // 5: carboncircuit.sustainability.v1.SubmitClaimRequest.activity_type:type_name -> carboncircuit.sustainability.v1.ActivityType
-	16, // 6: carboncircuit.sustainability.v1.SubmitClaimRequest.declared_figures:type_name -> carboncircuit.sustainability.v1.SubmitClaimRequest.DeclaredFiguresEntry
-	6,  // 7: carboncircuit.sustainability.v1.SubmitClaimResponse.claim:type_name -> carboncircuit.sustainability.v1.Claim
-	1,  // 8: carboncircuit.sustainability.v1.ListClaimsRequest.status:type_name -> carboncircuit.sustainability.v1.ClaimStatus
-	6,  // 9: carboncircuit.sustainability.v1.ListClaimsResponse.claims:type_name -> carboncircuit.sustainability.v1.Claim
-	6,  // 10: carboncircuit.sustainability.v1.GetClaimResponse.claim:type_name -> carboncircuit.sustainability.v1.Claim
-	0,  // 11: carboncircuit.sustainability.v1.PreviewCeilingRequest.activity_type:type_name -> carboncircuit.sustainability.v1.ActivityType
-	3,  // 12: carboncircuit.sustainability.v1.SustainabilityService.Ping:input_type -> carboncircuit.sustainability.v1.PingRequest
-	7,  // 13: carboncircuit.sustainability.v1.SustainabilityService.SubmitClaim:input_type -> carboncircuit.sustainability.v1.SubmitClaimRequest
-	9,  // 14: carboncircuit.sustainability.v1.SustainabilityService.ListClaims:input_type -> carboncircuit.sustainability.v1.ListClaimsRequest
-	11, // 15: carboncircuit.sustainability.v1.SustainabilityService.GetClaim:input_type -> carboncircuit.sustainability.v1.GetClaimRequest
-	13, // 16: carboncircuit.sustainability.v1.SustainabilityService.PreviewCeiling:input_type -> carboncircuit.sustainability.v1.PreviewCeilingRequest
-	4,  // 17: carboncircuit.sustainability.v1.SustainabilityService.Ping:output_type -> carboncircuit.sustainability.v1.PingResponse
-	8,  // 18: carboncircuit.sustainability.v1.SustainabilityService.SubmitClaim:output_type -> carboncircuit.sustainability.v1.SubmitClaimResponse
-	10, // 19: carboncircuit.sustainability.v1.SustainabilityService.ListClaims:output_type -> carboncircuit.sustainability.v1.ListClaimsResponse
-	12, // 20: carboncircuit.sustainability.v1.SustainabilityService.GetClaim:output_type -> carboncircuit.sustainability.v1.GetClaimResponse
-	14, // 21: carboncircuit.sustainability.v1.SustainabilityService.PreviewCeiling:output_type -> carboncircuit.sustainability.v1.PreviewCeilingResponse
-	17, // [17:22] is the sub-list for method output_type
-	12, // [12:17] is the sub-list for method input_type
-	12, // [12:12] is the sub-list for extension type_name
-	12, // [12:12] is the sub-list for extension extendee
-	0,  // [0:12] is the sub-list for field type_name
+	24, // 0: carboncircuit.sustainability.v1.AIReview.extracted_figures:type_name -> carboncircuit.sustainability.v1.AIReview.ExtractedFiguresEntry
+	0,  // 1: carboncircuit.sustainability.v1.ClaimDecision.outcome:type_name -> carboncircuit.sustainability.v1.DecisionOutcome
+	15, // 2: carboncircuit.sustainability.v1.ReviewQueueResponse.claims:type_name -> carboncircuit.sustainability.v1.Claim
+	15, // 3: carboncircuit.sustainability.v1.ReviewClaimResponse.claim:type_name -> carboncircuit.sustainability.v1.Claim
+	4,  // 4: carboncircuit.sustainability.v1.ReviewClaimResponse.ai_review:type_name -> carboncircuit.sustainability.v1.AIReview
+	5,  // 5: carboncircuit.sustainability.v1.ReviewClaimResponse.decisions:type_name -> carboncircuit.sustainability.v1.ClaimDecision
+	0,  // 6: carboncircuit.sustainability.v1.DecideClaimRequest.outcome:type_name -> carboncircuit.sustainability.v1.DecisionOutcome
+	15, // 7: carboncircuit.sustainability.v1.DecideClaimResponse.claim:type_name -> carboncircuit.sustainability.v1.Claim
+	5,  // 8: carboncircuit.sustainability.v1.DecideClaimResponse.decisions:type_name -> carboncircuit.sustainability.v1.ClaimDecision
+	1,  // 9: carboncircuit.sustainability.v1.Claim.activity_type:type_name -> carboncircuit.sustainability.v1.ActivityType
+	25, // 10: carboncircuit.sustainability.v1.Claim.declared_figures:type_name -> carboncircuit.sustainability.v1.Claim.DeclaredFiguresEntry
+	2,  // 11: carboncircuit.sustainability.v1.Claim.status:type_name -> carboncircuit.sustainability.v1.ClaimStatus
+	3,  // 12: carboncircuit.sustainability.v1.Claim.priority:type_name -> carboncircuit.sustainability.v1.QueuePriority
+	14, // 13: carboncircuit.sustainability.v1.Claim.evidence:type_name -> carboncircuit.sustainability.v1.ClaimEvidence
+	1,  // 14: carboncircuit.sustainability.v1.SubmitClaimRequest.activity_type:type_name -> carboncircuit.sustainability.v1.ActivityType
+	26, // 15: carboncircuit.sustainability.v1.SubmitClaimRequest.declared_figures:type_name -> carboncircuit.sustainability.v1.SubmitClaimRequest.DeclaredFiguresEntry
+	15, // 16: carboncircuit.sustainability.v1.SubmitClaimResponse.claim:type_name -> carboncircuit.sustainability.v1.Claim
+	2,  // 17: carboncircuit.sustainability.v1.ListClaimsRequest.status:type_name -> carboncircuit.sustainability.v1.ClaimStatus
+	15, // 18: carboncircuit.sustainability.v1.ListClaimsResponse.claims:type_name -> carboncircuit.sustainability.v1.Claim
+	15, // 19: carboncircuit.sustainability.v1.GetClaimResponse.claim:type_name -> carboncircuit.sustainability.v1.Claim
+	1,  // 20: carboncircuit.sustainability.v1.PreviewCeilingRequest.activity_type:type_name -> carboncircuit.sustainability.v1.ActivityType
+	12, // 21: carboncircuit.sustainability.v1.SustainabilityService.Ping:input_type -> carboncircuit.sustainability.v1.PingRequest
+	16, // 22: carboncircuit.sustainability.v1.SustainabilityService.SubmitClaim:input_type -> carboncircuit.sustainability.v1.SubmitClaimRequest
+	18, // 23: carboncircuit.sustainability.v1.SustainabilityService.ListClaims:input_type -> carboncircuit.sustainability.v1.ListClaimsRequest
+	20, // 24: carboncircuit.sustainability.v1.SustainabilityService.GetClaim:input_type -> carboncircuit.sustainability.v1.GetClaimRequest
+	22, // 25: carboncircuit.sustainability.v1.SustainabilityService.PreviewCeiling:input_type -> carboncircuit.sustainability.v1.PreviewCeilingRequest
+	6,  // 26: carboncircuit.sustainability.v1.SustainabilityService.ReviewQueue:input_type -> carboncircuit.sustainability.v1.ReviewQueueRequest
+	8,  // 27: carboncircuit.sustainability.v1.SustainabilityService.ReviewClaim:input_type -> carboncircuit.sustainability.v1.ReviewClaimRequest
+	10, // 28: carboncircuit.sustainability.v1.SustainabilityService.DecideClaim:input_type -> carboncircuit.sustainability.v1.DecideClaimRequest
+	13, // 29: carboncircuit.sustainability.v1.SustainabilityService.Ping:output_type -> carboncircuit.sustainability.v1.PingResponse
+	17, // 30: carboncircuit.sustainability.v1.SustainabilityService.SubmitClaim:output_type -> carboncircuit.sustainability.v1.SubmitClaimResponse
+	19, // 31: carboncircuit.sustainability.v1.SustainabilityService.ListClaims:output_type -> carboncircuit.sustainability.v1.ListClaimsResponse
+	21, // 32: carboncircuit.sustainability.v1.SustainabilityService.GetClaim:output_type -> carboncircuit.sustainability.v1.GetClaimResponse
+	23, // 33: carboncircuit.sustainability.v1.SustainabilityService.PreviewCeiling:output_type -> carboncircuit.sustainability.v1.PreviewCeilingResponse
+	7,  // 34: carboncircuit.sustainability.v1.SustainabilityService.ReviewQueue:output_type -> carboncircuit.sustainability.v1.ReviewQueueResponse
+	9,  // 35: carboncircuit.sustainability.v1.SustainabilityService.ReviewClaim:output_type -> carboncircuit.sustainability.v1.ReviewClaimResponse
+	11, // 36: carboncircuit.sustainability.v1.SustainabilityService.DecideClaim:output_type -> carboncircuit.sustainability.v1.DecideClaimResponse
+	29, // [29:37] is the sub-list for method output_type
+	21, // [21:29] is the sub-list for method input_type
+	21, // [21:21] is the sub-list for extension type_name
+	21, // [21:21] is the sub-list for extension extendee
+	0,  // [0:21] is the sub-list for field type_name
 }
 
 func init() { file_carboncircuit_sustainability_v1_sustainability_proto_init() }
@@ -1406,8 +2059,8 @@ func file_carboncircuit_sustainability_v1_sustainability_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_carboncircuit_sustainability_v1_sustainability_proto_rawDesc), len(file_carboncircuit_sustainability_v1_sustainability_proto_rawDesc)),
-			NumEnums:      3,
-			NumMessages:   14,
+			NumEnums:      4,
+			NumMessages:   23,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

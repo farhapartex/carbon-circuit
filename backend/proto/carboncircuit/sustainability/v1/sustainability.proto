@@ -10,6 +10,69 @@ service SustainabilityService {
   rpc ListClaims(ListClaimsRequest) returns (ListClaimsResponse);
   rpc GetClaim(GetClaimRequest) returns (GetClaimResponse);
   rpc PreviewCeiling(PreviewCeilingRequest) returns (PreviewCeilingResponse);
+  rpc ReviewQueue(ReviewQueueRequest) returns (ReviewQueueResponse);
+  rpc ReviewClaim(ReviewClaimRequest) returns (ReviewClaimResponse);
+  rpc DecideClaim(DecideClaimRequest) returns (DecideClaimResponse);
+}
+
+enum DecisionOutcome {
+  DECISION_OUTCOME_UNSPECIFIED = 0;
+  DECISION_OUTCOME_APPROVED = 1;
+  DECISION_OUTCOME_REJECTED = 2;
+  DECISION_OUTCOME_MORE_INFORMATION_REQUESTED = 3;
+}
+
+message AIReview {
+  string assessment = 1;
+  string confidence = 2;
+  map<string, string> extracted_figures = 3;
+  repeated string flags = 4;
+  string narrative = 5;
+  string assessed_by = 6;
+  string assessed_at = 7;
+}
+
+message ClaimDecision {
+  string id = 1;
+  string verifier_user_id = 2;
+  string verifier_name = 3;
+  DecisionOutcome outcome = 4;
+  string approved_amount = 5;
+  string reason = 6;
+  string decided_at = 7;
+}
+
+message ReviewQueueRequest {
+  string after = 1;
+  int32 limit = 2;
+}
+
+message ReviewQueueResponse {
+  repeated Claim claims = 1;
+  string next_cursor = 2;
+}
+
+message ReviewClaimRequest {
+  string claim_id = 1;
+}
+
+message ReviewClaimResponse {
+  Claim claim = 1;
+  AIReview ai_review = 2;
+  repeated ClaimDecision decisions = 3;
+}
+
+message DecideClaimRequest {
+  string claim_id = 1;
+  DecisionOutcome outcome = 2;
+  string approved_amount = 3;
+  string reason = 4;
+  string idempotency_key = 5;
+}
+
+message DecideClaimResponse {
+  Claim claim = 1;
+  repeated ClaimDecision decisions = 2;
 }
 
 enum ActivityType {

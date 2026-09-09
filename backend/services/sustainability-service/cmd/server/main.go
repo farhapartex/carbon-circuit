@@ -171,7 +171,9 @@ func run() error {
 
 	go consumer.Run(consumerCtx)
 
-	sustainabilityServer := rpc.NewSustainabilityServer(store, claims, logger, revision)
+	verifiers := service.NewVerifierService(store, repository.NewClaimRepository(), logger)
+
+	sustainabilityServer := rpc.NewSustainabilityServer(store, claims, verifiers, logger, revision)
 
 	verifier := servicetoken.NewVerifier(publicKey)
 	exempt := map[string]bool{pingMethod: true}

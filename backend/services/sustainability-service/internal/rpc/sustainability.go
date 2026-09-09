@@ -36,6 +36,7 @@ type SustainabilityServer struct {
 
 	database *gorm.DB
 	claims   ClaimManager
+	reviews  ReviewManager
 	logger   *slog.Logger
 	revision string
 }
@@ -43,12 +44,14 @@ type SustainabilityServer struct {
 func NewSustainabilityServer(
 	database *gorm.DB,
 	claims ClaimManager,
+	reviews ReviewManager,
 	logger *slog.Logger,
 	revision string,
 ) *SustainabilityServer {
 	return &SustainabilityServer{
 		database: database,
 		claims:   claims,
+		reviews:  reviews,
 		logger:   logger,
 		revision: revision,
 	}
@@ -326,6 +329,12 @@ var refusalReasons = []struct {
 	{service.ErrEvidenceUnusable, "EVIDENCE_UNUSABLE"},
 	{service.ErrAttestationRequired, "ATTESTATION_REQUIRED"},
 	{service.ErrVintageCapacityLeft, "VINTAGE_CAPACITY_EXHAUSTED"},
+	{service.ErrClaimNotInReview, "NOT_IN_REVIEW"},
+	{service.ErrAboveCeiling, "ABOVE_CEILING"},
+	{service.ErrAboveRequested, "ABOVE_REQUESTED"},
+	{service.ErrReasonTooShort, "REASON_TOO_SHORT"},
+	{service.ErrAlreadyDecided, "ALREADY_DECIDED"},
+	{service.ErrApprovalNotPositive, "APPROVAL_NOT_POSITIVE"},
 	{ceiling.ErrVintageExhausted, "VINTAGE_CAPACITY_EXHAUSTED"},
 	{ceiling.ErrCapacityUnknown, "CAPACITY_UNKNOWN"},
 	{ceiling.ErrPeriodOutsideVintage, "PERIOD_OUTSIDE_VINTAGE"},
@@ -360,7 +369,8 @@ func translate(err error) error {
 		return status.Error(codes.NotFound, err.Error())
 	case errors.Is(err, service.ErrFacilityUnknown):
 		return status.Error(codes.NotFound, err.Error())
-	case errors.Is(err, service.ErrOrganizationReadOnly):
+	case errors.Is(err, service.ErrOrganizationReadOnly),
+		errors.Is(err, service.ErrNotAVerifier):
 		return status.Error(codes.PermissionDenied, err.Error())
 	case errors.Is(err, service.ErrRequestInProgress):
 		return status.Error(codes.Aborted, err.Error())

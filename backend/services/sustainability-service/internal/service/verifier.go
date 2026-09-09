@@ -296,11 +296,16 @@ func (s *VerifierService) record(
 
 	now := time.Now().UTC()
 
+	name := verifier.Name
+	if strings.TrimSpace(name) == "" {
+		name = "Verifier " + verifier.UserID.String()[:8]
+	}
+
 	entry := domain.ClaimDecision{
 		OrganizationID: claim.OrganizationID,
 		ClaimID:        claim.ID,
 		VerifierUserID: verifier.UserID,
-		VerifierName:   verifier.Name,
+		VerifierName:   name,
 		Outcome:        decision.Outcome,
 		Reason:         strings.TrimSpace(decision.Reason),
 		DecidedAt:      now,

@@ -24,6 +24,9 @@ const (
 	SustainabilityService_ListClaims_FullMethodName     = "/carboncircuit.sustainability.v1.SustainabilityService/ListClaims"
 	SustainabilityService_GetClaim_FullMethodName       = "/carboncircuit.sustainability.v1.SustainabilityService/GetClaim"
 	SustainabilityService_PreviewCeiling_FullMethodName = "/carboncircuit.sustainability.v1.SustainabilityService/PreviewCeiling"
+	SustainabilityService_ReviewQueue_FullMethodName    = "/carboncircuit.sustainability.v1.SustainabilityService/ReviewQueue"
+	SustainabilityService_ReviewClaim_FullMethodName    = "/carboncircuit.sustainability.v1.SustainabilityService/ReviewClaim"
+	SustainabilityService_DecideClaim_FullMethodName    = "/carboncircuit.sustainability.v1.SustainabilityService/DecideClaim"
 )
 
 // SustainabilityServiceClient is the client API for SustainabilityService service.
@@ -35,6 +38,9 @@ type SustainabilityServiceClient interface {
 	ListClaims(ctx context.Context, in *ListClaimsRequest, opts ...grpc.CallOption) (*ListClaimsResponse, error)
 	GetClaim(ctx context.Context, in *GetClaimRequest, opts ...grpc.CallOption) (*GetClaimResponse, error)
 	PreviewCeiling(ctx context.Context, in *PreviewCeilingRequest, opts ...grpc.CallOption) (*PreviewCeilingResponse, error)
+	ReviewQueue(ctx context.Context, in *ReviewQueueRequest, opts ...grpc.CallOption) (*ReviewQueueResponse, error)
+	ReviewClaim(ctx context.Context, in *ReviewClaimRequest, opts ...grpc.CallOption) (*ReviewClaimResponse, error)
+	DecideClaim(ctx context.Context, in *DecideClaimRequest, opts ...grpc.CallOption) (*DecideClaimResponse, error)
 }
 
 type sustainabilityServiceClient struct {
@@ -95,6 +101,36 @@ func (c *sustainabilityServiceClient) PreviewCeiling(ctx context.Context, in *Pr
 	return out, nil
 }
 
+func (c *sustainabilityServiceClient) ReviewQueue(ctx context.Context, in *ReviewQueueRequest, opts ...grpc.CallOption) (*ReviewQueueResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ReviewQueueResponse)
+	err := c.cc.Invoke(ctx, SustainabilityService_ReviewQueue_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *sustainabilityServiceClient) ReviewClaim(ctx context.Context, in *ReviewClaimRequest, opts ...grpc.CallOption) (*ReviewClaimResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ReviewClaimResponse)
+	err := c.cc.Invoke(ctx, SustainabilityService_ReviewClaim_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *sustainabilityServiceClient) DecideClaim(ctx context.Context, in *DecideClaimRequest, opts ...grpc.CallOption) (*DecideClaimResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(DecideClaimResponse)
+	err := c.cc.Invoke(ctx, SustainabilityService_DecideClaim_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // SustainabilityServiceServer is the server API for SustainabilityService service.
 // All implementations must embed UnimplementedSustainabilityServiceServer
 // for forward compatibility.
@@ -104,6 +140,9 @@ type SustainabilityServiceServer interface {
 	ListClaims(context.Context, *ListClaimsRequest) (*ListClaimsResponse, error)
 	GetClaim(context.Context, *GetClaimRequest) (*GetClaimResponse, error)
 	PreviewCeiling(context.Context, *PreviewCeilingRequest) (*PreviewCeilingResponse, error)
+	ReviewQueue(context.Context, *ReviewQueueRequest) (*ReviewQueueResponse, error)
+	ReviewClaim(context.Context, *ReviewClaimRequest) (*ReviewClaimResponse, error)
+	DecideClaim(context.Context, *DecideClaimRequest) (*DecideClaimResponse, error)
 	mustEmbedUnimplementedSustainabilityServiceServer()
 }
 
@@ -128,6 +167,15 @@ func (UnimplementedSustainabilityServiceServer) GetClaim(context.Context, *GetCl
 }
 func (UnimplementedSustainabilityServiceServer) PreviewCeiling(context.Context, *PreviewCeilingRequest) (*PreviewCeilingResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method PreviewCeiling not implemented")
+}
+func (UnimplementedSustainabilityServiceServer) ReviewQueue(context.Context, *ReviewQueueRequest) (*ReviewQueueResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ReviewQueue not implemented")
+}
+func (UnimplementedSustainabilityServiceServer) ReviewClaim(context.Context, *ReviewClaimRequest) (*ReviewClaimResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ReviewClaim not implemented")
+}
+func (UnimplementedSustainabilityServiceServer) DecideClaim(context.Context, *DecideClaimRequest) (*DecideClaimResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method DecideClaim not implemented")
 }
 func (UnimplementedSustainabilityServiceServer) mustEmbedUnimplementedSustainabilityServiceServer() {}
 func (UnimplementedSustainabilityServiceServer) testEmbeddedByValue()                               {}
@@ -240,6 +288,60 @@ func _SustainabilityService_PreviewCeiling_Handler(srv interface{}, ctx context.
 	return interceptor(ctx, in, info, handler)
 }
 
+func _SustainabilityService_ReviewQueue_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ReviewQueueRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SustainabilityServiceServer).ReviewQueue(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SustainabilityService_ReviewQueue_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SustainabilityServiceServer).ReviewQueue(ctx, req.(*ReviewQueueRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SustainabilityService_ReviewClaim_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ReviewClaimRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SustainabilityServiceServer).ReviewClaim(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SustainabilityService_ReviewClaim_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SustainabilityServiceServer).ReviewClaim(ctx, req.(*ReviewClaimRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SustainabilityService_DecideClaim_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DecideClaimRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SustainabilityServiceServer).DecideClaim(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SustainabilityService_DecideClaim_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SustainabilityServiceServer).DecideClaim(ctx, req.(*DecideClaimRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // SustainabilityService_ServiceDesc is the grpc.ServiceDesc for SustainabilityService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -266,6 +368,18 @@ var SustainabilityService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "PreviewCeiling",
 			Handler:    _SustainabilityService_PreviewCeiling_Handler,
+		},
+		{
+			MethodName: "ReviewQueue",
+			Handler:    _SustainabilityService_ReviewQueue_Handler,
+		},
+		{
+			MethodName: "ReviewClaim",
+			Handler:    _SustainabilityService_ReviewClaim_Handler,
+		},
+		{
+			MethodName: "DecideClaim",
+			Handler:    _SustainabilityService_DecideClaim_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

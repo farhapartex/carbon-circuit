@@ -511,3 +511,5 @@ func tenancy(actor Actor) database.TenantContext {
 		OrganizationID: actor.OrganizationID.String(),
 	}
 }
+
+func TenancyOf(actor Actor) database.TenantContext { return tenancy(actor) }

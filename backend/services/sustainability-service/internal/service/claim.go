@@ -373,7 +373,7 @@ func (s *ClaimService) persist(
 		ReferenceLookupKey:    computed.Factor.LookupKey,
 		Status:                domain.Submitted,
 		Priority:              PriorityFor(requested, computed.Result.Ceiling, facility.CeilingDiscountFactor),
-		RequiresDualApproval:  RequiresDualApproval(computed.Result.Ceiling),
+		RequiresDualApproval:  RequiresDualApproval(requested, computed.Result.Ceiling),
 		ExclusivityAttestedAt: now,
 		ExclusivityAttestedBy: actor.UserID,
 	}

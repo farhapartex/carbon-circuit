@@ -8,15 +8,22 @@ import (
 
 var dualApprovalThreshold = decimal.RequireFromString(domain.DualApprovalThreshold)
 
-func RequiresDualApproval(ceilingAmount decimal.Decimal) bool {
-	return ceilingAmount.GreaterThan(dualApprovalThreshold)
+func IssuableAmount(requested, ceilingAmount decimal.Decimal) decimal.Decimal {
+	if requested.LessThan(ceilingAmount) {
+		return requested
+	}
+	return ceilingAmount
+}
+
+func RequiresDualApproval(requested, ceilingAmount decimal.Decimal) bool {
+	return IssuableAmount(requested, ceilingAmount).GreaterThan(dualApprovalThreshold)
 }
 
 func PriorityFor(
 	requested, ceilingAmount decimal.Decimal,
 	discountFactor string,
 ) domain.QueuePriority {
-	if ceilingAmount.GreaterThan(dualApprovalThreshold) {
+	if RequiresDualApproval(requested, ceilingAmount) {
 		return domain.Critical
 	}
 	if requested.GreaterThan(ceilingAmount) {

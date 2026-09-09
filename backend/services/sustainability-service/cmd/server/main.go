@@ -11,6 +11,7 @@ import (
 	sustainabilityv1 "github.com/carboncircuit/backend/gen/carboncircuit/sustainability/v1"
 	sharedconfig "github.com/carboncircuit/backend/internal/config"
 	"github.com/carboncircuit/backend/internal/database"
+	"github.com/carboncircuit/backend/internal/events"
 	"github.com/carboncircuit/backend/internal/grpcx"
 	"github.com/carboncircuit/backend/internal/kafka"
 	"github.com/carboncircuit/backend/internal/logging"
@@ -140,6 +141,35 @@ func run() error {
 		evidence,
 		logger,
 	)
+
+	reviews := service.NewReviewPipeline(
+		store,
+		repository.NewClaimRepository(),
+		settings.ConsumerGroup,
+		settings.AIReviewStub,
+		logger,
+	)
+
+	consumer, err := kafka.NewConsumer(kafka.ConsumerOptions{
+		Brokers: settings.KafkaBrokers,
+		Group:   settings.ConsumerGroup,
+		Topics: []string{
+			events.TopicClaimAIReviewRequested,
+			events.TopicClaimAIReviewCompleted,
+		},
+		Logger:     logger,
+		Handle:     reviews.Apply,
+		DeadLetter: producer,
+	})
+	if err != nil {
+		return err
+	}
+	defer consumer.Close()
+
+	consumerCtx, stopConsumer := context.WithCancel(ctx)
+	defer stopConsumer()
+
+	go consumer.Run(consumerCtx)
 
 	sustainabilityServer := rpc.NewSustainabilityServer(store, claims, logger, revision)
 

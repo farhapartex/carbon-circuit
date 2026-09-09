@@ -105,3 +105,33 @@ type ReferenceFactor struct {
 }
 
 func (ReferenceFactor) TableName() string { return "reference_factors" }
+
+type AIAssessment string
+
+const (
+	NotAssessed                 AIAssessment = "not_assessed"
+	Corroborated                AIAssessment = "corroborated"
+	CorroboratedWithDiscrepancy AIAssessment = "corroborated_with_discrepancy"
+	Uncorroborated              AIAssessment = "uncorroborated"
+	Contradicted                AIAssessment = "contradicted"
+)
+
+const LowConfidenceThreshold = "0.60"
+
+type ClaimAIReview struct {
+	domain.Base
+	OrganizationID   uuid.UUID             `gorm:"column:organization_id;type:uuid"`
+	ClaimID          uuid.UUID             `gorm:"column:claim_id;type:uuid"`
+	Assessment       AIAssessment          `gorm:"column:assessment"`
+	Confidence       *string               `gorm:"column:confidence;type:numeric(4,3)"`
+	ExtractedFigures database.JSONDocument `gorm:"column:extracted_figures;type:jsonb"`
+	Flags            database.JSONDocument `gorm:"column:flags;type:jsonb"`
+	Citations        database.JSONDocument `gorm:"column:citations;type:jsonb"`
+	Narrative        string                `gorm:"column:narrative"`
+	AssessedBy       string                `gorm:"column:assessed_by"`
+	AssessedAt       time.Time             `gorm:"column:assessed_at"`
+}
+
+func (ClaimAIReview) TableName() string { return "claim_ai_reviews" }
+
+func (r ClaimAIReview) Assessed() bool { return r.Assessment != NotAssessed }

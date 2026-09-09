@@ -29,6 +29,8 @@ type Config struct {
 	AcquireTimeout  time.Duration
 
 	IdentityAddress string
+	ConsumerGroup   string
+	AIReviewStub    bool
 	EvidenceAddress string
 	CallTimeout     time.Duration
 
@@ -63,6 +65,8 @@ func Load() (Config, error) {
 		AcquireTimeout:  loader.Duration("DATABASE_ACQUIRE_TIMEOUT", 250*time.Millisecond),
 
 		IdentityAddress: loader.StringDefault("IDENTITY_ADDRESS", "identity-service:9091"),
+		ConsumerGroup:   loader.StringDefault("CONSUMER_GROUP", "sustainability"),
+		AIReviewStub:    loader.StringDefault("AI_REVIEW_STUB", "false") == "true",
 		EvidenceAddress: loader.StringDefault("EVIDENCE_ADDRESS", "evidence-service:9095"),
 		CallTimeout:     loader.Duration("CALL_TIMEOUT", 2*time.Second),
 

@@ -448,6 +448,28 @@ func (s *ClaimService) persist(
 		return ClaimView{}, false, err
 	}
 
+	documentIDs := make([]string, 0, len(attachments))
+	for _, attachment := range attachments {
+		documentIDs = append(documentIDs, attachment.DocumentID.String())
+	}
+
+	if _, err := outbox.Append(tx, outbox.Envelope{
+		AggregateType: claimAggregate,
+		AggregateID:   claimID,
+		EventType:     events.TopicClaimAIReviewRequested,
+		Payload: events.ClaimAIReviewRequested{
+			ClaimID:        claimID.String(),
+			OrganizationID: actor.OrganizationID.String(),
+			ActivityType:   string(submission.ActivityType),
+			VintageYear:    submission.VintageYear,
+			EvidenceIDs:    documentIDs,
+			EvidenceHashes: hashes,
+			RequestedAt:    now.Format(time.RFC3339),
+		},
+	}); err != nil {
+		return ClaimView{}, false, err
+	}
+
 	view := ClaimView{Claim: claim, Evidence: linked}
 
 	body, err := json.Marshal(view)

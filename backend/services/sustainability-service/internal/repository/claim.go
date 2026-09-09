@@ -7,6 +7,7 @@ import (
 
 	"github.com/google/uuid"
 	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 
 	"github.com/carboncircuit/backend/internal/database"
 	"github.com/carboncircuit/backend/services/sustainability-service/internal/domain"
@@ -19,6 +20,9 @@ type ClaimStore interface {
 	List(tx database.Tx, organizationID uuid.UUID, status domain.ClaimStatus, after string, limit int) ([]domain.Claim, error)
 	Evidence(tx database.Tx, organizationID, claimID uuid.UUID) ([]domain.ClaimEvidence, error)
 	ConsumedForVintage(tx database.Tx, organizationID, facilityID uuid.UUID, vintageYear int, activity domain.ActivityType) (string, error)
+	RecordAIReview(tx database.Tx, review *domain.ClaimAIReview) error
+	AIReview(tx database.Tx, organizationID, claimID uuid.UUID) (domain.ClaimAIReview, bool, error)
+	AdvanceStatus(tx database.Tx, organizationID, claimID uuid.UUID, from, to domain.ClaimStatus) (bool, error)
 }
 
 type ReferenceStore interface {
@@ -200,4 +204,65 @@ func (r *ReferenceRepository) Effective(
 	}
 
 	return factor, true, nil
+}
+
+func (r *ClaimRepository) RecordAIReview(tx database.Tx, review *domain.ClaimAIReview) error {
+	if err := tx.Bound(); err != nil {
+		return err
+	}
+
+	err := tx.Session().
+		Clauses(clause.OnConflict{
+			Columns:   []clause.Column{{Name: "claim_id"}},
+			DoNothing: true,
+		}).
+		Create(review).Error
+	if err != nil {
+		return fmt.Errorf("record ai review: %w", err)
+	}
+
+	return nil
+}
+
+func (r *ClaimRepository) AIReview(
+	tx database.Tx,
+	organizationID, claimID uuid.UUID,
+) (domain.ClaimAIReview, bool, error) {
+	if err := tx.Bound(); err != nil {
+		return domain.ClaimAIReview{}, false, err
+	}
+
+	var review domain.ClaimAIReview
+
+	err := tx.Session().
+		First(&review, "organization_id = ? AND claim_id = ?", organizationID, claimID).
+		Error
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		return domain.ClaimAIReview{}, false, nil
+	}
+	if err != nil {
+		return domain.ClaimAIReview{}, false, fmt.Errorf("find ai review: %w", err)
+	}
+
+	return review, true, nil
+}
+
+func (r *ClaimRepository) AdvanceStatus(
+	tx database.Tx,
+	organizationID, claimID uuid.UUID,
+	from, to domain.ClaimStatus,
+) (bool, error) {
+	if err := tx.Bound(); err != nil {
+		return false, err
+	}
+
+	outcome := tx.Session().
+		Model(&domain.Claim{}).
+		Where("id = ? AND organization_id = ? AND status = ?", claimID, organizationID, from).
+		Updates(map[string]any{"status": to, "updated_at": gorm.Expr("now()")})
+	if outcome.Error != nil {
+		return false, fmt.Errorf("advance claim status: %w", outcome.Error)
+	}
+
+	return outcome.RowsAffected == 1, nil
 }

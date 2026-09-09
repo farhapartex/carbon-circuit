@@ -327,6 +327,14 @@ func (s *VerifierService) record(
 
 	status, issued := outcomeOf(claim, settled)
 
+	if err := database.AdoptTenant(tx, database.TenantContext{
+		UserID:         verifier.UserID.String(),
+		OrganizationID: claim.OrganizationID.String(),
+		PlatformRole:   verifier.PlatformRole,
+	}); err != nil {
+		return ReviewView{}, err
+	}
+
 	if err := s.claims.Settle(tx, claim.ID, status, issued); err != nil {
 		return ReviewView{}, err
 	}

@@ -13,7 +13,12 @@ import (
 	"github.com/carboncircuit/backend/services/sustainability-service/internal/domain"
 )
 
-var ErrAlreadyDecided = errors.New("this verifier has already decided this claim")
+var (
+	ErrAlreadyDecided = errors.New("this verifier has already decided this claim")
+
+	ErrSettleTouchedNothing = errors.New(
+		"settling the claim changed no row, so the decision would have been recorded against a claim that never moved")
+)
 
 type ClaimStore interface {
 	Insert(tx database.Tx, claim *domain.Claim) error
@@ -376,12 +381,16 @@ func (r *ClaimRepository) Settle(
 		changes["issued_amount"] = *issued
 	}
 
-	err := tx.Session().
+	outcome := tx.Session().
 		Model(&domain.Claim{}).
 		Where("id = ?", claimID).
-		Updates(changes).Error
-	if err != nil {
-		return fmt.Errorf("settle claim: %w", err)
+		Updates(changes)
+	if outcome.Error != nil {
+		return fmt.Errorf("settle claim: %w", outcome.Error)
+	}
+
+	if outcome.RowsAffected != 1 {
+		return fmt.Errorf("%w: %s", ErrSettleTouchedNothing, claimID)
 	}
 
 	return nil

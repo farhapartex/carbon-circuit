@@ -74,10 +74,17 @@ func seedClaim(t *testing.T, handle *gorm.DB, organizationID uuid.UUID) uuid.UUI
 	}
 
 	t.Cleanup(func() {
-		database.WithinTenant(context.Background(), handle, scoped, func(tx database.Tx) error {
-			return tx.Session().Exec(
-				`DELETE FROM sustainability.claims WHERE id = ?`, claimID).Error
+		err := database.WithinTenant(context.Background(), handle, scoped, func(tx database.Tx) error {
+			tx.Session().Exec(`DELETE FROM sustainability.claim_decisions WHERE claim_id = ?`, claimID)
+			tx.Session().Exec(`DELETE FROM sustainability.claim_evidence WHERE claim_id = ?`, claimID)
+			tx.Session().Exec(`DELETE FROM sustainability.claim_ai_reviews WHERE claim_id = ?`, claimID)
+			tx.Session().Exec(`DELETE FROM sustainability.idempotency_records WHERE resource_id = ?`, claimID)
+			tx.Session().Exec(`DELETE FROM sustainability.outbox_events WHERE aggregate_id = ?`, claimID)
+			return tx.Session().Exec(`DELETE FROM sustainability.claims WHERE id = ?`, claimID).Error
 		})
+		if err != nil {
+			t.Errorf("clean claim %s: %v", claimID, err)
+		}
 	})
 
 	return claimID
@@ -198,3 +205,98 @@ func declareExclusion(t *testing.T, handle *gorm.DB, reviewer, organizationID uu
 }
 
 var _ = domain.HumanReview
+
+func TestApprovingSettlesTheClaimAndRecordsWhatIssued(t *testing.T) {
+	handle := store(t)
+
+	subject := uuid.New()
+	claimID := seedClaim(t, handle, subject)
+
+	verifiers := service.NewVerifierService(handle, repository.NewClaimRepository(), quiet())
+	who := service.Verifier{
+		UserID:       uuid.New(),
+		Name:         "Probe Verifier",
+		PlatformRole: service.VerifierRole,
+	}
+
+	view, err := verifiers.Decide(context.Background(), who, claimID, service.Decision{
+		Outcome:        domain.DecisionApproved,
+		ApprovedAmount: "100",
+		IdempotencyKey: uuid.NewString(),
+	})
+	if err != nil {
+		t.Fatalf("decide: %v", err)
+	}
+
+	if view.Claim.Status != domain.Approved {
+		t.Fatalf("the claim must settle as approved, got %s", view.Claim.Status)
+	}
+
+	stored := claimRow(t, handle, subject, claimID)
+
+	if stored.Status != domain.Approved {
+		t.Fatalf("the stored claim still reads %s, so the decision did not move it", stored.Status)
+	}
+	if stored.IssuedAmount == nil {
+		t.Fatal("an approved claim must record what issued")
+	}
+	if *stored.IssuedAmount != "100.000000" {
+		t.Fatalf("expected 100 issued, got %s", *stored.IssuedAmount)
+	}
+}
+
+func TestRejectingSettlesTheClaim(t *testing.T) {
+	handle := store(t)
+
+	subject := uuid.New()
+	claimID := seedClaim(t, handle, subject)
+
+	verifiers := service.NewVerifierService(handle, repository.NewClaimRepository(), quiet())
+	who := service.Verifier{
+		UserID:       uuid.New(),
+		Name:         "Probe Verifier",
+		PlatformRole: service.VerifierRole,
+	}
+
+	_, err := verifiers.Decide(context.Background(), who, claimID, service.Decision{
+		Outcome:        domain.DecisionRejected,
+		Reason:         substantiveReason,
+		IdempotencyKey: uuid.NewString(),
+	})
+	if err != nil {
+		t.Fatalf("decide: %v", err)
+	}
+
+	stored := claimRow(t, handle, subject, claimID)
+
+	if stored.Status != domain.Rejected {
+		t.Fatalf("the stored claim still reads %s, so the rejection did not move it", stored.Status)
+	}
+	if stored.IssuedAmount != nil {
+		t.Fatal("a rejected claim must issue nothing")
+	}
+}
+
+func claimRow(
+	t *testing.T,
+	handle *gorm.DB,
+	organizationID, claimID uuid.UUID,
+) domain.Claim {
+	t.Helper()
+
+	var claim domain.Claim
+
+	scoped := database.TenantContext{
+		UserID:         uuid.New().String(),
+		OrganizationID: organizationID.String(),
+	}
+
+	err := database.WithinTenant(context.Background(), handle, scoped, func(tx database.Tx) error {
+		return tx.Session().First(&claim, "id = ?", claimID).Error
+	})
+	if err != nil {
+		t.Fatalf("read claim back: %v", err)
+	}
+
+	return claim
+}

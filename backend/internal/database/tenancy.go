@@ -12,6 +12,7 @@ import (
 const (
 	userSetting         = "app.user_id"
 	organizationSetting = "app.organization_id"
+	platformRoleSetting = "app.platform_role"
 )
 
 var ErrNotInTransaction = errors.New("no transaction bound to this handle")
@@ -32,6 +33,7 @@ func (t Tx) Bound() error {
 type TenantContext struct {
 	UserID         string
 	OrganizationID string
+	PlatformRole   string
 }
 
 func WithinTenant(
@@ -55,6 +57,10 @@ func WithinTenant(
 	})
 }
 
+func SettingsFor(tenant TenantContext) (map[string]string, error) {
+	return tenant.settings()
+}
+
 func (t TenantContext) settings() (map[string]string, error) {
 	settings := make(map[string]string, 2)
 
@@ -69,6 +75,13 @@ func (t TenantContext) settings() (map[string]string, error) {
 			return nil, fmt.Errorf("%s must be a uuid: %w", setting, err)
 		}
 		settings[setting] = value
+	}
+
+	if t.PlatformRole != "" {
+		if t.UserID == "" {
+			return nil, fmt.Errorf("a platform role requires the caller's user id")
+		}
+		settings[platformRoleSetting] = t.PlatformRole
 	}
 
 	if len(settings) == 0 {

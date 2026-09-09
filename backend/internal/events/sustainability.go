@@ -46,3 +46,16 @@ type ClaimAIReviewCompleted struct {
 	AssessedBy       string            `json:"assessed_by"`
 	AssessedAt       string            `json:"assessed_at"`
 }
+
+type ClaimDecisionRecorded struct {
+	ClaimID        string `json:"claim_id"`
+	OrganizationID string `json:"organization_id"`
+	FacilityID     string `json:"facility_id"`
+	ActivityType   string `json:"activity_type"`
+	VintageYear    int    `json:"vintage_year"`
+	Outcome        string `json:"outcome"`
+	Status         string `json:"status"`
+	IssuedAmount   string `json:"issued_amount,omitempty"`
+	VerifierUserID string `json:"verifier_user_id"`
+	DecidedAt      string `json:"decided_at"`
+}

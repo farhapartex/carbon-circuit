@@ -154,9 +154,41 @@ export function CalculatedCeilingPreview({
               </dd>
             </div>
           </dl>
+
+          {Number(preview.consumed) > 0 ? (
+            <dl className="mt-4 space-y-2 border-t border-neutral-200 pt-4">
+              <div className="flex flex-wrap items-baseline justify-between gap-4">
+                <dt className="text-caption text-neutral-600">
+                  Full year for this vintage
+                </dt>
+                <dd className="font-medium tabular-nums">
+                  {preview.vintageCeiling}
+                </dd>
+              </div>
+              <div className="flex flex-wrap items-baseline justify-between gap-4">
+                <dt className="text-caption text-neutral-600">
+                  Already claimed or issued
+                </dt>
+                <dd className="font-medium text-warning-700 tabular-nums">
+                  −{preview.consumed}
+                </dd>
+              </div>
+              <div className="flex flex-wrap items-baseline justify-between gap-4">
+                <dt className="text-caption text-neutral-600">
+                  Left for this vintage
+                </dt>
+                <dd className="font-medium tabular-nums">
+                  {preview.remaining}
+                </dd>
+              </div>
+            </dl>
+          ) : null}
           <p className="mt-3 text-caption text-pretty text-neutral-600">
             The amount you request cannot raise this figure. Nothing can be
             issued above it, whatever a verifier approves.
+            {Number(preview.consumed) > 0
+              ? " Earlier claims for this facility and vintage draw from the same annual capacity."
+              : ""}
           </p>
         </>
       ) : null}

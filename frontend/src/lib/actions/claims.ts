@@ -28,6 +28,8 @@ const refusalMessages: Record<string, string> = {
   EVIDENCE_UNUSABLE:
     "One of the attached documents did not pass scanning. Remove it and attach a replacement.",
   ATTESTATION_REQUIRED: "The exclusivity attestation is required.",
+  VINTAGE_CAPACITY_EXHAUSTED:
+    "Earlier claims for this facility and vintage have already used the capacity you are asking for. Lower the requested amount, or wait for one of them to be decided.",
   CAPACITY_UNKNOWN:
     "This facility has no recorded operating capacity, so its credit ceiling cannot be computed.",
   PERIOD_OUTSIDE_VINTAGE:

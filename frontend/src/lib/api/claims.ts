@@ -108,6 +108,10 @@ export type ClaimPage = {
 
 export type CeilingPreview = {
   ceiling: string;
+  vintageCeiling: string;
+  consumed: string;
+  remaining: string;
+  periodCeiling: string;
   capacityBasis: string;
   capacitySource: string;
   discountFactor: string;
@@ -229,6 +233,10 @@ export const previewCeiling = async (
 ): Promise<CeilingPreview> => {
   const preview = await gatewayPost<{
     ceiling: string;
+    vintage_ceiling: string;
+    consumed: string;
+    remaining: string;
+    period_ceiling: string;
     capacity_basis: string;
     capacity_source: string;
     discount_factor: string;
@@ -251,6 +259,10 @@ export const previewCeiling = async (
 
   return {
     ceiling: preview.ceiling,
+    vintageCeiling: preview.vintage_ceiling,
+    consumed: preview.consumed,
+    remaining: preview.remaining,
+    periodCeiling: preview.period_ceiling,
     capacityBasis: preview.capacity_basis,
     capacitySource: preview.capacity_source,
     discountFactor: preview.discount_factor,

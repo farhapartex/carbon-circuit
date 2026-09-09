@@ -135,3 +135,37 @@ type ClaimAIReview struct {
 func (ClaimAIReview) TableName() string { return "claim_ai_reviews" }
 
 func (r ClaimAIReview) Assessed() bool { return r.Assessment != NotAssessed }
+
+type DecisionOutcome string
+
+const (
+	DecisionApproved                 DecisionOutcome = "approved"
+	DecisionRejected                 DecisionOutcome = "rejected"
+	DecisionMoreInformationRequested DecisionOutcome = "more_information_requested"
+)
+
+const MinimumReasonLength = 40
+
+type ClaimDecision struct {
+	domain.Base
+	OrganizationID uuid.UUID       `gorm:"column:organization_id;type:uuid"`
+	ClaimID        uuid.UUID       `gorm:"column:claim_id;type:uuid"`
+	VerifierUserID uuid.UUID       `gorm:"column:verifier_user_id;type:uuid"`
+	VerifierName   string          `gorm:"column:verifier_name"`
+	Outcome        DecisionOutcome `gorm:"column:outcome"`
+	ApprovedAmount *string         `gorm:"column:approved_amount;type:numeric(28,6)"`
+	Reason         string          `gorm:"column:reason"`
+	DecidedAt      time.Time       `gorm:"column:decided_at"`
+}
+
+func (ClaimDecision) TableName() string { return "claim_decisions" }
+
+type VerifierExclusion struct {
+	domain.Base
+	VerifierUserID uuid.UUID `gorm:"column:verifier_user_id;type:uuid"`
+	OrganizationID uuid.UUID `gorm:"column:organization_id;type:uuid"`
+	DeclaredBy     uuid.UUID `gorm:"column:declared_by;type:uuid"`
+	Reason         string    `gorm:"column:reason"`
+}
+
+func (VerifierExclusion) TableName() string { return "verifier_exclusions" }

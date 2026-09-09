@@ -13,6 +13,8 @@ import (
 	"github.com/carboncircuit/backend/services/sustainability-service/internal/domain"
 )
 
+var ErrAlreadyDecided = errors.New("this verifier has already decided this claim")
+
 type ClaimStore interface {
 	Insert(tx database.Tx, claim *domain.Claim) error
 	AttachEvidence(tx database.Tx, attachments []domain.ClaimEvidence) error
@@ -23,6 +25,11 @@ type ClaimStore interface {
 	RecordAIReview(tx database.Tx, review *domain.ClaimAIReview) error
 	AIReview(tx database.Tx, organizationID, claimID uuid.UUID) (domain.ClaimAIReview, bool, error)
 	AdvanceStatus(tx database.Tx, organizationID, claimID uuid.UUID, from, to domain.ClaimStatus) (bool, error)
+	Queue(tx database.Tx, after string, limit int) ([]domain.Claim, error)
+	FindForReview(tx database.Tx, claimID uuid.UUID) (domain.Claim, bool, error)
+	Decisions(tx database.Tx, claimID uuid.UUID) ([]domain.ClaimDecision, error)
+	RecordDecision(tx database.Tx, decision *domain.ClaimDecision) error
+	Settle(tx database.Tx, claimID uuid.UUID, status domain.ClaimStatus, issued *string) error
 }
 
 type ReferenceStore interface {
@@ -265,4 +272,117 @@ func (r *ClaimRepository) AdvanceStatus(
 	}
 
 	return outcome.RowsAffected == 1, nil
+}
+
+func (r *ClaimRepository) Queue(
+	tx database.Tx,
+	after string,
+	limit int,
+) ([]domain.Claim, error) {
+	if err := tx.Bound(); err != nil {
+		return nil, err
+	}
+
+	query := tx.Session().
+		Where("status IN ?", []domain.ClaimStatus{domain.HumanReview, domain.AIReview}).
+		Order("priority DESC, created_at ASC, id ASC").
+		Limit(limit)
+
+	if after != "" {
+		query = query.Where("id > ?", after)
+	}
+
+	var claims []domain.Claim
+	if err := query.Find(&claims).Error; err != nil {
+		return nil, fmt.Errorf("list review queue: %w", err)
+	}
+
+	return claims, nil
+}
+
+func (r *ClaimRepository) FindForReview(
+	tx database.Tx,
+	claimID uuid.UUID,
+) (domain.Claim, bool, error) {
+	if err := tx.Bound(); err != nil {
+		return domain.Claim{}, false, err
+	}
+
+	var claim domain.Claim
+
+	err := tx.Session().First(&claim, "id = ?", claimID).Error
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		return domain.Claim{}, false, nil
+	}
+	if err != nil {
+		return domain.Claim{}, false, fmt.Errorf("find claim for review: %w", err)
+	}
+
+	return claim, true, nil
+}
+
+func (r *ClaimRepository) Decisions(
+	tx database.Tx,
+	claimID uuid.UUID,
+) ([]domain.ClaimDecision, error) {
+	if err := tx.Bound(); err != nil {
+		return nil, err
+	}
+
+	var decisions []domain.ClaimDecision
+
+	err := tx.Session().
+		Where("claim_id = ?", claimID).
+		Order("decided_at").
+		Find(&decisions).Error
+	if err != nil {
+		return nil, fmt.Errorf("load claim decisions: %w", err)
+	}
+
+	return decisions, nil
+}
+
+func (r *ClaimRepository) RecordDecision(
+	tx database.Tx,
+	decision *domain.ClaimDecision,
+) error {
+	if err := tx.Bound(); err != nil {
+		return err
+	}
+
+	err := tx.Session().Create(decision).Error
+	if errors.Is(err, gorm.ErrDuplicatedKey) {
+		return ErrAlreadyDecided
+	}
+	if err != nil {
+		return fmt.Errorf("record decision: %w", err)
+	}
+
+	return nil
+}
+
+func (r *ClaimRepository) Settle(
+	tx database.Tx,
+	claimID uuid.UUID,
+	status domain.ClaimStatus,
+	issued *string,
+) error {
+	if err := tx.Bound(); err != nil {
+		return err
+	}
+
+	changes := map[string]any{"status": status, "updated_at": gorm.Expr("now()")}
+	if issued != nil {
+		changes["issued_amount"] = *issued
+	}
+
+	err := tx.Session().
+		Model(&domain.Claim{}).
+		Where("id = ?", claimID).
+		Updates(changes).Error
+	if err != nil {
+		return fmt.Errorf("settle claim: %w", err)
+	}
+
+	return nil
 }

@@ -3,11 +3,7 @@
 import type { ClaimDraftValues } from "@/components/features/claims/claimDraft";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import type { FacilityRecord } from "@/lib/api/facilities";
-import {
-  activityTypeLabels,
-  gridRegionLabels,
-  recycledMaterialLabels,
-} from "@/lib/labels";
+import { activityTypeLabels, recycledMaterialLabels } from "@/lib/labels";
 
 const decimalFormat = new Intl.NumberFormat("en-US", {
   maximumFractionDigits: 6,
@@ -26,10 +22,6 @@ const figureRows = (values: ClaimDraftValues): [string, string][] => {
       [
         "Verified renewable energy",
         `${decimalFormat.format(Number(values.verifiedKwh ?? 0))} kWh`,
-      ],
-      [
-        "Grid region",
-        values.gridRegion ? gridRegionLabels[values.gridRegion] : "Not set",
       ],
     ];
   }

@@ -63,10 +63,7 @@ const declaredFiguresOf = (draft: ClaimDraftValues): Record<string, string> => {
     };
   }
 
-  return {
-    verified_kwh: draft.verifiedKwh ?? "",
-    grid_region: draft.gridRegion ?? "",
-  };
+  return { verified_kwh: draft.verifiedKwh ?? "" };
 };
 
 export function ClaimWizard({
@@ -126,7 +123,6 @@ export function ClaimWizard({
       ),
       periodEnd: String(draft?.values.periodEnd ?? today()),
       verifiedKwh: "",
-      gridRegion: undefined,
       tonneKilometres: "",
       actualFactorKgPerTonneKm: "",
       material: undefined,

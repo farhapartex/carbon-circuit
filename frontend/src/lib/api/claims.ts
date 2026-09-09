@@ -37,6 +37,7 @@ type ApiClaimEvidence = {
   media_type: string;
   content_hash: string;
   page_count: number | null;
+  byte_size: number;
 };
 
 type ApiClaim = {
@@ -54,6 +55,8 @@ type ApiClaim = {
   capacity_source: string;
   discount_factor: string;
   reference_factor_value: string;
+  reference_factor_id: string;
+  reference_lookup_key: string;
   status: ApiClaimStatus;
   priority: ClaimPriority;
   requires_dual_approval: boolean;
@@ -69,6 +72,7 @@ export type ClaimEvidenceRecord = {
   mediaType: string;
   contentHash: string;
   pageCount: number | null;
+  byteSize: number;
 };
 
 export type ClaimRecord = {
@@ -86,6 +90,8 @@ export type ClaimRecord = {
   capacitySource: string;
   discountFactor: string;
   referenceFactorValue: string;
+  referenceFactorId: string;
+  referenceLookupKey: string;
   status: ClaimStatus;
   priority: ClaimPriority;
   requiresDualApproval: boolean;
@@ -137,6 +143,7 @@ const toEvidence = (attachment: ApiClaimEvidence): ClaimEvidenceRecord => ({
   mediaType: attachment.media_type,
   contentHash: attachment.content_hash,
   pageCount: attachment.page_count,
+  byteSize: attachment.byte_size,
 });
 
 const toClaim = (claim: ApiClaim): ClaimRecord => ({
@@ -154,6 +161,8 @@ const toClaim = (claim: ApiClaim): ClaimRecord => ({
   capacitySource: claim.capacity_source,
   discountFactor: claim.discount_factor,
   referenceFactorValue: claim.reference_factor_value,
+  referenceFactorId: claim.reference_factor_id,
+  referenceLookupKey: claim.reference_lookup_key,
   status: claimStatusNames[claim.status],
   priority: claim.priority,
   requiresDualApproval: claim.requires_dual_approval,

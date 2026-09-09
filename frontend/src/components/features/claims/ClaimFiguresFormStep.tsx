@@ -19,10 +19,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { gridRegionLabels, recycledMaterialLabels } from "@/lib/labels";
-import type { ActivityType, GridRegion, RecycledMaterial } from "@/lib/types";
+import { recycledMaterialLabels } from "@/lib/labels";
+import type { ActivityType, RecycledMaterial } from "@/lib/types";
 
-const gridRegions = Object.keys(gridRegionLabels) as GridRegion[];
 const materials = Object.keys(recycledMaterialLabels) as RecycledMaterial[];
 
 type ClaimFiguresFormStepProps = {
@@ -62,38 +61,6 @@ export function ClaimFiguresFormStep({
                 </FormControl>
                 <FormDescription>
                   Only energy you can evidence as renewable from your supply.
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={control}
-            name="gridRegion"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Grid region</FormLabel>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value ?? ""}
-                >
-                  <FormControl>
-                    <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Select the grid region" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    {gridRegions.map((region) => (
-                      <SelectItem key={region} value={region}>
-                        {gridRegionLabels[region]}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <FormDescription>
-                  Sets the emission factor applied, so it must match the grid
-                  the facility actually draws from.
                 </FormDescription>
                 <FormMessage />
               </FormItem>

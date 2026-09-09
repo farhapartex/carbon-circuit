@@ -1,16 +1,11 @@
 import { z } from "zod";
-import { gridRegionLabels, recycledMaterialLabels } from "@/lib/labels";
-import type { ActivityType, GridRegion, RecycledMaterial } from "@/lib/types";
+import { recycledMaterialLabels } from "@/lib/labels";
+import type { ActivityType, RecycledMaterial } from "@/lib/types";
 
 const ACTIVITY_TYPES: [ActivityType, ...ActivityType[]] = [
   "renewable_energy",
   "reduced_emission_logistics",
   "responsible_sourcing",
-];
-
-const gridRegions = Object.keys(gridRegionLabels) as [
-  GridRegion,
-  ...GridRegion[],
 ];
 
 const materials = Object.keys(recycledMaterialLabels) as [
@@ -45,7 +40,6 @@ export const claimDraftSchema = z
     periodStart: z.string().min(1, "When did the claim period start?"),
     periodEnd: z.string().min(1, "When did the claim period end?"),
     verifiedKwh: z.string().optional(),
-    gridRegion: z.enum(gridRegions).optional(),
     tonneKilometres: z.string().optional(),
     actualFactorKgPerTonneKm: z.string().optional(),
     material: z.enum(materials).optional(),
@@ -62,11 +56,10 @@ export const claimDraftSchema = z
   })
   .refine(
     (values) =>
-      values.activityType !== "renewable_energy" ||
-      (Boolean(values.verifiedKwh) && Boolean(values.gridRegion)),
+      values.activityType !== "renewable_energy" || Boolean(values.verifiedKwh),
     {
       path: ["verifiedKwh"],
-      message: "Renewable energy claims need verified kWh and a grid region.",
+      message: "Renewable energy claims need a verified kWh figure.",
     },
   )
   .refine(
@@ -120,7 +113,6 @@ export const claimStepFields: Record<ClaimStep, (keyof ClaimDraftValues)[]> = {
   ],
   figures: [
     "verifiedKwh",
-    "gridRegion",
     "tonneKilometres",
     "actualFactorKgPerTonneKm",
     "material",

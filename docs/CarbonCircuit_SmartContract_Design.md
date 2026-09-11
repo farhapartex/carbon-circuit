@@ -65,6 +65,19 @@ tokenId = uint256(keccak256(abi.encode(CREDIT_CLASS_DOMAIN, facilityId, vintageY
 | `vintageYear` | `uint16` | Calendar year the reduction occurred |
 | `activityType` | `uint8` | `1` renewable energy, `2` reduced-emission logistics, `3` responsible sourcing |
 
+The two values the derivation depends on are fixed here, because the backend computes token IDs before the contracts exist and a disagreement would silently mis-key every balance already issued:
+
+```
+CREDIT_CLASS_DOMAIN = keccak256("carboncircuit.credit.class.v1")
+                    = 0x072975473b061d90de4a27b1c8ed6bcccbeb54b5f8cb03c76cca963aa9287ead
+
+facilityId          = the facility's 16-byte UUID, right-aligned in bytes32
+                    = bytes32(uint256(uint128(uuid)))
+                    = 16 zero bytes, then the UUID in its canonical byte order
+```
+
+`abi.encode` yields four 32-byte words in the order listed above, each value right-aligned in its word. `CreditClassLib` must implement exactly this, and `internal/creditclass` in the backend implements the same derivation so an ID computed off-chain before a mint matches the one the contract computes at mint time. A change to either value is a breaking change to every issued credit, not a refactor.
+
 Because the ID is a hash, the contract cannot recover the components from it. It therefore stores the decomposition once, on first mint of a class, in `mapping(uint256 => CreditClass) creditClasses` — so any on-chain or off-chain reader can resolve a token ID back to its facility, vintage, and activity type without consulting off-chain data. `CreditClassLib` provides both directions, and every caller derives IDs through it so that no two call sites can construct the same class differently.
 
 Credit amounts use **18 decimals**, where `1e18` represents one tCO2e. ERC-1155 has no decimals concept of its own, so this is a stated convention enforced consistently in the contracts, the backend, and the frontend rather than a property the standard provides.

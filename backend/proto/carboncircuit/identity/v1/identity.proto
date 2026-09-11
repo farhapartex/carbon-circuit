@@ -20,6 +20,8 @@ service IdentityService {
   rpc CreateFacility(CreateFacilityRequest) returns (CreateFacilityResponse);
   rpc ListFacilities(ListFacilitiesRequest) returns (ListFacilitiesResponse);
   rpc GetFacility(GetFacilityRequest) returns (GetFacilityResponse);
+  rpc ResolveOrganization(ResolveOrganizationRequest) returns (ResolveOrganizationResponse);
+  rpc ResolveFacility(ResolveFacilityRequest) returns (ResolveFacilityResponse);
   rpc RecordSession(RecordSessionRequest) returns (RecordSessionResponse);
   rpc ListSessions(ListSessionsRequest) returns (ListSessionsResponse);
   rpc RevokeSession(RevokeSessionRequest) returns (RevokeSessionResponse);
@@ -144,6 +146,28 @@ message CreateOrganizationResponse {
   SessionOrganization organization = 1;
   OrganizationRole role = 2;
   VerificationOutcome outcome = 3;
+}
+
+message ResolveOrganizationRequest {
+  string organization_id = 1;
+}
+
+message ResolveOrganizationResponse {
+  string id = 1;
+  string name = 2;
+  string country_of_incorporation = 3;
+  string treasury_address = 4;
+}
+
+message ResolveFacilityRequest {
+  string facility_id = 1;
+}
+
+message ResolveFacilityResponse {
+  string id = 1;
+  string organization_id = 2;
+  string name = 3;
+  string country_code = 4;
 }
 
 message GetOrganizationRequest {}

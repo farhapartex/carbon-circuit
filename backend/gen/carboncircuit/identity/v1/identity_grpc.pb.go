@@ -19,28 +19,30 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	IdentityService_Ping_FullMethodName               = "/carboncircuit.identity.v1.IdentityService/Ping"
-	IdentityService_ResolveSession_FullMethodName     = "/carboncircuit.identity.v1.IdentityService/ResolveSession"
-	IdentityService_CreateOrganization_FullMethodName = "/carboncircuit.identity.v1.IdentityService/CreateOrganization"
-	IdentityService_GetOrganization_FullMethodName    = "/carboncircuit.identity.v1.IdentityService/GetOrganization"
-	IdentityService_IssueTreasuryNonce_FullMethodName = "/carboncircuit.identity.v1.IdentityService/IssueTreasuryNonce"
-	IdentityService_DesignateTreasury_FullMethodName  = "/carboncircuit.identity.v1.IdentityService/DesignateTreasury"
-	IdentityService_ListMembers_FullMethodName        = "/carboncircuit.identity.v1.IdentityService/ListMembers"
-	IdentityService_InviteMember_FullMethodName       = "/carboncircuit.identity.v1.IdentityService/InviteMember"
-	IdentityService_RevokeInvitation_FullMethodName   = "/carboncircuit.identity.v1.IdentityService/RevokeInvitation"
-	IdentityService_ChangeMemberRole_FullMethodName   = "/carboncircuit.identity.v1.IdentityService/ChangeMemberRole"
-	IdentityService_RevokeMember_FullMethodName       = "/carboncircuit.identity.v1.IdentityService/RevokeMember"
-	IdentityService_AcceptInvitation_FullMethodName   = "/carboncircuit.identity.v1.IdentityService/AcceptInvitation"
-	IdentityService_CreateFacility_FullMethodName     = "/carboncircuit.identity.v1.IdentityService/CreateFacility"
-	IdentityService_ListFacilities_FullMethodName     = "/carboncircuit.identity.v1.IdentityService/ListFacilities"
-	IdentityService_GetFacility_FullMethodName        = "/carboncircuit.identity.v1.IdentityService/GetFacility"
-	IdentityService_RecordSession_FullMethodName      = "/carboncircuit.identity.v1.IdentityService/RecordSession"
-	IdentityService_ListSessions_FullMethodName       = "/carboncircuit.identity.v1.IdentityService/ListSessions"
-	IdentityService_RevokeSession_FullMethodName      = "/carboncircuit.identity.v1.IdentityService/RevokeSession"
-	IdentityService_CreateAPIKey_FullMethodName       = "/carboncircuit.identity.v1.IdentityService/CreateAPIKey"
-	IdentityService_ListAPIKeys_FullMethodName        = "/carboncircuit.identity.v1.IdentityService/ListAPIKeys"
-	IdentityService_RevokeAPIKey_FullMethodName       = "/carboncircuit.identity.v1.IdentityService/RevokeAPIKey"
-	IdentityService_ValidateAPIKey_FullMethodName     = "/carboncircuit.identity.v1.IdentityService/ValidateAPIKey"
+	IdentityService_Ping_FullMethodName                = "/carboncircuit.identity.v1.IdentityService/Ping"
+	IdentityService_ResolveSession_FullMethodName      = "/carboncircuit.identity.v1.IdentityService/ResolveSession"
+	IdentityService_CreateOrganization_FullMethodName  = "/carboncircuit.identity.v1.IdentityService/CreateOrganization"
+	IdentityService_GetOrganization_FullMethodName     = "/carboncircuit.identity.v1.IdentityService/GetOrganization"
+	IdentityService_IssueTreasuryNonce_FullMethodName  = "/carboncircuit.identity.v1.IdentityService/IssueTreasuryNonce"
+	IdentityService_DesignateTreasury_FullMethodName   = "/carboncircuit.identity.v1.IdentityService/DesignateTreasury"
+	IdentityService_ListMembers_FullMethodName         = "/carboncircuit.identity.v1.IdentityService/ListMembers"
+	IdentityService_InviteMember_FullMethodName        = "/carboncircuit.identity.v1.IdentityService/InviteMember"
+	IdentityService_RevokeInvitation_FullMethodName    = "/carboncircuit.identity.v1.IdentityService/RevokeInvitation"
+	IdentityService_ChangeMemberRole_FullMethodName    = "/carboncircuit.identity.v1.IdentityService/ChangeMemberRole"
+	IdentityService_RevokeMember_FullMethodName        = "/carboncircuit.identity.v1.IdentityService/RevokeMember"
+	IdentityService_AcceptInvitation_FullMethodName    = "/carboncircuit.identity.v1.IdentityService/AcceptInvitation"
+	IdentityService_CreateFacility_FullMethodName      = "/carboncircuit.identity.v1.IdentityService/CreateFacility"
+	IdentityService_ListFacilities_FullMethodName      = "/carboncircuit.identity.v1.IdentityService/ListFacilities"
+	IdentityService_GetFacility_FullMethodName         = "/carboncircuit.identity.v1.IdentityService/GetFacility"
+	IdentityService_ResolveOrganization_FullMethodName = "/carboncircuit.identity.v1.IdentityService/ResolveOrganization"
+	IdentityService_ResolveFacility_FullMethodName     = "/carboncircuit.identity.v1.IdentityService/ResolveFacility"
+	IdentityService_RecordSession_FullMethodName       = "/carboncircuit.identity.v1.IdentityService/RecordSession"
+	IdentityService_ListSessions_FullMethodName        = "/carboncircuit.identity.v1.IdentityService/ListSessions"
+	IdentityService_RevokeSession_FullMethodName       = "/carboncircuit.identity.v1.IdentityService/RevokeSession"
+	IdentityService_CreateAPIKey_FullMethodName        = "/carboncircuit.identity.v1.IdentityService/CreateAPIKey"
+	IdentityService_ListAPIKeys_FullMethodName         = "/carboncircuit.identity.v1.IdentityService/ListAPIKeys"
+	IdentityService_RevokeAPIKey_FullMethodName        = "/carboncircuit.identity.v1.IdentityService/RevokeAPIKey"
+	IdentityService_ValidateAPIKey_FullMethodName      = "/carboncircuit.identity.v1.IdentityService/ValidateAPIKey"
 )
 
 // IdentityServiceClient is the client API for IdentityService service.
@@ -62,6 +64,8 @@ type IdentityServiceClient interface {
 	CreateFacility(ctx context.Context, in *CreateFacilityRequest, opts ...grpc.CallOption) (*CreateFacilityResponse, error)
 	ListFacilities(ctx context.Context, in *ListFacilitiesRequest, opts ...grpc.CallOption) (*ListFacilitiesResponse, error)
 	GetFacility(ctx context.Context, in *GetFacilityRequest, opts ...grpc.CallOption) (*GetFacilityResponse, error)
+	ResolveOrganization(ctx context.Context, in *ResolveOrganizationRequest, opts ...grpc.CallOption) (*ResolveOrganizationResponse, error)
+	ResolveFacility(ctx context.Context, in *ResolveFacilityRequest, opts ...grpc.CallOption) (*ResolveFacilityResponse, error)
 	RecordSession(ctx context.Context, in *RecordSessionRequest, opts ...grpc.CallOption) (*RecordSessionResponse, error)
 	ListSessions(ctx context.Context, in *ListSessionsRequest, opts ...grpc.CallOption) (*ListSessionsResponse, error)
 	RevokeSession(ctx context.Context, in *RevokeSessionRequest, opts ...grpc.CallOption) (*RevokeSessionResponse, error)
@@ -229,6 +233,26 @@ func (c *identityServiceClient) GetFacility(ctx context.Context, in *GetFacility
 	return out, nil
 }
 
+func (c *identityServiceClient) ResolveOrganization(ctx context.Context, in *ResolveOrganizationRequest, opts ...grpc.CallOption) (*ResolveOrganizationResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ResolveOrganizationResponse)
+	err := c.cc.Invoke(ctx, IdentityService_ResolveOrganization_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *identityServiceClient) ResolveFacility(ctx context.Context, in *ResolveFacilityRequest, opts ...grpc.CallOption) (*ResolveFacilityResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ResolveFacilityResponse)
+	err := c.cc.Invoke(ctx, IdentityService_ResolveFacility_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *identityServiceClient) RecordSession(ctx context.Context, in *RecordSessionRequest, opts ...grpc.CallOption) (*RecordSessionResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(RecordSessionResponse)
@@ -318,6 +342,8 @@ type IdentityServiceServer interface {
 	CreateFacility(context.Context, *CreateFacilityRequest) (*CreateFacilityResponse, error)
 	ListFacilities(context.Context, *ListFacilitiesRequest) (*ListFacilitiesResponse, error)
 	GetFacility(context.Context, *GetFacilityRequest) (*GetFacilityResponse, error)
+	ResolveOrganization(context.Context, *ResolveOrganizationRequest) (*ResolveOrganizationResponse, error)
+	ResolveFacility(context.Context, *ResolveFacilityRequest) (*ResolveFacilityResponse, error)
 	RecordSession(context.Context, *RecordSessionRequest) (*RecordSessionResponse, error)
 	ListSessions(context.Context, *ListSessionsRequest) (*ListSessionsResponse, error)
 	RevokeSession(context.Context, *RevokeSessionRequest) (*RevokeSessionResponse, error)
@@ -379,6 +405,12 @@ func (UnimplementedIdentityServiceServer) ListFacilities(context.Context, *ListF
 }
 func (UnimplementedIdentityServiceServer) GetFacility(context.Context, *GetFacilityRequest) (*GetFacilityResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method GetFacility not implemented")
+}
+func (UnimplementedIdentityServiceServer) ResolveOrganization(context.Context, *ResolveOrganizationRequest) (*ResolveOrganizationResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ResolveOrganization not implemented")
+}
+func (UnimplementedIdentityServiceServer) ResolveFacility(context.Context, *ResolveFacilityRequest) (*ResolveFacilityResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ResolveFacility not implemented")
 }
 func (UnimplementedIdentityServiceServer) RecordSession(context.Context, *RecordSessionRequest) (*RecordSessionResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method RecordSession not implemented")
@@ -692,6 +724,42 @@ func _IdentityService_GetFacility_Handler(srv interface{}, ctx context.Context, 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _IdentityService_ResolveOrganization_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ResolveOrganizationRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(IdentityServiceServer).ResolveOrganization(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: IdentityService_ResolveOrganization_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IdentityServiceServer).ResolveOrganization(ctx, req.(*ResolveOrganizationRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _IdentityService_ResolveFacility_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ResolveFacilityRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(IdentityServiceServer).ResolveFacility(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: IdentityService_ResolveFacility_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IdentityServiceServer).ResolveFacility(ctx, req.(*ResolveFacilityRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _IdentityService_RecordSession_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(RecordSessionRequest)
 	if err := dec(in); err != nil {
@@ -884,6 +952,14 @@ var IdentityService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetFacility",
 			Handler:    _IdentityService_GetFacility_Handler,
+		},
+		{
+			MethodName: "ResolveOrganization",
+			Handler:    _IdentityService_ResolveOrganization_Handler,
+		},
+		{
+			MethodName: "ResolveFacility",
+			Handler:    _IdentityService_ResolveFacility_Handler,
 		},
 		{
 			MethodName: "RecordSession",

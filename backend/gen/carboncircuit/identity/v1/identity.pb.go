@@ -1330,6 +1330,230 @@ func (x *CreateOrganizationResponse) GetOutcome() *VerificationOutcome {
 	return nil
 }
 
+type ResolveOrganizationRequest struct {
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	OrganizationId string                 `protobuf:"bytes,1,opt,name=organization_id,json=organizationId,proto3" json:"organization_id,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
+}
+
+func (x *ResolveOrganizationRequest) Reset() {
+	*x = ResolveOrganizationRequest{}
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[9]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ResolveOrganizationRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ResolveOrganizationRequest) ProtoMessage() {}
+
+func (x *ResolveOrganizationRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[9]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ResolveOrganizationRequest.ProtoReflect.Descriptor instead.
+func (*ResolveOrganizationRequest) Descriptor() ([]byte, []int) {
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{9}
+}
+
+func (x *ResolveOrganizationRequest) GetOrganizationId() string {
+	if x != nil {
+		return x.OrganizationId
+	}
+	return ""
+}
+
+type ResolveOrganizationResponse struct {
+	state                  protoimpl.MessageState `protogen:"open.v1"`
+	Id                     string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Name                   string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	CountryOfIncorporation string                 `protobuf:"bytes,3,opt,name=country_of_incorporation,json=countryOfIncorporation,proto3" json:"country_of_incorporation,omitempty"`
+	TreasuryAddress        string                 `protobuf:"bytes,4,opt,name=treasury_address,json=treasuryAddress,proto3" json:"treasury_address,omitempty"`
+	unknownFields          protoimpl.UnknownFields
+	sizeCache              protoimpl.SizeCache
+}
+
+func (x *ResolveOrganizationResponse) Reset() {
+	*x = ResolveOrganizationResponse{}
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[10]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ResolveOrganizationResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ResolveOrganizationResponse) ProtoMessage() {}
+
+func (x *ResolveOrganizationResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[10]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ResolveOrganizationResponse.ProtoReflect.Descriptor instead.
+func (*ResolveOrganizationResponse) Descriptor() ([]byte, []int) {
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{10}
+}
+
+func (x *ResolveOrganizationResponse) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *ResolveOrganizationResponse) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *ResolveOrganizationResponse) GetCountryOfIncorporation() string {
+	if x != nil {
+		return x.CountryOfIncorporation
+	}
+	return ""
+}
+
+func (x *ResolveOrganizationResponse) GetTreasuryAddress() string {
+	if x != nil {
+		return x.TreasuryAddress
+	}
+	return ""
+}
+
+type ResolveFacilityRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	FacilityId    string                 `protobuf:"bytes,1,opt,name=facility_id,json=facilityId,proto3" json:"facility_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ResolveFacilityRequest) Reset() {
+	*x = ResolveFacilityRequest{}
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[11]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ResolveFacilityRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ResolveFacilityRequest) ProtoMessage() {}
+
+func (x *ResolveFacilityRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[11]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ResolveFacilityRequest.ProtoReflect.Descriptor instead.
+func (*ResolveFacilityRequest) Descriptor() ([]byte, []int) {
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{11}
+}
+
+func (x *ResolveFacilityRequest) GetFacilityId() string {
+	if x != nil {
+		return x.FacilityId
+	}
+	return ""
+}
+
+type ResolveFacilityResponse struct {
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	Id             string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	OrganizationId string                 `protobuf:"bytes,2,opt,name=organization_id,json=organizationId,proto3" json:"organization_id,omitempty"`
+	Name           string                 `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
+	CountryCode    string                 `protobuf:"bytes,4,opt,name=country_code,json=countryCode,proto3" json:"country_code,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
+}
+
+func (x *ResolveFacilityResponse) Reset() {
+	*x = ResolveFacilityResponse{}
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[12]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ResolveFacilityResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ResolveFacilityResponse) ProtoMessage() {}
+
+func (x *ResolveFacilityResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[12]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ResolveFacilityResponse.ProtoReflect.Descriptor instead.
+func (*ResolveFacilityResponse) Descriptor() ([]byte, []int) {
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{12}
+}
+
+func (x *ResolveFacilityResponse) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *ResolveFacilityResponse) GetOrganizationId() string {
+	if x != nil {
+		return x.OrganizationId
+	}
+	return ""
+}
+
+func (x *ResolveFacilityResponse) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *ResolveFacilityResponse) GetCountryCode() string {
+	if x != nil {
+		return x.CountryCode
+	}
+	return ""
+}
+
 type GetOrganizationRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
@@ -1338,7 +1562,7 @@ type GetOrganizationRequest struct {
 
 func (x *GetOrganizationRequest) Reset() {
 	*x = GetOrganizationRequest{}
-	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[9]
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1350,7 +1574,7 @@ func (x *GetOrganizationRequest) String() string {
 func (*GetOrganizationRequest) ProtoMessage() {}
 
 func (x *GetOrganizationRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[9]
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1363,7 +1587,7 @@ func (x *GetOrganizationRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetOrganizationRequest.ProtoReflect.Descriptor instead.
 func (*GetOrganizationRequest) Descriptor() ([]byte, []int) {
-	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{9}
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{13}
 }
 
 type OrganizationDetail struct {
@@ -1385,7 +1609,7 @@ type OrganizationDetail struct {
 
 func (x *OrganizationDetail) Reset() {
 	*x = OrganizationDetail{}
-	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[10]
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1397,7 +1621,7 @@ func (x *OrganizationDetail) String() string {
 func (*OrganizationDetail) ProtoMessage() {}
 
 func (x *OrganizationDetail) ProtoReflect() protoreflect.Message {
-	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[10]
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1410,7 +1634,7 @@ func (x *OrganizationDetail) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use OrganizationDetail.ProtoReflect.Descriptor instead.
 func (*OrganizationDetail) Descriptor() ([]byte, []int) {
-	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{10}
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *OrganizationDetail) GetId() string {
@@ -1501,7 +1725,7 @@ type GetOrganizationResponse struct {
 
 func (x *GetOrganizationResponse) Reset() {
 	*x = GetOrganizationResponse{}
-	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[11]
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1513,7 +1737,7 @@ func (x *GetOrganizationResponse) String() string {
 func (*GetOrganizationResponse) ProtoMessage() {}
 
 func (x *GetOrganizationResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[11]
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1526,7 +1750,7 @@ func (x *GetOrganizationResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetOrganizationResponse.ProtoReflect.Descriptor instead.
 func (*GetOrganizationResponse) Descriptor() ([]byte, []int) {
-	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{11}
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *GetOrganizationResponse) GetOrganization() *OrganizationDetail {
@@ -1558,7 +1782,7 @@ type IssueTreasuryNonceRequest struct {
 
 func (x *IssueTreasuryNonceRequest) Reset() {
 	*x = IssueTreasuryNonceRequest{}
-	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[12]
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[16]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1570,7 +1794,7 @@ func (x *IssueTreasuryNonceRequest) String() string {
 func (*IssueTreasuryNonceRequest) ProtoMessage() {}
 
 func (x *IssueTreasuryNonceRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[12]
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[16]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1583,7 +1807,7 @@ func (x *IssueTreasuryNonceRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use IssueTreasuryNonceRequest.ProtoReflect.Descriptor instead.
 func (*IssueTreasuryNonceRequest) Descriptor() ([]byte, []int) {
-	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{12}
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{16}
 }
 
 type IssueTreasuryNonceResponse struct {
@@ -1599,7 +1823,7 @@ type IssueTreasuryNonceResponse struct {
 
 func (x *IssueTreasuryNonceResponse) Reset() {
 	*x = IssueTreasuryNonceResponse{}
-	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[13]
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[17]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1611,7 +1835,7 @@ func (x *IssueTreasuryNonceResponse) String() string {
 func (*IssueTreasuryNonceResponse) ProtoMessage() {}
 
 func (x *IssueTreasuryNonceResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[13]
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[17]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1624,7 +1848,7 @@ func (x *IssueTreasuryNonceResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use IssueTreasuryNonceResponse.ProtoReflect.Descriptor instead.
 func (*IssueTreasuryNonceResponse) Descriptor() ([]byte, []int) {
-	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{13}
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{17}
 }
 
 func (x *IssueTreasuryNonceResponse) GetNonce() string {
@@ -1672,7 +1896,7 @@ type DesignateTreasuryRequest struct {
 
 func (x *DesignateTreasuryRequest) Reset() {
 	*x = DesignateTreasuryRequest{}
-	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[14]
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[18]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1684,7 +1908,7 @@ func (x *DesignateTreasuryRequest) String() string {
 func (*DesignateTreasuryRequest) ProtoMessage() {}
 
 func (x *DesignateTreasuryRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[14]
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[18]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1697,7 +1921,7 @@ func (x *DesignateTreasuryRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DesignateTreasuryRequest.ProtoReflect.Descriptor instead.
 func (*DesignateTreasuryRequest) Descriptor() ([]byte, []int) {
-	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{14}
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{18}
 }
 
 func (x *DesignateTreasuryRequest) GetMessage() string {
@@ -1724,7 +1948,7 @@ type DesignateTreasuryResponse struct {
 
 func (x *DesignateTreasuryResponse) Reset() {
 	*x = DesignateTreasuryResponse{}
-	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[15]
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[19]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1736,7 +1960,7 @@ func (x *DesignateTreasuryResponse) String() string {
 func (*DesignateTreasuryResponse) ProtoMessage() {}
 
 func (x *DesignateTreasuryResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[15]
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[19]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1749,7 +1973,7 @@ func (x *DesignateTreasuryResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DesignateTreasuryResponse.ProtoReflect.Descriptor instead.
 func (*DesignateTreasuryResponse) Descriptor() ([]byte, []int) {
-	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{15}
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{19}
 }
 
 func (x *DesignateTreasuryResponse) GetAddress() string {
@@ -1781,7 +2005,7 @@ type Member struct {
 
 func (x *Member) Reset() {
 	*x = Member{}
-	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[16]
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[20]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1793,7 +2017,7 @@ func (x *Member) String() string {
 func (*Member) ProtoMessage() {}
 
 func (x *Member) ProtoReflect() protoreflect.Message {
-	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[16]
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[20]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1806,7 +2030,7 @@ func (x *Member) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Member.ProtoReflect.Descriptor instead.
 func (*Member) Descriptor() ([]byte, []int) {
-	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{16}
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{20}
 }
 
 func (x *Member) GetUserId() string {
@@ -1873,7 +2097,7 @@ type Invitation struct {
 
 func (x *Invitation) Reset() {
 	*x = Invitation{}
-	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[17]
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[21]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1885,7 +2109,7 @@ func (x *Invitation) String() string {
 func (*Invitation) ProtoMessage() {}
 
 func (x *Invitation) ProtoReflect() protoreflect.Message {
-	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[17]
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[21]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1898,7 +2122,7 @@ func (x *Invitation) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Invitation.ProtoReflect.Descriptor instead.
 func (*Invitation) Descriptor() ([]byte, []int) {
-	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{17}
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{21}
 }
 
 func (x *Invitation) GetId() string {
@@ -1958,7 +2182,7 @@ type ListMembersRequest struct {
 
 func (x *ListMembersRequest) Reset() {
 	*x = ListMembersRequest{}
-	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[18]
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[22]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1970,7 +2194,7 @@ func (x *ListMembersRequest) String() string {
 func (*ListMembersRequest) ProtoMessage() {}
 
 func (x *ListMembersRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[18]
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[22]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1983,7 +2207,7 @@ func (x *ListMembersRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListMembersRequest.ProtoReflect.Descriptor instead.
 func (*ListMembersRequest) Descriptor() ([]byte, []int) {
-	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{18}
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{22}
 }
 
 type ListMembersResponse struct {
@@ -1996,7 +2220,7 @@ type ListMembersResponse struct {
 
 func (x *ListMembersResponse) Reset() {
 	*x = ListMembersResponse{}
-	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[19]
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[23]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2008,7 +2232,7 @@ func (x *ListMembersResponse) String() string {
 func (*ListMembersResponse) ProtoMessage() {}
 
 func (x *ListMembersResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[19]
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[23]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2021,7 +2245,7 @@ func (x *ListMembersResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListMembersResponse.ProtoReflect.Descriptor instead.
 func (*ListMembersResponse) Descriptor() ([]byte, []int) {
-	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{19}
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{23}
 }
 
 func (x *ListMembersResponse) GetMembers() []*Member {
@@ -2048,7 +2272,7 @@ type InviteMemberRequest struct {
 
 func (x *InviteMemberRequest) Reset() {
 	*x = InviteMemberRequest{}
-	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[20]
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[24]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2060,7 +2284,7 @@ func (x *InviteMemberRequest) String() string {
 func (*InviteMemberRequest) ProtoMessage() {}
 
 func (x *InviteMemberRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[20]
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[24]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2073,7 +2297,7 @@ func (x *InviteMemberRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use InviteMemberRequest.ProtoReflect.Descriptor instead.
 func (*InviteMemberRequest) Descriptor() ([]byte, []int) {
-	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{20}
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{24}
 }
 
 func (x *InviteMemberRequest) GetEmail() string {
@@ -2100,7 +2324,7 @@ type InviteMemberResponse struct {
 
 func (x *InviteMemberResponse) Reset() {
 	*x = InviteMemberResponse{}
-	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[21]
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[25]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2112,7 +2336,7 @@ func (x *InviteMemberResponse) String() string {
 func (*InviteMemberResponse) ProtoMessage() {}
 
 func (x *InviteMemberResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[21]
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[25]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2125,7 +2349,7 @@ func (x *InviteMemberResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use InviteMemberResponse.ProtoReflect.Descriptor instead.
 func (*InviteMemberResponse) Descriptor() ([]byte, []int) {
-	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{21}
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{25}
 }
 
 func (x *InviteMemberResponse) GetInvitation() *Invitation {
@@ -2151,7 +2375,7 @@ type RevokeInvitationRequest struct {
 
 func (x *RevokeInvitationRequest) Reset() {
 	*x = RevokeInvitationRequest{}
-	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[22]
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[26]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2163,7 +2387,7 @@ func (x *RevokeInvitationRequest) String() string {
 func (*RevokeInvitationRequest) ProtoMessage() {}
 
 func (x *RevokeInvitationRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[22]
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[26]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2176,7 +2400,7 @@ func (x *RevokeInvitationRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RevokeInvitationRequest.ProtoReflect.Descriptor instead.
 func (*RevokeInvitationRequest) Descriptor() ([]byte, []int) {
-	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{22}
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{26}
 }
 
 func (x *RevokeInvitationRequest) GetInvitationId() string {
@@ -2194,7 +2418,7 @@ type RevokeInvitationResponse struct {
 
 func (x *RevokeInvitationResponse) Reset() {
 	*x = RevokeInvitationResponse{}
-	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[23]
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[27]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2206,7 +2430,7 @@ func (x *RevokeInvitationResponse) String() string {
 func (*RevokeInvitationResponse) ProtoMessage() {}
 
 func (x *RevokeInvitationResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[23]
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[27]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2219,7 +2443,7 @@ func (x *RevokeInvitationResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RevokeInvitationResponse.ProtoReflect.Descriptor instead.
 func (*RevokeInvitationResponse) Descriptor() ([]byte, []int) {
-	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{23}
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{27}
 }
 
 type ChangeMemberRoleRequest struct {
@@ -2232,7 +2456,7 @@ type ChangeMemberRoleRequest struct {
 
 func (x *ChangeMemberRoleRequest) Reset() {
 	*x = ChangeMemberRoleRequest{}
-	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[24]
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[28]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2244,7 +2468,7 @@ func (x *ChangeMemberRoleRequest) String() string {
 func (*ChangeMemberRoleRequest) ProtoMessage() {}
 
 func (x *ChangeMemberRoleRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[24]
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[28]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2257,7 +2481,7 @@ func (x *ChangeMemberRoleRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ChangeMemberRoleRequest.ProtoReflect.Descriptor instead.
 func (*ChangeMemberRoleRequest) Descriptor() ([]byte, []int) {
-	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{24}
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{28}
 }
 
 func (x *ChangeMemberRoleRequest) GetUserId() string {
@@ -2284,7 +2508,7 @@ type ChangeMemberRoleResponse struct {
 
 func (x *ChangeMemberRoleResponse) Reset() {
 	*x = ChangeMemberRoleResponse{}
-	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[25]
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[29]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2296,7 +2520,7 @@ func (x *ChangeMemberRoleResponse) String() string {
 func (*ChangeMemberRoleResponse) ProtoMessage() {}
 
 func (x *ChangeMemberRoleResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[25]
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[29]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2309,7 +2533,7 @@ func (x *ChangeMemberRoleResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ChangeMemberRoleResponse.ProtoReflect.Descriptor instead.
 func (*ChangeMemberRoleResponse) Descriptor() ([]byte, []int) {
-	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{25}
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{29}
 }
 
 func (x *ChangeMemberRoleResponse) GetMember() *Member {
@@ -2335,7 +2559,7 @@ type RevokeMemberRequest struct {
 
 func (x *RevokeMemberRequest) Reset() {
 	*x = RevokeMemberRequest{}
-	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[26]
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[30]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2347,7 +2571,7 @@ func (x *RevokeMemberRequest) String() string {
 func (*RevokeMemberRequest) ProtoMessage() {}
 
 func (x *RevokeMemberRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[26]
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[30]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2360,7 +2584,7 @@ func (x *RevokeMemberRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RevokeMemberRequest.ProtoReflect.Descriptor instead.
 func (*RevokeMemberRequest) Descriptor() ([]byte, []int) {
-	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{26}
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{30}
 }
 
 func (x *RevokeMemberRequest) GetUserId() string {
@@ -2379,7 +2603,7 @@ type RevokeMemberResponse struct {
 
 func (x *RevokeMemberResponse) Reset() {
 	*x = RevokeMemberResponse{}
-	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[27]
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[31]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2391,7 +2615,7 @@ func (x *RevokeMemberResponse) String() string {
 func (*RevokeMemberResponse) ProtoMessage() {}
 
 func (x *RevokeMemberResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[27]
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[31]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2404,7 +2628,7 @@ func (x *RevokeMemberResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RevokeMemberResponse.ProtoReflect.Descriptor instead.
 func (*RevokeMemberResponse) Descriptor() ([]byte, []int) {
-	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{27}
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{31}
 }
 
 func (x *RevokeMemberResponse) GetAffectedSubject() string {
@@ -2423,7 +2647,7 @@ type AcceptInvitationRequest struct {
 
 func (x *AcceptInvitationRequest) Reset() {
 	*x = AcceptInvitationRequest{}
-	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[28]
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[32]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2435,7 +2659,7 @@ func (x *AcceptInvitationRequest) String() string {
 func (*AcceptInvitationRequest) ProtoMessage() {}
 
 func (x *AcceptInvitationRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[28]
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[32]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2448,7 +2672,7 @@ func (x *AcceptInvitationRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AcceptInvitationRequest.ProtoReflect.Descriptor instead.
 func (*AcceptInvitationRequest) Descriptor() ([]byte, []int) {
-	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{28}
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{32}
 }
 
 func (x *AcceptInvitationRequest) GetToken() string {
@@ -2469,7 +2693,7 @@ type AcceptInvitationResponse struct {
 
 func (x *AcceptInvitationResponse) Reset() {
 	*x = AcceptInvitationResponse{}
-	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[29]
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[33]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2481,7 +2705,7 @@ func (x *AcceptInvitationResponse) String() string {
 func (*AcceptInvitationResponse) ProtoMessage() {}
 
 func (x *AcceptInvitationResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[29]
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[33]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2494,7 +2718,7 @@ func (x *AcceptInvitationResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AcceptInvitationResponse.ProtoReflect.Descriptor instead.
 func (*AcceptInvitationResponse) Descriptor() ([]byte, []int) {
-	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{29}
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{33}
 }
 
 func (x *AcceptInvitationResponse) GetOrganizationId() string {
@@ -2542,7 +2766,7 @@ type Facility struct {
 
 func (x *Facility) Reset() {
 	*x = Facility{}
-	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[30]
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[34]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2554,7 +2778,7 @@ func (x *Facility) String() string {
 func (*Facility) ProtoMessage() {}
 
 func (x *Facility) ProtoReflect() protoreflect.Message {
-	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[30]
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[34]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2567,7 +2791,7 @@ func (x *Facility) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Facility.ProtoReflect.Descriptor instead.
 func (*Facility) Descriptor() ([]byte, []int) {
-	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{30}
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{34}
 }
 
 func (x *Facility) GetId() string {
@@ -2698,7 +2922,7 @@ type CreateFacilityRequest struct {
 
 func (x *CreateFacilityRequest) Reset() {
 	*x = CreateFacilityRequest{}
-	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[31]
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[35]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2710,7 +2934,7 @@ func (x *CreateFacilityRequest) String() string {
 func (*CreateFacilityRequest) ProtoMessage() {}
 
 func (x *CreateFacilityRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[31]
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[35]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2723,7 +2947,7 @@ func (x *CreateFacilityRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateFacilityRequest.ProtoReflect.Descriptor instead.
 func (*CreateFacilityRequest) Descriptor() ([]byte, []int) {
-	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{31}
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{35}
 }
 
 func (x *CreateFacilityRequest) GetName() string {
@@ -2792,7 +3016,7 @@ type CreateFacilityResponse struct {
 
 func (x *CreateFacilityResponse) Reset() {
 	*x = CreateFacilityResponse{}
-	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[32]
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[36]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2804,7 +3028,7 @@ func (x *CreateFacilityResponse) String() string {
 func (*CreateFacilityResponse) ProtoMessage() {}
 
 func (x *CreateFacilityResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[32]
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[36]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2817,7 +3041,7 @@ func (x *CreateFacilityResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateFacilityResponse.ProtoReflect.Descriptor instead.
 func (*CreateFacilityResponse) Descriptor() ([]byte, []int) {
-	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{32}
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{36}
 }
 
 func (x *CreateFacilityResponse) GetFacility() *Facility {
@@ -2842,7 +3066,7 @@ type ListFacilitiesRequest struct {
 
 func (x *ListFacilitiesRequest) Reset() {
 	*x = ListFacilitiesRequest{}
-	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[33]
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[37]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2854,7 +3078,7 @@ func (x *ListFacilitiesRequest) String() string {
 func (*ListFacilitiesRequest) ProtoMessage() {}
 
 func (x *ListFacilitiesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[33]
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[37]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2867,7 +3091,7 @@ func (x *ListFacilitiesRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListFacilitiesRequest.ProtoReflect.Descriptor instead.
 func (*ListFacilitiesRequest) Descriptor() ([]byte, []int) {
-	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{33}
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{37}
 }
 
 type ListFacilitiesResponse struct {
@@ -2879,7 +3103,7 @@ type ListFacilitiesResponse struct {
 
 func (x *ListFacilitiesResponse) Reset() {
 	*x = ListFacilitiesResponse{}
-	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[34]
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[38]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2891,7 +3115,7 @@ func (x *ListFacilitiesResponse) String() string {
 func (*ListFacilitiesResponse) ProtoMessage() {}
 
 func (x *ListFacilitiesResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[34]
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[38]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2904,7 +3128,7 @@ func (x *ListFacilitiesResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListFacilitiesResponse.ProtoReflect.Descriptor instead.
 func (*ListFacilitiesResponse) Descriptor() ([]byte, []int) {
-	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{34}
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{38}
 }
 
 func (x *ListFacilitiesResponse) GetFacilities() []*Facility {
@@ -2923,7 +3147,7 @@ type GetFacilityRequest struct {
 
 func (x *GetFacilityRequest) Reset() {
 	*x = GetFacilityRequest{}
-	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[35]
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[39]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2935,7 +3159,7 @@ func (x *GetFacilityRequest) String() string {
 func (*GetFacilityRequest) ProtoMessage() {}
 
 func (x *GetFacilityRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[35]
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[39]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2948,7 +3172,7 @@ func (x *GetFacilityRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetFacilityRequest.ProtoReflect.Descriptor instead.
 func (*GetFacilityRequest) Descriptor() ([]byte, []int) {
-	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{35}
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{39}
 }
 
 func (x *GetFacilityRequest) GetFacilityId() string {
@@ -2967,7 +3191,7 @@ type GetFacilityResponse struct {
 
 func (x *GetFacilityResponse) Reset() {
 	*x = GetFacilityResponse{}
-	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[36]
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[40]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2979,7 +3203,7 @@ func (x *GetFacilityResponse) String() string {
 func (*GetFacilityResponse) ProtoMessage() {}
 
 func (x *GetFacilityResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[36]
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[40]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2992,7 +3216,7 @@ func (x *GetFacilityResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetFacilityResponse.ProtoReflect.Descriptor instead.
 func (*GetFacilityResponse) Descriptor() ([]byte, []int) {
-	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{36}
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{40}
 }
 
 func (x *GetFacilityResponse) GetFacility() *Facility {
@@ -3015,7 +3239,7 @@ type Session struct {
 
 func (x *Session) Reset() {
 	*x = Session{}
-	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[37]
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[41]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3027,7 +3251,7 @@ func (x *Session) String() string {
 func (*Session) ProtoMessage() {}
 
 func (x *Session) ProtoReflect() protoreflect.Message {
-	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[37]
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[41]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3040,7 +3264,7 @@ func (x *Session) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Session.ProtoReflect.Descriptor instead.
 func (*Session) Descriptor() ([]byte, []int) {
-	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{37}
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{41}
 }
 
 func (x *Session) GetAuth0SessionId() string {
@@ -3088,7 +3312,7 @@ type RecordSessionRequest struct {
 
 func (x *RecordSessionRequest) Reset() {
 	*x = RecordSessionRequest{}
-	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[38]
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[42]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3100,7 +3324,7 @@ func (x *RecordSessionRequest) String() string {
 func (*RecordSessionRequest) ProtoMessage() {}
 
 func (x *RecordSessionRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[38]
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[42]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3113,7 +3337,7 @@ func (x *RecordSessionRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RecordSessionRequest.ProtoReflect.Descriptor instead.
 func (*RecordSessionRequest) Descriptor() ([]byte, []int) {
-	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{38}
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{42}
 }
 
 func (x *RecordSessionRequest) GetUserAgent() string {
@@ -3138,7 +3362,7 @@ type RecordSessionResponse struct {
 
 func (x *RecordSessionResponse) Reset() {
 	*x = RecordSessionResponse{}
-	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[39]
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[43]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3150,7 +3374,7 @@ func (x *RecordSessionResponse) String() string {
 func (*RecordSessionResponse) ProtoMessage() {}
 
 func (x *RecordSessionResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[39]
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[43]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3163,7 +3387,7 @@ func (x *RecordSessionResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RecordSessionResponse.ProtoReflect.Descriptor instead.
 func (*RecordSessionResponse) Descriptor() ([]byte, []int) {
-	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{39}
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{43}
 }
 
 type ListSessionsRequest struct {
@@ -3174,7 +3398,7 @@ type ListSessionsRequest struct {
 
 func (x *ListSessionsRequest) Reset() {
 	*x = ListSessionsRequest{}
-	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[40]
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[44]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3186,7 +3410,7 @@ func (x *ListSessionsRequest) String() string {
 func (*ListSessionsRequest) ProtoMessage() {}
 
 func (x *ListSessionsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[40]
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[44]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3199,7 +3423,7 @@ func (x *ListSessionsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListSessionsRequest.ProtoReflect.Descriptor instead.
 func (*ListSessionsRequest) Descriptor() ([]byte, []int) {
-	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{40}
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{44}
 }
 
 type ListSessionsResponse struct {
@@ -3211,7 +3435,7 @@ type ListSessionsResponse struct {
 
 func (x *ListSessionsResponse) Reset() {
 	*x = ListSessionsResponse{}
-	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[41]
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[45]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3223,7 +3447,7 @@ func (x *ListSessionsResponse) String() string {
 func (*ListSessionsResponse) ProtoMessage() {}
 
 func (x *ListSessionsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[41]
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[45]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3236,7 +3460,7 @@ func (x *ListSessionsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListSessionsResponse.ProtoReflect.Descriptor instead.
 func (*ListSessionsResponse) Descriptor() ([]byte, []int) {
-	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{41}
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{45}
 }
 
 func (x *ListSessionsResponse) GetSessions() []*Session {
@@ -3255,7 +3479,7 @@ type RevokeSessionRequest struct {
 
 func (x *RevokeSessionRequest) Reset() {
 	*x = RevokeSessionRequest{}
-	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[42]
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[46]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3267,7 +3491,7 @@ func (x *RevokeSessionRequest) String() string {
 func (*RevokeSessionRequest) ProtoMessage() {}
 
 func (x *RevokeSessionRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[42]
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[46]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3280,7 +3504,7 @@ func (x *RevokeSessionRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RevokeSessionRequest.ProtoReflect.Descriptor instead.
 func (*RevokeSessionRequest) Descriptor() ([]byte, []int) {
-	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{42}
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{46}
 }
 
 func (x *RevokeSessionRequest) GetAuth0SessionId() string {
@@ -3299,7 +3523,7 @@ type RevokeSessionResponse struct {
 
 func (x *RevokeSessionResponse) Reset() {
 	*x = RevokeSessionResponse{}
-	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[43]
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[47]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3311,7 +3535,7 @@ func (x *RevokeSessionResponse) String() string {
 func (*RevokeSessionResponse) ProtoMessage() {}
 
 func (x *RevokeSessionResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[43]
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[47]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3324,7 +3548,7 @@ func (x *RevokeSessionResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RevokeSessionResponse.ProtoReflect.Descriptor instead.
 func (*RevokeSessionResponse) Descriptor() ([]byte, []int) {
-	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{43}
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{47}
 }
 
 func (x *RevokeSessionResponse) GetSubject() string {
@@ -3348,7 +3572,7 @@ type APIKey struct {
 
 func (x *APIKey) Reset() {
 	*x = APIKey{}
-	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[44]
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[48]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3360,7 +3584,7 @@ func (x *APIKey) String() string {
 func (*APIKey) ProtoMessage() {}
 
 func (x *APIKey) ProtoReflect() protoreflect.Message {
-	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[44]
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[48]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3373,7 +3597,7 @@ func (x *APIKey) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use APIKey.ProtoReflect.Descriptor instead.
 func (*APIKey) Descriptor() ([]byte, []int) {
-	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{44}
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{48}
 }
 
 func (x *APIKey) GetId() string {
@@ -3427,7 +3651,7 @@ type CreateAPIKeyRequest struct {
 
 func (x *CreateAPIKeyRequest) Reset() {
 	*x = CreateAPIKeyRequest{}
-	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[45]
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[49]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3439,7 +3663,7 @@ func (x *CreateAPIKeyRequest) String() string {
 func (*CreateAPIKeyRequest) ProtoMessage() {}
 
 func (x *CreateAPIKeyRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[45]
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[49]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3452,7 +3676,7 @@ func (x *CreateAPIKeyRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateAPIKeyRequest.ProtoReflect.Descriptor instead.
 func (*CreateAPIKeyRequest) Descriptor() ([]byte, []int) {
-	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{45}
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{49}
 }
 
 func (x *CreateAPIKeyRequest) GetName() string {
@@ -3472,7 +3696,7 @@ type CreateAPIKeyResponse struct {
 
 func (x *CreateAPIKeyResponse) Reset() {
 	*x = CreateAPIKeyResponse{}
-	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[46]
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[50]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3484,7 +3708,7 @@ func (x *CreateAPIKeyResponse) String() string {
 func (*CreateAPIKeyResponse) ProtoMessage() {}
 
 func (x *CreateAPIKeyResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[46]
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[50]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3497,7 +3721,7 @@ func (x *CreateAPIKeyResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateAPIKeyResponse.ProtoReflect.Descriptor instead.
 func (*CreateAPIKeyResponse) Descriptor() ([]byte, []int) {
-	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{46}
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{50}
 }
 
 func (x *CreateAPIKeyResponse) GetKey() *APIKey {
@@ -3522,7 +3746,7 @@ type ListAPIKeysRequest struct {
 
 func (x *ListAPIKeysRequest) Reset() {
 	*x = ListAPIKeysRequest{}
-	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[47]
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[51]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3534,7 +3758,7 @@ func (x *ListAPIKeysRequest) String() string {
 func (*ListAPIKeysRequest) ProtoMessage() {}
 
 func (x *ListAPIKeysRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[47]
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[51]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3547,7 +3771,7 @@ func (x *ListAPIKeysRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListAPIKeysRequest.ProtoReflect.Descriptor instead.
 func (*ListAPIKeysRequest) Descriptor() ([]byte, []int) {
-	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{47}
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{51}
 }
 
 type ListAPIKeysResponse struct {
@@ -3559,7 +3783,7 @@ type ListAPIKeysResponse struct {
 
 func (x *ListAPIKeysResponse) Reset() {
 	*x = ListAPIKeysResponse{}
-	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[48]
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[52]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3571,7 +3795,7 @@ func (x *ListAPIKeysResponse) String() string {
 func (*ListAPIKeysResponse) ProtoMessage() {}
 
 func (x *ListAPIKeysResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[48]
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[52]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3584,7 +3808,7 @@ func (x *ListAPIKeysResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListAPIKeysResponse.ProtoReflect.Descriptor instead.
 func (*ListAPIKeysResponse) Descriptor() ([]byte, []int) {
-	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{48}
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{52}
 }
 
 func (x *ListAPIKeysResponse) GetKeys() []*APIKey {
@@ -3603,7 +3827,7 @@ type RevokeAPIKeyRequest struct {
 
 func (x *RevokeAPIKeyRequest) Reset() {
 	*x = RevokeAPIKeyRequest{}
-	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[49]
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[53]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3615,7 +3839,7 @@ func (x *RevokeAPIKeyRequest) String() string {
 func (*RevokeAPIKeyRequest) ProtoMessage() {}
 
 func (x *RevokeAPIKeyRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[49]
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[53]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3628,7 +3852,7 @@ func (x *RevokeAPIKeyRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RevokeAPIKeyRequest.ProtoReflect.Descriptor instead.
 func (*RevokeAPIKeyRequest) Descriptor() ([]byte, []int) {
-	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{49}
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{53}
 }
 
 func (x *RevokeAPIKeyRequest) GetKeyId() string {
@@ -3646,7 +3870,7 @@ type RevokeAPIKeyResponse struct {
 
 func (x *RevokeAPIKeyResponse) Reset() {
 	*x = RevokeAPIKeyResponse{}
-	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[50]
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[54]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3658,7 +3882,7 @@ func (x *RevokeAPIKeyResponse) String() string {
 func (*RevokeAPIKeyResponse) ProtoMessage() {}
 
 func (x *RevokeAPIKeyResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[50]
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[54]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3671,7 +3895,7 @@ func (x *RevokeAPIKeyResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RevokeAPIKeyResponse.ProtoReflect.Descriptor instead.
 func (*RevokeAPIKeyResponse) Descriptor() ([]byte, []int) {
-	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{50}
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{54}
 }
 
 type ValidateAPIKeyRequest struct {
@@ -3683,7 +3907,7 @@ type ValidateAPIKeyRequest struct {
 
 func (x *ValidateAPIKeyRequest) Reset() {
 	*x = ValidateAPIKeyRequest{}
-	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[51]
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[55]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3695,7 +3919,7 @@ func (x *ValidateAPIKeyRequest) String() string {
 func (*ValidateAPIKeyRequest) ProtoMessage() {}
 
 func (x *ValidateAPIKeyRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[51]
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[55]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3708,7 +3932,7 @@ func (x *ValidateAPIKeyRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ValidateAPIKeyRequest.ProtoReflect.Descriptor instead.
 func (*ValidateAPIKeyRequest) Descriptor() ([]byte, []int) {
-	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{51}
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{55}
 }
 
 func (x *ValidateAPIKeyRequest) GetPresentedKey() string {
@@ -3734,7 +3958,7 @@ type ValidateAPIKeyResponse struct {
 
 func (x *ValidateAPIKeyResponse) Reset() {
 	*x = ValidateAPIKeyResponse{}
-	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[52]
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[56]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3746,7 +3970,7 @@ func (x *ValidateAPIKeyResponse) String() string {
 func (*ValidateAPIKeyResponse) ProtoMessage() {}
 
 func (x *ValidateAPIKeyResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[52]
+	mi := &file_carboncircuit_identity_v1_identity_proto_msgTypes[56]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3759,7 +3983,7 @@ func (x *ValidateAPIKeyResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ValidateAPIKeyResponse.ProtoReflect.Descriptor instead.
 func (*ValidateAPIKeyResponse) Descriptor() ([]byte, []int) {
-	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{52}
+	return file_carboncircuit_identity_v1_identity_proto_rawDescGZIP(), []int{56}
 }
 
 func (x *ValidateAPIKeyResponse) GetKeyId() string {
@@ -3870,7 +4094,22 @@ const file_carboncircuit_identity_v1_identity_proto_rawDesc = "" +
 	"\x1aCreateOrganizationResponse\x12R\n" +
 	"\forganization\x18\x01 \x01(\v2..carboncircuit.identity.v1.SessionOrganizationR\forganization\x12?\n" +
 	"\x04role\x18\x02 \x01(\x0e2+.carboncircuit.identity.v1.OrganizationRoleR\x04role\x12H\n" +
-	"\aoutcome\x18\x03 \x01(\v2..carboncircuit.identity.v1.VerificationOutcomeR\aoutcome\"\x18\n" +
+	"\aoutcome\x18\x03 \x01(\v2..carboncircuit.identity.v1.VerificationOutcomeR\aoutcome\"E\n" +
+	"\x1aResolveOrganizationRequest\x12'\n" +
+	"\x0forganization_id\x18\x01 \x01(\tR\x0eorganizationId\"\xa6\x01\n" +
+	"\x1bResolveOrganizationResponse\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
+	"\x04name\x18\x02 \x01(\tR\x04name\x128\n" +
+	"\x18country_of_incorporation\x18\x03 \x01(\tR\x16countryOfIncorporation\x12)\n" +
+	"\x10treasury_address\x18\x04 \x01(\tR\x0ftreasuryAddress\"9\n" +
+	"\x16ResolveFacilityRequest\x12\x1f\n" +
+	"\vfacility_id\x18\x01 \x01(\tR\n" +
+	"facilityId\"\x89\x01\n" +
+	"\x17ResolveFacilityResponse\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\x12'\n" +
+	"\x0forganization_id\x18\x02 \x01(\tR\x0eorganizationId\x12\x12\n" +
+	"\x04name\x18\x03 \x01(\tR\x04name\x12!\n" +
+	"\fcountry_code\x18\x04 \x01(\tR\vcountryCode\"\x18\n" +
 	"\x16GetOrganizationRequest\"\xef\x04\n" +
 	"\x12OrganizationDetail\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
@@ -4133,7 +4372,7 @@ const file_carboncircuit_identity_v1_identity_proto_rawDesc = "" +
 	"\x0eGRID_REGION_VN\x10\x0f\x12\x12\n" +
 	"\x0eGRID_REGION_MY\x10\x10\x12\x12\n" +
 	"\x0eGRID_REGION_SG\x10\x11\x12\x12\n" +
-	"\x0eGRID_REGION_TH\x10\x122\xa6\x14\n" +
+	"\x0eGRID_REGION_TH\x10\x122\xa7\x16\n" +
 	"\x0fIdentityService\x12W\n" +
 	"\x04Ping\x12&.carboncircuit.identity.v1.PingRequest\x1a'.carboncircuit.identity.v1.PingResponse\x12u\n" +
 	"\x0eResolveSession\x120.carboncircuit.identity.v1.ResolveSessionRequest\x1a1.carboncircuit.identity.v1.ResolveSessionResponse\x12\x81\x01\n" +
@@ -4149,7 +4388,9 @@ const file_carboncircuit_identity_v1_identity_proto_rawDesc = "" +
 	"\x10AcceptInvitation\x122.carboncircuit.identity.v1.AcceptInvitationRequest\x1a3.carboncircuit.identity.v1.AcceptInvitationResponse\x12u\n" +
 	"\x0eCreateFacility\x120.carboncircuit.identity.v1.CreateFacilityRequest\x1a1.carboncircuit.identity.v1.CreateFacilityResponse\x12u\n" +
 	"\x0eListFacilities\x120.carboncircuit.identity.v1.ListFacilitiesRequest\x1a1.carboncircuit.identity.v1.ListFacilitiesResponse\x12l\n" +
-	"\vGetFacility\x12-.carboncircuit.identity.v1.GetFacilityRequest\x1a..carboncircuit.identity.v1.GetFacilityResponse\x12r\n" +
+	"\vGetFacility\x12-.carboncircuit.identity.v1.GetFacilityRequest\x1a..carboncircuit.identity.v1.GetFacilityResponse\x12\x84\x01\n" +
+	"\x13ResolveOrganization\x125.carboncircuit.identity.v1.ResolveOrganizationRequest\x1a6.carboncircuit.identity.v1.ResolveOrganizationResponse\x12x\n" +
+	"\x0fResolveFacility\x121.carboncircuit.identity.v1.ResolveFacilityRequest\x1a2.carboncircuit.identity.v1.ResolveFacilityResponse\x12r\n" +
 	"\rRecordSession\x12/.carboncircuit.identity.v1.RecordSessionRequest\x1a0.carboncircuit.identity.v1.RecordSessionResponse\x12o\n" +
 	"\fListSessions\x12..carboncircuit.identity.v1.ListSessionsRequest\x1a/.carboncircuit.identity.v1.ListSessionsResponse\x12r\n" +
 	"\rRevokeSession\x12/.carboncircuit.identity.v1.RevokeSessionRequest\x1a0.carboncircuit.identity.v1.RevokeSessionResponse\x12o\n" +
@@ -4172,73 +4413,77 @@ func file_carboncircuit_identity_v1_identity_proto_rawDescGZIP() []byte {
 }
 
 var file_carboncircuit_identity_v1_identity_proto_enumTypes = make([]protoimpl.EnumInfo, 12)
-var file_carboncircuit_identity_v1_identity_proto_msgTypes = make([]protoimpl.MessageInfo, 53)
+var file_carboncircuit_identity_v1_identity_proto_msgTypes = make([]protoimpl.MessageInfo, 57)
 var file_carboncircuit_identity_v1_identity_proto_goTypes = []any{
-	(OrganizationType)(0),              // 0: carboncircuit.identity.v1.OrganizationType
-	(OrganizationRole)(0),              // 1: carboncircuit.identity.v1.OrganizationRole
-	(OrganizationState)(0),             // 2: carboncircuit.identity.v1.OrganizationState
-	(VerificationStatus)(0),            // 3: carboncircuit.identity.v1.VerificationStatus
-	(PlatformRole)(0),                  // 4: carboncircuit.identity.v1.PlatformRole
-	(ProductCategory)(0),               // 5: carboncircuit.identity.v1.ProductCategory
-	(RegistryRejection)(0),             // 6: carboncircuit.identity.v1.RegistryRejection
-	(InvitationState)(0),               // 7: carboncircuit.identity.v1.InvitationState
-	(FacilityType)(0),                  // 8: carboncircuit.identity.v1.FacilityType
-	(FacilityVerification)(0),          // 9: carboncircuit.identity.v1.FacilityVerification
-	(TrustTier)(0),                     // 10: carboncircuit.identity.v1.TrustTier
-	(GridRegion)(0),                    // 11: carboncircuit.identity.v1.GridRegion
-	(*PingRequest)(nil),                // 12: carboncircuit.identity.v1.PingRequest
-	(*PingResponse)(nil),               // 13: carboncircuit.identity.v1.PingResponse
-	(*ResolveSessionRequest)(nil),      // 14: carboncircuit.identity.v1.ResolveSessionRequest
-	(*SessionUser)(nil),                // 15: carboncircuit.identity.v1.SessionUser
-	(*SessionOrganization)(nil),        // 16: carboncircuit.identity.v1.SessionOrganization
-	(*ResolveSessionResponse)(nil),     // 17: carboncircuit.identity.v1.ResolveSessionResponse
-	(*CreateOrganizationRequest)(nil),  // 18: carboncircuit.identity.v1.CreateOrganizationRequest
-	(*VerificationOutcome)(nil),        // 19: carboncircuit.identity.v1.VerificationOutcome
-	(*CreateOrganizationResponse)(nil), // 20: carboncircuit.identity.v1.CreateOrganizationResponse
-	(*GetOrganizationRequest)(nil),     // 21: carboncircuit.identity.v1.GetOrganizationRequest
-	(*OrganizationDetail)(nil),         // 22: carboncircuit.identity.v1.OrganizationDetail
-	(*GetOrganizationResponse)(nil),    // 23: carboncircuit.identity.v1.GetOrganizationResponse
-	(*IssueTreasuryNonceRequest)(nil),  // 24: carboncircuit.identity.v1.IssueTreasuryNonceRequest
-	(*IssueTreasuryNonceResponse)(nil), // 25: carboncircuit.identity.v1.IssueTreasuryNonceResponse
-	(*DesignateTreasuryRequest)(nil),   // 26: carboncircuit.identity.v1.DesignateTreasuryRequest
-	(*DesignateTreasuryResponse)(nil),  // 27: carboncircuit.identity.v1.DesignateTreasuryResponse
-	(*Member)(nil),                     // 28: carboncircuit.identity.v1.Member
-	(*Invitation)(nil),                 // 29: carboncircuit.identity.v1.Invitation
-	(*ListMembersRequest)(nil),         // 30: carboncircuit.identity.v1.ListMembersRequest
-	(*ListMembersResponse)(nil),        // 31: carboncircuit.identity.v1.ListMembersResponse
-	(*InviteMemberRequest)(nil),        // 32: carboncircuit.identity.v1.InviteMemberRequest
-	(*InviteMemberResponse)(nil),       // 33: carboncircuit.identity.v1.InviteMemberResponse
-	(*RevokeInvitationRequest)(nil),    // 34: carboncircuit.identity.v1.RevokeInvitationRequest
-	(*RevokeInvitationResponse)(nil),   // 35: carboncircuit.identity.v1.RevokeInvitationResponse
-	(*ChangeMemberRoleRequest)(nil),    // 36: carboncircuit.identity.v1.ChangeMemberRoleRequest
-	(*ChangeMemberRoleResponse)(nil),   // 37: carboncircuit.identity.v1.ChangeMemberRoleResponse
-	(*RevokeMemberRequest)(nil),        // 38: carboncircuit.identity.v1.RevokeMemberRequest
-	(*RevokeMemberResponse)(nil),       // 39: carboncircuit.identity.v1.RevokeMemberResponse
-	(*AcceptInvitationRequest)(nil),    // 40: carboncircuit.identity.v1.AcceptInvitationRequest
-	(*AcceptInvitationResponse)(nil),   // 41: carboncircuit.identity.v1.AcceptInvitationResponse
-	(*Facility)(nil),                   // 42: carboncircuit.identity.v1.Facility
-	(*CreateFacilityRequest)(nil),      // 43: carboncircuit.identity.v1.CreateFacilityRequest
-	(*CreateFacilityResponse)(nil),     // 44: carboncircuit.identity.v1.CreateFacilityResponse
-	(*ListFacilitiesRequest)(nil),      // 45: carboncircuit.identity.v1.ListFacilitiesRequest
-	(*ListFacilitiesResponse)(nil),     // 46: carboncircuit.identity.v1.ListFacilitiesResponse
-	(*GetFacilityRequest)(nil),         // 47: carboncircuit.identity.v1.GetFacilityRequest
-	(*GetFacilityResponse)(nil),        // 48: carboncircuit.identity.v1.GetFacilityResponse
-	(*Session)(nil),                    // 49: carboncircuit.identity.v1.Session
-	(*RecordSessionRequest)(nil),       // 50: carboncircuit.identity.v1.RecordSessionRequest
-	(*RecordSessionResponse)(nil),      // 51: carboncircuit.identity.v1.RecordSessionResponse
-	(*ListSessionsRequest)(nil),        // 52: carboncircuit.identity.v1.ListSessionsRequest
-	(*ListSessionsResponse)(nil),       // 53: carboncircuit.identity.v1.ListSessionsResponse
-	(*RevokeSessionRequest)(nil),       // 54: carboncircuit.identity.v1.RevokeSessionRequest
-	(*RevokeSessionResponse)(nil),      // 55: carboncircuit.identity.v1.RevokeSessionResponse
-	(*APIKey)(nil),                     // 56: carboncircuit.identity.v1.APIKey
-	(*CreateAPIKeyRequest)(nil),        // 57: carboncircuit.identity.v1.CreateAPIKeyRequest
-	(*CreateAPIKeyResponse)(nil),       // 58: carboncircuit.identity.v1.CreateAPIKeyResponse
-	(*ListAPIKeysRequest)(nil),         // 59: carboncircuit.identity.v1.ListAPIKeysRequest
-	(*ListAPIKeysResponse)(nil),        // 60: carboncircuit.identity.v1.ListAPIKeysResponse
-	(*RevokeAPIKeyRequest)(nil),        // 61: carboncircuit.identity.v1.RevokeAPIKeyRequest
-	(*RevokeAPIKeyResponse)(nil),       // 62: carboncircuit.identity.v1.RevokeAPIKeyResponse
-	(*ValidateAPIKeyRequest)(nil),      // 63: carboncircuit.identity.v1.ValidateAPIKeyRequest
-	(*ValidateAPIKeyResponse)(nil),     // 64: carboncircuit.identity.v1.ValidateAPIKeyResponse
+	(OrganizationType)(0),               // 0: carboncircuit.identity.v1.OrganizationType
+	(OrganizationRole)(0),               // 1: carboncircuit.identity.v1.OrganizationRole
+	(OrganizationState)(0),              // 2: carboncircuit.identity.v1.OrganizationState
+	(VerificationStatus)(0),             // 3: carboncircuit.identity.v1.VerificationStatus
+	(PlatformRole)(0),                   // 4: carboncircuit.identity.v1.PlatformRole
+	(ProductCategory)(0),                // 5: carboncircuit.identity.v1.ProductCategory
+	(RegistryRejection)(0),              // 6: carboncircuit.identity.v1.RegistryRejection
+	(InvitationState)(0),                // 7: carboncircuit.identity.v1.InvitationState
+	(FacilityType)(0),                   // 8: carboncircuit.identity.v1.FacilityType
+	(FacilityVerification)(0),           // 9: carboncircuit.identity.v1.FacilityVerification
+	(TrustTier)(0),                      // 10: carboncircuit.identity.v1.TrustTier
+	(GridRegion)(0),                     // 11: carboncircuit.identity.v1.GridRegion
+	(*PingRequest)(nil),                 // 12: carboncircuit.identity.v1.PingRequest
+	(*PingResponse)(nil),                // 13: carboncircuit.identity.v1.PingResponse
+	(*ResolveSessionRequest)(nil),       // 14: carboncircuit.identity.v1.ResolveSessionRequest
+	(*SessionUser)(nil),                 // 15: carboncircuit.identity.v1.SessionUser
+	(*SessionOrganization)(nil),         // 16: carboncircuit.identity.v1.SessionOrganization
+	(*ResolveSessionResponse)(nil),      // 17: carboncircuit.identity.v1.ResolveSessionResponse
+	(*CreateOrganizationRequest)(nil),   // 18: carboncircuit.identity.v1.CreateOrganizationRequest
+	(*VerificationOutcome)(nil),         // 19: carboncircuit.identity.v1.VerificationOutcome
+	(*CreateOrganizationResponse)(nil),  // 20: carboncircuit.identity.v1.CreateOrganizationResponse
+	(*ResolveOrganizationRequest)(nil),  // 21: carboncircuit.identity.v1.ResolveOrganizationRequest
+	(*ResolveOrganizationResponse)(nil), // 22: carboncircuit.identity.v1.ResolveOrganizationResponse
+	(*ResolveFacilityRequest)(nil),      // 23: carboncircuit.identity.v1.ResolveFacilityRequest
+	(*ResolveFacilityResponse)(nil),     // 24: carboncircuit.identity.v1.ResolveFacilityResponse
+	(*GetOrganizationRequest)(nil),      // 25: carboncircuit.identity.v1.GetOrganizationRequest
+	(*OrganizationDetail)(nil),          // 26: carboncircuit.identity.v1.OrganizationDetail
+	(*GetOrganizationResponse)(nil),     // 27: carboncircuit.identity.v1.GetOrganizationResponse
+	(*IssueTreasuryNonceRequest)(nil),   // 28: carboncircuit.identity.v1.IssueTreasuryNonceRequest
+	(*IssueTreasuryNonceResponse)(nil),  // 29: carboncircuit.identity.v1.IssueTreasuryNonceResponse
+	(*DesignateTreasuryRequest)(nil),    // 30: carboncircuit.identity.v1.DesignateTreasuryRequest
+	(*DesignateTreasuryResponse)(nil),   // 31: carboncircuit.identity.v1.DesignateTreasuryResponse
+	(*Member)(nil),                      // 32: carboncircuit.identity.v1.Member
+	(*Invitation)(nil),                  // 33: carboncircuit.identity.v1.Invitation
+	(*ListMembersRequest)(nil),          // 34: carboncircuit.identity.v1.ListMembersRequest
+	(*ListMembersResponse)(nil),         // 35: carboncircuit.identity.v1.ListMembersResponse
+	(*InviteMemberRequest)(nil),         // 36: carboncircuit.identity.v1.InviteMemberRequest
+	(*InviteMemberResponse)(nil),        // 37: carboncircuit.identity.v1.InviteMemberResponse
+	(*RevokeInvitationRequest)(nil),     // 38: carboncircuit.identity.v1.RevokeInvitationRequest
+	(*RevokeInvitationResponse)(nil),    // 39: carboncircuit.identity.v1.RevokeInvitationResponse
+	(*ChangeMemberRoleRequest)(nil),     // 40: carboncircuit.identity.v1.ChangeMemberRoleRequest
+	(*ChangeMemberRoleResponse)(nil),    // 41: carboncircuit.identity.v1.ChangeMemberRoleResponse
+	(*RevokeMemberRequest)(nil),         // 42: carboncircuit.identity.v1.RevokeMemberRequest
+	(*RevokeMemberResponse)(nil),        // 43: carboncircuit.identity.v1.RevokeMemberResponse
+	(*AcceptInvitationRequest)(nil),     // 44: carboncircuit.identity.v1.AcceptInvitationRequest
+	(*AcceptInvitationResponse)(nil),    // 45: carboncircuit.identity.v1.AcceptInvitationResponse
+	(*Facility)(nil),                    // 46: carboncircuit.identity.v1.Facility
+	(*CreateFacilityRequest)(nil),       // 47: carboncircuit.identity.v1.CreateFacilityRequest
+	(*CreateFacilityResponse)(nil),      // 48: carboncircuit.identity.v1.CreateFacilityResponse
+	(*ListFacilitiesRequest)(nil),       // 49: carboncircuit.identity.v1.ListFacilitiesRequest
+	(*ListFacilitiesResponse)(nil),      // 50: carboncircuit.identity.v1.ListFacilitiesResponse
+	(*GetFacilityRequest)(nil),          // 51: carboncircuit.identity.v1.GetFacilityRequest
+	(*GetFacilityResponse)(nil),         // 52: carboncircuit.identity.v1.GetFacilityResponse
+	(*Session)(nil),                     // 53: carboncircuit.identity.v1.Session
+	(*RecordSessionRequest)(nil),        // 54: carboncircuit.identity.v1.RecordSessionRequest
+	(*RecordSessionResponse)(nil),       // 55: carboncircuit.identity.v1.RecordSessionResponse
+	(*ListSessionsRequest)(nil),         // 56: carboncircuit.identity.v1.ListSessionsRequest
+	(*ListSessionsResponse)(nil),        // 57: carboncircuit.identity.v1.ListSessionsResponse
+	(*RevokeSessionRequest)(nil),        // 58: carboncircuit.identity.v1.RevokeSessionRequest
+	(*RevokeSessionResponse)(nil),       // 59: carboncircuit.identity.v1.RevokeSessionResponse
+	(*APIKey)(nil),                      // 60: carboncircuit.identity.v1.APIKey
+	(*CreateAPIKeyRequest)(nil),         // 61: carboncircuit.identity.v1.CreateAPIKeyRequest
+	(*CreateAPIKeyResponse)(nil),        // 62: carboncircuit.identity.v1.CreateAPIKeyResponse
+	(*ListAPIKeysRequest)(nil),          // 63: carboncircuit.identity.v1.ListAPIKeysRequest
+	(*ListAPIKeysResponse)(nil),         // 64: carboncircuit.identity.v1.ListAPIKeysResponse
+	(*RevokeAPIKeyRequest)(nil),         // 65: carboncircuit.identity.v1.RevokeAPIKeyRequest
+	(*RevokeAPIKeyResponse)(nil),        // 66: carboncircuit.identity.v1.RevokeAPIKeyResponse
+	(*ValidateAPIKeyRequest)(nil),       // 67: carboncircuit.identity.v1.ValidateAPIKeyRequest
+	(*ValidateAPIKeyResponse)(nil),      // 68: carboncircuit.identity.v1.ValidateAPIKeyResponse
 }
 var file_carboncircuit_identity_v1_identity_proto_depIdxs = []int32{
 	4,  // 0: carboncircuit.identity.v1.SessionUser.platform_role:type_name -> carboncircuit.identity.v1.PlatformRole
@@ -4259,18 +4504,18 @@ var file_carboncircuit_identity_v1_identity_proto_depIdxs = []int32{
 	2,  // 15: carboncircuit.identity.v1.OrganizationDetail.state:type_name -> carboncircuit.identity.v1.OrganizationState
 	3,  // 16: carboncircuit.identity.v1.OrganizationDetail.verification_status:type_name -> carboncircuit.identity.v1.VerificationStatus
 	5,  // 17: carboncircuit.identity.v1.OrganizationDetail.product_categories:type_name -> carboncircuit.identity.v1.ProductCategory
-	22, // 18: carboncircuit.identity.v1.GetOrganizationResponse.organization:type_name -> carboncircuit.identity.v1.OrganizationDetail
+	26, // 18: carboncircuit.identity.v1.GetOrganizationResponse.organization:type_name -> carboncircuit.identity.v1.OrganizationDetail
 	1,  // 19: carboncircuit.identity.v1.GetOrganizationResponse.role:type_name -> carboncircuit.identity.v1.OrganizationRole
 	19, // 20: carboncircuit.identity.v1.GetOrganizationResponse.outcome:type_name -> carboncircuit.identity.v1.VerificationOutcome
 	1,  // 21: carboncircuit.identity.v1.Member.role:type_name -> carboncircuit.identity.v1.OrganizationRole
 	1,  // 22: carboncircuit.identity.v1.Invitation.role:type_name -> carboncircuit.identity.v1.OrganizationRole
 	7,  // 23: carboncircuit.identity.v1.Invitation.state:type_name -> carboncircuit.identity.v1.InvitationState
-	28, // 24: carboncircuit.identity.v1.ListMembersResponse.members:type_name -> carboncircuit.identity.v1.Member
-	29, // 25: carboncircuit.identity.v1.ListMembersResponse.invitations:type_name -> carboncircuit.identity.v1.Invitation
+	32, // 24: carboncircuit.identity.v1.ListMembersResponse.members:type_name -> carboncircuit.identity.v1.Member
+	33, // 25: carboncircuit.identity.v1.ListMembersResponse.invitations:type_name -> carboncircuit.identity.v1.Invitation
 	1,  // 26: carboncircuit.identity.v1.InviteMemberRequest.role:type_name -> carboncircuit.identity.v1.OrganizationRole
-	29, // 27: carboncircuit.identity.v1.InviteMemberResponse.invitation:type_name -> carboncircuit.identity.v1.Invitation
+	33, // 27: carboncircuit.identity.v1.InviteMemberResponse.invitation:type_name -> carboncircuit.identity.v1.Invitation
 	1,  // 28: carboncircuit.identity.v1.ChangeMemberRoleRequest.role:type_name -> carboncircuit.identity.v1.OrganizationRole
-	28, // 29: carboncircuit.identity.v1.ChangeMemberRoleResponse.member:type_name -> carboncircuit.identity.v1.Member
+	32, // 29: carboncircuit.identity.v1.ChangeMemberRoleResponse.member:type_name -> carboncircuit.identity.v1.Member
 	1,  // 30: carboncircuit.identity.v1.AcceptInvitationResponse.role:type_name -> carboncircuit.identity.v1.OrganizationRole
 	11, // 31: carboncircuit.identity.v1.Facility.grid_region:type_name -> carboncircuit.identity.v1.GridRegion
 	8,  // 32: carboncircuit.identity.v1.Facility.type:type_name -> carboncircuit.identity.v1.FacilityType
@@ -4278,61 +4523,65 @@ var file_carboncircuit_identity_v1_identity_proto_depIdxs = []int32{
 	10, // 34: carboncircuit.identity.v1.Facility.trust_tier:type_name -> carboncircuit.identity.v1.TrustTier
 	11, // 35: carboncircuit.identity.v1.CreateFacilityRequest.grid_region:type_name -> carboncircuit.identity.v1.GridRegion
 	8,  // 36: carboncircuit.identity.v1.CreateFacilityRequest.type:type_name -> carboncircuit.identity.v1.FacilityType
-	42, // 37: carboncircuit.identity.v1.CreateFacilityResponse.facility:type_name -> carboncircuit.identity.v1.Facility
-	42, // 38: carboncircuit.identity.v1.ListFacilitiesResponse.facilities:type_name -> carboncircuit.identity.v1.Facility
-	42, // 39: carboncircuit.identity.v1.GetFacilityResponse.facility:type_name -> carboncircuit.identity.v1.Facility
-	49, // 40: carboncircuit.identity.v1.ListSessionsResponse.sessions:type_name -> carboncircuit.identity.v1.Session
-	56, // 41: carboncircuit.identity.v1.CreateAPIKeyResponse.key:type_name -> carboncircuit.identity.v1.APIKey
-	56, // 42: carboncircuit.identity.v1.ListAPIKeysResponse.keys:type_name -> carboncircuit.identity.v1.APIKey
+	46, // 37: carboncircuit.identity.v1.CreateFacilityResponse.facility:type_name -> carboncircuit.identity.v1.Facility
+	46, // 38: carboncircuit.identity.v1.ListFacilitiesResponse.facilities:type_name -> carboncircuit.identity.v1.Facility
+	46, // 39: carboncircuit.identity.v1.GetFacilityResponse.facility:type_name -> carboncircuit.identity.v1.Facility
+	53, // 40: carboncircuit.identity.v1.ListSessionsResponse.sessions:type_name -> carboncircuit.identity.v1.Session
+	60, // 41: carboncircuit.identity.v1.CreateAPIKeyResponse.key:type_name -> carboncircuit.identity.v1.APIKey
+	60, // 42: carboncircuit.identity.v1.ListAPIKeysResponse.keys:type_name -> carboncircuit.identity.v1.APIKey
 	0,  // 43: carboncircuit.identity.v1.ValidateAPIKeyResponse.organization_type:type_name -> carboncircuit.identity.v1.OrganizationType
 	2,  // 44: carboncircuit.identity.v1.ValidateAPIKeyResponse.organization_state:type_name -> carboncircuit.identity.v1.OrganizationState
 	3,  // 45: carboncircuit.identity.v1.ValidateAPIKeyResponse.verification_status:type_name -> carboncircuit.identity.v1.VerificationStatus
 	12, // 46: carboncircuit.identity.v1.IdentityService.Ping:input_type -> carboncircuit.identity.v1.PingRequest
 	14, // 47: carboncircuit.identity.v1.IdentityService.ResolveSession:input_type -> carboncircuit.identity.v1.ResolveSessionRequest
 	18, // 48: carboncircuit.identity.v1.IdentityService.CreateOrganization:input_type -> carboncircuit.identity.v1.CreateOrganizationRequest
-	21, // 49: carboncircuit.identity.v1.IdentityService.GetOrganization:input_type -> carboncircuit.identity.v1.GetOrganizationRequest
-	24, // 50: carboncircuit.identity.v1.IdentityService.IssueTreasuryNonce:input_type -> carboncircuit.identity.v1.IssueTreasuryNonceRequest
-	26, // 51: carboncircuit.identity.v1.IdentityService.DesignateTreasury:input_type -> carboncircuit.identity.v1.DesignateTreasuryRequest
-	30, // 52: carboncircuit.identity.v1.IdentityService.ListMembers:input_type -> carboncircuit.identity.v1.ListMembersRequest
-	32, // 53: carboncircuit.identity.v1.IdentityService.InviteMember:input_type -> carboncircuit.identity.v1.InviteMemberRequest
-	34, // 54: carboncircuit.identity.v1.IdentityService.RevokeInvitation:input_type -> carboncircuit.identity.v1.RevokeInvitationRequest
-	36, // 55: carboncircuit.identity.v1.IdentityService.ChangeMemberRole:input_type -> carboncircuit.identity.v1.ChangeMemberRoleRequest
-	38, // 56: carboncircuit.identity.v1.IdentityService.RevokeMember:input_type -> carboncircuit.identity.v1.RevokeMemberRequest
-	40, // 57: carboncircuit.identity.v1.IdentityService.AcceptInvitation:input_type -> carboncircuit.identity.v1.AcceptInvitationRequest
-	43, // 58: carboncircuit.identity.v1.IdentityService.CreateFacility:input_type -> carboncircuit.identity.v1.CreateFacilityRequest
-	45, // 59: carboncircuit.identity.v1.IdentityService.ListFacilities:input_type -> carboncircuit.identity.v1.ListFacilitiesRequest
-	47, // 60: carboncircuit.identity.v1.IdentityService.GetFacility:input_type -> carboncircuit.identity.v1.GetFacilityRequest
-	50, // 61: carboncircuit.identity.v1.IdentityService.RecordSession:input_type -> carboncircuit.identity.v1.RecordSessionRequest
-	52, // 62: carboncircuit.identity.v1.IdentityService.ListSessions:input_type -> carboncircuit.identity.v1.ListSessionsRequest
-	54, // 63: carboncircuit.identity.v1.IdentityService.RevokeSession:input_type -> carboncircuit.identity.v1.RevokeSessionRequest
-	57, // 64: carboncircuit.identity.v1.IdentityService.CreateAPIKey:input_type -> carboncircuit.identity.v1.CreateAPIKeyRequest
-	59, // 65: carboncircuit.identity.v1.IdentityService.ListAPIKeys:input_type -> carboncircuit.identity.v1.ListAPIKeysRequest
-	61, // 66: carboncircuit.identity.v1.IdentityService.RevokeAPIKey:input_type -> carboncircuit.identity.v1.RevokeAPIKeyRequest
-	63, // 67: carboncircuit.identity.v1.IdentityService.ValidateAPIKey:input_type -> carboncircuit.identity.v1.ValidateAPIKeyRequest
-	13, // 68: carboncircuit.identity.v1.IdentityService.Ping:output_type -> carboncircuit.identity.v1.PingResponse
-	17, // 69: carboncircuit.identity.v1.IdentityService.ResolveSession:output_type -> carboncircuit.identity.v1.ResolveSessionResponse
-	20, // 70: carboncircuit.identity.v1.IdentityService.CreateOrganization:output_type -> carboncircuit.identity.v1.CreateOrganizationResponse
-	23, // 71: carboncircuit.identity.v1.IdentityService.GetOrganization:output_type -> carboncircuit.identity.v1.GetOrganizationResponse
-	25, // 72: carboncircuit.identity.v1.IdentityService.IssueTreasuryNonce:output_type -> carboncircuit.identity.v1.IssueTreasuryNonceResponse
-	27, // 73: carboncircuit.identity.v1.IdentityService.DesignateTreasury:output_type -> carboncircuit.identity.v1.DesignateTreasuryResponse
-	31, // 74: carboncircuit.identity.v1.IdentityService.ListMembers:output_type -> carboncircuit.identity.v1.ListMembersResponse
-	33, // 75: carboncircuit.identity.v1.IdentityService.InviteMember:output_type -> carboncircuit.identity.v1.InviteMemberResponse
-	35, // 76: carboncircuit.identity.v1.IdentityService.RevokeInvitation:output_type -> carboncircuit.identity.v1.RevokeInvitationResponse
-	37, // 77: carboncircuit.identity.v1.IdentityService.ChangeMemberRole:output_type -> carboncircuit.identity.v1.ChangeMemberRoleResponse
-	39, // 78: carboncircuit.identity.v1.IdentityService.RevokeMember:output_type -> carboncircuit.identity.v1.RevokeMemberResponse
-	41, // 79: carboncircuit.identity.v1.IdentityService.AcceptInvitation:output_type -> carboncircuit.identity.v1.AcceptInvitationResponse
-	44, // 80: carboncircuit.identity.v1.IdentityService.CreateFacility:output_type -> carboncircuit.identity.v1.CreateFacilityResponse
-	46, // 81: carboncircuit.identity.v1.IdentityService.ListFacilities:output_type -> carboncircuit.identity.v1.ListFacilitiesResponse
-	48, // 82: carboncircuit.identity.v1.IdentityService.GetFacility:output_type -> carboncircuit.identity.v1.GetFacilityResponse
-	51, // 83: carboncircuit.identity.v1.IdentityService.RecordSession:output_type -> carboncircuit.identity.v1.RecordSessionResponse
-	53, // 84: carboncircuit.identity.v1.IdentityService.ListSessions:output_type -> carboncircuit.identity.v1.ListSessionsResponse
-	55, // 85: carboncircuit.identity.v1.IdentityService.RevokeSession:output_type -> carboncircuit.identity.v1.RevokeSessionResponse
-	58, // 86: carboncircuit.identity.v1.IdentityService.CreateAPIKey:output_type -> carboncircuit.identity.v1.CreateAPIKeyResponse
-	60, // 87: carboncircuit.identity.v1.IdentityService.ListAPIKeys:output_type -> carboncircuit.identity.v1.ListAPIKeysResponse
-	62, // 88: carboncircuit.identity.v1.IdentityService.RevokeAPIKey:output_type -> carboncircuit.identity.v1.RevokeAPIKeyResponse
-	64, // 89: carboncircuit.identity.v1.IdentityService.ValidateAPIKey:output_type -> carboncircuit.identity.v1.ValidateAPIKeyResponse
-	68, // [68:90] is the sub-list for method output_type
-	46, // [46:68] is the sub-list for method input_type
+	25, // 49: carboncircuit.identity.v1.IdentityService.GetOrganization:input_type -> carboncircuit.identity.v1.GetOrganizationRequest
+	28, // 50: carboncircuit.identity.v1.IdentityService.IssueTreasuryNonce:input_type -> carboncircuit.identity.v1.IssueTreasuryNonceRequest
+	30, // 51: carboncircuit.identity.v1.IdentityService.DesignateTreasury:input_type -> carboncircuit.identity.v1.DesignateTreasuryRequest
+	34, // 52: carboncircuit.identity.v1.IdentityService.ListMembers:input_type -> carboncircuit.identity.v1.ListMembersRequest
+	36, // 53: carboncircuit.identity.v1.IdentityService.InviteMember:input_type -> carboncircuit.identity.v1.InviteMemberRequest
+	38, // 54: carboncircuit.identity.v1.IdentityService.RevokeInvitation:input_type -> carboncircuit.identity.v1.RevokeInvitationRequest
+	40, // 55: carboncircuit.identity.v1.IdentityService.ChangeMemberRole:input_type -> carboncircuit.identity.v1.ChangeMemberRoleRequest
+	42, // 56: carboncircuit.identity.v1.IdentityService.RevokeMember:input_type -> carboncircuit.identity.v1.RevokeMemberRequest
+	44, // 57: carboncircuit.identity.v1.IdentityService.AcceptInvitation:input_type -> carboncircuit.identity.v1.AcceptInvitationRequest
+	47, // 58: carboncircuit.identity.v1.IdentityService.CreateFacility:input_type -> carboncircuit.identity.v1.CreateFacilityRequest
+	49, // 59: carboncircuit.identity.v1.IdentityService.ListFacilities:input_type -> carboncircuit.identity.v1.ListFacilitiesRequest
+	51, // 60: carboncircuit.identity.v1.IdentityService.GetFacility:input_type -> carboncircuit.identity.v1.GetFacilityRequest
+	21, // 61: carboncircuit.identity.v1.IdentityService.ResolveOrganization:input_type -> carboncircuit.identity.v1.ResolveOrganizationRequest
+	23, // 62: carboncircuit.identity.v1.IdentityService.ResolveFacility:input_type -> carboncircuit.identity.v1.ResolveFacilityRequest
+	54, // 63: carboncircuit.identity.v1.IdentityService.RecordSession:input_type -> carboncircuit.identity.v1.RecordSessionRequest
+	56, // 64: carboncircuit.identity.v1.IdentityService.ListSessions:input_type -> carboncircuit.identity.v1.ListSessionsRequest
+	58, // 65: carboncircuit.identity.v1.IdentityService.RevokeSession:input_type -> carboncircuit.identity.v1.RevokeSessionRequest
+	61, // 66: carboncircuit.identity.v1.IdentityService.CreateAPIKey:input_type -> carboncircuit.identity.v1.CreateAPIKeyRequest
+	63, // 67: carboncircuit.identity.v1.IdentityService.ListAPIKeys:input_type -> carboncircuit.identity.v1.ListAPIKeysRequest
+	65, // 68: carboncircuit.identity.v1.IdentityService.RevokeAPIKey:input_type -> carboncircuit.identity.v1.RevokeAPIKeyRequest
+	67, // 69: carboncircuit.identity.v1.IdentityService.ValidateAPIKey:input_type -> carboncircuit.identity.v1.ValidateAPIKeyRequest
+	13, // 70: carboncircuit.identity.v1.IdentityService.Ping:output_type -> carboncircuit.identity.v1.PingResponse
+	17, // 71: carboncircuit.identity.v1.IdentityService.ResolveSession:output_type -> carboncircuit.identity.v1.ResolveSessionResponse
+	20, // 72: carboncircuit.identity.v1.IdentityService.CreateOrganization:output_type -> carboncircuit.identity.v1.CreateOrganizationResponse
+	27, // 73: carboncircuit.identity.v1.IdentityService.GetOrganization:output_type -> carboncircuit.identity.v1.GetOrganizationResponse
+	29, // 74: carboncircuit.identity.v1.IdentityService.IssueTreasuryNonce:output_type -> carboncircuit.identity.v1.IssueTreasuryNonceResponse
+	31, // 75: carboncircuit.identity.v1.IdentityService.DesignateTreasury:output_type -> carboncircuit.identity.v1.DesignateTreasuryResponse
+	35, // 76: carboncircuit.identity.v1.IdentityService.ListMembers:output_type -> carboncircuit.identity.v1.ListMembersResponse
+	37, // 77: carboncircuit.identity.v1.IdentityService.InviteMember:output_type -> carboncircuit.identity.v1.InviteMemberResponse
+	39, // 78: carboncircuit.identity.v1.IdentityService.RevokeInvitation:output_type -> carboncircuit.identity.v1.RevokeInvitationResponse
+	41, // 79: carboncircuit.identity.v1.IdentityService.ChangeMemberRole:output_type -> carboncircuit.identity.v1.ChangeMemberRoleResponse
+	43, // 80: carboncircuit.identity.v1.IdentityService.RevokeMember:output_type -> carboncircuit.identity.v1.RevokeMemberResponse
+	45, // 81: carboncircuit.identity.v1.IdentityService.AcceptInvitation:output_type -> carboncircuit.identity.v1.AcceptInvitationResponse
+	48, // 82: carboncircuit.identity.v1.IdentityService.CreateFacility:output_type -> carboncircuit.identity.v1.CreateFacilityResponse
+	50, // 83: carboncircuit.identity.v1.IdentityService.ListFacilities:output_type -> carboncircuit.identity.v1.ListFacilitiesResponse
+	52, // 84: carboncircuit.identity.v1.IdentityService.GetFacility:output_type -> carboncircuit.identity.v1.GetFacilityResponse
+	22, // 85: carboncircuit.identity.v1.IdentityService.ResolveOrganization:output_type -> carboncircuit.identity.v1.ResolveOrganizationResponse
+	24, // 86: carboncircuit.identity.v1.IdentityService.ResolveFacility:output_type -> carboncircuit.identity.v1.ResolveFacilityResponse
+	55, // 87: carboncircuit.identity.v1.IdentityService.RecordSession:output_type -> carboncircuit.identity.v1.RecordSessionResponse
+	57, // 88: carboncircuit.identity.v1.IdentityService.ListSessions:output_type -> carboncircuit.identity.v1.ListSessionsResponse
+	59, // 89: carboncircuit.identity.v1.IdentityService.RevokeSession:output_type -> carboncircuit.identity.v1.RevokeSessionResponse
+	62, // 90: carboncircuit.identity.v1.IdentityService.CreateAPIKey:output_type -> carboncircuit.identity.v1.CreateAPIKeyResponse
+	64, // 91: carboncircuit.identity.v1.IdentityService.ListAPIKeys:output_type -> carboncircuit.identity.v1.ListAPIKeysResponse
+	66, // 92: carboncircuit.identity.v1.IdentityService.RevokeAPIKey:output_type -> carboncircuit.identity.v1.RevokeAPIKeyResponse
+	68, // 93: carboncircuit.identity.v1.IdentityService.ValidateAPIKey:output_type -> carboncircuit.identity.v1.ValidateAPIKeyResponse
+	70, // [70:94] is the sub-list for method output_type
+	46, // [46:70] is the sub-list for method input_type
 	46, // [46:46] is the sub-list for extension type_name
 	46, // [46:46] is the sub-list for extension extendee
 	0,  // [0:46] is the sub-list for field type_name
@@ -4349,7 +4598,7 @@ func file_carboncircuit_identity_v1_identity_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_carboncircuit_identity_v1_identity_proto_rawDesc), len(file_carboncircuit_identity_v1_identity_proto_rawDesc)),
 			NumEnums:      12,
-			NumMessages:   53,
+			NumMessages:   57,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

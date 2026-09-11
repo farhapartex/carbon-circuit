@@ -21,6 +21,7 @@ type IdentityServer struct {
 	facilities    FacilityManager
 	registry      SessionRegistrar
 	apiKeys       APIKeyManager
+	resolution    RecordResolver
 	logger        *slog.Logger
 	revision      string
 }
@@ -35,6 +36,7 @@ func NewIdentityServer(
 	facilities FacilityManager,
 	registry SessionRegistrar,
 	apiKeys APIKeyManager,
+	resolution RecordResolver,
 	logger *slog.Logger,
 	revision string,
 ) *IdentityServer {
@@ -48,6 +50,7 @@ func NewIdentityServer(
 		facilities:    facilities,
 		registry:      registry,
 		apiKeys:       apiKeys,
+		resolution:    resolution,
 		logger:        logger,
 		revision:      revision,
 	}

@@ -139,9 +139,13 @@ func run() error {
 		store, repository.NewAPIKeyRepository(), organizationStore, keyHasher, logger,
 	)
 
+	resolution := service.NewResolutionService(
+		store, repository.NewResolutionRepository(), logger,
+	)
+
 	identityServer := rpc.NewIdentityServer(
 		store, sessions, organizations, describer, treasury, team, facilities,
-		sessionRegistry, apiKeys, logger, revision,
+		sessionRegistry, apiKeys, resolution, logger, revision,
 	)
 
 	publicKey, err := sharedconfig.Ed25519PublicKey(settings.ServiceTokenPublicKey)
@@ -153,6 +157,13 @@ func run() error {
 		"/carboncircuit.identity.v1.IdentityService/ValidateAPIKey": true,
 		"/carboncircuit.identity.v1.IdentityService/ResolveSession": true,
 		"/carboncircuit.identity.v1.IdentityService/Ping":           true,
+
+		// Resolution is how a service that holds no caller token, because it is
+		// acting on an event rather than a request, names the single record it
+		// needs. Mutual TLS still gates the port, each call returns exactly the
+		// row it named, and neither is routed at the gateway.
+		"/carboncircuit.identity.v1.IdentityService/ResolveOrganization": true,
+		"/carboncircuit.identity.v1.IdentityService/ResolveFacility":     true,
 	}
 
 	var transport credentials.TransportCredentials

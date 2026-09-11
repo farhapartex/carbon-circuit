@@ -275,6 +275,40 @@ services:
     expose:
       - "9096"
 
+  credit-ledger-migrate:
+    build:
+      context: .
+      dockerfile: services/credit-ledger-service/Dockerfile
+    entrypoint: ["/credit-ledger-migrate"]
+    command: ["up"]
+    environment:
+      DATABASE_MIGRATION_DSN: postgres://credit_ledger_service:credit_ledger_service@postgres:5432/carboncircuit?sslmode=disable
+      DATABASE_SCHEMA: credit_ledger
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: "no"
+
+  credit-ledger-service:
+    build:
+      context: .
+      dockerfile: services/credit-ledger-service/Dockerfile
+    volumes:
+      - certs:/certs:ro
+    env_file:
+      - services/credit-ledger-service/.env
+    depends_on:
+      pgbouncer:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+      identity-service:
+        condition: service_started
+      credit-ledger-migrate:
+        condition: service_completed_successfully
+    expose:
+      - "9097"
+
   identity-service:
     build:
       context: .
@@ -306,6 +340,7 @@ services:
       - provenance-read-service
       - evidence-service
       - sustainability-service
+      - credit-ledger-service
       - redis
     ports:
       - "8080:8080"

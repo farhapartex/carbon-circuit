@@ -1,0 +1,11 @@
+DROP POLICY IF EXISTS tenant_isolation ON credit_ledger.idempotency_records;
+ALTER TABLE credit_ledger.idempotency_records NO FORCE ROW LEVEL SECURITY;
+ALTER TABLE credit_ledger.idempotency_records DISABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS tenant_isolation ON credit_ledger.credit_issuances;
+ALTER TABLE credit_ledger.credit_issuances NO FORCE ROW LEVEL SECURITY;
+ALTER TABLE credit_ledger.credit_issuances DISABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS tenant_isolation ON credit_ledger.credit_balances;
+ALTER TABLE credit_ledger.credit_balances NO FORCE ROW LEVEL SECURITY;
+ALTER TABLE credit_ledger.credit_balances DISABLE ROW LEVEL SECURITY;
+DROP FUNCTION IF EXISTS credit_ledger.current_user_id();
+DROP FUNCTION IF EXISTS credit_ledger.current_organization_id();

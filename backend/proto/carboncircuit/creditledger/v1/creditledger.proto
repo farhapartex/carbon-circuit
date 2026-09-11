@@ -1,0 +1,44 @@
+syntax = "proto3";
+
+package carboncircuit.creditledger.v1;
+
+option go_package = "github.com/carboncircuit/backend/gen/carboncircuit/creditledger/v1;creditledgerv1";
+
+service CreditLedgerService {
+  rpc Ping(PingRequest) returns (PingResponse);
+  rpc GetPortfolio(GetPortfolioRequest) returns (GetPortfolioResponse);
+}
+
+message PingRequest {}
+
+message PingResponse {
+  string service = 1;
+  string revision = 2;
+  bool database_reachable = 3;
+  int32 credit_class_count = 4;
+}
+
+message CreditClass {
+  string token_id = 1;
+  string facility_id = 2;
+  string facility_name = 3;
+  string facility_country = 4;
+  int32 vintage_year = 5;
+  string activity_type = 6;
+}
+
+message Holding {
+  CreditClass credit_class = 1;
+  string available = 2;
+  string escrowed = 3;
+  string retired = 4;
+}
+
+message GetPortfolioRequest {}
+
+message GetPortfolioResponse {
+  repeated Holding holdings = 1;
+  string total_available = 2;
+  string total_escrowed = 3;
+  string total_retired = 4;
+}
